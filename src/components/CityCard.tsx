@@ -1,7 +1,7 @@
 import {Card} from "react-bootstrap";
 import {Heart, Eye, Person} from "react-bootstrap-icons";
 
-interface City {
+export interface City {
   id: string;
   isApproved: boolean;
   isReported: boolean;
