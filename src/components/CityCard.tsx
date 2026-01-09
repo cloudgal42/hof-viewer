@@ -50,26 +50,35 @@ interface CityCardProps {
 
 export const CityCard = ({city}: CityCardProps) => {
   return (
-    <Card style={{flexBasis: "32.9%"}}>
-      <Card.Img variant="top" src={city.imageUrlThumbnail}/>
-      <Card.Body className="p-2">
-        <Card.Title>{city.cityName}</Card.Title>
-        <Card.Subtitle className="mb-1">{city.cityNameTranslated}</Card.Subtitle>
-        <Card.Text className="d-flex gap-2 text-secondary" style={{fontSize: "0.9rem"}}>
-          <span className="d-flex align-items-center">
-            <Person/>
-            <span className="ms-1">{city.cityPopulation}</span>
-          </span>
-          <span className="d-flex align-items-center">
-            <Eye/>
-            <span className="ms-1">{city.viewsCount}</span>
-          </span>
-          <span className="d-flex align-items-center">
-            <Heart/>
-            <span className="ms-1">{city.favoritesCount}</span>
-          </span>
-        </Card.Text>
-      </Card.Body>
-    </Card>
+    <div className="col-6 col-md-4">
+      <Card>
+        <Card.Img variant="top" src={city.imageUrlThumbnail}/>
+        <Card.Body>
+          <Card.Title>{city.cityName}</Card.Title>
+          <Card.Subtitle className="mb-1">{city.cityNameTranslated}</Card.Subtitle>
+          <div style={{fontSize: "0.9rem"}} className="text-muted">
+            <Card.Text className="d-block mb-1">by {city.creator.creatorName}</Card.Text>
+            <Card.Text className="d-flex gap-2">
+            <span className="d-flex align-items-center">
+              <Person/>
+              <span className="ms-1">{city.cityPopulation.toLocaleString()}</span>
+            </span>
+              <span className="d-flex align-items-center">
+              <Eye/>
+              <span className="ms-1">{city.viewsCount.toLocaleString()}</span>
+            </span>
+              <span className="d-flex align-items-center">
+              <Heart/>
+              <span className="ms-1">{city.favoritesCount.toLocaleString()}</span>
+            </span>
+            </Card.Text>
+          </div>
+        </Card.Body>
+        <Card.Footer>
+          <span className="text-muted" style={{fontSize: "0.9rem"}}>{city.createdAtFormattedDistance}</span>
+        </Card.Footer>
+      </Card>
+    </div>
+
   )
 }
