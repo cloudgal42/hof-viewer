@@ -1,5 +1,8 @@
 import {Card} from "react-bootstrap";
 import {Heart, Eye, Person} from "react-bootstrap-icons";
+import {LazyLoadImage} from "react-lazy-load-image-component";
+import PlaceholderImg from "../assets/placeholder.svg"
+import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 
 export interface City {
   id: string;
@@ -50,33 +53,41 @@ interface CityCardProps {
 
 export const CityCard = ({city}: CityCardProps) => {
   return (
-    <div className="col-6 col-md-4">
+    <div className="col-12 col-sm-6 col-md-4">
       <Card>
-        <Card.Img variant="top" src={city.imageUrlThumbnail}/>
+        <LazyLoadImage
+          className="card-img-top"
+          effect="black-and-white"
+          alt=""
+          placeholder={
+            <Card.Img variant="top" src={PlaceholderImg}/>
+          }
+          src={city.imageUrlThumbnail}
+        />
         <Card.Body>
           <Card.Title>{city.cityName}</Card.Title>
           <Card.Subtitle className="mb-1">{city.cityNameTranslated}</Card.Subtitle>
           <div style={{fontSize: "0.9rem"}} className="text-muted">
             <Card.Text className="d-block mb-1">by {city.creator.creatorName}</Card.Text>
-            <Card.Text className="d-flex gap-2">
-            <span className="d-flex align-items-center">
+            <Card.Text className="d-flex mb-1 gap-2">
+            <span className="d-flex flex-grow-1 align-items-center">
               <Person/>
               <span className="ms-1">{city.cityPopulation.toLocaleString()}</span>
             </span>
-              <span className="d-flex align-items-center">
+            <span className="d-flex flex-grow-1 align-items-center">
               <Eye/>
               <span className="ms-1">{city.viewsCount.toLocaleString()}</span>
             </span>
-              <span className="d-flex align-items-center">
+            <span className="d-flex flex-grow-1 align-items-center">
               <Heart/>
               <span className="ms-1">{city.favoritesCount.toLocaleString()}</span>
             </span>
             </Card.Text>
+            <Card.Text>
+              <span className="text-muted" style={{fontSize: "0.9rem"}}>{city.createdAtFormattedDistance}</span>
+            </Card.Text>
           </div>
         </Card.Body>
-        <Card.Footer>
-          <span className="text-muted" style={{fontSize: "0.9rem"}}>{city.createdAtFormattedDistance}</span>
-        </Card.Footer>
       </Card>
     </div>
 

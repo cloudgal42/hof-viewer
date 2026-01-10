@@ -3,10 +3,14 @@ import {type City, CityCard} from "./components/CityCard.tsx";
 import Form from "react-bootstrap/Form"
 import {Button} from "react-bootstrap";
 import {useEffect, useState} from "react";
+import {PlaceholderCard} from "./components/PlaceholderCard.tsx";
 
 const App = () => {
   const [creator, setCurrCreator] = useState<string | undefined>();
   const [cities, setCities] = useState<City[] | []>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  let content;
 
   function setCreator(formData: FormData) {
     const query = formData.get("creatorId");
@@ -18,14 +22,19 @@ const App = () => {
     let ignore = false;
     if (!creator) return;
 
-    async function getCreatorCities()  {
+    async function getCreatorCities() {
+      setIsLoading(true);
       const res = await fetch(`https://halloffame.cs2.mtq.io/api/v1/screenshots?creatorId=${creator}`);
-
       const data = await res.json();
 
       if (res.ok && !ignore) {
         setCities(data);
+        setIsLoading(false);
+      } else {
+        setCities([]);
+        setIsLoading(false);
       }
+
     }
 
     getCreatorCities();
@@ -34,6 +43,25 @@ const App = () => {
       ignore = true
     };
   }, [creator]);
+
+  if (isLoading) {
+    content = (
+      <>
+        <PlaceholderCard/>
+        <PlaceholderCard/>
+        <PlaceholderCard/>
+        <PlaceholderCard/>
+        <PlaceholderCard/>
+        <PlaceholderCard/>
+      </>
+    )
+  } else if (cities.length > 0) {
+    content = cities.map(city =>
+      <CityCard key={city.id} city={city}/>
+    );
+  } else {
+    content = <p>No cities found.</p>
+  }
 
   // TODO: Migrate all regular bootstrap classes with react-bootstrap
   return (
@@ -61,14 +89,7 @@ const App = () => {
             <h2>Cities</h2>
           </div>
           <div id="city-feed" className="row gx-2 gy-2">
-            {cities.length > 0 ? (
-              cities.map(city =>
-                <CityCard key={city.id} city={city} />
-              )
-            ) : (
-              <p>No cities found</p>
-            )
-            }
+            {content}
           </div>
         </section>
       </div>
