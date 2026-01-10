@@ -62,7 +62,7 @@ export const CityCard = ({city}: CityCardProps) => {
           placeholder={
             <Card.Img variant="top" src={PlaceholderImg}/>
           }
-          src={city.imageUrlThumbnail}
+          src={city.imageUrlFHD}
         />
         <Card.Body>
           <Card.Title>{city.cityName}</Card.Title>
