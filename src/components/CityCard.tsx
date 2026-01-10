@@ -77,7 +77,7 @@ export const CityCard = ({city, isCitiesGrouped}: CityCardProps) => {
             </span>
             <span className="d-flex flex-grow-1 align-items-center">
               <Eye/>
-              <span className="ms-1">{city.viewsCount.toLocaleString()}</span>
+              <span className="ms-1">{city.uniqueViewsCount.toLocaleString()}</span>
             </span>
             <span className="d-flex flex-grow-1 align-items-center">
               <Heart/>

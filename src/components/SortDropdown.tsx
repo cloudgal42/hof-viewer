@@ -12,7 +12,6 @@ export const SortDropdown = ({setSortBy}: SortDropdownProps) => {
       aria-label="Sort By"
       onChange={(e) => setSortBy(e.target.value)}
     >
-      <option>Sort By</option>
       <option value="date">Date Posted</option>
       <option value="name">Name (Latinized)</option>
       <option value="population">Population</option>
