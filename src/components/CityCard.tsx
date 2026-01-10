@@ -19,24 +19,24 @@ export interface City {
   cityMilestone: number;
   cityPopulation: number;
   mapName?: string;
-  description?: string;
   imageUrlThumbnail: string;
   imageUrlFHD: string;
   imageUrl4K: string;
   shareParadoxModIds: boolean;
   paradoxModIds: number[];
   shareRenderSettings: boolean;
-  renderSettings: object; // FIXME: Maybe define an interface for this?
-  createdAt: string;
-  createdAtFormatted: string;
-  createdAtFormattedDistance: string;
   creatorId: string;
-  creator: Creator
+  creator: Creator;
+  createdAt: string;
+  createdAtFormatted?: string;
+  createdAtFormattedDistance: string;
+  description?: string;
+  renderSettings?: object; // FIXME: Maybe define an interface for this?
   showcasedModId?: number;
   __favorited: boolean;
 }
 
-interface Creator {
+export interface Creator {
   id: string;
   creatorName: string;
   creatorNameSlug: string;
@@ -49,9 +49,10 @@ interface Creator {
 
 interface CityCardProps {
   city: City;
+  isCitiesGrouped: boolean;
 }
 
-export const CityCard = ({city}: CityCardProps) => {
+export const CityCard = ({city, isCitiesGrouped}: CityCardProps) => {
   return (
     <div className="col-12 col-sm-6 col-md-4">
       <Card>
@@ -84,7 +85,12 @@ export const CityCard = ({city}: CityCardProps) => {
             </span>
             </Card.Text>
             <Card.Text>
-              <span className="text-muted" style={{fontSize: "0.9rem"}}>{city.createdAtFormattedDistance}</span>
+              <span className="text-muted" style={{fontSize: "0.9rem"}}>
+                {isCitiesGrouped ?
+                  `First posted ${city.createdAtFormattedDistance}` :
+                  city.createdAtFormattedDistance
+                }
+              </span>
             </Card.Text>
           </div>
         </Card.Body>
