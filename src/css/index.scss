@@ -8,7 +8,7 @@
 }
 
 #city-feed > .card {
-  flex-basis: calc(33% - 0.45rem);
+  flex-basis: calc(33% - 0.5rem);
 }
 
 @container city-feed (width < 800px) {
@@ -23,7 +23,7 @@
   }
 }
 
-@media all and (min-width: 992px) {
+@media all and (min-width: 1401px) {
   .main-wrapper {
     max-width: 65%;
   }
