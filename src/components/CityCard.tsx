@@ -54,8 +54,8 @@ interface CityCardProps {
 
 export const CityCard = ({city, isCitiesGrouped}: CityCardProps) => {
   return (
-    <div className="col-12 col-sm-6 col-md-4">
-      <Card style={{height: "100%"}}>
+    <>
+      <Card>
         <LazyLoadImage
           className="card-img-top"
           effect="black-and-white"
@@ -95,7 +95,7 @@ export const CityCard = ({city, isCitiesGrouped}: CityCardProps) => {
           </div>
         </Card.Body>
       </Card>
-    </div>
+    </>
 
   )
 }

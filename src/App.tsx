@@ -6,6 +6,7 @@ import {useEffect, useMemo, useState} from "react";
 import {PlaceholderCard} from "./components/PlaceholderCard.tsx";
 import {SortOrderButton} from "./components/SortOrderButton.tsx";
 import {SortDropdown} from "./components/SortDropdown.tsx";
+import {Sidebar} from "./components/Sidebar.tsx";
 // import {Screenshots} from "./temp/screenshots.ts";
 
 export type SortOrder = "Ascending" | "Descending";
@@ -169,52 +170,59 @@ const App = () => {
 
   // TODO: Migrate all regular bootstrap classes with react-bootstrap
   return (
-    <>
-      <div className="container-lg mt-3">
-        <h1>Hall of Fame Feed</h1>
-        <section className="mt-3 mb-3">
-          <Form.Label htmlFor="creatorId">Enter the Creator ID:</Form.Label>
-          <form action={setCreator}>
-            <div className="d-flex gap-2">
-              <Form.Control
-                type="text"
-                name="creatorId"
-                id="creatorId"
-                aria-describedby="creatorIdHelpBlock"
-                placeholder="Creator ID..."
-              />
-              <Button type="submit" variant="dark">Search</Button>
-            </div>
-            <Form.Text id="creatorIdHelpBlock">Must be 24 characters long.</Form.Text>
-          </form>
-        </section>
-        <section>
-          <div className="d-flex mb-3 align-items-center justify-content-between">
-            <h2 className="mb-0">Cities</h2>
-            <div className="d-flex align-items-center gap-2">
-              <div className="d-flex gap-2 align-items-center text-nowrap">
-                <Form.Check
-                  name="groupCities"
-                  id="groupCitiesCheck"
-                  onClick={(e) => setIsGrouped(e.currentTarget.checked)}
+    <div className="d-flex flex-nowrap">
+      <aside className="d-none flex-shrink-0 d-lg-block">
+        <Sidebar />
+      </aside>
+      <main className="mt-5 flex-grow-1 d-flex justify-content-center">
+        <div className="main-wrapper flex-grow-1 ms-sm-5 me-sm-5">
+          <h1>Browse</h1>
+          <section className="mt-3 mb-3">
+            <Form.Label htmlFor="creatorId">Enter the Creator ID:</Form.Label>
+            <form action={setCreator}>
+              <div className="d-flex gap-2">
+                <Form.Control
+                  type="text"
+                  name="creatorId"
+                  id="creatorId"
+                  aria-describedby="creatorIdHelpBlock"
+                  placeholder="Creator ID..."
                 />
-                <Form.Label
-                  htmlFor="groupCitiesCheck"
-                  className="mb-0"
-                >
-                  Group Cities
-                </Form.Label>
+                <Button type="submit" variant="dark">Search</Button>
               </div>
-              <SortOrderButton sortOrder={sortOrder} setSortOrder={setSortOrder} />
-              <SortDropdown setSortBy={setSortBy} />
+              <Form.Text id="creatorIdHelpBlock">Must be 24 characters long.</Form.Text>
+            </form>
+          </section>
+          <section>
+            <div className="d-flex mb-3 align-items-sm-center justify-content-between flex-column flex-sm-row">
+              <h2 className="mb-0">Cities</h2>
+              <div className="d-flex justify-content-between align-items-center gap-2">
+                <div className="d-flex gap-2 align-items-center text-nowrap">
+                  <Form.Check
+                    name="groupCities"
+                    id="groupCitiesCheck"
+                    onClick={(e) => setIsGrouped(e.currentTarget.checked)}
+                  />
+                  <Form.Label
+                    htmlFor="groupCitiesCheck"
+                    className="mb-0"
+                  >
+                    Group Cities
+                  </Form.Label>
+                </div>
+                <div className="d-flex gap-2 align-items-center">
+                  <SortOrderButton sortOrder={sortOrder} setSortOrder={setSortOrder} />
+                  <SortDropdown setSortBy={setSortBy} />
+                </div>
+              </div>
             </div>
-          </div>
-          <div id="city-feed" className="row gx-2 gy-2">
-            {content}
-          </div>
-        </section>
-      </div>
-    </>
+            <div id="city-feed" className="d-flex flex-wrap gap-3">
+              {content}
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
   )
 }
 

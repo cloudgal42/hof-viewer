@@ -1,0 +1,30 @@
+.main-wrapper {
+  max-width: 90%;
+}
+
+#city-feed {
+  container-type: inline-size;
+  container-name: city-feed;
+}
+
+#city-feed > .card {
+  flex-basis: calc(33% - 0.45rem);
+}
+
+@container city-feed (width < 800px) {
+  #city-feed > .card {
+    flex-basis: calc(50% - 0.5rem);
+  }
+}
+
+@container city-feed (width < 474px) {
+  #city-feed > .card {
+    flex-basis: 100%;
+  }
+}
+
+@media all and (min-width: 992px) {
+  .main-wrapper {
+    max-width: 65%;
+  }
+}

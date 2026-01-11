@@ -15,7 +15,7 @@ export const SortOrderButton = ({sortOrder, setSortOrder}: SortOrderButtonProps)
 
   return (
     <Button
-      variant="outline-dark"
+      variant="outline-primary"
       style={{borderColor: "lightgray"}}
       aria-label="Sort Order"
       onClick={setOrder}
