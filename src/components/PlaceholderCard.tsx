@@ -4,7 +4,7 @@ import {Eye, Heart, Person} from "react-bootstrap-icons";
 
 export const PlaceholderCard = () => {
   return (
-    <div className="col-6 col-md-4">
+    <>
       <Card>
         <Card.Img variant="top" src={PlaceholderImg}/>
         <Card.Body>
@@ -33,6 +33,6 @@ export const PlaceholderCard = () => {
           </Placeholder>
         </Card.Body>
       </Card>
-    </div>
+    </>
   )
 }
