@@ -5,6 +5,7 @@ import './css/index.scss'
 import App from './App.tsx'
 import {BrowserRouter, Route, Routes} from "react-router";
 import {Home} from "./pages/Home.tsx";
+import {CityDetails} from "./pages/CityDetails.tsx";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -12,6 +13,7 @@ createRoot(document.getElementById('root')!).render(
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<Home />} />
+          <Route path="city/:city" element={<CityDetails />} />
         </Route>
       </Routes>
     </BrowserRouter>
