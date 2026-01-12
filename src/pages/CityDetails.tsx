@@ -49,7 +49,7 @@ export const CityDetails = () => {
       <h3 className="text-muted fs-5">by {city.creator.creatorName}</h3>
       <div className="mt-3">
         <Gallery>
-          <div className="img-gallery-container d-flex flex-wrap gap-1">
+          <div className={`${(Array.isArray(imageUrlFHD) && imageUrlFHD.length > 1) ? "img-gallery-container" : "img-gallery-container-single"} d-flex flex-wrap gap-1`}>
             {Array.isArray(imageUrlFHD) ? (
               imageUrlFHD.map((imageUrl, i) =>
                 <Item
