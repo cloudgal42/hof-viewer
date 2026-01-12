@@ -45,6 +45,7 @@ function groupCities(citiesToGroup: City[]) {
         cityNameTranslated: screenshot.cityNameTranslated,
         cityMilestone: screenshot.cityMilestone,
         cityPopulation: screenshot.cityPopulation,
+        renderSettings: {},
         createdAt: screenshotArr[0].createdAt,
         createdAtFormattedDistance: screenshotArr[0].createdAtFormattedDistance,
         creator: screenshot.creator,
