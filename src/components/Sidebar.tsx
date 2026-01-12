@@ -15,7 +15,7 @@ export const Sidebar = ({isOpened, setIsOpened}: SidebarProps) => {
       className="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary"
       style={{height: "100vh", position: "sticky", top: "0",}}
     >
-      <div className="d-lg-none d-flex justify-content-between align-items-center mb-3 mb-md-0">
+      <div className="d-lg-none d-flex justify-content-between align-items-center mb-0">
         <a
           href="/"
           className="text-decoration-none">

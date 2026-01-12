@@ -75,17 +75,9 @@ export const Home = () => {
 
   const {
     cities,
-    creator, setCurrCreator,
+    setCurrCreator,
     isLoading,
   } = useOutletContext<ContextType>()
-
-  function setCreator(formData: FormData) {
-    const query = formData.get("creatorId");
-    const queryString = query?.toString() || "";
-    setCurrCreator(queryString);
-  }
-
-  let content;
 
   const sortedCities = useMemo(() => {
     const citiesToSort = isGrouped ? groupCities(cities) : cities;
@@ -117,6 +109,20 @@ export const Home = () => {
 
     return copiedCities;
   }, [cities, isGrouped, sortBy, sortOrder]);
+
+  let content;
+
+  function validateAndSetCreator(creator: string) {
+    if (creator.length === 24) {
+      setCurrCreator(creator);
+    }
+  }
+
+  function setCreator(formData: FormData) {
+    const query = formData.get("creatorId");
+    const queryString = query?.toString() || "";
+    setCurrCreator(queryString);
+  }
 
   if (isLoading) {
     content = (
@@ -150,8 +156,7 @@ export const Home = () => {
               id="creatorId"
               aria-describedby="creatorIdHelpBlock"
               placeholder="Creator ID..."
-              value={creator}
-              onChange={e => setCurrCreator(e.currentTarget.value)}
+              onChange={e => validateAndSetCreator(e.currentTarget.value)}
             />
             <Button type="submit" variant="dark">Search</Button>
           </div>
