@@ -77,7 +77,7 @@ export const Home = () => {
     cities,
     setCurrCreator,
     isLoading,
-  } = useOutletContext<ContextType>()
+  } = useOutletContext<ContextType>();
 
   const sortedCities = useMemo(() => {
     const citiesToSort = isGrouped ? groupCities(cities) : cities;

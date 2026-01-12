@@ -3,6 +3,7 @@ import {Heart, Eye, Person} from "react-bootstrap-icons";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import PlaceholderImg from "../assets/placeholder.svg"
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
+import {NavLink} from "react-router";
 
 export interface City {
   id: string;
@@ -66,23 +67,31 @@ export const CityCard = ({city, isCitiesGrouped}: CityCardProps) => {
           src={city.imageUrlFHD}
         />
         <Card.Body>
-          <Card.Title>{city.cityName}</Card.Title>
+          {isCitiesGrouped ? (
+            <NavLink
+              to={`/city/${city.cityName}`}
+            >
+              <Card.Title>{city.cityName}</Card.Title>
+            </NavLink>
+          ) : (
+            <Card.Title>{city.cityName}</Card.Title>
+          )}
           <Card.Subtitle className="mb-1">{city.cityNameTranslated}</Card.Subtitle>
           <div style={{fontSize: "0.9rem"}} className="text-muted">
             <Card.Text className="d-block mb-1">by {city.creator.creatorName}</Card.Text>
             <Card.Text className="d-flex mb-1 gap-2">
-            <span className="d-flex flex-grow-1 align-items-center">
-              <Person/>
-              <span className="ms-1">{city.cityPopulation.toLocaleString()}</span>
-            </span>
-            <span className="d-flex flex-grow-1 align-items-center">
-              <Eye/>
-              <span className="ms-1">{city.uniqueViewsCount.toLocaleString()}</span>
-            </span>
-            <span className="d-flex flex-grow-1 align-items-center">
-              <Heart/>
-              <span className="ms-1">{city.favoritesCount.toLocaleString()}</span>
-            </span>
+              <span className="d-flex flex-grow-1 align-items-center">
+                <Person/>
+                <span className="ms-1">{city.cityPopulation.toLocaleString()}</span>
+              </span>
+              <span className="d-flex flex-grow-1 align-items-center">
+                <Eye/>
+                <span className="ms-1">{city.uniqueViewsCount.toLocaleString()}</span>
+              </span>
+              <span className="d-flex flex-grow-1 align-items-center">
+                <Heart/>
+                <span className="ms-1">{city.favoritesCount.toLocaleString()}</span>
+              </span>
             </Card.Text>
             <Card.Text>
               <span className="text-muted" style={{fontSize: "0.9rem"}}>

@@ -76,7 +76,7 @@ const App = () => {
         <aside className="d-none d-lg-block flex-shrink-0">
           <Sidebar isOpened={isAsideOpened} setIsOpened={setIsAsideOpened} />
         </aside>
-        <main className="mt-3 mt-lg-5 flex-grow-1 d-flex justify-content-center">
+        <main className="mt-3 flex-grow-1 d-flex justify-content-center">
           <Outlet context={contextParams satisfies ContextType} />
         </main>
       </div>
