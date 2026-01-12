@@ -3,18 +3,18 @@ import {SortOrderButton} from "../components/SortOrderButton.tsx";
 import {useMemo, useState} from "react";
 import type {ContextType, SortOrder} from "../App.tsx";
 import {SortDropdown} from "../components/SortDropdown.tsx";
-import {type City, CityCard} from "../components/CityCard.tsx";
+import {type City, CityCard, type GroupedCities} from "../components/CityCard.tsx";
 import {PlaceholderCard} from "../components/PlaceholderCard.tsx";
 import {useOutletContext} from "react-router";
 
 interface TotalScreenshotStats {
-  combinedStats?: City;
+  combinedStats?: GroupedCities;
 }
 
 // Group all stats of each unique city name into one.
 function groupCities(citiesToGroup: City[]) {
   const groupedScreenshots: City[][] = [];
-  const groupedCities: City[] = [];
+  const groupedCities: GroupedCities[] = [];
 
   // 1. Get all distinct city names. Use Set() to filter down to only unique values
   // Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set/Set
@@ -50,8 +50,8 @@ function groupCities(citiesToGroup: City[]) {
         createdAtFormattedDistance: screenshotArr[0].createdAtFormattedDistance,
         creator: screenshot.creator,
         creatorId: screenshot.creatorId,
-        imageUrl4K: screenshot.imageUrl4K,
-        imageUrlFHD: screenshot.imageUrlFHD,
+        imageUrl4K: (typeof screenshotStat.combinedStats?.imageUrl4K === "undefined") ? [] : screenshotStat.combinedStats.imageUrl4K,
+        imageUrlFHD: (typeof screenshotStat.combinedStats?.imageUrlFHD === "undefined") ? [] : screenshotStat.combinedStats.imageUrlFHD,
         imageUrlThumbnail: screenshot.imageUrlThumbnail,
         mapName: screenshot.mapName,
         paradoxModIds: screenshot.paradoxModIds,
@@ -59,6 +59,9 @@ function groupCities(citiesToGroup: City[]) {
         shareRenderSettings: screenshot.shareRenderSettings,
         __favorited: false,
       }
+
+      screenshotStat.combinedStats?.imageUrlFHD.push(screenshot.imageUrlFHD);
+      screenshotStat.combinedStats?.imageUrl4K.push(screenshot.imageUrl4K);
     });
 
     if (screenshotStat.combinedStats) {

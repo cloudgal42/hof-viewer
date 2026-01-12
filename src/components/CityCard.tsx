@@ -37,6 +37,11 @@ export interface City {
   __favorited: boolean;
 }
 
+export interface GroupedCities extends Omit<City, "imageUrlFHD" | "imageUrl4K"> {
+  imageUrlFHD: string[];
+  imageUrl4K: string[];
+}
+
 export interface Creator {
   id: string;
   creatorName: string;
@@ -49,12 +54,20 @@ export interface Creator {
 }
 
 interface CityCardProps {
-  city: City;
-  setCity: (value: City) => void;
+  city: City | GroupedCities;
+  setCity: (value: City | GroupedCities) => void;
   isCitiesGrouped: boolean;
 }
 
 export const CityCard = ({city, setCity, isCitiesGrouped}: CityCardProps) => {
+  let thumbnailImgUrl;
+
+  if (Array.isArray(city.imageUrlFHD)) {
+    thumbnailImgUrl = city.imageUrlFHD[city.imageUrlFHD.length - 1];
+  } else {
+    thumbnailImgUrl = city.imageUrlFHD;
+  }
+
   return (
     <>
       <Card>
@@ -65,7 +78,7 @@ export const CityCard = ({city, setCity, isCitiesGrouped}: CityCardProps) => {
           placeholder={
             <Card.Img variant="top" src={PlaceholderImg}/>
           }
-          src={city.imageUrlFHD}
+          src={thumbnailImgUrl}
         />
         <Card.Body>
           <NavLink

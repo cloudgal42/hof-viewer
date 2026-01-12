@@ -1,5 +1,5 @@
 import './css/App.scss'
-import {type City} from "./components/CityCard.tsx";
+import {type City, type GroupedCities} from "./components/CityCard.tsx";
 import {Container, Navbar} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import {Sidebar} from "./components/Sidebar.tsx";
@@ -11,10 +11,10 @@ export type SortOrder = "Ascending" | "Descending";
 
 export type ContextType = {
   cities: City[];
-  city?: City;
+  city?: City | GroupedCities;
   isLoading: boolean;
   creator?: string;
-  setCity: (newCity: City) => void;
+  setCity: (newCity: City | GroupedCities) => void;
   setCurrCreator: (creator: string) => void;
 }
 
@@ -24,7 +24,7 @@ const App = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [isAsideOpened, setIsAsideOpened] = useState<boolean>(false);
-  const [city, setCity] = useState<City | undefined>()
+  const [city, setCity] = useState<City | GroupedCities | undefined>()
 
   const contextParams = {
     cities,
