@@ -11,8 +11,10 @@ export type SortOrder = "Ascending" | "Descending";
 
 export type ContextType = {
   cities: City[];
+  city?: City;
   isLoading: boolean;
   creator?: string;
+  setCity: (newCity: City) => void;
   setCurrCreator: (creator: string) => void;
 }
 
@@ -22,9 +24,11 @@ const App = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [isAsideOpened, setIsAsideOpened] = useState<boolean>(false);
+  const [city, setCity] = useState<City | undefined>()
 
   const contextParams = {
     cities,
+    city, setCity,
     creator, setCurrCreator,
     isLoading,
   }

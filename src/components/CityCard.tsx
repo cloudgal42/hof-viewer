@@ -32,7 +32,7 @@ export interface City {
   createdAtFormatted?: string;
   createdAtFormattedDistance: string;
   description?: string;
-  renderSettings?: object; // FIXME: Maybe define an interface for this?
+  renderSettings: object; // FIXME: Maybe define an interface for this?
   showcasedModId?: number;
   __favorited: boolean;
 }
@@ -50,10 +50,11 @@ export interface Creator {
 
 interface CityCardProps {
   city: City;
+  setCity: (value: City) => void;
   isCitiesGrouped: boolean;
 }
 
-export const CityCard = ({city, isCitiesGrouped}: CityCardProps) => {
+export const CityCard = ({city, setCity, isCitiesGrouped}: CityCardProps) => {
   return (
     <>
       <Card>
@@ -67,15 +68,12 @@ export const CityCard = ({city, isCitiesGrouped}: CityCardProps) => {
           src={city.imageUrlFHD}
         />
         <Card.Body>
-          {isCitiesGrouped ? (
-            <NavLink
-              to={`/city/${city.cityName}`}
-            >
-              <Card.Title>{city.cityName}</Card.Title>
-            </NavLink>
-          ) : (
+          <NavLink
+            to={`/city/${city.cityName}`}
+            onClick={() => setCity(city)}
+          >
             <Card.Title>{city.cityName}</Card.Title>
-          )}
+          </NavLink>
           <Card.Subtitle className="mb-1">{city.cityNameTranslated}</Card.Subtitle>
           <div style={{fontSize: "0.9rem"}} className="text-muted">
             <Card.Text className="d-block mb-1">by {city.creator.creatorName}</Card.Text>

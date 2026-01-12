@@ -45,7 +45,7 @@ function groupCities(citiesToGroup: City[]) {
         cityNameTranslated: screenshot.cityNameTranslated,
         cityMilestone: screenshot.cityMilestone,
         cityPopulation: screenshot.cityPopulation,
-        renderSettings: {},
+        renderSettings: screenshot.renderSettings,
         createdAt: screenshotArr[0].createdAt,
         createdAtFormattedDistance: screenshotArr[0].createdAtFormattedDistance,
         creator: screenshot.creator,
@@ -76,6 +76,7 @@ export const Home = () => {
 
   const {
     cities,
+    setCity,
     setCurrCreator,
     isLoading,
   } = useOutletContext<ContextType>();
@@ -138,7 +139,7 @@ export const Home = () => {
     )
   } else if (cities.length > 0) {
     content = sortedCities.map(city =>
-      <CityCard key={city.id} city={city} isCitiesGrouped={isGrouped}/>
+      <CityCard key={city.id} city={city} setCity={setCity} isCitiesGrouped={isGrouped}/>
     );
   } else {
     content = <p>No cities found.</p>
