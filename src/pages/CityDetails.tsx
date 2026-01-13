@@ -132,7 +132,7 @@ export const CityDetails = () => {
                       <a key={mod} href={`https://mods.paradoxplaza.com/mods/${mod}/Windows`} target="_blank">
                         <li key={mod}>{mod}</li>
                       </a>
-                    ) : (<p className="mb-0">This city does not use mods.</p>)}
+                    ) : (<p className="mb-0">This city does not use mods, or the creator has opted not to share their playsets.</p>)}
                   </ul>
                 </Accordion.Body>
               </Accordion.Item>
