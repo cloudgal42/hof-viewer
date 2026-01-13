@@ -12,12 +12,12 @@
   "dependencies": {
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.8",
+    "lightgallery": "^2.9.0",
     "react": "^19.2.0",
     "react-bootstrap": "^2.10.10",
     "react-bootstrap-icons": "^1.11.6",
     "react-dom": "^19.2.0",
     "react-lazy-load-image-component": "^1.6.3",
-    "react-photoswipe-gallery": "^4.0.0",
     "react-router": "^7.12.0",
     "sass": "^1.97.2"
   },

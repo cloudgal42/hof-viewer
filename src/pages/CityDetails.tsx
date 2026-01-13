@@ -1,10 +1,8 @@
-import 'photoswipe/dist/photoswipe.css'
-
-import {Accordion, Button, Card, Image} from "react-bootstrap";
+import {Accordion, Button, Card} from "react-bootstrap";
 import {useNavigate, useOutletContext} from "react-router";
 import type {ContextType} from "../App.tsx";
 import {ChevronLeft, Eye, Heart, Person, Trophy} from "react-bootstrap-icons";
-import {Gallery, Item} from "react-photoswipe-gallery";
+import {CityGallery} from "../components/CityGallery.tsx";
 
 const cityMilestones = [
   "Tiny Village",
@@ -42,7 +40,7 @@ export const CityDetails = () => {
   }
 
   // Get the imageUrlFHD key from city to prevent eslint from screaming TS2322
-  const {imageUrlFHD} = city;
+  const imageUrlFHD = !Array.isArray(city.imageUrlFHD) ? [city.imageUrlFHD] : city.imageUrlFHD;
 
   return (
     <div className="main-wrapper flex-grow-1 ms-sm-5 me-sm-5">
@@ -60,40 +58,7 @@ export const CityDetails = () => {
       </div>
       <h3 className="text-muted fs-5">by {city.creator.creatorName}</h3>
       <div className="mt-3">
-        <Gallery>
-          <div className={`${(Array.isArray(imageUrlFHD) && imageUrlFHD.length > 1) ? "img-gallery-container" : "img-gallery-container-single"} d-flex flex-wrap gap-1`}>
-            {Array.isArray(imageUrlFHD) ? (
-              imageUrlFHD.map((imageUrl, i) =>
-                <Item
-                  key={i}
-                  original={imageUrl}
-                  // TODO: Use thumbnail images for thumbnail instead
-                  thumbnail={imageUrl}
-                  width="1920"
-                  height="1080"
-                  alt=""
-                >
-                  {({ref, open}) => (
-                    <Image key={i} ref={ref} alt="" onClick={open} src={imageUrl} fluid/>
-                  )}
-                </Item>
-              )
-            ) : (
-              <Item
-                original={imageUrlFHD}
-                // TODO: Use thumbnail images for thumbnail instead
-                thumbnail={imageUrlFHD}
-                width="1920"
-                height="1080"
-                alt=""
-              >
-                {({ref, open}) => (
-                  <Image ref={ref} alt="" onClick={open} src={imageUrlFHD ?? ""} fluid/>
-                )}
-              </Item>
-            )}
-          </div>
-        </Gallery>
+        <CityGallery imageUrls={imageUrlFHD} />
       </div>
       <div className="mt-3">
         <Card>

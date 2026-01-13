@@ -12,22 +12,12 @@
   container-name: img-gallery;
 }
 
-.img-gallery-container > img {
-  max-width: calc(33% - 0.1rem);
-}
-
 .sidebar {
   height: 100vh;
 }
 
 #city-feed > .card {
   flex-basis: calc(33% - 0.5rem);
-}
-
-@container img-gallery (width < 700px) {
-  .img-gallery-container > img {
-    max-width: calc(50% - 0.25rem);
-  }
 }
 
 @container city-feed (width < 800px) {
