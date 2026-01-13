@@ -32,7 +32,7 @@ function groupCities(citiesToGroup: City[]) {
     const screenshotStat: TotalScreenshotStats = {};
     screenshotArr.forEach(screenshot => {
       screenshotStat.combinedStats = {
-        id: screenshot.cityName, // FIXME
+        id: screenshot.cityName,
         isApproved: screenshot.isApproved,
         isReported: screenshot.isReported,
         favoritesCount: (typeof screenshotStat.combinedStats?.favoritesCount === "undefined") ? screenshot.favoritesCount : screenshotStat.combinedStats.favoritesCount + screenshot.favoritesCount,
@@ -66,7 +66,8 @@ function groupCities(citiesToGroup: City[]) {
     });
 
     if (screenshotStat.combinedStats) {
-      groupedCities.push(screenshotStat.combinedStats);
+      screenshotStat.combinedStats.favoritingPercentage = screenshotStat.combinedStats.uniqueViewsCount / screenshotStat.combinedStats.favoritesCount;
+        groupedCities.push(screenshotStat.combinedStats);
     }
   });
   // 4. Return the grouped cities

@@ -107,7 +107,7 @@ export const CityDetails = () => {
               <li className="col-sm-6 col-md-4 col-lg-3 d-flex align-items-center gap-2">
                 <Heart/>
                 <span className="visually-hidden">Favorites</span>
-                {`${city.favoritesCount.toLocaleString()} (${city.favoritingPercentage}% of views)`}
+                {`${city.favoritesCount.toLocaleString()} (${city.favoritingPercentage}% of unique views)`}
               </li>
             </ul>
             <Card.Title>Mods Used</Card.Title>
