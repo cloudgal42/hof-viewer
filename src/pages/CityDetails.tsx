@@ -111,16 +111,16 @@ export const CityDetails = () => {
               </li>
             </ul>
             <Card.Title>Mods Used</Card.Title>
-            <Accordion className="mb-2">
+            <Accordion className="mb-3">
               <Accordion.Item eventKey="0">
                 <Accordion.Header>{city.paradoxModIds.length} mods used</Accordion.Header>
                 <Accordion.Body>
-                  <ul className="list-unstyled d-flex flex-row flex-wrap gap-2">
+                  <ul className="list-unstyled d-flex flex-row flex-wrap gap-2 mb-0">
                     {city.paradoxModIds.length > 0 ? city.paradoxModIds.map(mod =>
                       <a key={mod} href={`https://mods.paradoxplaza.com/mods/${mod}/Windows`} target="_blank">
                         <li key={mod}>{mod}</li>
                       </a>
-                    ) : (<p>This city does not use mods.</p>)}
+                    ) : (<p className="mb-0">This city does not use mods.</p>)}
                   </ul>
                 </Accordion.Body>
               </Accordion.Item>
