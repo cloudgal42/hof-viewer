@@ -16,6 +16,10 @@
   max-width: calc(33% - 0.1rem);
 }
 
+.sidebar {
+  height: 100vh;
+}
+
 #city-feed > .card {
   flex-basis: calc(33% - 0.5rem);
 }
@@ -41,5 +45,12 @@
 @media all and (min-width: 1401px) {
   .main-wrapper {
     max-width: 65%;
+  }
+}
+@media all and (min-width: 992px) {
+  .sidebar {
+    height: 92vh;
+    position: sticky;
+    top: 64px;
   }
 }

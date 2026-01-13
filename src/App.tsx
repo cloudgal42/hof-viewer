@@ -68,7 +68,7 @@ const App = () => {
   // TODO: Migrate all regular bootstrap classes with react-bootstrap
   return (
     <>
-      <Navbar className="bg-body-tertiary">
+      <Navbar className="bg-body-tertiary" style={{position: "sticky", top: "0px", zIndex: "1"}}>
         <Container fluid className="justify-content-start align-items-center ps-2 ps-sm-3 ms-sm-3 ms-lg-0">
           <HamburgerButton isOpened={isAsideOpened} setIsOpened={setIsAsideOpened} />
           <Navbar.Brand href="/">
