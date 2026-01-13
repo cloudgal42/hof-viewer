@@ -1,9 +1,9 @@
 import 'photoswipe/dist/photoswipe.css'
 
-import {Accordion, Card, Image} from "react-bootstrap";
-import {useOutletContext} from "react-router";
+import {Accordion, Button, Card, Image} from "react-bootstrap";
+import {useNavigate, useOutletContext} from "react-router";
 import type {ContextType} from "../App.tsx";
-import {Eye, Heart, Person, Trophy} from "react-bootstrap-icons";
+import {ChevronLeft, Eye, Heart, Person, Trophy} from "react-bootstrap-icons";
 import {Gallery, Item} from "react-photoswipe-gallery";
 
 const cityMilestones = [
@@ -33,6 +33,7 @@ export const CityDetails = () => {
   const {
     city,
   } = useOutletContext<ContextType>();
+  const navigate = useNavigate();
 
   if (!city) {
     return (
@@ -45,7 +46,18 @@ export const CityDetails = () => {
 
   return (
     <div className="main-wrapper flex-grow-1 ms-sm-5 me-sm-5">
-      <h2>{city.cityName}{city.cityNameTranslated && `(${city.cityNameTranslated})`}</h2>
+      <div className="d-flex align-items-center mb-2">
+        <Button
+          variant="outline"
+          style={{border: "none", backgroundColor: "transparent"}}
+          className="ps-0"
+          onClick={() => navigate(-1)}
+        >
+          <span className="visually-hidden">Back</span>
+          <ChevronLeft width="24" height="24" />
+        </Button>
+        <h2 className="mb-0">{city.cityName}{city.cityNameTranslated && `(${city.cityNameTranslated})`}</h2>
+      </div>
       <h3 className="text-muted fs-5">by {city.creator.creatorName}</h3>
       <div className="mt-3">
         <Gallery>
