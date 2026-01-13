@@ -66,7 +66,7 @@ function groupCities(citiesToGroup: City[]) {
     });
 
     if (screenshotStat.combinedStats) {
-      screenshotStat.combinedStats.favoritingPercentage = screenshotStat.combinedStats.uniqueViewsCount / screenshotStat.combinedStats.favoritesCount;
+      screenshotStat.combinedStats.favoritingPercentage = Math.round(screenshotStat.combinedStats.uniqueViewsCount / screenshotStat.combinedStats.favoritesCount);
         groupedCities.push(screenshotStat.combinedStats);
     }
   });
