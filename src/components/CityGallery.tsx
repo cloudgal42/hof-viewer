@@ -15,19 +15,20 @@ interface GalleryProps {
 
 export const CityGallery = ({imageUrls}: GalleryProps) => {
   function onInit() {
-    console.log("lightGallery initialized");
-    console.log(`Image URLs length: ${imageUrls.length}`);
+
   }
 
   return (
     <div className="App">
       <Carousel interval={null} fade>
         {imageUrls.map((url, i) => (
-          <Carousel.Item>
+          <Carousel.Item key={i}>
             <LightGallery
               onInit={onInit}
+              key={i}
               speed={500}
               plugins={[lgThumbnail, lgZoom]}
+              licenseKey="0000-0000-000-000" // FIXME
             >
               <a key={i} className="flex-grow-0" href={url}>
                 <img
