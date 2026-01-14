@@ -1,4 +1,4 @@
-import {PencilSquare, PersonCircle, Search} from "react-bootstrap-icons";
+import {PersonCircle, Search} from "react-bootstrap-icons";
 import {CloseButton, Offcanvas} from "react-bootstrap";
 
 export interface SidebarProps {
@@ -28,13 +28,13 @@ export const Sidebar = ({isOpened, setIsOpened}: SidebarProps) => {
           <Search height="18" width="18" className="me-2" />
           Browse by Creator ID
         </a></li>
-        <li><a href="#" className="nav-link link-body-emphasis d-flex align-items-center">
-          <PencilSquare height="18" width="18" className="me-2" />
-          Manage Screenshots
-        </a></li>
+        {/*<li><a href="#" className="nav-link link-body-emphasis d-flex align-items-center">*/}
+        {/*  <PencilSquare height="18" width="18" className="me-2" />*/}
+        {/*  Manage Screenshots*/}
+        {/*</a></li>*/}
         <li><a href="#" className="nav-link link-body-emphasis d-flex align-items-center">
           <PersonCircle height="18" width="18" className="me-2" />
-          Your Profile
+          Creators
         </a></li>
       </ul>
       <hr/>
