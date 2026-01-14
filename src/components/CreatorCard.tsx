@@ -65,7 +65,7 @@ export const CreatorCard = ({creator}: CreatorCardProps) => {
             <li className="d-flex gap-2 align-items-center">
               <Heart />
               <span className="visually-hidden">Favorites</span>
-              {`${creator.favoritesCount.toLocaleString()} (${Math.round(creator.viewsCount / creator.favoritesCount)}% of unique views)`}
+              {`${creator.favoritesCount.toLocaleString()} (${Math.round((creator.favoritesCount / creator.viewsCount) * 100)}% of unique views)`}
             </li>
           </ul>
           <NavLink to="/" >
