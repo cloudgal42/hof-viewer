@@ -1,5 +1,6 @@
 import {PersonCircle, Search} from "react-bootstrap-icons";
 import {CloseButton, Offcanvas} from "react-bootstrap";
+import {NavLink} from "react-router";
 
 export interface SidebarProps {
   isOpened: boolean;
@@ -17,25 +18,40 @@ export const Sidebar = ({isOpened, setIsOpened}: SidebarProps) => {
       <div className="d-lg-none d-flex justify-content-between align-items-center mb-0">
         <a
           href="/"
-          className="text-decoration-none">
-          <span className="fs-5">HoF</span>
+          className="text-decoration-none"
+        >
+          <span className="fs-5">
+            HoF
+          </span>
         </a>
         <CloseButton onClick={() => setIsOpened(false)} />
       </div>
       <hr className="d-lg-none" />
       <ul className="nav nav-pills flex-column mb-auto">
-        <li className="nav-item"><a href="#" className="nav-link active d-flex align-items-center" aria-current="page">
+        <li className="nav-item">
+          <NavLink
+            to="/"
+            className="nav-link d-flex align-items-center"
+            onClick={() => setIsOpened(false)}
+          >
           <Search height="18" width="18" className="me-2" />
           Browse by Creator ID
-        </a></li>
+          </NavLink>
+        </li>
         {/*<li><a href="#" className="nav-link link-body-emphasis d-flex align-items-center">*/}
         {/*  <PencilSquare height="18" width="18" className="me-2" />*/}
         {/*  Manage Screenshots*/}
         {/*</a></li>*/}
-        <li><a href="#" className="nav-link link-body-emphasis d-flex align-items-center">
-          <PersonCircle height="18" width="18" className="me-2" />
-          Creators
-        </a></li>
+        <li className="nav-item">
+          <NavLink
+            to="/creators"
+            className="nav-link d-flex align-items-center"
+            onClick={() => setIsOpened(false)}
+          >
+            <PersonCircle height="18" width="18" className="me-2" />
+            Creators
+          </NavLink>
+        </li>
       </ul>
       <hr/>
 

@@ -37,6 +37,12 @@ export interface City {
   __favorited: boolean;
 }
 
+interface SocialPlatform {
+  platform: string;
+  link: string;
+  clicks: number;
+}
+
 export interface GroupedCities extends Omit<City, "imageUrlFHD" | "imageUrl4K"> {
   imageUrlFHD: string[];
   imageUrl4K: string[];
@@ -50,7 +56,7 @@ export interface Creator {
   creatorNameLatinized?: string;
   creatorNameTranslated?: string;
   createdAt: string;
-  socials: string[];
+  socials: SocialPlatform[];
 }
 
 interface CityCardProps {

@@ -16,6 +16,7 @@ export type ContextType = {
   creator?: string;
   setCity: (newCity: City | GroupedCities) => void;
   setCurrCreator: (creator: string) => void;
+  setIsLoading: (isLoading: boolean) => void;
 }
 
 const App = () => {
@@ -30,7 +31,7 @@ const App = () => {
     cities,
     city, setCity,
     creator, setCurrCreator,
-    isLoading,
+    isLoading, setIsLoading,
   }
 
   useEffect(() => {
