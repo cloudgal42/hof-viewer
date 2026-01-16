@@ -78,6 +78,7 @@ export const Creators = () => {
               id="creatorId"
               aria-describedby="creatorIdHelpBlock"
               placeholder="Creator ID..."
+              defaultValue={creator}
               onChange={e => validateAndSetCreator(e.currentTarget.value)}
             />
             <Button type="submit" variant="dark">Search</Button>

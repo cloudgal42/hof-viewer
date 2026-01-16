@@ -201,6 +201,7 @@ export const Home = () => {
               id="creatorId"
               aria-describedby="creatorIdHelpBlock"
               placeholder="Creator ID..."
+              defaultValue={creator}
               onChange={e => validateAndSetCreator(e.currentTarget.value)}
             />
             <Button type="submit" variant="dark">Search</Button>
@@ -218,7 +219,9 @@ export const Home = () => {
                 id="groupCitiesCheck"
                 onClick={(e) => {
                   setSearchParams(handleSetSearchParams(searchParams, "groupCities", e.currentTarget.checked ? "on" : "off"));
-                }}/>
+                }}
+                defaultChecked={groupStatus === "on"}
+              />
               <Form.Label
                 htmlFor="groupCitiesCheck"
                 className="mb-0"

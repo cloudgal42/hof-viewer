@@ -15,6 +15,7 @@ export const SortDropdown = ({searchParams, setSearchParams}: SortDropdownProps)
       onChange={(e) => {
         setSearchParams(handleSetSearchParams(searchParams, "sortBy", e.currentTarget.value));
       }}
+      defaultValue={searchParams.get("sortBy") || "date"}
     >
       <option value="date">Date Posted</option>
       <option value="name">Name (Latinized)</option>
