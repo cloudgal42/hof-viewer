@@ -78,6 +78,7 @@ function groupCities(citiesToGroup: City[]) {
 export const Home = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const creator = searchParams.get("creator") || "";
   const sortOrder = searchParams.get("sortOrder") || "Ascending";
   const sortBy = searchParams.get("sortBy") || "date";
   const groupStatus = searchParams.get("groupCities") || "off";
@@ -88,7 +89,6 @@ export const Home = () => {
   const {
     cities, setCities,
     setCity,
-    creator, setCurrCreator,
     isLoading, setIsLoading,
   } = useOutletContext<ContextType>();
 
@@ -159,14 +159,14 @@ export const Home = () => {
 
   function validateAndSetCreator(creator: string) {
     if (creator.length === 24) {
-      setCurrCreator(creator);
+      setSearchParams(handleSetSearchParams(searchParams, "creator", creator));
     }
   }
 
   function setCreator(formData: FormData) {
     const query = formData.get("creatorId");
     const queryString = query?.toString() || "";
-    setCurrCreator(queryString);
+    setSearchParams(handleSetSearchParams(searchParams, "creator", queryString));
   }
 
   if (isLoading) {

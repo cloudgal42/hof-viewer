@@ -7,21 +7,16 @@ import {HamburgerButton} from "./components/HamburgerButton.tsx";
 import {Outlet} from "react-router";
 // import {Screenshots} from "./temp/screenshots.ts";
 
-export type SortOrder = "Ascending" | "Descending";
-
 export type ContextType = {
   cities: City[];
   city?: City | GroupedCities;
   isLoading: boolean;
-  creator?: string;
   setCity: (newCity: City | GroupedCities) => void;
   setCities: (cities: City[]) => void;
-  setCurrCreator: (creator: string) => void;
   setIsLoading: (isLoading: boolean) => void;
 }
 
 const App = () => {
-  const [creator, setCurrCreator] = useState<string>("");
   const [cities, setCities] = useState<City[] | []>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -31,7 +26,6 @@ const App = () => {
   const contextParams = {
     cities, setCities,
     city, setCity,
-    creator, setCurrCreator,
     isLoading, setIsLoading,
   }
 

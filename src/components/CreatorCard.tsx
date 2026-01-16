@@ -32,7 +32,7 @@ export const CreatorCard = ({creator}: CreatorCardProps) => {
       <Card.Body className="row">
         <div className="col-12 col-sm-6">
           <Card.Title>{creator.creatorName}</Card.Title>
-          <Card.Subtitle></Card.Subtitle>
+          <Card.Subtitle>{creator.creatorNameLatinized}</Card.Subtitle>
           <p className="d-flex mb-2 gap-2 align-items-center">
             <Cake />
             <span className="visually-hidden">Created on</span>
@@ -68,7 +68,7 @@ export const CreatorCard = ({creator}: CreatorCardProps) => {
               {`${creator.favoritesCount.toLocaleString()} (${Math.round((creator.favoritesCount / creator.viewsCount) * 100)}% of unique views)`}
             </li>
           </ul>
-          <NavLink to="/" >
+          <NavLink to={`/?creator=${creator.id}`} >
             To {creator.creatorName}'s cities
             <ArrowUpRight className="ms-2" />
           </NavLink>

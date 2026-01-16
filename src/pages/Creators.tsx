@@ -1,17 +1,16 @@
 import {Button, Form} from "react-bootstrap";
-import {useOutletContext} from "react-router";
-import type {ContextType} from "../App.tsx";
 import {CreatorCard, type CreatorDetails} from "../components/CreatorCard.tsx";
 import {useEffect, useState} from "react";
 import {PlaceholderCreatorCard} from "../components/PlaceholderCreatorCard.tsx";
+import {useSearchParams} from "react-router";
+import {handleSetSearchParams} from "../utils/SearchParamHandlers.ts";
 
 export const Creators = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [creatorDetails, setCreatorDetails] = useState<CreatorDetails | null>();
   const [isCreatorLoading, setIsCreatorLoading] = useState<boolean>(false);
-
-  const {
-    creator, setCurrCreator,
-  } = useOutletContext<ContextType>();
+  const creator = searchParams.get("creator") || "";
 
   useEffect(() => {
     let ignore = false;
@@ -46,14 +45,14 @@ export const Creators = () => {
 
   function validateAndSetCreator(creator: string) {
     if (creator.length === 24) {
-      setCurrCreator(creator);
+      setSearchParams(handleSetSearchParams(searchParams, "creator", creator));
     }
   }
 
   function setCreator(formData: FormData) {
     const query = formData.get("creatorId");
     const queryString = query?.toString() || "";
-    setCurrCreator(queryString);
+    setSearchParams(handleSetSearchParams(searchParams, "creator", queryString));
   }
 
   let content;
