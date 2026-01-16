@@ -94,7 +94,7 @@ export const Home = () => {
 
   useEffect(() => {
     let ignore = false;
-    if (!creator) return;
+    if (!creator || (cities.length !== 0 && cities[0].creatorId === creator)) return;
 
     async function getCreatorCities() {
       setIsLoading(true);
@@ -115,9 +115,7 @@ export const Home = () => {
 
     }
 
-    if (cities.length === 0) {
-      getCreatorCities();
-    }
+    getCreatorCities();
 
     return () => {
       ignore = true
@@ -159,6 +157,7 @@ export const Home = () => {
 
   function validateAndSetCreator(creator: string) {
     if (creator.length === 24) {
+      setCities([]);
       setSearchParams(handleSetSearchParams(searchParams, "creator", creator));
     }
   }
@@ -166,6 +165,7 @@ export const Home = () => {
   function setCreator(formData: FormData) {
     const query = formData.get("creatorId");
     const queryString = query?.toString() || "";
+    setCities([]);
     setSearchParams(handleSetSearchParams(searchParams, "creator", queryString));
   }
 
