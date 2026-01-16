@@ -1,16 +1,20 @@
 import {SortDown, SortUp} from "react-bootstrap-icons";
 import {Button} from "react-bootstrap";
-import type {SortOrder} from "../App.tsx";
+import {handleSetSearchParams} from "../utils/SearchParamHandlers.ts";
 
 interface SortOrderButtonProps {
-  sortOrder: SortOrder;
-  setSortOrder: (sortOrder: SortOrder) => void;
+  sortOrder: string;
+  searchParams: URLSearchParams;
+  setSearchParams: (searchParams: URLSearchParams) => void;
 }
 
-export const SortOrderButton = ({sortOrder, setSortOrder}: SortOrderButtonProps) => {
+export const SortOrderButton = ({sortOrder, searchParams, setSearchParams}: SortOrderButtonProps) => {
   function setOrder() {
-    if (sortOrder === "Ascending") setSortOrder("Descending");
-    else if (sortOrder === "Descending") setSortOrder("Ascending");
+    if (sortOrder === "Ascending") {
+      setSearchParams(handleSetSearchParams(searchParams, "sortOrder", "Descending"));
+    } else if (sortOrder === "Descending") {
+      setSearchParams(handleSetSearchParams(searchParams, "sortOrder", "Ascending"));
+    }
   }
 
   return (
@@ -21,9 +25,9 @@ export const SortOrderButton = ({sortOrder, setSortOrder}: SortOrderButtonProps)
       onClick={setOrder}
     >
       {sortOrder === "Ascending" ? (
-        <SortUp />
+        <SortUp/>
       ) : (
-        <SortDown />
+        <SortDown/>
       )}
       <span className="visually-hidden">{sortOrder}</span>
     </Button>

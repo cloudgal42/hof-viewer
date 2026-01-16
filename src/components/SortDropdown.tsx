@@ -1,16 +1,20 @@
 import Form from "react-bootstrap/Form";
+import {handleSetSearchParams} from "../utils/SearchParamHandlers.ts";
 
 interface SortDropdownProps {
-  setSortBy: (sortBy: string) => void;
+  searchParams: URLSearchParams;
+  setSearchParams: (searchParams: URLSearchParams) => void;
 }
 
-export const SortDropdown = ({setSortBy}: SortDropdownProps) => {
+export const SortDropdown = ({searchParams, setSearchParams}: SortDropdownProps) => {
   return (
     <Form.Select
       id="sortByDropdown"
       name="sortBy"
       aria-label="Sort By"
-      onChange={(e) => setSortBy(e.target.value)}
+      onChange={(e) => {
+        setSearchParams(handleSetSearchParams(searchParams, "sortBy", e.currentTarget.value));
+      }}
     >
       <option value="date">Date Posted</option>
       <option value="name">Name (Latinized)</option>

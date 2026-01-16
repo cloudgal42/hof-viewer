@@ -1,11 +1,12 @@
 import {Button, Form} from "react-bootstrap";
 import {SortOrderButton} from "../components/SortOrderButton.tsx";
-import {useEffect, useMemo, useState} from "react";
-import type {ContextType, SortOrder} from "../App.tsx";
+import {useEffect, useMemo} from "react";
+import type {ContextType} from "../App.tsx";
 import {SortDropdown} from "../components/SortDropdown.tsx";
 import {type City, CityCard, type GroupedCities} from "../components/CityCard.tsx";
 import {PlaceholderCard} from "../components/PlaceholderCard.tsx";
-import {useOutletContext} from "react-router";
+import {useOutletContext, useSearchParams} from "react-router";
+import {handleSetSearchParams} from "../utils/SearchParamHandlers.ts";
 
 interface TotalScreenshotStats {
   combinedStats?: GroupedCities;
@@ -75,9 +76,14 @@ function groupCities(citiesToGroup: City[]) {
 }
 
 export const Home = () => {
-  const [sortOrder, setSortOrder] = useState<SortOrder>("Ascending");
-  const [sortBy, setSortBy] = useState("date");
-  const [isGrouped, setIsGrouped] = useState<boolean>(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const sortOrder = searchParams.get("sortOrder") || "Ascending";
+  const sortBy = searchParams.get("sortBy") || "date";
+  const groupStatus = searchParams.get("groupCities") || "off";
+  // const [sortOrder, setSortOrder] = useState<SortOrder>("Ascending");
+  // const [sortBy, setSortBy] = useState("date");
+  // const [isGrouped, setIsGrouped] = useState<boolean>(false);
 
   const {
     cities, setCities,
@@ -119,7 +125,7 @@ export const Home = () => {
   }, [creator]);
 
   const sortedCities = useMemo(() => {
-    const citiesToSort = isGrouped ? groupCities(cities) : cities;
+    const citiesToSort = groupStatus === "on" ? groupCities(cities) : cities;
     const copiedCities = [...citiesToSort];
 
     switch (sortBy) {
@@ -147,7 +153,7 @@ export const Home = () => {
     if (sortOrder === "Ascending") copiedCities.reverse();
 
     return copiedCities;
-  }, [cities, isGrouped, sortBy, sortOrder]);
+  }, [cities, groupStatus, sortBy, sortOrder]);
 
   let content;
 
@@ -176,7 +182,7 @@ export const Home = () => {
     )
   } else if (cities.length > 0) {
     content = sortedCities.map(city =>
-      <CityCard key={city.id} city={city} setCity={setCity} isCitiesGrouped={isGrouped}/>
+      <CityCard key={city.id} city={city} setCity={setCity} isCitiesGrouped={groupStatus === "on"}/>
     );
   } else {
     content = <p>No cities found.</p>
@@ -210,7 +216,9 @@ export const Home = () => {
               <Form.Check
                 name="groupCities"
                 id="groupCitiesCheck"
-                onClick={(e) => setIsGrouped(e.currentTarget.checked)}/>
+                onClick={(e) => {
+                  setSearchParams(handleSetSearchParams(searchParams, "groupCities", e.currentTarget.checked ? "on" : "off"));
+                }}/>
               <Form.Label
                 htmlFor="groupCitiesCheck"
                 className="mb-0"
@@ -219,8 +227,8 @@ export const Home = () => {
               </Form.Label>
             </div>
             <div className="d-flex gap-2 align-items-center">
-              <SortOrderButton sortOrder={sortOrder} setSortOrder={setSortOrder}/>
-              <SortDropdown setSortBy={setSortBy}/>
+              <SortOrderButton sortOrder={sortOrder} searchParams={searchParams} setSearchParams={setSearchParams}/>
+              <SortDropdown searchParams={searchParams} setSearchParams={setSearchParams} />
             </div>
           </div>
         </div>
