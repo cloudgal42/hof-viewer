@@ -1,6 +1,6 @@
 import {Button, Form} from "react-bootstrap";
 import {SortOrderButton} from "../components/SortOrderButton.tsx";
-import {useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import type {ContextType, SortOrder} from "../App.tsx";
 import {SortDropdown} from "../components/SortDropdown.tsx";
 import {type City, CityCard, type GroupedCities} from "../components/CityCard.tsx";
@@ -80,11 +80,43 @@ export const Home = () => {
   const [isGrouped, setIsGrouped] = useState<boolean>(false);
 
   const {
-    cities,
+    cities, setCities,
     setCity,
-    setCurrCreator,
-    isLoading,
+    creator, setCurrCreator,
+    isLoading, setIsLoading,
   } = useOutletContext<ContextType>();
+
+  useEffect(() => {
+    let ignore = false;
+    if (!creator) return;
+
+    async function getCreatorCities() {
+      setIsLoading(true);
+      const res = await fetch(`https://halloffame.cs2.mtq.io/api/v1/screenshots?creatorId=${creator}`);
+      const data = await res.json();
+
+      if (res.ok && !ignore) {
+        setCities(data);
+        setIsLoading(false);
+      } else {
+        setCities([]);
+        setIsLoading(false);
+      }
+
+      // const screenshots = JSON.parse(Screenshots);
+      // setCities(screenshots);
+      // setIsLoading(false);
+
+    }
+
+    if (cities.length === 0) {
+      getCreatorCities();
+    }
+
+    return () => {
+      ignore = true
+    };
+  }, [creator]);
 
   const sortedCities = useMemo(() => {
     const citiesToSort = isGrouped ? groupCities(cities) : cities;

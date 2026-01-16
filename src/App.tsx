@@ -1,7 +1,7 @@
 import './css/App.scss'
 import {type City, type GroupedCities} from "./components/CityCard.tsx";
 import {Container, Navbar} from "react-bootstrap";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {Sidebar} from "./components/Sidebar.tsx";
 import {HamburgerButton} from "./components/HamburgerButton.tsx";
 import {Outlet} from "react-router";
@@ -15,6 +15,7 @@ export type ContextType = {
   isLoading: boolean;
   creator?: string;
   setCity: (newCity: City | GroupedCities) => void;
+  setCities: (cities: City[]) => void;
   setCurrCreator: (creator: string) => void;
   setIsLoading: (isLoading: boolean) => void;
 }
@@ -28,43 +29,11 @@ const App = () => {
   const [city, setCity] = useState<City | GroupedCities | undefined>()
 
   const contextParams = {
-    cities,
+    cities, setCities,
     city, setCity,
     creator, setCurrCreator,
     isLoading, setIsLoading,
   }
-
-  useEffect(() => {
-    let ignore = false;
-    if (!creator) return;
-
-    async function getCreatorCities() {
-      setIsLoading(true);
-      const res = await fetch(`https://halloffame.cs2.mtq.io/api/v1/screenshots?creatorId=${creator}`);
-      const data = await res.json();
-
-      if (res.ok && !ignore) {
-        setCities(data);
-        setIsLoading(false);
-      } else {
-        setCities([]);
-        setIsLoading(false);
-      }
-
-      // const screenshots = JSON.parse(Screenshots);
-      // setCities(screenshots);
-      // setIsLoading(false);
-
-    }
-
-    getCreatorCities();
-
-    return () => {
-      ignore = true
-    };
-  }, [creator]);
-
-
 
   // TODO: Migrate all regular bootstrap classes with react-bootstrap
   return (

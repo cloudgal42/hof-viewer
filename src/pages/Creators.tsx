@@ -7,9 +7,10 @@ import {PlaceholderCreatorCard} from "../components/PlaceholderCreatorCard.tsx";
 
 export const Creators = () => {
   const [creatorDetails, setCreatorDetails] = useState<CreatorDetails | null>();
+  const [isCreatorLoading, setIsCreatorLoading] = useState<boolean>(false);
+
   const {
     creator, setCurrCreator,
-    isLoading, setIsLoading,
   } = useOutletContext<ContextType>();
 
   useEffect(() => {
@@ -17,7 +18,7 @@ export const Creators = () => {
     if (!creator) return;
 
     async function getCreatorDetails() {
-      setIsLoading(true);
+      setIsCreatorLoading(true);
       const creatorRes = await fetch(`https://halloffame.cs2.mtq.io/api/v1/creators/${creator}`);
       const creatorStatsRes = await fetch(`https://halloffame.cs2.mtq.io/api/v1/creators/${creator}/stats`);
 
@@ -29,9 +30,9 @@ export const Creators = () => {
           ...creatorInfo,
           ...creatorStats,
         });
-        setIsLoading(false);
+        setIsCreatorLoading(false);
       } else {
-        setIsLoading(false);
+        setIsCreatorLoading(false);
         setCreatorDetails(null);
       }
     }
@@ -57,7 +58,7 @@ export const Creators = () => {
 
   let content;
 
-  if (isLoading) {
+  if (isCreatorLoading) {
     content = <PlaceholderCreatorCard />;
   } else if (creatorDetails) {
     content = <CreatorCard creator={creatorDetails} />;
