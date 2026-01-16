@@ -64,7 +64,7 @@ export const CityDetails = () => {
         <Card>
           <Card.Body>
             <Card.Title>Stats</Card.Title>
-            <p className="text-muted mb-1">First posted on: {city.createdAtFormatted}</p>
+            <p className="text-muted mb-1">First posted on: {new Date(city.createdAt).toLocaleString()}</p>
             <ul className="list-unstyled row">
               <li className="col-sm-6 col-md-4 col-lg-3 d-flex align-items-center gap-2">
                 <Person/>
