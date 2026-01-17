@@ -2,3 +2,11 @@ $primary: #000000;
 $carousel-transition-duration: 0.3s;
 
 @import "../../node_modules/bootstrap/scss/bootstrap";
+
+html, body, #root {
+  height: 100%;
+}
+#root {
+  display: flex;
+  flex-flow: column nowrap;
+}
