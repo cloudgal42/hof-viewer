@@ -41,7 +41,7 @@ const App = () => {
         </Container>
       </Navbar>
       <div className="d-flex flex-grow-1 flex-column flex-nowrap">
-        <div className="d-flex flex-row">
+        <div className="d-flex flex-row flex-grow-1">
           <aside className="d-none d-lg-block flex-shrink-0">
             <Sidebar isOpened={isAsideOpened} setIsOpened={setIsAsideOpened} />
           </aside>
