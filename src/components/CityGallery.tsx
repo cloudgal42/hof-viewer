@@ -1,4 +1,5 @@
 import LightGallery from 'lightgallery/react';
+import type {LightGallery as ILightGallery} from 'lightgallery/lightgallery.d.ts';
 
 import 'lightgallery/css/lightgallery.css';
 import 'lightgallery/css/lg-zoom.css';
@@ -7,48 +8,65 @@ import 'lightgallery/css/lg-thumbnail.css';
 import lgThumbnail from 'lightgallery/plugins/thumbnail';
 import lgZoom from 'lightgallery/plugins/zoom';
 
-import Carousel from 'react-bootstrap/Carousel';
 import {LazyLoadImage} from "react-lazy-load-image-component";
-import {Card} from "react-bootstrap";
 import PlaceholderImg from "../assets/placeholder.svg";
+import {useCallback, useRef} from "react";
+import type {InitDetail} from "lightgallery/lg-events";
+import type {GalleryItem} from "lightgallery/lg-utils";
 
 interface GalleryProps {
   imageUrls: string[];
+  page: number;
 }
 
-export const CityGallery = ({imageUrls}: GalleryProps) => {
-  function onInit() {
+export const DEFAULT_IMAGES_PER_PAGE = 12;
 
-  }
+const CityGallery = ({imageUrls, page}: GalleryProps) => {
+  const galleryRef = useRef<ILightGallery>(null);
+
+  const currImageUrls = imageUrls.toSpliced(page * DEFAULT_IMAGES_PER_PAGE);
+  const lightboxItems: GalleryItem[] = imageUrls.map(imageUrl => {
+    return {
+      src: imageUrl,
+      alt: "",
+      // TODO: Use imageUrlThumbnail for thumbnails
+      thumb: imageUrl,
+    }
+  })
+
+  const onInit = useCallback((detail: InitDetail) => {
+    if (detail) {
+      galleryRef.current = detail.instance;
+    }
+  }, [])
 
   return (
-    <div className="App">
-      <Carousel interval={null} fade>
-        {imageUrls.map((url, i) => (
-          <Carousel.Item key={i}>
-            <LightGallery
-              onInit={onInit}
-              key={i}
-              speed={500}
-              plugins={[lgThumbnail, lgZoom]}
-              licenseKey="0000-0000-000-000" // FIXME
-            >
-              <a key={i} className="flex-grow-0" href={url}>
-                <LazyLoadImage
-                  className="w-100 rounded"
-                  key={i}
-                  src={url}
-                  effect="black-and-white"
-                  alt=""
-                  placeholder={
-                    <Card.Img variant="top" src={PlaceholderImg}/>
-                  }
-                />
-              </a>
-            </LightGallery>
-          </Carousel.Item>
+    <>
+      <div className={`d-flex gap-1 flex-row flex-wrap ${currImageUrls.length > 3 && "img-gallery-container"}`}>
+        {currImageUrls.map((url, i) => (
+          <LazyLoadImage
+            className="w-100"
+            key={i}
+            src={url}
+            effect="black-and-white"
+            alt=""
+            placeholder={<img src={PlaceholderImg} alt="" />}
+            onClick={() => galleryRef.current && galleryRef.current.openGallery(i)}
+          />
         ))}
-      </Carousel>
-    </div>
+      </div>
+      <div className="App">
+        <LightGallery
+          onInit={onInit}
+          speed={500}
+          plugins={[lgThumbnail, lgZoom]}
+          dynamic={true}
+          dynamicEl={lightboxItems}
+          licenseKey="0000-0000-000-000" // FIXME
+        />
+      </div>
+    </>
   )
 }
+
+export default CityGallery;

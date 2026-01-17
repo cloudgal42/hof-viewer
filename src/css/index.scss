@@ -12,12 +12,60 @@
   container-name: img-gallery;
 }
 
+.img-gallery-container span {
+  max-width: calc(33% - 0.05rem);
+}
+
+#loadMoreBtn {
+  p {
+    transition: opacity 0.25s;
+    opacity: 0;
+  }
+  svg {
+    transition: top 0.25s;
+    position: absolute;
+    top: 0px;
+  }
+  &:hover {
+    p {
+      transition: opacity 0.25s;
+      opacity: 1;
+    }
+    svg {
+      transition: top 0.25s;
+      top: 24px;
+    }
+  }
+}
+
+#details {
+  transition: top 0.25s;
+  top: 0px;
+}
+
+#details.load-more-hovered {
+  transition: top 0.25s;
+  top: 24px;
+}
+
 .sidebar {
   height: 100vh;
 }
 
 #city-feed > .card {
   flex-basis: calc(33% - 0.5rem);
+}
+
+@container img-gallery (width < 700px) {
+  .img-gallery-container span {
+    max-width: calc(50% - 0.15rem);
+  }
+}
+
+@container img-gallery (width < 400px) {
+  .img-gallery-container span {
+    max-width: 100%;
+  }
 }
 
 @container city-feed (width < 800px) {
@@ -37,6 +85,7 @@
     max-width: 65%;
   }
 }
+
 @media all and (min-width: 992px) {
   .sidebar {
     height: 92vh;
