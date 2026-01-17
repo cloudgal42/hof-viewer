@@ -41,12 +41,14 @@ const App = () => {
         </Container>
       </Navbar>
       <div className="d-flex flex-grow-1 flex-column flex-nowrap">
-        <aside className="d-none d-lg-block flex-shrink-0">
-          <Sidebar isOpened={isAsideOpened} setIsOpened={setIsAsideOpened} />
-        </aside>
-        <main className="mt-3 mb-3 d-flex flex-grow-1 justify-content-center">
-          <Outlet context={contextParams satisfies ContextType} />
-        </main>
+        <div className="d-flex flex-row">
+          <aside className="d-none d-lg-block flex-shrink-0">
+            <Sidebar isOpened={isAsideOpened} setIsOpened={setIsAsideOpened} />
+          </aside>
+          <main className="mt-3 mb-3 d-flex flex-grow-1 justify-content-center">
+            <Outlet context={contextParams satisfies ContextType} />
+          </main>
+        </div>
         <footer className="text-center p-3 bg-body-tertiary">
           <span className="d-inline-block">&copy; {new Date().getFullYear()} foxxy (cloudgal42)</span>
           <ul className="ms-2 mb-0 list-unstyled d-inline-flex flex-row gap-2">
