@@ -43,11 +43,9 @@ export const Creators = () => {
     };
   }, [creator]);
 
-  function validateAndSetCreator(creator: string) {
-    if (creator.length === 24) {
-      setSearchParams(handleSetSearchParams(searchParams, "creator", creator));
-    }
-  }
+  // function validateAndSetCreator(creator: string) {
+  //   setSearchParams(handleSetSearchParams(searchParams, "creator", creator));
+  // }
 
   function setCreator(formData: FormData) {
     const query = formData.get("creatorId");
@@ -58,9 +56,9 @@ export const Creators = () => {
   let content;
 
   if (isCreatorLoading) {
-    content = <PlaceholderCreatorCard />;
+    content = <PlaceholderCreatorCard/>;
   } else if (creatorDetails) {
-    content = <CreatorCard creator={creatorDetails} />;
+    content = <CreatorCard creator={creatorDetails}/>;
   } else {
     content = <p>No creator found.</p>;
   }
@@ -79,11 +77,11 @@ export const Creators = () => {
               aria-describedby="creatorIdHelpBlock"
               placeholder="Creator ID..."
               defaultValue={creator}
-              onChange={e => validateAndSetCreator(e.currentTarget.value)}
+              // onChange={e => validateAndSetCreator(e.currentTarget.value)}
             />
             <Button type="submit" variant="dark">Search</Button>
           </div>
-          <Form.Text id="creatorIdHelpBlock">Must be 24 characters long.</Form.Text>
+          <Form.Text id="creatorIdHelpBlock">Can either be the username or the public Creator ID.</Form.Text>
         </form>
       </section>
       <section>

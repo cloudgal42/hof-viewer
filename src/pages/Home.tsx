@@ -160,12 +160,10 @@ export const Home = () => {
 
   const paginatedCities = sortedCities.toSpliced(page * DEFAULT_CITIES_PER_PAGE);
 
-  function validateAndSetCreator(creator: string) {
-    if (creator.length === 24) {
-      setCities([]);
-      setSearchParams(handleSetSearchParams(searchParams, "creator", creator));
-    }
-  }
+  // function validateAndSetCreator(creator: string) {
+  //   setCities([]);
+  //   setSearchParams(handleSetSearchParams(searchParams, "creator", creator));
+  // }
 
   function setCreator(formData: FormData) {
     const query = formData.get("creatorId");
@@ -228,11 +226,11 @@ export const Home = () => {
               aria-describedby="creatorIdHelpBlock"
               placeholder="Creator ID..."
               defaultValue={creator}
-              onChange={e => validateAndSetCreator(e.currentTarget.value)}
+              // onChange={e => validateAndSetCreator(e.currentTarget.value)}
             />
             <Button type="submit" variant="dark">Search</Button>
           </div>
-          <Form.Text id="creatorIdHelpBlock">Must be 24 characters long.</Form.Text>
+          <Form.Text id="creatorIdHelpBlock">Can either be the username or the public Creator ID.</Form.Text>
         </form>
       </section>
       <section>
