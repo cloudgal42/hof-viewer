@@ -13,7 +13,7 @@
 }
 
 .img-gallery-container span {
-  max-width: calc(33% - 0.05rem);
+  max-width: calc(24.7% - 0.05rem);
 }
 
 #loadMoreBtn {
@@ -56,13 +56,19 @@
   flex-basis: calc(33% - 0.5rem);
 }
 
-@container img-gallery (width < 700px) {
+@container img-gallery (width < 800px) {
+  .img-gallery-container span {
+    max-width: calc(33% - 0.05rem);
+  }
+}
+
+@container img-gallery (width < 557px) {
   .img-gallery-container span {
     max-width: calc(50% - 0.15rem);
   }
 }
 
-@container img-gallery (width < 400px) {
+@container img-gallery (width < 280px) {
   .img-gallery-container span {
     max-width: 100%;
   }

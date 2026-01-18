@@ -69,7 +69,7 @@ export const CityDetails = () => {
       </div>
       <h3 className="text-muted fs-5">by {city.creator.creatorName}</h3>
       <section id="gallery" className="mt-3 position-relative">
-        <Suspense fallback={<img src={PlaceholderImg} alt="" style={{height: "40vh"}} className="w-100 rounded" />}>
+        <Suspense fallback={<img src={PlaceholderImg} alt="" style={{height: "50vh"}} className="w-100 rounded" />}>
           <CityGallery page={page} imageUrls={imageUrlFHD} />
           {/* TODO: Move this button to the CityGallery component. Research React's useContext hook */}
           {!isLastPage && (

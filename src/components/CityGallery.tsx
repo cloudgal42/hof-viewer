@@ -42,7 +42,7 @@ const CityGallery = ({imageUrls, page}: GalleryProps) => {
 
   return (
     <>
-      <div className={`d-flex gap-1 flex-row flex-wrap ${currImageUrls.length > 3 && "img-gallery-container"}`}>
+      <div className={`d-flex gap-1 flex-row flex-wrap ${currImageUrls.length > 4 && "img-gallery-container"}`}>
         {currImageUrls.map((url, i) => (
           <LazyLoadImage
             className="w-100"
@@ -50,6 +50,8 @@ const CityGallery = ({imageUrls, page}: GalleryProps) => {
             src={url}
             effect="black-and-white"
             alt=""
+            height={currImageUrls.length > 4 ? "150" : ""}
+            style={{minWidth: "100%", aspectRatio: "16/9", objectFit: "cover"}}
             placeholder={<img src={PlaceholderImg} alt="" />}
             onClick={() => galleryRef.current && galleryRef.current.openGallery(i)}
           />
