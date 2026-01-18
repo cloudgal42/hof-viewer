@@ -123,20 +123,24 @@ export const CityDetails = () => {
             </section>
             <section className="mb-3">
               <Card.Title>Mods Used</Card.Title>
-              <Accordion>
-                <Accordion.Item eventKey="0">
-                  <Accordion.Header>{city.paradoxModIds.length} mods used</Accordion.Header>
-                  <Accordion.Body>
-                    <ul className="list-unstyled d-flex flex-row flex-wrap gap-2 mb-0">
-                      {city.paradoxModIds.length > 0 ? city.paradoxModIds.map(mod =>
-                        <a key={mod} href={`https://mods.paradoxplaza.com/mods/${mod}/Windows`} target="_blank">
-                          <li key={mod}>{mod}</li>
-                        </a>
-                      ) : (<p className="mb-0">This city does not use mods, or the creator has opted not to share their playsets.</p>)}
-                    </ul>
-                  </Accordion.Body>
-                </Accordion.Item>
-              </Accordion>
+              {city.shareParadoxModIds ? (
+                <Accordion>
+                  <Accordion.Item eventKey="0">
+                    <Accordion.Header>{city.paradoxModIds.length} mods used</Accordion.Header>
+                    <Accordion.Body>
+                      <ul className="list-unstyled d-flex flex-row flex-wrap gap-2 mb-0">
+                        {city.paradoxModIds.length > 0 ? city.paradoxModIds.map(mod =>
+                          <a key={mod} href={`https://mods.paradoxplaza.com/mods/${mod}/Windows`} target="_blank">
+                            <li key={mod}>{mod}</li>
+                          </a>
+                        ) : (<p className="mb-0">This city does not use mods.</p>)}
+                      </ul>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                </Accordion>
+              ) : (
+                <p>Creator has opted not to share their playsets.</p>
+              )}
             </section>
             <section>
               <Card.Title>Render Settings</Card.Title>

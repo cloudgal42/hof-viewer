@@ -1,5 +1,5 @@
-import {Card} from "react-bootstrap";
-import {Heart, Eye, Person} from "react-bootstrap-icons";
+import {Badge, Card} from "react-bootstrap";
+import {Heart, Eye, Person, Images} from "react-bootstrap-icons";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import PlaceholderImg from "../assets/placeholder.svg"
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
@@ -75,8 +75,8 @@ export const CityCard = ({city, setCity, isCitiesGrouped}: CityCardProps) => {
   }
 
   return (
-    <>
-      <Card>
+    <Card>
+      <div className="position-relative">
         <LazyLoadImage
           className="card-img-top"
           effect="black-and-white"
@@ -86,42 +86,48 @@ export const CityCard = ({city, setCity, isCitiesGrouped}: CityCardProps) => {
           }
           src={thumbnailImgUrl}
         />
-        <Card.Body>
-          <NavLink
-            to={`/city/${city.cityName}`}
-            onClick={() => setCity(city)}
-          >
-            <Card.Title>{city.cityName}</Card.Title>
-          </NavLink>
-          <Card.Subtitle className="mb-1">{city.cityNameTranslated}</Card.Subtitle>
-          <div style={{fontSize: "0.9rem"}} className="text-muted">
-            <Card.Text className="d-block mb-1">by {city.creator.creatorName}</Card.Text>
-            <Card.Text className="d-flex mb-1 gap-2">
-              <span className="d-flex flex-grow-1 align-items-center">
-                <Person/>
-                <span className="ms-1">{city.cityPopulation.toLocaleString()}</span>
-              </span>
-              <span className="d-flex flex-grow-1 align-items-center">
-                <Eye/>
-                <span className="ms-1">{city.uniqueViewsCount.toLocaleString()}</span>
-              </span>
-              <span className="d-flex flex-grow-1 align-items-center">
-                <Heart/>
-                <span className="ms-1">{city.favoritesCount.toLocaleString()}</span>
-              </span>
-            </Card.Text>
-            <Card.Text>
-              <span className="text-muted" style={{fontSize: "0.9rem"}}>
-                {isCitiesGrouped ?
-                  `First posted ${city.createdAtFormattedDistance}` :
-                  city.createdAtFormattedDistance
-                }
-              </span>
-            </Card.Text>
-          </div>
-        </Card.Body>
-      </Card>
-    </>
+        {Array.isArray(city.imageUrlFHD) && (
+          <Badge pill bg="dark" className="position-absolute bg-opacity-50" style={{bottom: "0.5rem", right: "0.5rem"}}>
+            <Images/>
+            <span className="ms-1" aria-label="Total images:">{city.imageUrlFHD.length}</span>
+          </Badge>
+        )}
+      </div>
+      <Card.Body>
+        <NavLink
+          to={`/city/${city.cityName}`}
+          onClick={() => setCity(city)}
+        >
+          <Card.Title>{city.cityName}</Card.Title>
+        </NavLink>
+        <Card.Subtitle className="mb-1">{city.cityNameTranslated}</Card.Subtitle>
+        <div style={{fontSize: "0.9rem"}} className="text-muted">
+          <Card.Text className="d-block mb-1">by {city.creator.creatorName}</Card.Text>
+          <Card.Text className="d-flex mb-1 gap-2">
+            <span className="d-flex flex-grow-1 align-items-center">
+              <Person/>
+              <span className="ms-1">{city.cityPopulation.toLocaleString()}</span>
+            </span>
+            <span className="d-flex flex-grow-1 align-items-center">
+              <Eye/>
+              <span className="ms-1">{city.uniqueViewsCount.toLocaleString()}</span>
+            </span>
+            <span className="d-flex flex-grow-1 align-items-center">
+              <Heart/>
+              <span className="ms-1">{city.favoritesCount.toLocaleString()}</span>
+            </span>
+          </Card.Text>
+          <Card.Text>
+            <span className="text-muted" style={{fontSize: "0.9rem"}}>
+              {isCitiesGrouped ?
+                `First posted ${city.createdAtFormattedDistance}` :
+                city.createdAtFormattedDistance
+              }
+            </span>
+          </Card.Text>
+        </div>
+      </Card.Body>
+    </Card>
 
   )
 }
