@@ -94,7 +94,8 @@ export const Home = () => {
 
   useEffect(() => {
     let ignore = false;
-    if (!creator || (cities.length !== 0 && cities[0].creatorId === creator)) return;
+    const creatorMatchesCities = cities[0]?.creatorId === creator || cities[0]?.creator.creatorName.toLowerCase() === creator.toLowerCase();
+    if (!creator || (cities.length !== 0 && creatorMatchesCities)) return;
 
     async function getCreatorCities() {
       setIsLoading(true);
