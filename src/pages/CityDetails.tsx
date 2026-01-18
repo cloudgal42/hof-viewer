@@ -86,7 +86,7 @@ export const CityDetails = () => {
           )}
         </Suspense>
       </section>
-      <section id="details" className={`mt-3 position-relative ${isLoadMoreHovered && "load-more-hovered"}`}>
+      <section id="details" className={`mt-3 position-relative ${(isLoadMoreHovered && !isLastPage) && "load-more-hovered"}`}>
         <Card>
           <Card.Body>
             {city.showcasedModId && (
