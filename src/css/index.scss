@@ -2,7 +2,7 @@
   max-width: 90%;
 }
 
-#city-feed {
+#city-feed > div > div {
   container-type: inline-size;
   container-name: city-feed;
 }
@@ -52,7 +52,7 @@
   height: 100vh;
 }
 
-#city-feed > .card {
+#city-feed > div > div > .card, .placeholder-feed > .card {
   flex-basis: calc(33% - 0.5rem);
 }
 
@@ -69,13 +69,13 @@
 }
 
 @container city-feed (width < 800px) {
-  #city-feed > .card {
+  #city-feed > div > div > .card, .placeholder-feed > .card {
     flex-basis: calc(50% - 0.5rem);
   }
 }
 
 @container city-feed (width < 474px) {
-  #city-feed > .card {
+  #city-feed > div > div > .card, .placeholder-feed > .card {
     flex-basis: 100%;
   }
 }

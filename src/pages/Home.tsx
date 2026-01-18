@@ -1,12 +1,13 @@
 import {Button, Form} from "react-bootstrap";
 import {SortOrderButton} from "../components/SortOrderButton.tsx";
-import {useEffect, useMemo} from "react";
+import {useEffect, useMemo, useState} from "react";
 import type {ContextType} from "../App.tsx";
 import {SortDropdown} from "../components/SortDropdown.tsx";
 import {type City, CityCard, type GroupedCities} from "../components/CityCard.tsx";
 import {PlaceholderCard} from "../components/PlaceholderCard.tsx";
 import {useOutletContext, useSearchParams} from "react-router";
 import {handleSetSearchParams} from "../utils/SearchParamHandlers.ts";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 interface TotalScreenshotStats {
   combinedStats?: GroupedCities;
@@ -68,15 +69,18 @@ function groupCities(citiesToGroup: City[]) {
 
     if (screenshotStat.combinedStats) {
       screenshotStat.combinedStats.favoritingPercentage = Math.round((screenshotStat.combinedStats.favoritesCount / screenshotStat.combinedStats.uniqueViewsCount) * 100);
-        groupedCities.push(screenshotStat.combinedStats);
+      groupedCities.push(screenshotStat.combinedStats);
     }
   });
   // 4. Return the grouped cities
   return groupedCities;
 }
 
+const DEFAULT_CITIES_PER_PAGE = 18;
+
 export const Home = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [page, setPage] = useState<number>(1);
 
   const creator = searchParams.get("creator") || "";
   const sortOrder = searchParams.get("sortOrder") || "Ascending";
@@ -154,7 +158,7 @@ export const Home = () => {
     return copiedCities;
   }, [cities, groupStatus, sortBy, sortOrder]);
 
-  let content;
+  const paginatedCities = sortedCities.toSpliced(page * DEFAULT_CITIES_PER_PAGE);
 
   function validateAndSetCreator(creator: string) {
     if (creator.length === 24) {
@@ -170,20 +174,41 @@ export const Home = () => {
     setSearchParams(handleSetSearchParams(searchParams, "creator", queryString));
   }
 
+  let content;
+
   if (isLoading) {
     content = (
-      <>
+      <div className="placeholder-feed d-flex flex-wrap gap-3">
         <PlaceholderCard/>
         <PlaceholderCard/>
         <PlaceholderCard/>
         <PlaceholderCard/>
         <PlaceholderCard/>
         <PlaceholderCard/>
-      </>
+      </div>
     )
   } else if (cities.length > 0) {
-    content = sortedCities.map(city =>
-      <CityCard key={city.id} city={city} setCity={setCity} isCitiesGrouped={groupStatus === "on"}/>
+    content = (
+      <InfiniteScroll
+        next={() => setPage(a => a + 1)}
+        hasMore={sortedCities.length > paginatedCities.length}
+        className="d-flex flex-wrap gap-3"
+        loader={
+          <div className="placeholder-feed d-flex flex-wrap gap-3">
+            <PlaceholderCard/>
+            <PlaceholderCard/>
+            <PlaceholderCard/>
+            <PlaceholderCard/>
+            <PlaceholderCard/>
+            <PlaceholderCard/>
+          </div>
+        }
+        dataLength={paginatedCities.length}
+      >
+        {paginatedCities.map(city =>
+          <CityCard key={city.id} city={city} setCity={setCity} isCitiesGrouped={groupStatus === "on"}/>
+        )}
+      </InfiniteScroll>
     );
   } else {
     content = <p>No cities found.</p>
@@ -232,11 +257,11 @@ export const Home = () => {
             </div>
             <div className="d-flex gap-2 align-items-center">
               <SortOrderButton sortOrder={sortOrder} searchParams={searchParams} setSearchParams={setSearchParams}/>
-              <SortDropdown searchParams={searchParams} setSearchParams={setSearchParams} />
+              <SortDropdown searchParams={searchParams} setSearchParams={setSearchParams}/>
             </div>
           </div>
         </div>
-        <div id="city-feed" className="d-flex flex-wrap gap-3">
+        <div id="city-feed">
           {content}
         </div>
       </section>
