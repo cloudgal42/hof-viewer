@@ -4,9 +4,11 @@ import {useEffect, useState} from "react";
 import {PlaceholderCreatorCard} from "../components/PlaceholderCreatorCard.tsx";
 import {useSearchParams} from "react-router";
 import {handleSetSearchParams} from "../utils/SearchParamHandlers.ts";
+import SadChirper from "../assets/sadChirpyOutline.svg";
 
 export const Creators = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [fetchStatus, setFetchStatus] = useState<number>();
 
   const [creatorDetails, setCreatorDetails] = useState<CreatorDetails | null>();
   const [isCreatorLoading, setIsCreatorLoading] = useState<boolean>(false);
@@ -23,6 +25,8 @@ export const Creators = () => {
 
       const creatorInfo = await creatorRes.json();
       const creatorStats = await creatorStatsRes.json();
+
+      setFetchStatus(creatorStatsRes.status);
 
       if (creatorRes.ok && creatorStatsRes.ok && !ignore) {
         setCreatorDetails({
@@ -59,8 +63,23 @@ export const Creators = () => {
     content = <PlaceholderCreatorCard/>;
   } else if (creatorDetails) {
     content = <CreatorCard creator={creatorDetails}/>;
+  } else if (fetchStatus && fetchStatus !== 200) {
+    content = (
+      <div className="w-100 d-flex flex-column align-items-center text-center">
+        <img src={SadChirper} width="148" height="148" alt="" />
+        <p className="text-muted mb-1">
+          {fetchStatus === 404 ? "No creators found :(" : "Something went wrong :("}
+        </p>
+        <p className="text-muted mb-1">
+          {fetchStatus === 404 ?
+            "The creator likely have not registered an HoF account."
+            : "Please wait for a while and try again."
+          }
+        </p>
+      </div>
+    )
   } else {
-    content = <p>No creator found.</p>;
+    content = <p>Search by the creator name/ID to get started.</p>
   }
 
   return (

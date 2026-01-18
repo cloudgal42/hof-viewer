@@ -9,6 +9,8 @@ import {useOutletContext, useSearchParams} from "react-router";
 import {handleSetSearchParams} from "../utils/SearchParamHandlers.ts";
 import InfiniteScroll from "react-infinite-scroll-component";
 
+import SadChirper from "../assets/sadChirpyOutline.svg";
+
 interface TotalScreenshotStats {
   combinedStats?: GroupedCities;
 }
@@ -80,6 +82,8 @@ const DEFAULT_CITIES_PER_PAGE = 18;
 
 export const Home = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [fetchStatus, setFetchStatus] = useState<number>();
+  // const [errMsg, setErrMsg] = useState<string>();
   const [page, setPage] = useState<number>(1);
 
   const creator = searchParams.get("creator") || "";
@@ -105,6 +109,8 @@ export const Home = () => {
       setIsLoading(true);
       const res = await fetch(`https://halloffame.cs2.mtq.io/api/v1/screenshots?creatorId=${creator}`);
       const data = await res.json();
+
+      setFetchStatus(res.status);
 
       if (res.ok && !ignore) {
         setCities(data);
@@ -208,8 +214,23 @@ export const Home = () => {
         )}
       </InfiniteScroll>
     );
+  } else if (fetchStatus && fetchStatus !== 200) {
+    content = (
+      <div className="d-flex flex-column align-items-center text-center">
+        <img src={SadChirper} width="148" height="148" alt="" />
+        <p className="text-muted mb-1">
+          {fetchStatus === 404 ? "No cities found :(" : "Something went wrong :("}
+        </p>
+        <p className="text-muted mb-1">
+          {fetchStatus === 404 ?
+            "Either the creator doesn't exist, or they have not posted any screenshots."
+            : "Please wait for a while and try again."
+          }
+        </p>
+      </div>
+    )
   } else {
-    content = <p>No cities found.</p>
+    content = <p>Search by the creator name/ID to get started.</p>
   }
 
   return (
