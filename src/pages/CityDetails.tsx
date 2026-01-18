@@ -6,6 +6,7 @@ import {lazy, Suspense, useState} from "react";
 
 import PlaceholderImg from "../assets/placeholder.svg";
 import {DEFAULT_IMAGES_PER_PAGE} from "../components/CityGallery.tsx";
+import ModCard from "../components/ModCard.tsx";
 
 const CityGallery = lazy(() => import("../components/CityGallery.tsx"));
 
@@ -88,55 +89,67 @@ export const CityDetails = () => {
       <section id="details" className={`mt-3 position-relative ${isLoadMoreHovered && "load-more-hovered"}`}>
         <Card>
           <Card.Body>
-            <Card.Title>Stats</Card.Title>
-            <p className="text-muted mb-1">First posted on: {new Date(city.createdAt).toLocaleString()}</p>
-            <ul className="list-unstyled row">
-              <li className="col-sm-6 col-md-4 col-lg-3 d-flex align-items-center gap-2">
-                <Person/>
-                <span className="visually-hidden">Population</span>
-                {city.cityPopulation.toLocaleString()}
-              </li>
-              <li className="col-sm-6 col-md-4 col-lg-3 d-flex align-items-center gap-2">
-                <Trophy/>
-                <span className="visually-hidden">Milestone</span>
-                {cityMilestones[city.cityMilestone - 1]}
-              </li>
-              <li className="col-sm-6 col-md-4 col-lg-3 d-flex align-items-center gap-2">
-                <Eye/>
-                <span className="visually-hidden">Unique Views</span>
-                {`${city.viewsCount.toLocaleString()} (Unique: ${city.uniqueViewsCount.toLocaleString()})`}
-              </li>
-              <li className="col-sm-6 col-md-4 col-lg-3 d-flex align-items-center gap-2">
-                <Heart/>
-                <span className="visually-hidden">Favorites</span>
-                {`${city.favoritesCount.toLocaleString()} (${city.favoritingPercentage}% of unique views)`}
-              </li>
-            </ul>
-            <Card.Title>Mods Used</Card.Title>
-            <Accordion className="mb-3">
-              <Accordion.Item eventKey="0">
-                <Accordion.Header>{city.paradoxModIds.length} mods used</Accordion.Header>
-                <Accordion.Body>
-                  <ul className="list-unstyled d-flex flex-row flex-wrap gap-2 mb-0">
-                    {city.paradoxModIds.length > 0 ? city.paradoxModIds.map(mod =>
-                      <a key={mod} href={`https://mods.paradoxplaza.com/mods/${mod}/Windows`} target="_blank">
-                        <li key={mod}>{mod}</li>
-                      </a>
-                    ) : (<p className="mb-0">This city does not use mods, or the creator has opted not to share their playsets.</p>)}
-                  </ul>
-                </Accordion.Body>
-              </Accordion.Item>
-            </Accordion>
-            <Card.Title>Render Settings</Card.Title>
-            {Object.entries(city.renderSettings).length !== 0 ? (
-              <ul>
-                {Object.entries(city.renderSettings).map(([key, value]) =>
-                  <li key={key}>{`${key}: ${value}`}</li>
-                )}
-              </ul>
-            ) : (
-              <p>No render settings found.</p>
+            {city.showcasedModId && (
+              <section className="mb-3">
+                <Card.Title>Showcased Asset/Map</Card.Title>
+                <ModCard modId={city.showcasedModId} />
+              </section>
             )}
+            <section className="mb-3">
+              <Card.Title>Stats</Card.Title>
+              <p className="text-muted mb-1">First posted on: {new Date(city.createdAt).toLocaleString()}</p>
+              <ul className="list-unstyled mb-0 row">
+                <li className="col-sm-6 col-md-4 col-lg-3 d-flex align-items-center gap-2">
+                  <Person/>
+                  <span className="visually-hidden">Population</span>
+                  {city.cityPopulation.toLocaleString()}
+                </li>
+                <li className="col-sm-6 col-md-4 col-lg-3 d-flex align-items-center gap-2">
+                  <Trophy/>
+                  <span className="visually-hidden">Milestone</span>
+                  {cityMilestones[city.cityMilestone - 1]}
+                </li>
+                <li className="col-sm-6 col-md-4 col-lg-3 d-flex align-items-center gap-2">
+                  <Eye/>
+                  <span className="visually-hidden">Unique Views</span>
+                  {`${city.viewsCount.toLocaleString()} (Unique: ${city.uniqueViewsCount.toLocaleString()})`}
+                </li>
+                <li className="col-sm-6 col-md-4 col-lg-3 d-flex align-items-center gap-2">
+                  <Heart/>
+                  <span className="visually-hidden">Favorites</span>
+                  {`${city.favoritesCount.toLocaleString()} (${city.favoritingPercentage}% of unique views)`}
+                </li>
+              </ul>
+            </section>
+            <section className="mb-3">
+              <Card.Title>Mods Used</Card.Title>
+              <Accordion>
+                <Accordion.Item eventKey="0">
+                  <Accordion.Header>{city.paradoxModIds.length} mods used</Accordion.Header>
+                  <Accordion.Body>
+                    <ul className="list-unstyled d-flex flex-row flex-wrap gap-2 mb-0">
+                      {city.paradoxModIds.length > 0 ? city.paradoxModIds.map(mod =>
+                        <a key={mod} href={`https://mods.paradoxplaza.com/mods/${mod}/Windows`} target="_blank">
+                          <li key={mod}>{mod}</li>
+                        </a>
+                      ) : (<p className="mb-0">This city does not use mods, or the creator has opted not to share their playsets.</p>)}
+                    </ul>
+                  </Accordion.Body>
+                </Accordion.Item>
+              </Accordion>
+            </section>
+            <section>
+              <Card.Title>Render Settings</Card.Title>
+              {Object.entries(city.renderSettings).length !== 0 ? (
+                <ul>
+                  {Object.entries(city.renderSettings).map(([key, value]) =>
+                    <li key={key}>{`${key}: ${value}`}</li>
+                  )}
+                </ul>
+              ) : (
+                <p>No render settings found.</p>
+              )}
+            </section>
           </Card.Body>
         </Card>
       </section>

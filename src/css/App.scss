@@ -1,3 +1,23 @@
+// Source - https://stackoverflow.com/a
+// Posted by David Fleury, modified by community. See post 'Timeline' for change history
+// Retrieved 2026-01-17, License - CC BY-SA 4.0
+$utilities: (
+  'width': (
+    property: width,
+    class: w,
+    responsive: true,
+    values: (
+      25: 25%,
+      33: 33%,
+      50: 50%,
+      66: 66%,
+      75: 75%,
+      100: 100%,
+      auto: auto,
+    ),
+  )
+);
+
 $primary: #000000;
 $carousel-transition-duration: 0.3s;
 
