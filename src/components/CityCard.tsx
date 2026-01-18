@@ -1,4 +1,4 @@
-import {Badge, Card} from "react-bootstrap";
+import {Badge, Card, OverlayTrigger, Tooltip} from "react-bootstrap";
 import {Heart, Eye, Person, Images} from "react-bootstrap-icons";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import PlaceholderImg from "../assets/placeholder.svg"
@@ -118,12 +118,14 @@ export const CityCard = ({city, setCity, isCitiesGrouped}: CityCardProps) => {
             </span>
           </Card.Text>
           <Card.Text>
-            <span className="text-muted" style={{fontSize: "0.9rem"}}>
+            <OverlayTrigger overlay={<Tooltip>{new Date(city.createdAt).toLocaleString()}</Tooltip>}>
+              <span className="text-muted" style={{fontSize: "0.9rem"}}>
               {isCitiesGrouped ?
                 `First posted ${city.createdAtFormattedDistance}` :
                 city.createdAtFormattedDistance
               }
             </span>
+            </OverlayTrigger>
           </Card.Text>
         </div>
       </Card.Body>

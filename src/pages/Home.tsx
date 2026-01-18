@@ -1,4 +1,4 @@
-import {Button, Form} from "react-bootstrap";
+import {Button, Form, OverlayTrigger, Tooltip} from "react-bootstrap";
 import {SortOrderButton} from "../components/SortOrderButton.tsx";
 import {useEffect, useMemo, useState} from "react";
 import type {ContextType} from "../App.tsx";
@@ -267,12 +267,15 @@ export const Home = () => {
                 }}
                 defaultChecked={groupStatus === "on"}
               />
-              <Form.Label
-                htmlFor="groupCitiesCheck"
-                className="mb-0"
-              >
-                Group Cities
-              </Form.Label>
+              <OverlayTrigger overlay={<Tooltip>When enabled, group all screenshots with the same city name into one entry.</Tooltip>}>
+                <Form.Label
+                  htmlFor="groupCitiesCheck"
+                  className="mb-0"
+                >
+                  Group Cities
+                </Form.Label>
+              </OverlayTrigger>
+
             </div>
             <div className="d-flex gap-2 align-items-center">
               <SortOrderButton sortOrder={sortOrder} searchParams={searchParams} setSearchParams={setSearchParams}/>

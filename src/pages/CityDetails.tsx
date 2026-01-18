@@ -1,4 +1,4 @@
-import {Accordion, Button, Card} from "react-bootstrap";
+import {Accordion, Button, Card, OverlayTrigger, Tooltip} from "react-bootstrap";
 import {useNavigate, useOutletContext} from "react-router";
 import type {ContextType} from "../App.tsx";
 import {ChevronDown, ChevronLeft, Eye, Heart, Person, Trophy} from "react-bootstrap-icons";
@@ -54,15 +54,17 @@ export const CityDetails = () => {
   return (
     <div className="main-wrapper flex-grow-1 ms-sm-5 me-sm-5">
       <div className="d-flex align-items-center mb-2">
-        <Button
-          variant="outline"
-          style={{border: "none", backgroundColor: "transparent"}}
-          className="ps-0"
-          aria-label="Back"
-          onClick={() => navigate(-1)}
-        >
-          <ChevronLeft width="24" height="24" />
-        </Button>
+        <OverlayTrigger overlay={<Tooltip>Back</Tooltip>}>
+          <Button
+            variant="outline"
+            style={{border: "none", backgroundColor: "transparent"}}
+            className="ps-0"
+            aria-label="Back"
+            onClick={() => navigate(-1)}
+          >
+            <ChevronLeft width="24" height="24" />
+          </Button>
+        </OverlayTrigger>
         <h2 className="mb-0">{city.cityName}{city.cityNameTranslated && `(${city.cityNameTranslated})`}</h2>
       </div>
       <h3 className="text-muted fs-5">by {city.creator.creatorName}</h3>
@@ -97,7 +99,9 @@ export const CityDetails = () => {
             )}
             <section className="mb-3">
               <Card.Title>Stats</Card.Title>
-              <p className="text-muted mb-1">First posted on: {new Date(city.createdAt).toLocaleString()}</p>
+              <OverlayTrigger overlay={<Tooltip>{city.createdAtFormattedDistance}</Tooltip>}>
+                <p className="d-inline-block text-muted mb-1">First posted on: {new Date(city.createdAt).toLocaleString()}</p>
+              </OverlayTrigger>
               <ul className="list-unstyled mb-0 row">
                 <li className="col-sm-6 col-md-4 col-lg-3 d-flex align-items-center gap-2">
                   <Person/>
