@@ -6,6 +6,8 @@ import PlaceholderImg from "../assets/placeholder.svg";
 import {PlaceholderModCard} from "./PlaceholderModCard.tsx";
 // import {mod} from "../temp/mod.ts";
 
+import SadChirper from "../assets/sadChirpyOutline.svg";
+
 interface ModMetadata {
   size_in_memory: string;
   relevance_score: string;
@@ -93,6 +95,7 @@ interface ModCardProps {
 const ModCard = ({modId}: ModCardProps) => {
   const [showcasedMod, setShowcasedMod] = useState<Mod>();
   const [isLoadingMod, setIsLoadingMod] = useState<boolean>(false);
+  const [fetchStatus, setFetchStatus] = useState<number>();
 
   let content;
 
@@ -109,7 +112,9 @@ const ModCard = ({modId}: ModCardProps) => {
       const data = await res.json();
 
       // const data = JSON.parse(mod);
-      // const res = {ok: true}
+      // const res = {ok: true, status: 500}
+
+      setFetchStatus(res.status);
 
       if (res.ok && !ignore) {
         setIsLoadingMod(false);
@@ -126,7 +131,24 @@ const ModCard = ({modId}: ModCardProps) => {
   }, [modId]);
 
   if (isLoadingMod) {
-    content = <PlaceholderModCard />
+    content = <PlaceholderModCard/>
+  } else if (fetchStatus !== 200) {
+    content = (
+      <Card>
+        <div className="text-center m-auto my-3">
+          <img
+            width="128"
+            height="128"
+            src={SadChirper}
+            alt=""
+          />
+          <p className="mb-1 text-muted">Failed to fetch mod data from PDX Mods :(</p>
+          <p className="mb-1 text-muted">
+            {fetchStatus === 404 ? "The asset/map no longer exists." : `HTTP Status: ${fetchStatus}. Please wait for a moment and try again.`}
+          </p>
+        </div>
+      </Card>
+    )
   } else {
     content = (
       <Card className="row flex-md-row gx-0">
@@ -137,7 +159,7 @@ const ModCard = ({modId}: ModCardProps) => {
           alt=""
           effect="black-and-white"
           placeholder={
-            <img src={PlaceholderImg} alt="" />
+            <img src={PlaceholderImg} alt=""/>
           }
         />
         <Card.Body className="col-12 col-md-8">
