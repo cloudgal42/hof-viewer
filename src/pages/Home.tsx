@@ -179,6 +179,8 @@ export const Home = () => {
   function setCreator(formData: FormData) {
     const query = formData.get("creatorId");
     const queryString = query?.toString() || "";
+    if (queryString === creator) return;
+
     setCities([]);
     setSearchParams(handleSetSearchParams(searchParams, "creator", queryString));
   }
@@ -229,7 +231,7 @@ export const Home = () => {
         <p className="text-muted mb-1">
           {fetchStatus === 404 ?
             "Either the creator doesn't exist, or they have not posted any screenshots."
-            : "Please wait for a while and try again."
+            : `HTTP status code: ${fetchStatus}. Please wait for a while and try again.`
           }
         </p>
       </div>

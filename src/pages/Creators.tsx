@@ -54,6 +54,7 @@ export const Creators = () => {
   function setCreator(formData: FormData) {
     const query = formData.get("creatorId");
     const queryString = query?.toString() || "";
+    if (queryString === creator) return;
     setSearchParams(handleSetSearchParams(searchParams, "creator", queryString));
   }
 
@@ -73,7 +74,7 @@ export const Creators = () => {
         <p className="text-muted mb-1">
           {fetchStatus === 404 ?
             "The creator likely have not registered an HoF account."
-            : "Please wait for a while and try again."
+            : `HTTP status code: ${fetchStatus}. Please wait for a while and try again.`
           }
         </p>
       </div>
