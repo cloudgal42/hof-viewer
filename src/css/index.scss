@@ -7,13 +7,21 @@
   container-name: city-feed;
 }
 
-.img-gallery-container {
+.img-gallery-container-multiple {
   container-type: inline-size;
   container-name: img-gallery;
 }
 
-.img-gallery-container span {
+.img-gallery-container-multiple span {
   max-width: calc(24.7% - 0.05rem);
+}
+
+.img-gallery-container-multiple span img,
+.img-gallery-container span img {
+  cursor: pointer;
+  min-width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
 }
 
 #loadMoreBtn {
@@ -57,19 +65,19 @@
 }
 
 @container img-gallery (width < 800px) {
-  .img-gallery-container span {
+  .img-gallery-container-multiple span {
     max-width: calc(33% - 0.05rem);
   }
 }
 
 @container img-gallery (width < 557px) {
-  .img-gallery-container span {
+  .img-gallery-container-multiple span {
     max-width: calc(50% - 0.15rem);
   }
 }
 
 @container img-gallery (width < 280px) {
-  .img-gallery-container span {
+  .img-gallery-container-multiple span {
     max-width: 100%;
   }
 }

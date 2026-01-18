@@ -1,4 +1,4 @@
-import {SortDown, SortUp} from "react-bootstrap-icons";
+import {SortAlphaDownAlt, SortAlphaUpAlt, SortDown, SortUp} from "react-bootstrap-icons";
 import {Button} from "react-bootstrap";
 import {handleSetSearchParams} from "../utils/SearchParamHandlers.ts";
 
@@ -17,6 +17,8 @@ export const SortOrderButton = ({sortOrder, searchParams, setSearchParams}: Sort
     }
   }
 
+  const isAlphabetSort = searchParams.get("sortBy") === "name";
+
   return (
     <Button
       variant="outline-primary"
@@ -25,9 +27,9 @@ export const SortOrderButton = ({sortOrder, searchParams, setSearchParams}: Sort
       onClick={setOrder}
     >
       {sortOrder === "Ascending" ? (
-        <SortUp/>
+        isAlphabetSort ? (<SortAlphaUpAlt width="20" height="20" />) : (<SortUp width="20" height="20" />)
       ) : (
-        <SortDown/>
+        isAlphabetSort ? (<SortAlphaDownAlt width="20" height="20" />) : (<SortDown width="20" height="20" />)
       )}
       <span className="visually-hidden">{sortOrder}</span>
     </Button>

@@ -147,6 +147,11 @@ export const Home = () => {
         });
         break;
       case "name":
+        copiedCities.sort((a, b) => {
+          const cityAName = a.cityNameLatinized || a.cityName;
+          const cityBName = b.cityNameLatinized || b.cityName;
+          return cityBName.localeCompare(cityAName);
+        });
         break;
       case "population":
         copiedCities.sort((a, b) => b.cityPopulation - a.cityPopulation);
