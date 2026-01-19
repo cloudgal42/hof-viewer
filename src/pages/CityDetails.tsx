@@ -5,7 +5,7 @@ import {ChevronDown, ChevronLeft, Eye, Heart, Person, Trophy} from "react-bootst
 import {lazy, useState} from "react";
 
 import {DEFAULT_IMAGES_PER_PAGE} from "../components/CityGallery.tsx";
-import ModCard from "../components/ModCard.tsx";
+// import ModCard from "../components/ModCard.tsx";
 
 const CityGallery = lazy(() => import("../components/CityGallery.tsx"));
 
@@ -92,7 +92,10 @@ export const CityDetails = () => {
             {city.showcasedModId && (
               <section className="mb-3">
                 <Card.Title>Showcased Asset/Map</Card.Title>
-                <ModCard modId={city.showcasedModId}/>
+                {/*<ModCard modId={city.showcasedModId}/>*/}
+                <a href={`https://mods.paradoxplaza.com/mods/${city.showcasedModId}/Windows`} target="_blank">
+                  {city.showcasedModId}
+                </a>
               </section>
             )}
             <section className="mb-3">
