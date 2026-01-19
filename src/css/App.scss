@@ -23,8 +23,8 @@ $carousel-transition-duration: 0.3s;
 
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
-html, body {
-  height: 100%;
+html, body, #root {
+  min-height: 100vh;
 }
 #root {
   display: flex;
