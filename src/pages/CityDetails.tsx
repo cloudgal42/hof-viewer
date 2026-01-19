@@ -2,9 +2,8 @@ import {Accordion, Button, Card, OverlayTrigger, Tooltip} from "react-bootstrap"
 import {useNavigate, useOutletContext} from "react-router";
 import type {ContextType} from "../App.tsx";
 import {ChevronDown, ChevronLeft, Eye, Heart, Person, Trophy} from "react-bootstrap-icons";
-import {lazy, Suspense, useState} from "react";
+import {lazy, useState} from "react";
 
-import PlaceholderImg from "../assets/placeholder.svg";
 import {DEFAULT_IMAGES_PER_PAGE} from "../components/CityGallery.tsx";
 import ModCard from "../components/ModCard.tsx";
 
@@ -62,45 +61,45 @@ export const CityDetails = () => {
             aria-label="Back"
             onClick={() => navigate(-1)}
           >
-            <ChevronLeft width="24" height="24" />
+            <ChevronLeft width="24" height="24"/>
           </Button>
         </OverlayTrigger>
         <h2 className="mb-0">{city.cityName}{city.cityNameTranslated && `(${city.cityNameTranslated})`}</h2>
       </div>
       <h3 className="text-muted fs-5">by {city.creator.creatorName}</h3>
       <section id="gallery" className="mt-3 position-relative">
-        <Suspense fallback={<img src={PlaceholderImg} alt="" style={{height: "50vh"}} className="w-100 rounded" />}>
-          <CityGallery page={page} imageUrls={imageUrlFHD} />
-          {/* TODO: Move this button to the CityGallery component. Research React's useContext hook */}
-          {!isLastPage && (
-            <Button
-              variant="outline"
-              style={{border: "none", backgroundColor: "transparent"}}
-              className="p-0 d-flex justify-content-center position-relative m-auto mt-3"
-              id="loadMoreBtn"
-              onClick={() => setPage(page + 1)}
-              onMouseEnter={() => setIsLoadMoreHovered(true)}
-              onMouseLeave={() => setIsLoadMoreHovered(false)}
-            >
-              <p className="mb-0">Load More</p>
-              <ChevronDown width="24" height="24" />
-            </Button>
-          )}
-        </Suspense>
+        <CityGallery page={page} imageUrls={imageUrlFHD}/>
+        {/* TODO: Move this button to the CityGallery component. Research React's useContext hook */}
+        {!isLastPage && (
+          <Button
+            variant="outline"
+            style={{border: "none", backgroundColor: "transparent"}}
+            className="p-0 d-flex justify-content-center position-relative m-auto mt-3"
+            id="loadMoreBtn"
+            onClick={() => setPage(page + 1)}
+            onMouseEnter={() => setIsLoadMoreHovered(true)}
+            onMouseLeave={() => setIsLoadMoreHovered(false)}
+          >
+            <p className="mb-0">Load More</p>
+            <ChevronDown width="24" height="24"/>
+          </Button>
+        )}
       </section>
-      <section id="details" className={`mt-3 position-relative ${(isLoadMoreHovered && !isLastPage) && "load-more-hovered"}`}>
+      <section id="details"
+               className={`mt-3 position-relative ${(isLoadMoreHovered && !isLastPage) && "load-more-hovered"}`}>
         <Card>
           <Card.Body>
             {city.showcasedModId && (
               <section className="mb-3">
                 <Card.Title>Showcased Asset/Map</Card.Title>
-                <ModCard modId={city.showcasedModId} />
+                <ModCard modId={city.showcasedModId}/>
               </section>
             )}
             <section className="mb-3">
               <Card.Title>Stats</Card.Title>
               <OverlayTrigger overlay={<Tooltip>{city.createdAtFormattedDistance}</Tooltip>}>
-                <p className="d-inline-block text-muted mb-1">First posted on: {new Date(city.createdAt).toLocaleString()}</p>
+                <p className="d-inline-block text-muted mb-1">First posted
+                  on: {new Date(city.createdAt).toLocaleString()}</p>
               </OverlayTrigger>
               <ul className="list-unstyled mb-0 row">
                 <li className="col-sm-6 col-md-4 col-lg-3 d-flex align-items-center gap-2">

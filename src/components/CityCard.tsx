@@ -76,7 +76,7 @@ export const CityCard = ({city, setCity, isCitiesGrouped}: CityCardProps) => {
 
   return (
     <Card>
-      <div className="position-relative">
+      <div className="position-relative" style={{backgroundColor: "#868e96"}}>
         <LazyLoadImage
           wrapperClassName="d-inline"
           className="card-img-top"
@@ -84,8 +84,8 @@ export const CityCard = ({city, setCity, isCitiesGrouped}: CityCardProps) => {
           alt=""
           height="170"
           style={{minWidth: "100%", aspectRatio: "16/9", objectFit: "cover"}}
-          placeholder={
-            <Card.Img variant="top" src={PlaceholderImg}/>
+          placeholderSrc={
+            PlaceholderImg
           }
           src={thumbnailImgUrl}
         />

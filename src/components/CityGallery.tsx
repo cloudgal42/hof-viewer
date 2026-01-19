@@ -44,16 +44,18 @@ const CityGallery = ({imageUrls, page}: GalleryProps) => {
     <>
       <div className={`d-flex gap-1 flex-row flex-wrap ${currImageUrls.length > 4 ? "img-gallery-container-multiple" : "img-gallery-container"}`}>
         {currImageUrls.map((url, i) => (
-          <LazyLoadImage
-            className="w-100"
-            key={i}
-            src={url}
-            effect="black-and-white"
-            alt=""
-            height={currImageUrls.length > 4 ? "150" : ""}
-            placeholder={<img src={PlaceholderImg} alt="" />}
-            onClick={() => galleryRef.current && galleryRef.current.openGallery(i)}
-          />
+          <div key={i} style={{backgroundColor: "#868e96"}}>
+            <LazyLoadImage
+              className="w-100"
+              key={i}
+              src={url}
+              effect="black-and-white"
+              alt=""
+              height={currImageUrls.length > 4 ? "150" : ""}
+              placeholder={<img src={PlaceholderImg} alt="" />}
+              onClick={() => galleryRef.current && galleryRef.current.openGallery(i)}
+            />
+          </div>
         ))}
       </div>
       <div className="App">

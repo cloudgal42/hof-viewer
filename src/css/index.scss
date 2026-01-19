@@ -12,7 +12,7 @@
   container-name: img-gallery;
 }
 
-.img-gallery-container-multiple span {
+.img-gallery-container-multiple div {
   max-width: calc(24.7% - 0.05rem);
 }
 
@@ -65,19 +65,19 @@
 }
 
 @container img-gallery (width < 800px) {
-  .img-gallery-container-multiple span {
+  .img-gallery-container-multiple div {
     max-width: calc(33% - 0.05rem);
   }
 }
 
 @container img-gallery (width < 557px) {
-  .img-gallery-container-multiple span {
+  .img-gallery-container-multiple div {
     max-width: calc(50% - 0.15rem);
   }
 }
 
 @container img-gallery (width < 280px) {
-  .img-gallery-container-multiple span {
+  .img-gallery-container-multiple div {
     max-width: 100%;
   }
 }
