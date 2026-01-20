@@ -77,18 +77,23 @@ export const CityCard = ({city, setCity, isCitiesGrouped}: CityCardProps) => {
   return (
     <Card>
       <div className="position-relative" style={{backgroundColor: "#868e96"}}>
-        <LazyLoadImage
-          wrapperClassName="d-inline"
-          className="card-img-top"
-          effect="black-and-white"
-          alt=""
-          height="170"
-          style={{minWidth: "100%", aspectRatio: "16/9", objectFit: "cover"}}
-          placeholderSrc={
-            PlaceholderImg
-          }
-          src={thumbnailImgUrl}
-        />
+        <NavLink
+          to={isCitiesGrouped ? `/city/${city.cityName}?groupStatus=on` : `/city/${city.id}?groupStatus=off`}
+          onClick={() => setCity(city)}
+        >
+          <LazyLoadImage
+            wrapperClassName="d-inline"
+            className="card-img-top"
+            effect="black-and-white"
+            alt=""
+            height="170"
+            style={{minWidth: "100%", aspectRatio: "16/9", objectFit: "cover"}}
+            placeholderSrc={
+              PlaceholderImg
+            }
+            src={thumbnailImgUrl}
+          />
+        </NavLink>
         {Array.isArray(city.imageUrlFHD) && (
           <Badge pill bg="dark" className="position-absolute bg-opacity-50" style={{bottom: "0.5rem", right: "0.5rem"}}>
             <Images/>
