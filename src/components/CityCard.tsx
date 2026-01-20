@@ -98,7 +98,7 @@ export const CityCard = ({city, setCity, isCitiesGrouped}: CityCardProps) => {
       </div>
       <Card.Body>
         <NavLink
-          to={`/city/${city.cityName}`}
+          to={isCitiesGrouped ? `/city/${city.cityName}?groupStatus=on` : `/city/${city.id}?groupStatus=off`}
           onClick={() => setCity(city)}
         >
           <Card.Title>{city.cityName}</Card.Title>
