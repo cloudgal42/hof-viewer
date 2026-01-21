@@ -18,7 +18,7 @@ $utilities: (
   )
 );
 
-$primary: #000000;
+$primary: #000;
 $carousel-transition-duration: 0.3s;
 
 @import "../../node_modules/bootstrap/scss/bootstrap";
@@ -26,6 +26,48 @@ $carousel-transition-duration: 0.3s;
 html, body, #root {
   min-height: 100vh;
 }
+
+.btn-outline-primary {
+  border-color: $input-border-color;
+}
+
+[data-bs-theme="dark"] {
+  $primary: #fff;
+  --bs-primary: #fff;
+
+  .btn-primary {
+    @extend .btn-light;
+  }
+  .btn-outline-primary {
+    @extend .btn-outline-light;
+    border-color: $input-border-color;
+  }
+  a {
+    color: var(--bs-primary);
+
+    &:hover {
+      color: var(--bs-primary);
+    }
+  }
+  input:focus,
+  select:focus,
+  .accordion-button:focus {
+    box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
+  }
+  .accordion-button:not(.collapsed) {
+    background-color: var(--bs-primary);
+    color: black;
+  }
+  .nav-link.active {
+    background-color: var(--bs-primary);
+    color: black;
+  }
+  .form-check-input:checked {
+    box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.25);
+    filter: invert(1);
+  }
+}
+
 #root {
   display: flex;
   flex-flow: column nowrap;

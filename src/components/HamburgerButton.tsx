@@ -1,8 +1,12 @@
-import type {SidebarProps} from "./Sidebar.tsx";
 import {Button} from "react-bootstrap";
 import {List} from "react-bootstrap-icons";
 
-export const HamburgerButton = ({isOpened, setIsOpened}: SidebarProps) => {
+interface HamburgerButtonProps {
+  isOpened: boolean;
+  setIsOpened: (isOpened: boolean) => void;
+}
+
+export const HamburgerButton = ({isOpened, setIsOpened}: HamburgerButtonProps) => {
   return (
     <Button
       onClick={() => setIsOpened(!isOpened)}

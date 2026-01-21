@@ -256,7 +256,7 @@ export const Home = () => {
               defaultValue={creator}
               // onChange={e => validateAndSetCreator(e.currentTarget.value)}
             />
-            <Button type="submit" variant="dark">Search</Button>
+            <Button type="submit" variant="primary">Search</Button>
           </div>
           <Form.Text id="creatorIdHelpBlock">Can either be the username or the public Creator ID.</Form.Text>
         </form>

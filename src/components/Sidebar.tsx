@@ -1,13 +1,16 @@
-import {PersonCircle, Search} from "react-bootstrap-icons";
+import {Moon, PersonCircle, Search} from "react-bootstrap-icons";
 import {CloseButton, Offcanvas} from "react-bootstrap";
 import {NavLink} from "react-router";
+import Form from "react-bootstrap/Form";
 
-export interface SidebarProps {
+interface SidebarProps {
   isOpened: boolean;
+  isDarkMode: boolean;
   setIsOpened: (isOpened: boolean) => void;
+  setIsDarkMode: (isDarkMode: boolean) => void;
 }
 
-export const Sidebar = ({isOpened, setIsOpened}: SidebarProps) => {
+export const Sidebar = ({isOpened, isDarkMode, setIsOpened, setIsDarkMode}: SidebarProps) => {
   return (
     <Offcanvas
       show={isOpened}
@@ -24,9 +27,9 @@ export const Sidebar = ({isOpened, setIsOpened}: SidebarProps) => {
             HoF
           </span>
         </a>
-        <CloseButton onClick={() => setIsOpened(false)} />
+        <CloseButton onClick={() => setIsOpened(false)}/>
       </div>
-      <hr className="d-lg-none" />
+      <hr className="d-lg-none"/>
       <ul className="nav nav-pills flex-column mb-auto">
         <li className="nav-item">
           <NavLink
@@ -34,8 +37,8 @@ export const Sidebar = ({isOpened, setIsOpened}: SidebarProps) => {
             className="nav-link d-flex align-items-center"
             onClick={() => setIsOpened(false)}
           >
-          <Search height="18" width="18" className="me-2" />
-          Browse by Creator ID
+            <Search height="18" width="18" className="me-2"/>
+            Browse by Creator ID
           </NavLink>
         </li>
         {/*<li><a href="#" className="nav-link link-body-emphasis d-flex align-items-center">*/}
@@ -48,12 +51,25 @@ export const Sidebar = ({isOpened, setIsOpened}: SidebarProps) => {
             className="nav-link d-flex align-items-center"
             onClick={() => setIsOpened(false)}
           >
-            <PersonCircle height="18" width="18" className="me-2" />
+            <PersonCircle height="18" width="18" className="me-2"/>
             Creators
           </NavLink>
         </li>
       </ul>
       <hr/>
+      <div className="d-flex justify-content-between">
+        <label htmlFor="darkModeToggle" className="d-flex gap-2 align-items-center">
+          <Moon />
+          Dark Mode
+        </label>
+        <Form.Check
+          type="switch"
+          id="darkModeToggle"
+          onChange={(e) => setIsDarkMode(e.currentTarget.checked)}
+          checked={isDarkMode}
+        >
+        </Form.Check>
+      </div>
 
     </Offcanvas>
   )

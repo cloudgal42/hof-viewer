@@ -22,7 +22,6 @@ export const SortOrderButton = ({sortOrder, searchParams, setSearchParams}: Sort
   return (
     <Button
       variant="outline-primary"
-      style={{borderColor: "lightgray"}}
       aria-label="Sort Order"
       onClick={setOrder}
     >
