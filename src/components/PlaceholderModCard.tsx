@@ -4,7 +4,12 @@ import PlaceholderImg from "../assets/placeholder.svg";
 export const PlaceholderModCard = () => {
   return (
     <Card className="row flex-md-row gx-0">
-      <img className="col-12 col-md-4 w-100 w-md-25" src={PlaceholderImg}/>
+      <img
+        className="col-12 col-md-4 w-100 w-md-25"
+        src={PlaceholderImg}
+        alt=""
+        style={{aspectRatio: "1/1"}}
+      />
       <Card.Body className="col-12 col-md-8">
         <Card.Title>
           <Placeholder as={Card.Title} animation="glow">

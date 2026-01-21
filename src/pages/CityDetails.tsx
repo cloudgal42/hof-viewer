@@ -8,6 +8,8 @@ import {DEFAULT_IMAGES_PER_PAGE} from "../components/CityGallery.tsx";
 
 import PlaceholderImg from "../assets/placeholder.svg"
 import SadChirper from "../assets/sadChirpyOutline.svg";
+import {PlaceholderModCard} from "../components/PlaceholderModCard.tsx";
+import ModCard from "../components/ModCard.tsx";
 
 const CityGallery = lazy(() => import("../components/CityGallery.tsx"));
 
@@ -43,7 +45,9 @@ export const CityDetails = () => {
   const [page, setPage] = useState<number>(1);
   const [isLoadMoreHovered, setIsLoadMoreHovered] = useState<boolean>(false);
   const [fetchStatus, setFetchStatus] = useState<number>();
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingMod, setIsLoadingMod] = useState<boolean>(false);
 
   const [searchParams] = useSearchParams();
   const cityParam = useParams().city;
@@ -52,10 +56,13 @@ export const CityDetails = () => {
 
   useEffect(() => {
     let ignore = false;
-    if (city || (!city && isCitiesGrouped)) return;
+    if (!city && isCitiesGrouped || isCitiesGrouped || city && !city.showcasedModId) return;
 
     async function getCity() {
-      setIsLoading(true);
+      if (!city) {
+        setIsLoading(true);
+      }
+      setIsLoadingMod(true);
       const res = await fetch(`https://halloffame.cs2.mtq.io/api/v1/screenshots/${cityParam}`);
       const data = await res.json();
 
@@ -64,7 +71,9 @@ export const CityDetails = () => {
       if (res.ok && !ignore) {
         setCity(data);
         setIsLoading(false);
+        setIsLoadingMod(false);
       } else {
+        setIsLoadingMod(false);
         setIsLoading(false);
       }
 
@@ -76,11 +85,11 @@ export const CityDetails = () => {
       ignore = true;
     }
 
-  }, [city, cityParam, isCitiesGrouped]);
+  }, []);
 
-  console.log(city);
-  console.log("Fetch status:", fetchStatus);
-  console.log("Is the page loading?", isLoading);
+  // console.log(city);
+  // console.log("Fetch status:", fetchStatus);
+  // console.log("Is the page loading?", isLoading);
 
   if (!city) {
     if (fetchStatus !== 200 && fetchStatus || isCitiesGrouped) {
@@ -142,7 +151,11 @@ export const CityDetails = () => {
             <Card>
               <Card.Body>
                 <section className="mb-3">
-                  <Card.Title>Stats</Card.Title>
+                  <Placeholder as={Card.Title} xs={5} />
+                  <PlaceholderModCard />
+                </section>
+                <section className="mb-3">
+                  <Placeholder as={Card.Title} xs={5} />
                   <Placeholder className="mb-1" animation="glow">
                     <Placeholder as={Card.Text} xs={7} />
                   </Placeholder>
@@ -178,7 +191,7 @@ export const CityDetails = () => {
                   </ul>
                 </section>
                 <section className="mb-3">
-                  <Card.Title>Mods Used</Card.Title>
+                  <Placeholder as={Card.Title} xs={5} />
                   <Card>
                     <Card.Body>
                       <Placeholder as={Card.Text} animation="glow">
@@ -188,7 +201,7 @@ export const CityDetails = () => {
                   </Card>
                 </section>
                 <section>
-                  <Card.Title>Render Settings</Card.Title>
+                  <Placeholder as={Card.Title} xs={5} />
                   <Placeholder as={Card.Text} animation="glow">
                     <Placeholder className="d-block mb-2" xs={6} />
                     <Placeholder className="d-block mb-2" xs={4} />
@@ -256,10 +269,14 @@ export const CityDetails = () => {
             {city.showcasedModId && (
               <section className="mb-3">
                 <Card.Title>Showcased Asset/Map</Card.Title>
-                {/*<ModCard modId={city.showcasedModId}/>*/}
-                <a href={`https://mods.paradoxplaza.com/mods/${city.showcasedModId}/Windows`} target="_blank">
-                  {city.showcasedModId}
-                </a>
+                {isLoadingMod || !city.showcasedMod ? (
+                  <PlaceholderModCard />
+                ) : (
+                  <ModCard fetchStatus={fetchStatus} showcasedMod={city.showcasedMod} />
+                )}
+                {/*<a href={`https://mods.paradoxplaza.com/mods/${city.showcasedModId}/Windows`} target="_blank">*/}
+                {/*  {city.showcasedModId}*/}
+                {/*</a>*/}
               </section>
             )}
             <section className="mb-3">

@@ -5,6 +5,18 @@ import PlaceholderImg from "../assets/placeholder.svg"
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 import {NavLink} from "react-router";
 
+export interface Mod {
+  id: string;
+  paradoxModId: number;
+  name: string;
+  authorName: string;
+  shortDescription: string;
+  thumbnailUrl: string;
+  tags: string[];
+  subscribersCount: number;
+  knownLastUpdatedAt: string;
+}
+
 export interface City {
   id: string;
   isApproved: boolean;
@@ -32,7 +44,8 @@ export interface City {
   createdAtFormatted?: string;
   createdAtFormattedDistance: string;
   description?: string;
-  renderSettings: object; // FIXME: Maybe define an interface for this?
+  renderSettings: object; // TODO: Maybe define an interface for this?
+  showcasedMod?: Mod;
   showcasedModId?: number;
   __favorited: boolean;
 }
