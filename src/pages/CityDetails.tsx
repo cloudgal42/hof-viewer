@@ -151,13 +151,9 @@ export const CityDetails = () => {
             <Card>
               <Card.Body>
                 <section className="mb-3">
-                  <Placeholder as={Card.Title} xs={5} />
-                  <PlaceholderModCard />
-                </section>
-                <section className="mb-3">
-                  <Placeholder as={Card.Title} xs={5} />
                   <Placeholder className="mb-1" animation="glow">
-                    <Placeholder as={Card.Text} xs={7} />
+                    <Placeholder className="d-block mb-2" as={Card.Title} xs={3} />
+                    <Placeholder className="d-block mb-2" as={Card.Text} xs={5} />
                   </Placeholder>
                   <ul className="list-unstyled mb-0 row">
                     <li className="d-flex gap-2 align-items-center col-sm-6 col-md-4 col-lg-3">
@@ -191,7 +187,9 @@ export const CityDetails = () => {
                   </ul>
                 </section>
                 <section className="mb-3">
-                  <Placeholder as={Card.Title} xs={5} />
+                  <Placeholder as={Card.Title} animation="glow">
+                    <Placeholder xs={5} />
+                  </Placeholder>
                   <Card>
                     <Card.Body>
                       <Placeholder as={Card.Text} animation="glow">
@@ -201,7 +199,9 @@ export const CityDetails = () => {
                   </Card>
                 </section>
                 <section>
-                  <Placeholder as={Card.Title} xs={5} />
+                  <Placeholder as={Card.Title} animation="glow">
+                    <Placeholder xs={5} />
+                  </Placeholder>
                   <Placeholder as={Card.Text} animation="glow">
                     <Placeholder className="d-block mb-2" xs={6} />
                     <Placeholder className="d-block mb-2" xs={4} />
