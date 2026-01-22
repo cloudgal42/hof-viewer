@@ -6,22 +6,25 @@ import {BoxArrowUpRight} from "react-bootstrap-icons";
 
 interface ModListProps {
   mod: Mod;
+  isCompactMode: boolean;
 }
 
-export const ModCard = ({mod}: ModListProps) => {
+export const ModCard = ({mod, isCompactMode}: ModListProps) => {
   return (
     <Card>
-      <LazyLoadImage
-        wrapperClassName="col-12 col-md-4 w-100"
-        className="h-100 w-100 object-fit-cover"
-        src={mod.thumbnailUrl}
-        style={{aspectRatio: "1/1"}}
-        alt=""
-        effect="black-and-white"
-        placeholder={
-          <img src={PlaceholderImg} alt=""/>
-        }
-      />
+      {!isCompactMode &&
+        <LazyLoadImage
+          wrapperClassName="col-12 col-md-4 w-100"
+          className="h-100 w-100 object-fit-cover"
+          src={mod.thumbnailUrl}
+          style={{aspectRatio: "1/1"}}
+          alt=""
+          effect="black-and-white"
+          placeholder={
+            <img src={PlaceholderImg} alt=""/>
+          }
+        />
+      }
       <Card.Body className="d-flex flex-column justify-content-between">
         <div className="mb-1">
           <Card.Title className="mb-2">

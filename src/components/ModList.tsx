@@ -1,5 +1,5 @@
 import {useMemo, useState} from "react";
-import {Accordion, Form} from "react-bootstrap";
+import {Accordion, Form, InputGroup, OverlayTrigger, Tooltip} from "react-bootstrap";
 import type {City, GroupedCities, Mod} from "./CityCard.tsx";
 import SadChirper from "../assets/sadChirpyOutline.svg";
 import {ModCard} from "./ModCard.tsx";
@@ -21,12 +21,14 @@ export const ModList = ({city}: ModListProps) => {
   const [modList, setModList] = useState<Mod[]>([]);
 
   const [search, setSearch] = useState<string>("");
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState<number>(1);
+
+  const [isCompactMode, setIsCompactMode] = useState<boolean>(false);
 
   const debouncedSetSearch = useDebounceCallback((e) => {
     setSearch(e.target.value);
     setIsLoading(false);
-  }, 850);
+  }, 600);
 
   async function getPlayset() {
     if (modList.length > 0 || city.paradoxModIds.length === 0 || !city.shareParadoxModIds) {
@@ -134,7 +136,13 @@ export const ModList = ({city}: ModListProps) => {
           </>
         }
       >
-        {paginatedModList.map(mod => <ModCard key={mod.id} mod={mod}/>)}
+        {paginatedModList.map(mod =>
+          <ModCard
+            key={mod.id}
+            isCompactMode={isCompactMode}
+            mod={mod}
+          />
+        )}
       </InfiniteScroll>
     )
   }
@@ -155,17 +163,31 @@ export const ModList = ({city}: ModListProps) => {
             {city.paradoxModIds.length} mods used
           </Accordion.Header>
           <Accordion.Body>
-            <div className="mb-3">
+            <InputGroup className="mb-3">
               <Form.Control
                 type="text"
-                aria-label="Search mod by name, tags or author"
-                placeholder="Search mod by name, tags or author..."
+                name="modSearch"
+                aria-label="Search by name, tags or author"
+                placeholder="Mod name, tags or author..."
                 onChange={(e) => {
                   setIsLoading(true);
                   debouncedSetSearch(e);
                 }}
               />
-            </div>
+              <OverlayTrigger overlay={
+                <Tooltip>Hides mod thumbnail for a more compact view.</Tooltip>
+              }>
+                <InputGroup.Text>
+                  <Form.Check
+                    type="checkbox"
+                    name="compactMode"
+                    id="compactMode"
+                    onChange={(e) => setIsCompactMode(e.currentTarget.checked)}
+                  />
+                  <label className="ms-2" htmlFor="compactMode">Compact Mode</label>
+                </InputGroup.Text>
+              </OverlayTrigger>
+            </InputGroup>
             {accordionBody}
           </Accordion.Body>
         </Accordion.Item>
