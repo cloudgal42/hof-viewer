@@ -36,7 +36,7 @@ function groupCities(citiesToGroup: City[]) {
     const screenshotStat: TotalScreenshotStats = {};
     screenshotArr.forEach(screenshot => {
       screenshotStat.combinedStats = {
-        id: screenshot.cityName,
+        id: screenshot.id,
         isApproved: screenshot.isApproved,
         isReported: screenshot.isReported,
         favoritesCount: (!screenshotStat.combinedStats?.favoritesCount) ? screenshot.favoritesCount : screenshotStat.combinedStats.favoritesCount + screenshot.favoritesCount,

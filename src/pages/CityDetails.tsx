@@ -1,4 +1,4 @@
-import {Accordion, Button, Card, OverlayTrigger, Placeholder, Tooltip} from "react-bootstrap";
+import {Button, Card, OverlayTrigger, Placeholder, Tooltip} from "react-bootstrap";
 import {NavLink, useNavigate, useOutletContext, useParams, useSearchParams} from "react-router";
 import type {ContextType} from "../App.tsx";
 import {ChevronDown, ChevronLeft, Eye, Heart, Person, Trophy} from "react-bootstrap-icons";
@@ -9,6 +9,7 @@ import PlaceholderImg from "../assets/placeholder.svg"
 import SadChirper from "../assets/sadChirpyOutline.svg";
 import {PlaceholderFeatModCard} from "../components/PlaceholderFeatModCard.tsx";
 import {FeatModCard} from "../components/FeatModCard.tsx";
+import {ModList} from "../components/ModList.tsx";
 
 const CityGallery = lazy(() => import("../components/CityGallery.tsx"));
 
@@ -309,26 +310,27 @@ export const CityDetails = () => {
             </section>
             <section className="mb-3">
               <Card.Title>Mods Used</Card.Title>
-              {city.shareParadoxModIds ? (
-                <Accordion>
-                  <Accordion.Item eventKey="0">
-                    <Accordion.Header>
-                      {city.paradoxModIds.length} mods used
-                    </Accordion.Header>
-                    <Accordion.Body>
-                      <ul className="list-unstyled d-flex flex-row flex-wrap gap-2 mb-0">
-                        {city.paradoxModIds.length > 0 ? city.paradoxModIds.map(mod =>
-                          <a key={mod} href={`https://mods.paradoxplaza.com/mods/${mod}/Windows`} target="_blank">
-                            <li key={mod}>{mod}</li>
-                          </a>
-                        ) : (<p className="mb-0">This city does not use mods.</p>)}
-                      </ul>
-                    </Accordion.Body>
-                  </Accordion.Item>
-                </Accordion>
-              ) : (
-                <p>Creator has opted not to share their playsets.</p>
-              )}
+              <ModList city={city} />
+              {/*{city.shareParadoxModIds ? (*/}
+              {/*  <Accordion>*/}
+              {/*    <Accordion.Item eventKey="0">*/}
+              {/*      <Accordion.Header>*/}
+              {/*        {city.paradoxModIds.length} mods used*/}
+              {/*      </Accordion.Header>*/}
+              {/*      <Accordion.Body>*/}
+              {/*        <ul className="list-unstyled d-flex flex-row flex-wrap gap-2 mb-0">*/}
+              {/*          {city.paradoxModIds.length > 0 ? city.paradoxModIds.map(mod =>*/}
+              {/*            <a key={mod} href={`https://mods.paradoxplaza.com/mods/${mod}/Windows`} target="_blank">*/}
+              {/*              <li key={mod}>{mod}</li>*/}
+              {/*            </a>*/}
+              {/*          ) : (<p className="mb-0">This city does not use mods.</p>)}*/}
+              {/*        </ul>*/}
+              {/*      </Accordion.Body>*/}
+              {/*    </Accordion.Item>*/}
+              {/*  </Accordion>*/}
+              {/*) : (*/}
+              {/*  <p>Creator has opted not to share their playsets.</p>*/}
+              {/*)}*/}
             </section>
             <section>
               <Card.Title>Render Settings</Card.Title>

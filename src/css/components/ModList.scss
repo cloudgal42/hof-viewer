@@ -1,0 +1,26 @@
+.playset-container {
+  container-type: inline-size;
+  container-name: mod-list;
+
+  .card {
+    flex-basis: calc(25% - 0.4rem);
+  }
+}
+
+@container mod-list (width < 913px) {
+  .playset-container .card {
+    flex-basis: calc(33% - 0.25rem);
+  }
+}
+
+@container mod-list (width < 684px) {
+  .playset-container .card {
+    flex-basis: calc(50% - 0.25rem);
+  }
+}
+
+@container mod-list (width < 412px) {
+  .playset-container .card {
+    flex-basis: 100%;
+  }
+}
