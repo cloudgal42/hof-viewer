@@ -54,7 +54,7 @@ export const ModList = ({city}: ModListProps) => {
       // and returns any mod name or author with the character "a")
       const query = search
         .toLowerCase()
-        // .split(" ");
+      // .split(" ");
       const tags = mod.tags.map(tag => tag.toLowerCase());
       const matchesName = mod.name
         .toLowerCase()
@@ -79,18 +79,18 @@ export const ModList = ({city}: ModListProps) => {
   if (isLoading) {
     accordionBody = (
       <div className="playset-container d-flex flex-wrap gap-2">
-        <PlaceholderModCard />
-        <PlaceholderModCard />
-        <PlaceholderModCard />
-        <PlaceholderModCard />
-        <PlaceholderModCard />
-        <PlaceholderModCard />
-        <PlaceholderModCard />
-        <PlaceholderModCard />
-        <PlaceholderModCard />
-        <PlaceholderModCard />
-        <PlaceholderModCard />
-        <PlaceholderModCard />
+        <PlaceholderModCard/>
+        <PlaceholderModCard/>
+        <PlaceholderModCard/>
+        <PlaceholderModCard/>
+        <PlaceholderModCard/>
+        <PlaceholderModCard/>
+        <PlaceholderModCard/>
+        <PlaceholderModCard/>
+        <PlaceholderModCard/>
+        <PlaceholderModCard/>
+        <PlaceholderModCard/>
+        <PlaceholderModCard/>
       </div>
     )
   } else if (fetchStatus !== 200 && fetchStatus) {
@@ -134,15 +134,15 @@ export const ModList = ({city}: ModListProps) => {
           </>
         }
       >
-        {paginatedModList.map(mod => <ModCard key={mod.id} mod={mod} />)}
+        {paginatedModList.map(mod => <ModCard key={mod.id} mod={mod}/>)}
       </InfiniteScroll>
     )
   }
 
-  if (city.paradoxModIds.length === 0 && city.shareParadoxModIds) {
-    content = <p>The creator did not use mods for this screenshot.</p>
-  } else if (new Date(city.createdAt).getTime() < new Date("2025-03-24T00:00:00.000Z").getTime()) {
+  if (new Date(city.createdAt).getTime() < new Date("2025-03-24T00:00:00.000Z").getTime()) {
     content = <p>This screenshot was posted before playset sharing was possible.</p>
+  } else if (city.paradoxModIds.length === 0 && city.shareParadoxModIds) {
+    content = <p>The creator did not use mods for this screenshot.</p>
   } else if (!city.shareParadoxModIds) {
     content = <p>This creator chose not to share their playset for this screenshot.</p>
   } else {
