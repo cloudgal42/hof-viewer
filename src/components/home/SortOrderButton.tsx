@@ -1,6 +1,6 @@
 import {SortAlphaDownAlt, SortAlphaUpAlt, SortDown, SortUp} from "react-bootstrap-icons";
 import {Button} from "react-bootstrap";
-import {handleSetSearchParams} from "../utils/SearchParamHandlers.ts";
+import {handleSetSearchParams} from "../../utils/SearchParamHandlers.ts";
 
 interface SortOrderButtonProps {
   sortOrder: string;

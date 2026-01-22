@@ -3,15 +3,15 @@ import {NavLink, useNavigate, useOutletContext, useParams, useSearchParams} from
 import type {ContextType} from "../App.tsx";
 import {ChevronDown, ChevronLeft, Eye, Heart, Person, Trophy} from "react-bootstrap-icons";
 import {lazy, useEffect, useState} from "react";
-import {DEFAULT_IMAGES_PER_PAGE} from "../components/CityGallery.tsx";
+import {DEFAULT_IMAGES_PER_PAGE} from "../components/details/CityGallery.tsx";
 
 import PlaceholderImg from "../assets/placeholder.svg"
 import SadChirper from "../assets/sadChirpyOutline.svg";
-import {PlaceholderFeatModCard} from "../components/PlaceholderFeatModCard.tsx";
-import {FeatModCard} from "../components/FeatModCard.tsx";
-import {ModList} from "../components/ModList.tsx";
+import {PlaceholderFeatModCard} from "../components/details/PlaceholderFeatModCard.tsx";
+import {FeatModCard} from "../components/details/FeatModCard.tsx";
+import {ModList} from "../components/details/ModList.tsx";
 
-const CityGallery = lazy(() => import("../components/CityGallery.tsx"));
+const CityGallery = lazy(() => import("../components/details/CityGallery.tsx"));
 
 const cityMilestones = [
   "Tiny Village",

@@ -1,10 +1,10 @@
 import {Card} from "react-bootstrap";
 import {BoxArrowUpRight} from "react-bootstrap-icons";
 import {LazyLoadImage} from "react-lazy-load-image-component";
-import PlaceholderImg from "../assets/placeholder.svg";
+import PlaceholderImg from "../../assets/placeholder.svg";
 
-import SadChirper from "../assets/sadChirpyOutline.svg";
-import type {Mod} from "./CityCard.tsx";
+import SadChirper from "../../assets/sadChirpyOutline.svg";
+import type {Mod} from "../home/CityCard.tsx";
 
 interface ModCardProps {
   fetchStatus?: number;

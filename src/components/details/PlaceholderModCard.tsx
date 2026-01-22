@@ -1,5 +1,5 @@
 import {Card, Placeholder} from "react-bootstrap";
-import PlaceholderImg from "../assets/placeholder.svg";
+import PlaceholderImg from "../../assets/placeholder.svg";
 
 export const PlaceholderModCard = () => {
   return (

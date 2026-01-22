@@ -9,7 +9,7 @@ import lgThumbnail from 'lightgallery/plugins/thumbnail';
 import lgZoom from 'lightgallery/plugins/zoom';
 
 import {LazyLoadImage} from "react-lazy-load-image-component";
-import PlaceholderImg from "../assets/placeholder.svg";
+import PlaceholderImg from "../../assets/placeholder.svg";
 import {useCallback, useRef} from "react";
 import type {InitDetail} from "lightgallery/lg-events";
 import type {GalleryItem} from "lightgallery/lg-utils";

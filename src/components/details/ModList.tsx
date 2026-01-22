@@ -1,10 +1,10 @@
 import {useMemo, useState} from "react";
 import {Accordion, Form, InputGroup, OverlayTrigger, Tooltip} from "react-bootstrap";
-import type {City, GroupedCities, Mod} from "./CityCard.tsx";
-import SadChirper from "../assets/sadChirpyOutline.svg";
+import type {City, GroupedCities, Mod} from "../home/CityCard.tsx";
+import SadChirper from "../../assets/sadChirpyOutline.svg";
 import {ModCard} from "./ModCard.tsx";
 
-import "../css/components/ModList.scss"
+import "../../css/components/ModList.scss"
 import InfiniteScroll from "react-infinite-scroll-component";
 import {PlaceholderModCard} from "./PlaceholderModCard.tsx";
 import {useDebounceCallback} from "usehooks-ts";

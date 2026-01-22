@@ -1,7 +1,7 @@
 import {Card} from "react-bootstrap";
 import {ArrowUpRight, Cake, Eye, Heart, Images} from "react-bootstrap-icons";
 import {NavLink} from "react-router";
-import type {Creator} from "./CityCard.tsx";
+import type {Creator} from "../home/CityCard.tsx";
 
 const Socials: {[key: string]: string} = {
   "discord": "Discord",

@@ -1,10 +1,10 @@
 import {Button, Form, OverlayTrigger, Tooltip} from "react-bootstrap";
-import {SortOrderButton} from "../components/SortOrderButton.tsx";
+import {SortOrderButton} from "../components/home/SortOrderButton.tsx";
 import {useEffect, useMemo, useState} from "react";
 import type {ContextType} from "../App.tsx";
-import {SortDropdown} from "../components/SortDropdown.tsx";
-import {type City, CityCard, type GroupedCities} from "../components/CityCard.tsx";
-import {PlaceholderCard} from "../components/PlaceholderCard.tsx";
+import {SortDropdown} from "../components/home/SortDropdown.tsx";
+import {type City, CityCard, type GroupedCities} from "../components/home/CityCard.tsx";
+import {PlaceholderCard} from "../components/home/PlaceholderCard.tsx";
 import {useOutletContext, useSearchParams} from "react-router";
 import {handleSetSearchParams} from "../utils/SearchParamHandlers.ts";
 import InfiniteScroll from "react-infinite-scroll-component";

@@ -1,5 +1,5 @@
 import './css/App.scss'
-import {type City, type GroupedCities} from "./components/CityCard.tsx";
+import {type City, type GroupedCities} from "./components/home/CityCard.tsx";
 import {Container, Navbar} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import {Sidebar} from "./components/Sidebar.tsx";

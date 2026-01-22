@@ -1,7 +1,7 @@
 import {Badge, Card, OverlayTrigger, Tooltip} from "react-bootstrap";
 import {Heart, Eye, Person, Images} from "react-bootstrap-icons";
 import {LazyLoadImage} from "react-lazy-load-image-component";
-import PlaceholderImg from "../assets/placeholder.svg"
+import PlaceholderImg from "../../assets/placeholder.svg"
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 import {NavLink} from "react-router";
 
