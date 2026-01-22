@@ -56,9 +56,10 @@ interface SocialPlatform {
   clicks: number;
 }
 
-export interface GroupedCities extends Omit<City, "imageUrlFHD" | "imageUrl4K"> {
+export interface GroupedCities extends Omit<City, "imageUrlFHD" | "imageUrl4K" | "imageUrlThumbnail"> {
   imageUrlFHD: string[];
   imageUrl4K: string[];
+  imageUrlThumbnail: string[];
 }
 
 export interface Creator {
@@ -81,10 +82,10 @@ interface CityCardProps {
 export const CityCard = ({city, setCity, isCitiesGrouped}: CityCardProps) => {
   let thumbnailImgUrl;
 
-  if (Array.isArray(city.imageUrlFHD)) {
-    thumbnailImgUrl = city.imageUrlFHD[city.imageUrlFHD.length - 1];
+  if (Array.isArray(city.imageUrlThumbnail)) {
+    thumbnailImgUrl = city.imageUrlThumbnail[city.imageUrlThumbnail.length - 1];
   } else {
-    thumbnailImgUrl = city.imageUrlFHD;
+    thumbnailImgUrl = city.imageUrlThumbnail;
   }
 
   return (

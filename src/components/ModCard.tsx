@@ -38,6 +38,7 @@ const ModCard = ({fetchStatus, showcasedMod}: ModCardProps) => {
           wrapperClassName="col-12 col-md-4 w-100 w-md-25"
           className="h-100 w-100 object-fit-cover"
           src={showcasedMod?.thumbnailUrl}
+          style={{aspectRatio: "1/1"}}
           alt=""
           effect="black-and-white"
           placeholder={

@@ -57,7 +57,7 @@ function groupCities(citiesToGroup: City[]) {
         creatorId: screenshot.creatorId,
         imageUrl4K: (!screenshotStat.combinedStats?.imageUrl4K) ? [] : screenshotStat.combinedStats.imageUrl4K,
         imageUrlFHD: (!screenshotStat.combinedStats?.imageUrlFHD) ? [] : screenshotStat.combinedStats.imageUrlFHD,
-        imageUrlThumbnail: screenshot.imageUrlThumbnail,
+        imageUrlThumbnail: (!screenshotStat.combinedStats?.imageUrlThumbnail) ? [] : screenshotStat.combinedStats.imageUrlThumbnail,
         mapName: screenshot.mapName,
         paradoxModIds: screenshot.paradoxModIds,
         shareParadoxModIds: screenshot.shareParadoxModIds,
@@ -67,6 +67,7 @@ function groupCities(citiesToGroup: City[]) {
 
       screenshotStat.combinedStats?.imageUrlFHD.push(screenshot.imageUrlFHD);
       screenshotStat.combinedStats?.imageUrl4K.push(screenshot.imageUrl4K);
+      screenshotStat.combinedStats?.imageUrlThumbnail.push(screenshot.imageUrlThumbnail);
     });
 
     if (screenshotStat.combinedStats) {
