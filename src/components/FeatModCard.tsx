@@ -11,7 +11,7 @@ interface ModCardProps {
   showcasedMod?: Mod;
 }
 
-const ModCard = ({fetchStatus, showcasedMod}: ModCardProps) => {
+export const FeatModCard = ({fetchStatus, showcasedMod}: ModCardProps) => {
   let content;
 
   if (fetchStatus !== 200) {
@@ -76,5 +76,3 @@ const ModCard = ({fetchStatus, showcasedMod}: ModCardProps) => {
     </>
   )
 }
-
-export default ModCard;

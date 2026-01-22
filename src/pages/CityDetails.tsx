@@ -4,12 +4,11 @@ import type {ContextType} from "../App.tsx";
 import {ChevronDown, ChevronLeft, Eye, Heart, Person, Trophy} from "react-bootstrap-icons";
 import {lazy, useEffect, useState} from "react";
 import {DEFAULT_IMAGES_PER_PAGE} from "../components/CityGallery.tsx";
-// import ModCard from "../components/ModCard.tsx";
 
 import PlaceholderImg from "../assets/placeholder.svg"
 import SadChirper from "../assets/sadChirpyOutline.svg";
-import {PlaceholderModCard} from "../components/PlaceholderModCard.tsx";
-import ModCard from "../components/ModCard.tsx";
+import {PlaceholderFeatModCard} from "../components/PlaceholderFeatModCard.tsx";
+import {FeatModCard} from "../components/FeatModCard.tsx";
 
 const CityGallery = lazy(() => import("../components/CityGallery.tsx"));
 
@@ -86,6 +85,7 @@ export const CityDetails = () => {
     }
 
   }, []);
+
 
   // console.log(city);
   // console.log("Fetch status:", fetchStatus);
@@ -221,7 +221,6 @@ export const CityDetails = () => {
     }
   }
 
-  // Get the imageUrlFHD key from city to prevent eslint from screaming TS2322
   const imageUrlFHD = !Array.isArray(city.imageUrlFHD) ? [city.imageUrlFHD] : city.imageUrlFHD;
   const isLastPage = (Math.ceil(imageUrlFHD.length / DEFAULT_IMAGES_PER_PAGE) - page) === 0;
 
@@ -270,9 +269,9 @@ export const CityDetails = () => {
               <section className="mb-3">
                 <Card.Title>Showcased Asset/Map</Card.Title>
                 {isLoadingMod || !city.showcasedMod ? (
-                  <PlaceholderModCard />
+                  <PlaceholderFeatModCard />
                 ) : (
-                  <ModCard fetchStatus={fetchStatus} showcasedMod={city.showcasedMod} />
+                  <FeatModCard fetchStatus={fetchStatus} showcasedMod={city.showcasedMod} />
                 )}
                 {/*<a href={`https://mods.paradoxplaza.com/mods/${city.showcasedModId}/Windows`} target="_blank">*/}
                 {/*  {city.showcasedModId}*/}
@@ -313,7 +312,9 @@ export const CityDetails = () => {
               {city.shareParadoxModIds ? (
                 <Accordion>
                   <Accordion.Item eventKey="0">
-                    <Accordion.Header>{city.paradoxModIds.length} mods used</Accordion.Header>
+                    <Accordion.Header>
+                      {city.paradoxModIds.length} mods used
+                    </Accordion.Header>
                     <Accordion.Body>
                       <ul className="list-unstyled d-flex flex-row flex-wrap gap-2 mb-0">
                         {city.paradoxModIds.length > 0 ? city.paradoxModIds.map(mod =>

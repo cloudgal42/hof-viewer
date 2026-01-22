@@ -1,7 +1,7 @@
 import {Card, Placeholder} from "react-bootstrap";
 import PlaceholderImg from "../assets/placeholder.svg";
 
-export const PlaceholderModCard = () => {
+export const PlaceholderFeatModCard = () => {
   return (
     <Card className="row flex-md-row gx-0">
       <img
