@@ -8,6 +8,13 @@ import "../css/components/ModList.scss"
 import InfiniteScroll from "react-infinite-scroll-component";
 import {PlaceholderModCard} from "./PlaceholderModCard.tsx";
 import {useDebounceCallback} from "usehooks-ts";
+import * as React from "react";
+
+interface ModCategories {
+  mod: boolean;
+  map: boolean;
+  prefab: boolean;
+}
 
 interface ModListProps {
   city: City | GroupedCities;
@@ -20,6 +27,11 @@ export const ModList = ({city}: ModListProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [modList, setModList] = useState<Mod[]>([]);
 
+  const [categories, setCategories] = useState<ModCategories>({
+    mod: false,
+    map: false,
+    prefab: false,
+  });
   const [search, setSearch] = useState<string>("");
   const [page, setPage] = useState<number>(1);
 
@@ -29,6 +41,34 @@ export const ModList = ({city}: ModListProps) => {
     setSearch(e.target.value);
     setIsLoading(false);
   }, 600);
+
+  function handleSetCategory(e: React.ChangeEvent<HTMLInputElement>) {
+    const {name, checked} = e.currentTarget;
+
+    setCategories(a => {
+      return {...a, [name]: checked};
+    })
+  }
+
+  function filterModList(list: Mod[]) {
+    const categoryList = Object.entries(categories)
+      .filter(([key, value]) => value === true)
+      .map(([key, value]) => {
+        if (key === "mod") return "code mod"
+        return key;
+      });
+    if (categoryList.length === 0) return list;
+
+    return list.filter(mod => {
+      // Filters out any assets that are labelled as "Code Mods"
+      // due to using old way of importing assets/EAI
+      // Some assets will still be included due to lack of a "Prefab" tag
+      if (categoryList.includes("code mod")
+        && !categoryList.includes("prefab")
+        && mod.tags.includes("prefab")) return false
+      return mod.tags.some(tag => categoryList.includes(tag.toLowerCase()));
+    });
+  }
 
   async function getPlayset() {
     if (modList.length > 0 || city.paradoxModIds.length === 0 || !city.shareParadoxModIds) {
@@ -49,14 +89,14 @@ export const ModList = ({city}: ModListProps) => {
     }
   }
 
+  const filteredModList = filterModList(modList);
+
   const searchedModList = useMemo(() => {
-    if (!search) return modList;
-    return modList.filter(mod => {
+    if (!search) return filteredModList;
+    const query = search.toLowerCase();
+    return filteredModList.filter(mod => {
       // TODO: Implement searching by character (i.e. user can search "a"
       // and returns any mod name or author with the character "a")
-      const query = search
-        .toLowerCase()
-      // .split(" ");
       const tags = mod.tags.map(tag => tag.toLowerCase());
       const matchesName = mod.name
         .toLowerCase()
@@ -71,7 +111,7 @@ export const ModList = ({city}: ModListProps) => {
       return matchesName || matchesAuthor || matchesTags;
     });
 
-  }, [modList, search]);
+  }, [filteredModList, search]);
 
   const paginatedModList = searchedModList.toSpliced(page * DEFAULT_MODS_PER_PAGE);
 
@@ -164,29 +204,61 @@ export const ModList = ({city}: ModListProps) => {
           </Accordion.Header>
           <Accordion.Body>
             <InputGroup className="mb-3">
-              <Form.Control
-                type="text"
-                name="modSearch"
-                aria-label="Search by name, tags or author"
-                placeholder="Mod name, tags or author..."
-                onChange={(e) => {
-                  setIsLoading(true);
-                  debouncedSetSearch(e);
-                }}
-              />
-              <OverlayTrigger overlay={
-                <Tooltip>Hides mod thumbnail for a more compact view.</Tooltip>
-              }>
-                <InputGroup.Text>
+              <div className="w-100 mb-2">
+                <Form.Control
+                  type="text"
+                  name="modSearch"
+                  aria-label="Search by name, tags or author"
+                  placeholder="Search by name, tags or author..."
+                  onChange={(e) => {
+                    setIsLoading(true);
+                    debouncedSetSearch(e);
+                  }}
+                />
+              </div>
+              <div className="d-flex flex-column flex-md-row">
+                <OverlayTrigger overlay={
+                  <Tooltip>Hides mod thumbnail for a more compact view.</Tooltip>
+                }>
+                  <div className="pe-md-2">
+                    <Form.Check
+                      type="checkbox"
+                      name="compactMode"
+                      id="compactMode"
+                      label="Hide Thumbnails"
+                      onChange={(e) => setIsCompactMode(e.currentTarget.checked)}
+                    />
+                  </div>
+                </OverlayTrigger>
+                <div className="d-none d-md-block" style={{borderRight: "1px solid gray"}}></div>
+                <div className="ps-md-2 d-flex flex-column flex-md-row gap-1 gap-md-3">
+                  <p className="mb-0">Category: </p>
                   <Form.Check
                     type="checkbox"
-                    name="compactMode"
-                    id="compactMode"
-                    onChange={(e) => setIsCompactMode(e.currentTarget.checked)}
+                    name="mod"
+                    id="mod"
+                    label="Mods"
+                    checked={categories.mod}
+                    onChange={handleSetCategory}
                   />
-                  <label className="ms-2" htmlFor="compactMode">Compact Mode</label>
-                </InputGroup.Text>
-              </OverlayTrigger>
+                  <Form.Check
+                    type="checkbox"
+                    name="map"
+                    id="map"
+                    label="Maps"
+                    checked={categories.map}
+                    onChange={handleSetCategory}
+                  />
+                  <Form.Check
+                    type="checkbox"
+                    name="prefab"
+                    id="prefab"
+                    label="Assets"
+                    checked={categories.prefab}
+                    onChange={handleSetCategory}
+                  />
+                </div>
+              </div>
             </InputGroup>
             {accordionBody}
           </Accordion.Body>
