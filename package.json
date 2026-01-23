@@ -13,6 +13,7 @@
     "@netlify/vite-plugin": "^2.7.20",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.8",
+    "fuse.js": "^7.1.0",
     "lightgallery": "^2.9.0",
     "react": "^19.2.0",
     "react-bootstrap": "^2.10.10",
