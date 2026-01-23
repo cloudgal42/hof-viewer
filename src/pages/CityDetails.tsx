@@ -1,7 +1,7 @@
 import {Button, Card, OverlayTrigger, Placeholder, Tooltip} from "react-bootstrap";
 import {NavLink, useNavigate, useOutletContext, useParams, useSearchParams} from "react-router";
 import type {ContextType} from "../App.tsx";
-import {ChevronDown, ChevronLeft, Eye, Heart, Person, Trophy} from "react-bootstrap-icons";
+import {BoxArrowUpRight, ChevronDown, ChevronLeft, Eye, Heart, Person, Trophy} from "react-bootstrap-icons";
 import {lazy, Suspense, useEffect, useState} from "react";
 import {DEFAULT_IMAGES_PER_PAGE} from "../components/details/CityGallery.tsx";
 
@@ -128,13 +128,13 @@ const CityDetails = () => {
           <div className="mb-2">
             <h2 className="mb-0">
               <Placeholder animation="glow">
-                <Placeholder xs={5} size="lg" />
+                <Placeholder xs={5} size="lg"/>
               </Placeholder>
             </h2>
           </div>
           <h3 className="text-muted fs-5">
             <Placeholder animation="glow">
-              <Placeholder xs={3} size="lg" />
+              <Placeholder xs={3} size="lg"/>
             </Placeholder>
           </h3>
           <section id="gallery" className="mt-3 position-relative">
@@ -153,62 +153,70 @@ const CityDetails = () => {
               <Card.Body>
                 <section className="mb-3">
                   <Placeholder className="mb-1" animation="glow">
-                    <Placeholder className="d-block mb-2" as={Card.Title} xs={3} />
-                    <Placeholder className="d-block mb-2" as={Card.Text} xs={5} />
+                    <Placeholder className="d-block mb-2" as={Card.Title} xs={3}/>
+                    <Placeholder className="d-block mb-2" as={Card.Text} xs={5}/>
                   </Placeholder>
                   <ul className="list-unstyled mb-0 row">
                     <li className="d-flex gap-2 align-items-center col-sm-6 col-md-4 col-lg-3">
                       <Person/>
                       <span className="visually-hidden">Population</span>
                       <Placeholder as={Card.Text} animation="glow" className="flex-grow-1">
-                        <Placeholder xs={1} />
+                        <Placeholder xs={1}/>
                       </Placeholder>
                     </li>
                     <li className="d-flex gap-2 align-items-center col-sm-6 col-md-4 col-lg-3">
                       <Trophy/>
                       <span className="visually-hidden">Milestone</span>
                       <Placeholder as={Card.Text} animation="glow" className="flex-grow-1">
-                        <Placeholder xs={1} />
+                        <Placeholder xs={1}/>
                       </Placeholder>
                     </li>
                     <li className="d-flex gap-2 align-items-center col-sm-6 col-md-4 col-lg-3">
                       <Eye/>
                       <span className="visually-hidden">Unique Views</span>
                       <Placeholder as={Card.Text} animation="glow" className="flex-grow-1">
-                        <Placeholder xs={1} />
+                        <Placeholder xs={1}/>
                       </Placeholder>
                     </li>
                     <li className="d-flex gap-2 align-items-center col-sm-6 col-md-4 col-lg-3">
                       <Heart/>
                       <span className="visually-hidden">Favorites</span>
                       <Placeholder as={Card.Text} animation="glow" className="flex-grow-1">
-                        <Placeholder xs={1} />
+                        <Placeholder xs={1}/>
                       </Placeholder>
                     </li>
                   </ul>
                 </section>
                 <section className="mb-3">
                   <Placeholder as={Card.Title} animation="glow">
-                    <Placeholder xs={5} />
+                    <Placeholder xs={5}/>
+                  </Placeholder>
+                  <Placeholder as={Card.Text} animation="glow">
+                    <Placeholder xs={7}/>
+                  </Placeholder>
+                </section>
+                <section className="mb-3">
+                  <Placeholder as={Card.Title} animation="glow">
+                    <Placeholder xs={5}/>
                   </Placeholder>
                   <Card>
                     <Card.Body>
                       <Placeholder as={Card.Text} animation="glow">
-                        <Placeholder xs={4} />
+                        <Placeholder xs={4}/>
                       </Placeholder>
                     </Card.Body>
                   </Card>
                 </section>
                 <section>
                   <Placeholder as={Card.Title} animation="glow">
-                    <Placeholder xs={5} />
+                    <Placeholder xs={5}/>
                   </Placeholder>
                   <Placeholder as={Card.Text} animation="glow">
-                    <Placeholder className="d-block mb-2" xs={6} />
-                    <Placeholder className="d-block mb-2" xs={4} />
-                    <Placeholder className="d-block mb-2" xs={5} />
-                    <Placeholder className="d-block mb-2" xs={4} />
-                    <Placeholder className="d-block mb-2" xs={3} />
+                    <Placeholder className="d-block mb-2" xs={6}/>
+                    <Placeholder className="d-block mb-2" xs={4}/>
+                    <Placeholder className="d-block mb-2" xs={5}/>
+                    <Placeholder className="d-block mb-2" xs={4}/>
+                    <Placeholder className="d-block mb-2" xs={3}/>
                   </Placeholder>
                 </section>
               </Card.Body>
@@ -279,9 +287,9 @@ const CityDetails = () => {
               <section className="mb-3">
                 <Card.Title>Showcased Asset/Map</Card.Title>
                 {isLoadingMod || !city.showcasedMod ? (
-                  <PlaceholderFeatModCard />
+                  <PlaceholderFeatModCard/>
                 ) : (
-                  <FeatModCard fetchStatus={fetchStatus} showcasedMod={city.showcasedMod} />
+                  <FeatModCard fetchStatus={fetchStatus} showcasedMod={city.showcasedMod}/>
                 )}
                 {/*<a href={`https://mods.paradoxplaza.com/mods/${city.showcasedModId}/Windows`} target="_blank">*/}
                 {/*  {city.showcasedModId}*/}
@@ -318,28 +326,27 @@ const CityDetails = () => {
               </ul>
             </section>
             <section className="mb-3">
+              <Card.Title>Map Used</Card.Title>
+              {city.mapName ? (
+                <p>
+                  <span>{city.mapName} (</span>
+                  <a
+                    target="_blank"
+                    className="d-inline-flex align-items-center gap-2"
+                    href={`https://mods.paradoxplaza.com/games/cities_skylines_2?search=${city.mapName}`}
+                  >
+                    Search on PDX Mods
+                    <BoxArrowUpRight width="16" height="16"/>
+                  </a>
+                  )
+                </p>
+              ) : (
+                <p>This screenshot was posted before map sharing was possible.</p>
+              )}
+            </section>
+            <section className="mb-3">
               <Card.Title>Playset</Card.Title>
-              <ModList city={city} />
-              {/*{city.shareParadoxModIds ? (*/}
-              {/*  <Accordion>*/}
-              {/*    <Accordion.Item eventKey="0">*/}
-              {/*      <Accordion.Header>*/}
-              {/*        {city.paradoxModIds.length} mods used*/}
-              {/*      </Accordion.Header>*/}
-              {/*      <Accordion.Body>*/}
-              {/*        <ul className="list-unstyled d-flex flex-row flex-wrap gap-2 mb-0">*/}
-              {/*          {city.paradoxModIds.length > 0 ? city.paradoxModIds.map(mod =>*/}
-              {/*            <a key={mod} href={`https://mods.paradoxplaza.com/mods/${mod}/Windows`} target="_blank">*/}
-              {/*              <li key={mod}>{mod}</li>*/}
-              {/*            </a>*/}
-              {/*          ) : (<p className="mb-0">This city does not use mods.</p>)}*/}
-              {/*        </ul>*/}
-              {/*      </Accordion.Body>*/}
-              {/*    </Accordion.Item>*/}
-              {/*  </Accordion>*/}
-              {/*) : (*/}
-              {/*  <p>Creator has opted not to share their playsets.</p>*/}
-              {/*)}*/}
+              <ModList city={city}/>
             </section>
             <section>
               <Card.Title>Render Settings</Card.Title>
