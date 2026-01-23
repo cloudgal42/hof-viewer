@@ -6,6 +6,7 @@ import {Sidebar} from "./components/Sidebar.tsx";
 import {HamburgerButton} from "./components/HamburgerButton.tsx";
 import {Outlet} from "react-router";
 import {useLocalStorage} from "usehooks-ts";
+import {ToTopBtn} from "./components/ToTopBtn.tsx";
 // import {Screenshots} from "./temp/screenshots.ts";
 
 export type ContextType = {
@@ -49,6 +50,7 @@ const App = () => {
           </Navbar.Brand>
         </Container>
       </Navbar>
+      <ToTopBtn />
       <div className="d-flex flex-grow-1 flex-column flex-nowrap">
         <div className="d-flex flex-row flex-grow-1">
           <aside className="d-none d-lg-block flex-shrink-0">
