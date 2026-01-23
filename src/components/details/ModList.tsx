@@ -9,6 +9,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import {PlaceholderModCard} from "./PlaceholderModCard.tsx";
 import {useDebounceCallback} from "usehooks-ts";
 import * as React from "react";
+import Fuse from "fuse.js";
 
 interface ModCategories {
   mod: boolean;
@@ -90,28 +91,17 @@ export const ModList = ({city}: ModListProps) => {
   }
 
   const filteredModList = filterModList(modList);
+  const fuse = new Fuse(filteredModList, {
+    threshold: 0.2,
+    includeScore: false,
+    keys: ["name", "authorName", "tags"]
+  })
 
-  const searchedModList = useMemo(() => {
-    if (!search) return filteredModList;
-    const query = search.toLowerCase();
-    return filteredModList.filter(mod => {
-      // TODO: Implement searching by character (i.e. user can search "a"
-      // and returns any mod name or author with the character "a")
-      const tags = mod.tags.map(tag => tag.toLowerCase());
-      const matchesName = mod.name
-        .toLowerCase()
-        .split(" ")
-        .includes(query);
-      const matchesAuthor = mod.authorName
-        .toLowerCase()
-        .split(" ")
-        .includes(query);
-      const matchesTags = tags.includes(query);
-
-      return matchesName || matchesAuthor || matchesTags;
+  const searchedModList = search ?
+    fuse.search(search) :
+    filteredModList.map(mod => {
+      return {item: {...mod}}
     });
-
-  }, [filteredModList, search]);
 
   const paginatedModList = searchedModList.toSpliced(page * DEFAULT_MODS_PER_PAGE);
 
@@ -176,11 +166,11 @@ export const ModList = ({city}: ModListProps) => {
           </>
         }
       >
-        {paginatedModList.map(mod =>
+        {paginatedModList.map(entry =>
           <ModCard
-            key={mod.id}
+            key={entry.item.id}
             isCompactMode={isCompactMode}
-            mod={mod}
+            mod={entry.item}
           />
         )}
       </InfiniteScroll>
