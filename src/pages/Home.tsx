@@ -81,7 +81,7 @@ function groupCities(citiesToGroup: City[]) {
 
 const DEFAULT_CITIES_PER_PAGE = 18;
 
-export const Home = () => {
+const Home = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [fetchStatus, setFetchStatus] = useState<number>();
   // const [errMsg, setErrMsg] = useState<string>();
@@ -298,3 +298,4 @@ export const Home = () => {
     </div>
   )
 }
+export default Home

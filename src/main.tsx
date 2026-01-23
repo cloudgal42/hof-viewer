@@ -1,12 +1,13 @@
-import { StrictMode } from 'react'
+import {lazy, StrictMode} from 'react'
 import { createRoot } from 'react-dom/client'
 import './css/App.scss'
 import './css/index.scss'
 import App from './App.tsx'
 import {BrowserRouter, Route, Routes} from "react-router";
-import {Home} from "./pages/Home.tsx";
-import {CityDetails} from "./pages/CityDetails.tsx";
-import {Creators} from "./pages/Creators.tsx";
+
+const Home = lazy(() => import("./pages/Home.tsx"));
+const CityDetails = lazy(() => import("./pages/CityDetails.tsx"));
+const Creators = lazy(() => import("./pages/Creators.tsx"));
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

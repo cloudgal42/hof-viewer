@@ -2,7 +2,7 @@ import {Button, Card, OverlayTrigger, Placeholder, Tooltip} from "react-bootstra
 import {NavLink, useNavigate, useOutletContext, useParams, useSearchParams} from "react-router";
 import type {ContextType} from "../App.tsx";
 import {ChevronDown, ChevronLeft, Eye, Heart, Person, Trophy} from "react-bootstrap-icons";
-import {lazy, useEffect, useState} from "react";
+import {lazy, Suspense, useEffect, useState} from "react";
 import {DEFAULT_IMAGES_PER_PAGE} from "../components/details/CityGallery.tsx";
 
 import PlaceholderImg from "../assets/placeholder.svg"
@@ -36,7 +36,7 @@ const cityMilestones = [
   "Megalopolis",
 ]
 
-export const CityDetails = () => {
+const CityDetails = () => {
   const {
     city, setCity,
   } = useOutletContext<ContextType>();
@@ -243,7 +243,16 @@ export const CityDetails = () => {
       </div>
       <h3 className="text-muted fs-5">by {city.creator.creatorName}</h3>
       <section id="gallery" className="mt-3 position-relative">
-        <CityGallery page={page} imageUrls={imageUrlFHD}/>
+        <Suspense fallback={
+          <img
+            src={PlaceholderImg}
+            alt=""
+            className="w-100"
+            style={{aspectRatio: "16/9"}}
+          />
+        }>
+          <CityGallery page={page} imageUrls={imageUrlFHD}/>
+        </Suspense>
         {/* TODO: Move this button to the CityGallery component. Research React's useContext hook */}
         {!isLastPage && (
           <Button
@@ -351,4 +360,5 @@ export const CityDetails = () => {
   )
 
 }
+export default CityDetails
 

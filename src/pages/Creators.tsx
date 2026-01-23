@@ -6,7 +6,7 @@ import {useSearchParams} from "react-router";
 import {handleSetSearchParams} from "../utils/SearchParamHandlers.ts";
 import SadChirper from "../assets/sadChirpyOutline.svg";
 
-export const Creators = () => {
+const Creators = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [fetchStatus, setFetchStatus] = useState<number>();
 
@@ -133,3 +133,4 @@ export const Creators = () => {
     </div>
   )
 }
+export default Creators

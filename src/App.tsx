@@ -1,7 +1,7 @@
 import './css/App.scss'
 import {type City, type GroupedCities} from "./components/home/CityCard.tsx";
-import {Container, Navbar} from "react-bootstrap";
-import {useEffect, useState} from "react";
+import {Container, Navbar, Spinner} from "react-bootstrap";
+import {Suspense, useEffect, useState} from "react";
 import {Sidebar} from "./components/Sidebar.tsx";
 import {HamburgerButton} from "./components/HamburgerButton.tsx";
 import {Outlet} from "react-router";
@@ -60,7 +60,15 @@ const App = () => {
             />
           </aside>
           <main className="mt-3 mb-3 d-flex flex-grow-1 justify-content-center">
-            <Outlet context={contextParams satisfies ContextType} />
+            <Suspense fallback={
+              <div className="d-flex align-items-center justify-content-center h-100">
+                <Spinner animation="border" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </Spinner>
+              </div>
+            }>
+              <Outlet context={contextParams satisfies ContextType} />
+            </Suspense>
           </main>
         </div>
         <footer className="text-center p-3 bg-body-tertiary">
