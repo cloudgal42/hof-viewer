@@ -318,7 +318,7 @@ const CityDetails = () => {
               </ul>
             </section>
             <section className="mb-3">
-              <Card.Title>Mods Used</Card.Title>
+              <Card.Title>Playset</Card.Title>
               <ModList city={city} />
               {/*{city.shareParadoxModIds ? (*/}
               {/*  <Accordion>*/}

@@ -190,7 +190,7 @@ export const ModList = ({city}: ModListProps) => {
           <Accordion.Header
             onClick={getPlayset}
           >
-            {city.paradoxModIds.length} mods used
+            {city.paradoxModIds.length} PDX mods packages
           </Accordion.Header>
           <Accordion.Body>
             <InputGroup className="mb-3">
