@@ -10,6 +10,7 @@ import SadChirper from "../assets/sadChirpyOutline.svg";
 import {PlaceholderFeatModCard} from "../components/details/PlaceholderFeatModCard.tsx";
 import {FeatModCard} from "../components/details/FeatModCard.tsx";
 import {ModList} from "../components/details/ModList.tsx";
+import {RenderSettings} from "../components/details/RenderSettings.tsx";
 
 const CityGallery = lazy(() => import("../components/details/CityGallery.tsx"));
 
@@ -350,15 +351,7 @@ const CityDetails = () => {
             </section>
             <section>
               <Card.Title>Render Settings</Card.Title>
-              {Object.entries(city.renderSettings).length !== 0 ? (
-                <ul>
-                  {Object.entries(city.renderSettings).map(([key, value]) =>
-                    <li key={key}>{`${key}: ${value}`}</li>
-                  )}
-                </ul>
-              ) : (
-                <p>No render settings found.</p>
-              )}
+              <RenderSettings city={city} />
             </section>
           </Card.Body>
         </Card>
