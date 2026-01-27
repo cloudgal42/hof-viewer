@@ -12,6 +12,7 @@ import {FeatModCard} from "../components/details/FeatModCard.tsx";
 import {ModList} from "../components/details/ModList.tsx";
 import {RenderSettings} from "../components/details/RenderSettings.tsx";
 import {PlaceholderDetails} from "../components/details/PlaceholderDetails.tsx";
+import {CityTrends} from "../components/details/CityTrends.tsx";
 
 const CityGallery = lazy(() => import("../components/details/CityGallery.tsx"));
 
@@ -258,6 +259,12 @@ const CityDetails = () => {
             </section>
           </Card.Body>
         </Card>
+      </section>
+      <section
+        id="trends"
+        className={`mt-3 position-relative ${(isLoadMoreHovered && !isLastPage) && "load-more-hovered"}`}
+      >
+        <CityTrends />
       </section>
     </div>
   )
