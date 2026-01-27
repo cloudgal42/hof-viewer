@@ -1,4 +1,4 @@
-import {useMemo, useState} from "react";
+import {useState} from "react";
 import {Accordion, Form, InputGroup, OverlayTrigger, Tooltip} from "react-bootstrap";
 import type {City, GroupedCities, Mod} from "../home/CityCard.tsx";
 import SadChirper from "../../assets/sadChirpyOutline.svg";
@@ -104,6 +104,7 @@ export const ModList = ({city}: ModListProps) => {
     });
 
   const paginatedModList = searchedModList.toSpliced(page * DEFAULT_MODS_PER_PAGE);
+  const isPlaysetFiltered = Object.values(categories).some(value => value === true);
 
   let content;
   let accordionBody;
@@ -140,7 +141,7 @@ export const ModList = ({city}: ModListProps) => {
         </p>
       </div>
     )
-  } else if (searchedModList.length === 0 && search.length > 0) {
+  } else if (searchedModList.length === 0 && (search.length > 0 || isPlaysetFiltered)) {
     accordionBody = (
       <div className="text-center m-auto my-5">
         <img
@@ -149,7 +150,7 @@ export const ModList = ({city}: ModListProps) => {
           src={SadChirper}
           alt=""
         />
-        <p className="mb-1 text-muted">No mods found :(</p>
+        <p className="mb-1 text-muted">No packages found :(</p>
         <p className="mb-1 text-muted">Double check your query and try again.</p>
       </div>
     )
