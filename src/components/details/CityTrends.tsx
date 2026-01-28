@@ -2,13 +2,15 @@ import {Card, Form, Spinner, ToggleButton, ToggleButtonGroup} from "react-bootst
 import {useState} from "react";
 import type {City, GroupedCities} from "../../interfaces/City.ts";
 import {TrendsChart} from "./TrendsChart.tsx";
+import {ErrorScreen} from "../ErrorScreen.tsx";
 
 interface CityTrendsProps {
   city: City | GroupedCities;
   isLoading: boolean;
+  fetchStatus: number | undefined;
 }
 
-export const CityTrends = ({city, isLoading}: CityTrendsProps) => {
+export const CityTrends = ({city, isLoading, fetchStatus}: CityTrendsProps) => {
   const [trendType, setTrendType] = useState<string>("views");
   const [groupPeriod, setGroupPeriod] = useState<number>(7);
 
@@ -67,16 +69,21 @@ export const CityTrends = ({city, isLoading}: CityTrendsProps) => {
             </div>
           </div>
         </section>
-        {isLoading || !city.views ? (
+        {isLoading ? (
           <div className="d-flex justify-content-center my-5 py-5">
             <Spinner animation="border" role="status">
               <span className="visually-hidden">Loading...</span>
             </Spinner>
           </div>
-        ) : (
+        ) : fetchStatus === 200 ? (
           <section className="bg-white position-relative" style={{minHeight: "50vh"}}>
             <TrendsChart city={city} trendType={trendType} groupPeriod={groupPeriod} />
           </section>
+        ) : (
+          <ErrorScreen
+            errorSummary="Failed to get views/favorites data timestamps of this city :("
+            errorDetails={`HTTP Status: ${fetchStatus}. Please wait and try again.`}
+          />
         )}
       </Card.Body>
     </Card>

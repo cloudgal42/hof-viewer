@@ -16,6 +16,10 @@ interface TrendsChartProps {
   groupPeriod: number;
 }
 
+interface TrendsData {
+  [key: string]: number;
+}
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -97,12 +101,12 @@ function groupDates(start: Date, end: Date, period: number) {
   return groupedDates;
 }
 
-function groupData(city: City | GroupedCities, day: number, type: string) {
+function groupData(city: City | GroupedCities, day: number, type: string): TrendsData | [] {
   // 1. Get the current date and the date posted in ms since the UNIX epoch
   const currDate = new Date();
   const datePosted = new Date(city.createdAt);
   // FIXME: Implement better undefined check
-  if (!city.views && !city.favorites) return;
+  if (!city.views && !city.favorites) return [];
 
   // 1.5. TODO: Define viewEntries array and assign it based on type for unique and non-unique views
   // const viewEntries = (type === "uniqueViews")
@@ -114,6 +118,7 @@ function groupData(city: City | GroupedCities, day: number, type: string) {
 
   // 3. Loop through groupedDates. Within this array, loop through the views/favorites entries
   const groupedData = groupedDates.map(range => {
+
     const startRange = range[0].getTime();
     const endRange = range[1].getTime();
 
@@ -135,12 +140,11 @@ function groupData(city: City | GroupedCities, day: number, type: string) {
 
     return [formatDatesLabel(range[0], range[1], day), rangeCount];
   });
-
   return Object.fromEntries(groupedData);
 }
 
 export const TrendsChart = ({city, trendType, groupPeriod}: TrendsChartProps) => {
-  const groupedCounts = groupData(city, groupPeriod, trendType)
+  const groupedCounts = groupData(city, groupPeriod, trendType);
   const options = {
     responsive: true,
     maintainAspectRatio: false,

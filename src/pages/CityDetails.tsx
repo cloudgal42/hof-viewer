@@ -261,7 +261,7 @@ const CityDetails = () => {
           id="trends"
           className={`mt-3 position-relative ${(isLoadMoreHovered && !isLastPage) && "load-more-hovered"}`}
         >
-          <CityTrends city={city} isLoading={isLoadingExtraDetails}/>
+          <CityTrends city={city} isLoading={isLoadingExtraDetails} fetchStatus={fetchStatus}/>
         </section>
       )}
     </div>
