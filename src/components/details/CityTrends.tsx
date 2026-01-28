@@ -10,9 +10,19 @@ interface CityTrendsProps {
   fetchStatus: number | undefined;
 }
 
+const DAYS_IN_MILLISECONDS = 86400000;
+
 export const CityTrends = ({city, isLoading, fetchStatus}: CityTrendsProps) => {
+  const createdAtEpoch = new Date(city.createdAt).getTime();
+  const currEpoch = new Date().getTime();
+
   const [trendType, setTrendType] = useState<string>("views");
-  const [groupPeriod, setGroupPeriod] = useState<number>(7);
+  const [groupPeriod, setGroupPeriod] = useState<number>(() => {
+    if (currEpoch < createdAtEpoch + (DAYS_IN_MILLISECONDS * 7)) return 1;
+    else if (currEpoch > createdAtEpoch + (DAYS_IN_MILLISECONDS * 365 * 2)) return 30;
+
+    return 7;
+  });
 
   return (
     <Card>
@@ -61,10 +71,18 @@ export const CityTrends = ({city, isLoading, fetchStatus}: CityTrendsProps) => {
                 onChange={(e) => setGroupPeriod(parseInt(e.currentTarget.value))}
               >
                 <option value="1">Days</option>
-                <option value="7">Weeks</option>
-                <option value="30">1 Month</option>
-                <option value="180">6 Months</option>
-                <option value="365">1 Year</option>
+                {currEpoch > createdAtEpoch + (DAYS_IN_MILLISECONDS * 7)
+                  && <option value="7">Weeks</option>
+                }
+                {currEpoch > createdAtEpoch + (DAYS_IN_MILLISECONDS * 30)
+                  && <option value="30">1 Month</option>
+                }
+                {currEpoch > createdAtEpoch + (DAYS_IN_MILLISECONDS * 30 * 6)
+                  && <option value="180">6 Months</option>
+                }
+                {currEpoch > createdAtEpoch + (DAYS_IN_MILLISECONDS * 365)
+                  && <option value="365">1 Year</option>
+                }
               </Form.Select>
             </div>
           </div>
@@ -77,7 +95,7 @@ export const CityTrends = ({city, isLoading, fetchStatus}: CityTrendsProps) => {
           </div>
         ) : fetchStatus === 200 ? (
           <section className="bg-white position-relative" style={{minHeight: "50vh"}}>
-            <TrendsChart city={city} trendType={trendType} groupPeriod={groupPeriod} />
+            <TrendsChart city={city} trendType={trendType} groupPeriod={groupPeriod}/>
           </section>
         ) : (
           <ErrorScreen

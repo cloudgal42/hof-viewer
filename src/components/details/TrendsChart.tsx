@@ -29,7 +29,7 @@ ChartJS.register(
   Legend
 );
 
-const DAY_IN_MILLISECONDS = 86400000;
+const DAYS_IN_MILLISECONDS = 86400000;
 
 function getFormattedTrendType(trend: string) {
   switch (trend) {
@@ -92,7 +92,7 @@ function groupDates(start: Date, end: Date, period: number) {
 
   while (currEpoch < endEpoch) {
     const startRange = new Date(currEpoch);
-    currEpoch += period * DAY_IN_MILLISECONDS;
+    currEpoch += period * DAYS_IN_MILLISECONDS;
     const endRange = (currEpoch > endEpoch) ? new Date(endEpoch) : new Date(currEpoch);
 
     groupedDates.push([startRange, endRange]);
