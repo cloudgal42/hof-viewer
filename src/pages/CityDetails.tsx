@@ -13,6 +13,7 @@ import {ModList} from "../components/details/ModList.tsx";
 import {RenderSettings} from "../components/details/RenderSettings.tsx";
 import {PlaceholderDetails} from "../components/details/PlaceholderDetails.tsx";
 import {CityTrends} from "../components/details/CityTrends.tsx";
+import {ErrorScreen} from "../components/ErrorScreen.tsx";
 
 const CityGallery = lazy(() => import("../components/details/CityGallery.tsx"));
 
@@ -99,36 +100,30 @@ const CityDetails = () => {
   if (!city) {
     if (fetchStatus !== 200 && fetchStatus || isCitiesGrouped) {
       return (
-        <div className="d-flex flex-column align-items-center text-center">
-          <img src={SadChirper} width="148" height="148" alt=""/>
-          <p className="text-muted mb-1">
-            {fetchStatus === 404 || !fetchStatus ?
-              "No city/screenshot found :(" :
-              "Something went wrong :("
-            }
-          </p>
-          <p className="text-muted mb-1">
-            {fetchStatus === 404 || !fetchStatus ?
-              (
-                <>
-                  The city/screenshot you are looking for does not exist.
-                  Try searching in <NavLink to="/">Browse by Creator ID</NavLink>?
-                </>
-              ) : (
-                <>
-                  HTTP status code: {fetchStatus}. Please wait for a while and try again.
-                </>
-              )
-            }
-          </p>
-          <p className="text-muted mb-1">
-            NOTE: For now grouped screenshots will be inaccessible upon page reload. Sorry about that!
-          </p>
-        </div>
+        <ErrorScreen
+          errorSummary={fetchStatus === 404 || !fetchStatus ?
+            "No city/screenshot found :(" :
+            "Something went wrong :("
+          }
+          errorDetails={fetchStatus === 404 || !fetchStatus ? (
+            <>
+              <p className="mb-1">
+                The city/screenshot you are looking for does not exist.
+                Try searching in <NavLink to="/">Browse by Creator ID</NavLink>?
+              </p>
+              <p>NOTE: For now grouped screenshots will be inaccessible upon page reload. Sorry about that!</p>
+            </>
+          ) : (
+            <>
+              <p className="mb-1">HTTP status code: {fetchStatus}. Please wait for a while and try again.</p>
+              <p>NOTE: For now grouped screenshots will be inaccessible upon page reload. Sorry about that!</p>
+            </>
+          )}
+        />
       )
     } else if (isLoading || fetchStatus === 200) {
       return (
-        <PlaceholderDetails />
+        <PlaceholderDetails/>
       );
     } else {
       // TODO: There has to be a better solution to this
@@ -256,7 +251,7 @@ const CityDetails = () => {
             </section>
             <section>
               <Card.Title>Render Settings</Card.Title>
-              <RenderSettings city={city} />
+              <RenderSettings city={city}/>
             </section>
           </Card.Body>
         </Card>
@@ -266,7 +261,7 @@ const CityDetails = () => {
           id="trends"
           className={`mt-3 position-relative ${(isLoadMoreHovered && !isLastPage) && "load-more-hovered"}`}
         >
-          <CityTrends city={city} isLoading={isLoadingExtraDetails} />
+          <CityTrends city={city} isLoading={isLoadingExtraDetails}/>
         </section>
       )}
     </div>

@@ -12,6 +12,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import SadChirper from "../assets/sadChirpyOutline.svg";
 import {groupCities} from "../utils/GroupCities.ts";
 import type {City, GroupedCities} from "../interfaces/City.ts";
+import {ErrorScreen} from "../components/ErrorScreen.tsx";
 
 const DEFAULT_CITIES_PER_PAGE = 18;
 
@@ -158,18 +159,12 @@ const Home = () => {
     );
   } else if (fetchStatus && fetchStatus !== 200) {
     content = (
-      <div className="d-flex flex-column align-items-center text-center">
-        <img src={SadChirper} width="148" height="148" alt="" />
-        <p className="text-muted mb-1">
-          {fetchStatus === 404 ? "No cities found :(" : "Something went wrong :("}
-        </p>
-        <p className="text-muted mb-1">
-          {fetchStatus === 404 ?
-            "Either the creator doesn't exist, or they have not posted any screenshots."
-            : `HTTP status code: ${fetchStatus}. Please wait for a while and try again.`
-          }
-        </p>
-      </div>
+      <ErrorScreen
+        errorSummary={fetchStatus === 404 ? "No cities found :(" : "Something went wrong :("}
+        errorDetails={fetchStatus === 404 ?
+          "Either the creator doesn't exist, or they have not posted any screenshots."
+          : `HTTP status code: ${fetchStatus}. Please wait for a while and try again.`}
+      />
     )
   } else {
     content = <p>Search by the creator name/ID to get started.</p>
@@ -209,7 +204,8 @@ const Home = () => {
                 }}
                 defaultChecked={groupStatus === "on"}
               />
-              <OverlayTrigger overlay={<Tooltip>When enabled, group all screenshots with the same city name into one entry.</Tooltip>}>
+              <OverlayTrigger overlay={<Tooltip>When enabled, group all screenshots with the same city name into one
+                entry.</Tooltip>}>
                 <Form.Label
                   htmlFor="groupCitiesCheck"
                   className="mb-0"

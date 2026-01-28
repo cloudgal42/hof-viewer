@@ -1,6 +1,5 @@
 import {useState} from "react";
 import {Accordion, Form, InputGroup, OverlayTrigger, Tooltip} from "react-bootstrap";
-import SadChirper from "../../assets/sadChirpyOutline.svg";
 import {ModCard} from "./ModCard.tsx";
 
 import "../../css/components/ModList.scss"
@@ -11,6 +10,7 @@ import * as React from "react";
 import Fuse from "fuse.js";
 import type {City, GroupedCities} from "../../interfaces/City.ts";
 import type {Mod} from "../../interfaces/Mod.ts";
+import {ErrorScreen} from "../ErrorScreen.tsx";
 
 interface ModCategories {
   mod: boolean;
@@ -129,31 +129,20 @@ export const ModList = ({city}: ModListProps) => {
     )
   } else if (fetchStatus !== 200 && fetchStatus) {
     accordionBody = (
-      <div className="text-center m-auto my-3">
-        <img
-          width="128"
-          height="128"
-          src={SadChirper}
-          alt=""
-        />
-        <p className="mb-1 text-muted">Failed to get playset data :(</p>
-        <p className="mb-1 text-muted">
-          {fetchStatus === 404 ? "The playset data does not exist" : `HTTP Status: ${fetchStatus}. Please wait for a moment and try again.`}
-        </p>
-      </div>
+      <ErrorScreen
+        errorSummary={"Failed to get playset data :("}
+        errorDetails={fetchStatus === 404 ?
+          "The playset data does not exist" :
+          `HTTP Status: ${fetchStatus}. Please wait for a moment and try again.`
+        }
+      />
     )
   } else if (searchedModList.length === 0 && (search.length > 0 || isPlaysetFiltered)) {
     accordionBody = (
-      <div className="text-center m-auto my-5">
-        <img
-          width="128"
-          height="128"
-          src={SadChirper}
-          alt=""
-        />
-        <p className="mb-1 text-muted">No packages found :(</p>
-        <p className="mb-1 text-muted">Double check your query and try again.</p>
-      </div>
+      <ErrorScreen
+        errorSummary={"No packages found :("}
+        errorDetails={"Double check your query or filters and try again."}
+      />
     )
   } else {
     accordionBody = (
