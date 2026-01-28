@@ -4,9 +4,13 @@ import type {LightGallery as ILightGallery} from 'lightgallery/lightgallery.d.ts
 import 'lightgallery/css/lightgallery.css';
 import 'lightgallery/css/lg-zoom.css';
 import 'lightgallery/css/lg-thumbnail.css';
+import 'lightgallery/css/lg-fullscreen.css';
+import 'lightgallery/css/lg-autoplay.css';
 
 import lgThumbnail from 'lightgallery/plugins/thumbnail';
 import lgZoom from 'lightgallery/plugins/zoom';
+import lgFullscreen from 'lightgallery/plugins/fullscreen';
+import lgAutoplay from 'lightgallery/plugins/autoplay';
 
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import PlaceholderImg from "../../assets/placeholder.svg";
@@ -69,7 +73,7 @@ const CityGallery = ({imageUrls, page}: GalleryProps) => {
         <LightGallery
           onInit={onInit}
           speed={500}
-          plugins={[lgThumbnail, lgZoom]}
+          plugins={[lgThumbnail, lgZoom, lgFullscreen, lgAutoplay]}
           dynamic={true}
           dynamicEl={lightboxItems}
           licenseKey="0000-0000-000-000" // FIXME
