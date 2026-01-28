@@ -145,6 +145,8 @@ function groupData(city: City | GroupedCities, day: number, type: string): Trend
 
 export const TrendsChart = ({city, trendType, groupPeriod}: TrendsChartProps) => {
   const groupedCounts = groupData(city, groupPeriod, trendType);
+  const chartName = `${getFormattedTrendType(trendType)} per ${groupPeriod} day(s)`;
+
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -154,7 +156,7 @@ export const TrendsChart = ({city, trendType, groupPeriod}: TrendsChartProps) =>
       },
       title: {
         display: true,
-        text: getFormattedTrendType(trendType),
+        text: chartName,
       },
     },
   };
@@ -165,7 +167,7 @@ export const TrendsChart = ({city, trendType, groupPeriod}: TrendsChartProps) =>
     labels,
     datasets: [
       {
-        label: getFormattedTrendType(trendType),
+        label: chartName,
         data: Object.values(groupedCounts),
         backgroundColor: (trendType === "favorites") ?
           "rgba(255, 99, 132, 0.5)" :
