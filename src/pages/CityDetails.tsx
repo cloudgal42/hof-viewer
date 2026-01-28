@@ -50,7 +50,7 @@ const CityDetails = () => {
   const [fetchStatus, setFetchStatus] = useState<number>();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isLoadingMod, setIsLoadingMod] = useState<boolean>(false);
+  const [isLoadingExtraDetails, setisLoadingExtraDetails] = useState<boolean>(false);
 
   const [searchParams] = useSearchParams();
   const cityParam = useParams().city;
@@ -59,13 +59,14 @@ const CityDetails = () => {
 
   useEffect(() => {
     let ignore = false;
-    if (!city && isCitiesGrouped || isCitiesGrouped || city && !city.showcasedModId) return;
+    if (!city && isCitiesGrouped || isCitiesGrouped) return;
 
     async function getCity() {
       if (!city) {
         setIsLoading(true);
       }
-      setIsLoadingMod(true);
+
+      setisLoadingExtraDetails(true);
       const res = await fetch(`https://halloffame.cs2.mtq.io/api/v1/screenshots/${cityParam}?favorites=true&views=true`);
       const data = await res.json();
 
@@ -74,9 +75,9 @@ const CityDetails = () => {
       if (res.ok && !ignore) {
         setCity(data);
         setIsLoading(false);
-        setIsLoadingMod(false);
+        setisLoadingExtraDetails(false);
       } else {
-        setIsLoadingMod(false);
+        setisLoadingExtraDetails(false);
         setIsLoading(false);
       }
 
@@ -191,7 +192,7 @@ const CityDetails = () => {
             {city.showcasedModId && (
               <section className="mb-3">
                 <Card.Title>Showcased Asset/Map</Card.Title>
-                {isLoadingMod || !city.showcasedMod ? (
+                {isLoadingExtraDetails || !city.showcasedMod ? (
                   <PlaceholderFeatModCard/>
                 ) : (
                   <FeatModCard fetchStatus={fetchStatus} showcasedMod={city.showcasedMod}/>
@@ -260,12 +261,14 @@ const CityDetails = () => {
           </Card.Body>
         </Card>
       </section>
-      <section
-        id="trends"
-        className={`mt-3 position-relative ${(isLoadMoreHovered && !isLastPage) && "load-more-hovered"}`}
-      >
-        <CityTrends />
-      </section>
+      {!Array.isArray(city.imageUrlFHD) && (
+        <section
+          id="trends"
+          className={`mt-3 position-relative ${(isLoadMoreHovered && !isLastPage) && "load-more-hovered"}`}
+        >
+          <CityTrends city={city} isLoading={isLoadingExtraDetails} />
+        </section>
+      )}
     </div>
   )
 

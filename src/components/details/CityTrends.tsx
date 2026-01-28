@@ -1,15 +1,22 @@
-import {Card, Form, ToggleButton, ToggleButtonGroup} from "react-bootstrap";
+import {Card, Form, Spinner, ToggleButton, ToggleButtonGroup} from "react-bootstrap";
 import {useState} from "react";
+import type {City, GroupedCities} from "../../interfaces/City.ts";
+import {TrendsChart} from "./TrendsChart.tsx";
 
-export const CityTrends = () => {
+interface CityTrendsProps {
+  city: City | GroupedCities;
+  isLoading: boolean;
+}
+
+export const CityTrends = ({city, isLoading}: CityTrendsProps) => {
   const [trendType, setTrendType] = useState<string>("views");
-  const [groupPeriod, setGroupPeriod] = useState<number>(30);
+  const [groupPeriod, setGroupPeriod] = useState<number>(7);
 
   return (
     <Card>
       <Card.Body>
         <Card.Title>Trends</Card.Title>
-        <div className="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center gap-2">
+        <section className="mb-2 d-flex flex-column flex-md-row justify-content-md-between align-items-md-center gap-2">
           <div>
             <ToggleButtonGroup
               type="radio"
@@ -26,13 +33,13 @@ export const CityTrends = () => {
               >
                 Views
               </ToggleButton>
-              <ToggleButton
-                value="uniqueViews"
-                id="uniqueViews"
-                variant="outline-primary"
-              >
-                Views (Unique)
-              </ToggleButton>
+              {/*<ToggleButton*/}
+              {/*  value="uniqueViews"*/}
+              {/*  id="uniqueViews"*/}
+              {/*  variant="outline-primary"*/}
+              {/*>*/}
+              {/*  Views (Unique)*/}
+              {/*</ToggleButton>*/}
               <ToggleButton
                 value="favorites"
                 id="favorites"
@@ -59,11 +66,18 @@ export const CityTrends = () => {
               </Form.Select>
             </div>
           </div>
-        </div>
-        {/* FIXME */}
-        <div className="py-5 my-5"></div>
-        <div className="d-flex flex-column flex-md-row align-items-md-center gap-2">
-        </div>
+        </section>
+        {isLoading || !city.views ? (
+          <div className="d-flex justify-content-center my-5 py-5">
+            <Spinner animation="border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+          </div>
+        ) : (
+          <section className="bg-white position-relative" style={{minHeight: "50vh"}}>
+            <TrendsChart city={city} trendType={trendType} groupPeriod={groupPeriod} />
+          </section>
+        )}
       </Card.Body>
     </Card>
   )

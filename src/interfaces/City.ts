@@ -1,6 +1,22 @@
 import type {Creator} from "./Creator.ts";
 import type {Mod} from "./Mod.ts";
 
+interface Views {
+  id: string;
+  viewedAt: string;
+  creatorId: string;
+  creator: Creator;
+  screenshotId: string;
+}
+
+interface Favorites {
+  id: string;
+  favoritedAt: string;
+  creatorId: string;
+  creator: Creator;
+  screenshotId: string;
+}
+
 export interface City {
   id: string;
   isApproved: boolean;
@@ -31,8 +47,8 @@ export interface City {
   renderSettings: object; // TODO: Maybe define an interface for this?
   showcasedMod?: Mod;
   showcasedModId?: number;
-  favorites?: Creator[];
-  views?: Creator[];
+  favorites?: Favorites[];
+  views?: Views[];
   __favorited: boolean;
 }
 
