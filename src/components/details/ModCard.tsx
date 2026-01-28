@@ -1,8 +1,8 @@
-import type {Mod} from "../home/CityCard.tsx";
 import {Card} from "react-bootstrap";
 import PlaceholderImg from "../../assets/placeholder.svg";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import {BoxArrowUpRight} from "react-bootstrap-icons";
+import type {Mod} from "../../interfaces/Mod.ts";
 
 interface ModListProps {
   mod: Mod;

@@ -1,10 +1,11 @@
 import {Button, Form} from "react-bootstrap";
-import {CreatorCard, type CreatorDetails} from "../components/creators/CreatorCard.tsx";
+import {CreatorCard} from "../components/creators/CreatorCard.tsx";
 import {useEffect, useState} from "react";
 import {PlaceholderCreatorCard} from "../components/creators/PlaceholderCreatorCard.tsx";
 import {useSearchParams} from "react-router";
 import {handleSetSearchParams} from "../utils/SearchParamHandlers.ts";
 import SadChirper from "../assets/sadChirpyOutline.svg";
+import type {CreatorDetails} from "../interfaces/Creator.ts";
 
 const Creators = () => {
   const [searchParams, setSearchParams] = useSearchParams();

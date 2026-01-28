@@ -1,5 +1,4 @@
 import './css/App.scss'
-import {type City, type GroupedCities} from "./components/home/CityCard.tsx";
 import {Container, Navbar, Spinner} from "react-bootstrap";
 import {Suspense, useEffect, useState} from "react";
 import {Sidebar} from "./components/Sidebar.tsx";
@@ -7,6 +6,7 @@ import {HamburgerButton} from "./components/HamburgerButton.tsx";
 import {Outlet, useLocation} from "react-router";
 import {useLocalStorage} from "usehooks-ts";
 import {ToTopBtn} from "./components/ToTopBtn.tsx";
+import type {City, GroupedCities} from "./interfaces/City.ts";
 // import {Screenshots} from "./temp/screenshots.ts";
 
 export type ContextType = {

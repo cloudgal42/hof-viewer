@@ -1,4 +1,5 @@
-import type {City, GroupedCities} from "../components/home/CityCard.tsx";
+
+import type {City, GroupedCities} from "../interfaces/City.ts";
 
 interface TotalScreenshotStats {
   combinedStats?: GroupedCities;

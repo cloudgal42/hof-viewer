@@ -1,6 +1,5 @@
 import {useState} from "react";
 import {Accordion, Form, InputGroup, OverlayTrigger, Tooltip} from "react-bootstrap";
-import type {City, GroupedCities, Mod} from "../home/CityCard.tsx";
 import SadChirper from "../../assets/sadChirpyOutline.svg";
 import {ModCard} from "./ModCard.tsx";
 
@@ -10,6 +9,8 @@ import {PlaceholderModCard} from "./PlaceholderModCard.tsx";
 import {useDebounceCallback} from "usehooks-ts";
 import * as React from "react";
 import Fuse from "fuse.js";
+import type {City, GroupedCities} from "../../interfaces/City.ts";
+import type {Mod} from "../../interfaces/Mod.ts";
 
 interface ModCategories {
   mod: boolean;

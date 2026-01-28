@@ -1,5 +1,6 @@
-import type {City, GroupedCities} from "../home/CityCard.tsx";
+
 import {Fragment} from "react";
+import type {City, GroupedCities} from "../../interfaces/City.ts";
 
 interface RenderSettingsProps {
   city: City | GroupedCities;

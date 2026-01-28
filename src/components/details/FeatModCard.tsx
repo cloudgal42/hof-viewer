@@ -4,7 +4,8 @@ import {LazyLoadImage} from "react-lazy-load-image-component";
 import PlaceholderImg from "../../assets/placeholder.svg";
 
 import SadChirper from "../../assets/sadChirpyOutline.svg";
-import type {Mod} from "../home/CityCard.tsx";
+
+import type {Mod} from "../../interfaces/Mod.ts";
 
 interface ModCardProps {
   fetchStatus?: number;

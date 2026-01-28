@@ -3,7 +3,7 @@ import {SortOrderButton} from "../components/home/SortOrderButton.tsx";
 import {useEffect, useMemo, useState} from "react";
 import type {ContextType} from "../App.tsx";
 import {SortDropdown} from "../components/home/SortDropdown.tsx";
-import {type City, CityCard, type GroupedCities} from "../components/home/CityCard.tsx";
+import {CityCard} from "../components/home/CityCard.tsx";
 import {PlaceholderCard} from "../components/home/PlaceholderCard.tsx";
 import {useOutletContext, useSearchParams} from "react-router";
 import {handleSetSearchParams} from "../utils/SearchParamHandlers.ts";
@@ -11,6 +11,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 import SadChirper from "../assets/sadChirpyOutline.svg";
 import {groupCities} from "../utils/GroupCities.ts";
+import type {City, GroupedCities} from "../interfaces/City.ts";
 
 const DEFAULT_CITIES_PER_PAGE = 18;
 

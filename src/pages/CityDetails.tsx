@@ -66,7 +66,7 @@ const CityDetails = () => {
         setIsLoading(true);
       }
       setIsLoadingMod(true);
-      const res = await fetch(`https://halloffame.cs2.mtq.io/api/v1/screenshots/${cityParam}`);
+      const res = await fetch(`https://halloffame.cs2.mtq.io/api/v1/screenshots/${cityParam}?favorites=true&views=true`);
       const data = await res.json();
 
       setFetchStatus(res.status);

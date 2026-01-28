@@ -1,77 +1,10 @@
 import {Badge, Card, OverlayTrigger, Tooltip} from "react-bootstrap";
-import {Heart, Eye, Person, Images} from "react-bootstrap-icons";
+import {Eye, Heart, Images, Person} from "react-bootstrap-icons";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import PlaceholderImg from "../../assets/placeholder.svg"
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 import {NavLink} from "react-router";
-
-export interface Mod {
-  id: string;
-  paradoxModId: number;
-  name: string;
-  authorName: string;
-  shortDescription: string;
-  thumbnailUrl: string;
-  tags: string[];
-  subscribersCount: number;
-  knownLastUpdatedAt: string;
-}
-
-export interface City {
-  id: string;
-  isApproved: boolean;
-  isReported: boolean;
-  favoritesCount: number;
-  favoritingPercentage: number;
-  viewsCount: number;
-  uniqueViewsCount: number;
-  cityName: string;
-  cityNameLocale?: string;
-  cityNameLatinized?: string;
-  cityNameTranslated?: string;
-  cityMilestone: number;
-  cityPopulation: number;
-  mapName?: string;
-  imageUrlThumbnail: string;
-  imageUrlFHD: string;
-  imageUrl4K: string;
-  shareParadoxModIds: boolean;
-  paradoxModIds: number[];
-  shareRenderSettings: boolean;
-  creatorId: string;
-  creator: Creator;
-  createdAt: string;
-  createdAtFormatted?: string;
-  createdAtFormattedDistance: string;
-  description?: string;
-  renderSettings: object; // TODO: Maybe define an interface for this?
-  showcasedMod?: Mod;
-  showcasedModId?: number;
-  __favorited: boolean;
-}
-
-interface SocialPlatform {
-  platform: string;
-  link: string;
-  clicks: number;
-}
-
-export interface GroupedCities extends Omit<City, "imageUrlFHD" | "imageUrl4K" | "imageUrlThumbnail"> {
-  imageUrlFHD: string[];
-  imageUrl4K: string[];
-  imageUrlThumbnail: string[];
-}
-
-export interface Creator {
-  id: string;
-  creatorName: string;
-  creatorNameSlug: string;
-  creatorNameLocale?: string;
-  creatorNameLatinized?: string;
-  creatorNameTranslated?: string;
-  createdAt: string;
-  socials: SocialPlatform[];
-}
+import type {City, GroupedCities} from "../../interfaces/City.ts";
 
 interface CityCardProps {
   city: City | GroupedCities;
