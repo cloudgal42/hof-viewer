@@ -18,10 +18,10 @@ export const CityTrends = ({city, isLoading, fetchStatus}: CityTrendsProps) => {
 
   const [trendType, setTrendType] = useState<string>("views");
   const [groupPeriod, setGroupPeriod] = useState<number>(() => {
-    if (currEpoch < createdAtEpoch + (DAYS_IN_MILLISECONDS * 7)) return 1;
+    if (currEpoch > createdAtEpoch + (DAYS_IN_MILLISECONDS * 365)) return 7;
     else if (currEpoch > createdAtEpoch + (DAYS_IN_MILLISECONDS * 365 * 2)) return 30;
 
-    return 7;
+    return 1;
   });
 
   return (
