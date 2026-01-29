@@ -256,14 +256,12 @@ const CityDetails = () => {
           </Card.Body>
         </Card>
       </section>
-      {!Array.isArray(city.imageUrlFHD) && (
-        <section
-          id="trends"
-          className={`mt-3 position-relative ${(isLoadMoreHovered && !isLastPage) && "load-more-hovered"}`}
-        >
-          <CityTrends city={city} isLoading={isLoadingExtraDetails} fetchStatus={fetchStatus}/>
-        </section>
-      )}
+      <section
+        id="trends"
+        className={`mt-3 position-relative ${(isLoadMoreHovered && !isLastPage) && "load-more-hovered"}`}
+      >
+        <CityTrends city={city} isLoading={isLoadingExtraDetails} fetchStatus={fetchStatus}/>
+      </section>
     </div>
   )
 

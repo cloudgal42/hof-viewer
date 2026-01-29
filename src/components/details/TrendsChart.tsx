@@ -171,7 +171,7 @@ export const TrendsChart = ({city, trendType, groupPeriod}: TrendsChartProps) =>
         data: Object.values(groupedCounts),
         backgroundColor: (trendType === "favorites") ?
           "rgba(255, 99, 132, 0.5)" :
-          "rgba(53, 162, 235, 0.5",
+          "rgba(53, 162, 235, 0.5)",
       },
     ],
   };

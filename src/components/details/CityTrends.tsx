@@ -1,4 +1,4 @@
-import {Card, Form, Spinner, ToggleButton, ToggleButtonGroup} from "react-bootstrap";
+import {Alert, Button, Card, Form, Spinner, ToggleButton, ToggleButtonGroup} from "react-bootstrap";
 import {useState} from "react";
 import type {City, GroupedCities} from "../../interfaces/City.ts";
 import {TrendsChart} from "./TrendsChart.tsx";
@@ -23,6 +23,46 @@ export const CityTrends = ({city, isLoading, fetchStatus}: CityTrendsProps) => {
 
     return 1;
   });
+
+  let trendsBody;
+
+  if (Array.isArray(city.imageUrlFHD)) {
+    trendsBody = (
+      <Alert variant="warning" className="my-3">
+        <p className="mb-2">
+          <strong>Warning:</strong> Loading trends for grouped screenshots <strong>will be performance
+          intensive</strong> on the Hall of Fame server and potentially your browser.
+          Do you want to continue?
+        </p>
+        <Button
+          variant="outline-warning"
+        >
+          Load trends chart
+        </Button>
+      </Alert>
+    );
+  } else if (isLoading) {
+    trendsBody = (
+      <div className="d-flex justify-content-center my-5 py-5">
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      </div>
+    );
+  } else if (fetchStatus === 200) {
+    trendsBody = (
+      <div className="bg-white position-relative" style={{minHeight: "50vh"}}>
+        <TrendsChart city={city} trendType={trendType} groupPeriod={groupPeriod}/>
+      </div>
+    );
+  } else if (fetchStatus !== 200) {
+    trendsBody = (
+      <ErrorScreen
+        errorSummary="Failed to get views/favorites data timestamps of this city :("
+        errorDetails={`HTTP Status: ${fetchStatus}. Please wait and try again.`}
+      />
+    );
+  }
 
   return (
     <Card>
@@ -87,22 +127,9 @@ export const CityTrends = ({city, isLoading, fetchStatus}: CityTrendsProps) => {
             </div>
           </div>
         </section>
-        {isLoading ? (
-          <div className="d-flex justify-content-center my-5 py-5">
-            <Spinner animation="border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </Spinner>
-          </div>
-        ) : fetchStatus === 200 ? (
-          <section className="bg-white position-relative" style={{minHeight: "50vh"}}>
-            <TrendsChart city={city} trendType={trendType} groupPeriod={groupPeriod}/>
-          </section>
-        ) : (
-          <ErrorScreen
-            errorSummary="Failed to get views/favorites data timestamps of this city :("
-            errorDetails={`HTTP Status: ${fetchStatus}. Please wait and try again.`}
-          />
-        )}
+        <section>
+          {trendsBody}
+        </section>
       </Card.Body>
     </Card>
   )
