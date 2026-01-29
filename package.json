@@ -12,6 +12,7 @@
   "dependencies": {
     "@netlify/vite-plugin": "^2.7.20",
     "@popperjs/core": "^2.11.8",
+    "@tanstack/react-query": "^5.90.20",
     "bootstrap": "^5.3.8",
     "chart.js": "^4.5.1",
     "fuse.js": "^7.1.0",
