@@ -1,6 +1,6 @@
 import {Button, Form, OverlayTrigger, Tooltip} from "react-bootstrap";
 import {SortOrderButton} from "../components/home/SortOrderButton.tsx";
-import {useEffect, useMemo, useState} from "react";
+import {useMemo, useState} from "react";
 import type {ContextType} from "../App.tsx";
 import {SortDropdown} from "../components/home/SortDropdown.tsx";
 import {CityCard} from "../components/home/CityCard.tsx";
@@ -9,17 +9,16 @@ import {useOutletContext, useSearchParams} from "react-router";
 import {handleSetSearchParams} from "../utils/SearchParamHandlers.ts";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import SadChirper from "../assets/sadChirpyOutline.svg";
 import {groupCities} from "../utils/GroupCities.ts";
 import type {City, GroupedCities} from "../interfaces/City.ts";
 import {ErrorScreen} from "../components/ErrorScreen.tsx";
+import {useQuery, useQueryClient} from "@tanstack/react-query";
 
 const DEFAULT_CITIES_PER_PAGE = 18;
 
 const Home = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [fetchStatus, setFetchStatus] = useState<number>();
-  // const [errMsg, setErrMsg] = useState<string>();
+  const queryClient = useQueryClient();
   const [page, setPage] = useState<number>(1);
 
   const creator = searchParams.get("creator") || "";
@@ -31,46 +30,64 @@ const Home = () => {
   // const [isGrouped, setIsGrouped] = useState<boolean>(false);
 
   const {
-    cities, setCities,
     setCity,
-    isLoading, setIsLoading,
   } = useOutletContext<ContextType>();
 
-  useEffect(() => {
-    let ignore = false;
-    const creatorMatchesCities = cities[0]?.creatorId === creator || cities[0]?.creator.creatorName.toLowerCase() === creator.toLowerCase();
-    if (!creator || (cities.length !== 0 && creatorMatchesCities)) return;
+  const {error, data, isFetching} = useQuery({
+    queryKey: ["cities", {creator: creator}],
+    queryFn: async () => {
+      if (!creator) return [];
 
-    async function getCreatorCities() {
-      setIsLoading(true);
       const res = await fetch(`https://halloffame.cs2.mtq.io/api/v1/screenshots?creatorId=${creator}`);
       const data = await res.json();
 
-      setFetchStatus(res.status);
-
-      if (res.ok && !ignore) {
-        setCities(data);
-        setIsLoading(false);
-      } else {
-        setCities([]);
-        setIsLoading(false);
+      if (!res.ok) {
+        return Promise.reject(new Error(`${data.statusCode}: ${data.message}`));
       }
 
-      // const screenshots = JSON.parse(Screenshots);
-      // setCities(screenshots);
-      // setIsLoading(false);
+      return data;
+    },
+    staleTime: Infinity,
+    retry: false,
+  });
 
-    }
-
-    getCreatorCities();
-
-    return () => {
-      ignore = true
-    };
-  }, [creator]);
+  // useEffect(() => {
+  //   let ignore = false;
+  //   const creatorMatchesCities = cities[0]?.creatorId === creator || cities[0]?.creator.creatorName.toLowerCase() === creator.toLowerCase();
+  //   if (!creator || (cities.length !== 0 && creatorMatchesCities)) return;
+  //
+  //   async function getCreatorCities() {
+  //     setIsLoading(true);
+  //     const res = await fetch(`https://halloffame.cs2.mtq.io/api/v1/screenshots?creatorId=${creator}`);
+  //     const data = await res.json();
+  //
+  //     setFetchStatus(res.status);
+  //
+  //     if (res.ok && !ignore) {
+  //       setCities(data);
+  //       setIsLoading(false);
+  //     } else {
+  //       setCities([]);
+  //       setIsLoading(false);
+  //     }
+  //
+  //     // const screenshots = JSON.parse(Screenshots);
+  //     // setCities(screenshots);
+  //     // setIsLoading(false);
+  //
+  //   }
+  //
+  //   getCreatorCities();
+  //
+  //   return () => {
+  //     ignore = true
+  //   };
+  // }, [creator]);
 
   const sortedCities = useMemo(() => {
-    const citiesToSort = groupStatus === "on" ? groupCities(cities) : cities;
+    if (!creator || isFetching || error || !data) return [];
+
+    const citiesToSort: City[] | GroupedCities[] = groupStatus === "on" ? groupCities(data) : data;
     const copiedCities = [...citiesToSort];
 
     switch (sortBy) {
@@ -103,7 +120,7 @@ const Home = () => {
     if (sortOrder === "Ascending") copiedCities.reverse();
 
     return copiedCities;
-  }, [cities, groupStatus, sortBy, sortOrder]);
+  }, [data, groupStatus, sortBy, sortOrder]);
 
   const paginatedCities = sortedCities.toSpliced(page * DEFAULT_CITIES_PER_PAGE);
 
@@ -117,13 +134,13 @@ const Home = () => {
     const queryString = query?.toString() || "";
     if (queryString === creator) return;
 
-    setCities([]);
+    queryClient.invalidateQueries({queryKey: ["cities", {creator: creator}]});
     setSearchParams(handleSetSearchParams(searchParams, "creator", queryString));
   }
 
   let content;
 
-  if (isLoading) {
+  if (isFetching) {
     content = (
       <div className="placeholder-feed d-flex flex-wrap gap-3">
         <PlaceholderCard/>
@@ -134,7 +151,21 @@ const Home = () => {
         <PlaceholderCard/>
       </div>
     )
-  } else if (cities.length > 0) {
+  } else if (error) {
+    content = (
+      <ErrorScreen
+        errorSummary="Failed to get screenshots for this creator :("
+        errorDetails={error.message}
+      />
+    )
+  } else if (!navigator.onLine) {
+    content = (
+      <ErrorScreen
+        errorSummary="You are offline :("
+        errorDetails="Double check your Internet connection and try again."
+      />
+    )
+  } else if (data.length > 0) {
     content = (
       <InfiniteScroll
         next={() => setPage(a => a + 1)}
@@ -157,15 +188,6 @@ const Home = () => {
         )}
       </InfiniteScroll>
     );
-  } else if (fetchStatus && fetchStatus !== 200) {
-    content = (
-      <ErrorScreen
-        errorSummary={fetchStatus === 404 ? "No cities found :(" : "Something went wrong :("}
-        errorDetails={fetchStatus === 404 ?
-          "Either the creator doesn't exist, or they have not posted any screenshots."
-          : `HTTP status code: ${fetchStatus}. Please wait for a while and try again.`}
-      />
-    )
   } else {
     content = <p>Search by the creator name/ID to get started.</p>
   }

@@ -7,20 +7,17 @@ import {Outlet, useLocation} from "react-router";
 import {useLocalStorage} from "usehooks-ts";
 import {ToTopBtn} from "./components/ToTopBtn.tsx";
 import type {City, GroupedCities} from "./interfaces/City.ts";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 // import {Screenshots} from "./temp/screenshots.ts";
 
 export type ContextType = {
-  cities: City[];
   city?: City | GroupedCities;
-  isLoading: boolean;
   setCity: (newCity: City | GroupedCities) => void;
-  setCities: (cities: City[]) => void;
-  setIsLoading: (isLoading: boolean) => void;
 }
 
+const queryClient = new QueryClient();
+
 const App = () => {
-  const [cities, setCities] = useState<City[] | []>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [city, setCity] = useState<City | GroupedCities | undefined>();
 
   const [isAsideOpened, setIsAsideOpened] = useState<boolean>(false);
@@ -36,9 +33,7 @@ const App = () => {
   }, [isDarkMode]);
 
   const contextParams = {
-    cities, setCities,
     city, setCity,
-    isLoading, setIsLoading,
   }
 
   // TODO: Migrate all regular bootstrap classes with react-bootstrap
@@ -71,7 +66,9 @@ const App = () => {
                 </Spinner>
               </div>
             }>
-              <Outlet context={contextParams satisfies ContextType} />
+              <QueryClientProvider client={queryClient}>
+                <Outlet context={contextParams satisfies ContextType} />
+              </QueryClientProvider>
             </Suspense>
           </main>
         </div>
