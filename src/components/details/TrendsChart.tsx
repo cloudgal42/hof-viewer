@@ -9,6 +9,7 @@ import {
   Legend,
 } from 'chart.js';
 import {Bar} from 'react-chartjs-2';
+import * as React from "react";
 
 interface TrendsChartProps {
   city: City | GroupedCities;
@@ -110,6 +111,7 @@ function groupData(city: City | GroupedCities, day: number, type: string): Trend
 
   // 1.5. TODO: Define viewEntries array and assign it based on type for unique and non-unique views
   // const viewEntries = (type === "uniqueViews")
+  console.log("Grouping data to prepare for the chart")
 
   // 2. Get grouped dates. groupedDates contain arrays of Date object with a length of 2
   // Index 0 is start, Index 1 is end
@@ -143,7 +145,7 @@ function groupData(city: City | GroupedCities, day: number, type: string): Trend
   return Object.fromEntries(groupedData);
 }
 
-export const TrendsChart = ({city, trendType, groupPeriod}: TrendsChartProps) => {
+const TrendsChart = React.memo(({city, trendType, groupPeriod}: TrendsChartProps) => {
   const groupedCounts = groupData(city, groupPeriod, trendType);
   const chartName = `${getFormattedTrendType(trendType)} per ${groupPeriod} day(s)`;
 
@@ -179,4 +181,6 @@ export const TrendsChart = ({city, trendType, groupPeriod}: TrendsChartProps) =>
   return (
     <Bar data={data} options={options}/>
   )
-}
+})
+
+export default TrendsChart;

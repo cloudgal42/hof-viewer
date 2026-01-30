@@ -75,7 +75,7 @@ const CityDetails = () => {
     retry: false,
   });
 
-  console.log(data);
+  // console.log(data);
 
   const cityDetails = data || city;
 

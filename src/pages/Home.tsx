@@ -85,10 +85,16 @@ const Home = () => {
   //   };
   // }, [creator]);
 
+  const cities =
+    queryClient.getQueryData<City[]>(["detailedCities", data && data[0]?.creatorId])
+    || queryClient.getQueryData<City[]>(["detailedCities", creator])
+    || data;
   const sortedCities = useMemo(() => {
-    if (!creator || isFetching || error || !data) return [];
+    if (!creator || isFetching || error || !cities) return [];
 
-    const citiesToSort: City[] | GroupedCities[] = groupStatus === "on" ? groupCities(data) : data;
+    // console.log(cities);
+
+    const citiesToSort: City[] | GroupedCities[] = groupStatus === "on" ? groupCities(cities) : cities;
     const copiedCities = [...citiesToSort];
 
     switch (sortBy) {
@@ -121,7 +127,7 @@ const Home = () => {
     if (sortOrder === "Ascending") copiedCities.reverse();
 
     return copiedCities;
-  }, [data, creator, groupStatus, sortBy, sortOrder]);
+  }, [cities, groupStatus, sortBy, sortOrder]);
 
   const paginatedCities = sortedCities.toSpliced(page * DEFAULT_CITIES_PER_PAGE);
 

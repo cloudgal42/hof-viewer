@@ -53,11 +53,22 @@ export function groupCities(citiesToGroup: City[]) {
         shareParadoxModIds: screenshot.shareParadoxModIds,
         shareRenderSettings: screenshot.shareRenderSettings,
         __favorited: false,
+        favorites: (!screenshotStat.combinedStats?.favorites) ? [] : screenshotStat.combinedStats.favorites,
+        views: (!screenshotStat.combinedStats?.views) ? [] : screenshotStat.combinedStats.views,
+        cities: (!screenshotStat.combinedStats?.cities) ? [] : screenshotStat.combinedStats.cities,
       }
 
+      screenshotStat.combinedStats?.cities.push(screenshot);
       screenshotStat.combinedStats?.imageUrlFHD.push(screenshot.imageUrlFHD);
       screenshotStat.combinedStats?.imageUrl4K.push(screenshot.imageUrl4K);
       screenshotStat.combinedStats?.imageUrlThumbnail.push(screenshot.imageUrlThumbnail);
+
+      if (screenshotStat.combinedStats?.favorites && screenshot.favorites) {
+        screenshotStat.combinedStats?.favorites.push(...screenshot.favorites);
+      }
+      if (screenshotStat.combinedStats?.views && screenshot.views) {
+        screenshotStat.combinedStats?.views.push(...screenshot.views);
+      }
     });
 
     if (screenshotStat.combinedStats) {

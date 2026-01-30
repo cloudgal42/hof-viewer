@@ -1,8 +1,11 @@
 import {Alert, Button, Card, Form, Spinner, ToggleButton, ToggleButtonGroup} from "react-bootstrap";
-import {useState} from "react";
+import {lazy, useState} from "react";
 import type {City, GroupedCities} from "../../interfaces/City.ts";
-import {TrendsChart} from "./TrendsChart.tsx";
 import {ErrorScreen} from "../ErrorScreen.tsx";
+import {useQuery} from "@tanstack/react-query";
+import TrendsChart from "./TrendsChart.tsx";
+
+// const TrendsChart = lazy(() => import("./TrendsChart.tsx"));
 
 interface CityTrendsProps {
   city: City | GroupedCities | undefined;
@@ -16,6 +19,8 @@ export const CityTrends = ({city, isLoading, fetchError}: CityTrendsProps) => {
   const createdAtEpoch = city?.createdAt ? new Date(city.createdAt).getTime() : new Date().getTime();
   const currEpoch = new Date().getTime();
 
+  console.log(city);
+
   const [trendType, setTrendType] = useState<string>("views");
   const [groupPeriod, setGroupPeriod] = useState<number>(() => {
     if (currEpoch > createdAtEpoch + (DAYS_IN_MILLISECONDS * 365)) return 7;
@@ -24,9 +29,29 @@ export const CityTrends = ({city, isLoading, fetchError}: CityTrendsProps) => {
     return 1;
   });
 
+  const {error, data, isFetching, refetch} = useQuery<City[]>({
+    queryKey: ["detailedCities", city?.creatorId],
+    queryFn: async () => {
+      if (!city?.creatorId) return [];
+
+      const res = await fetch(`https://halloffame.cs2.mtq.io/api/v1/screenshots?creatorId=${city.creatorId}&favorites=true&views=true`);
+      const data = await res.json();
+
+      if (!res.ok) {
+        return Promise.reject(new Error(`${data.statusCode}: ${data.message}`));
+      }
+
+      return data;
+    },
+    staleTime: 30 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    enabled: false,
+    retry: false,
+  });
+
   let trendsBody;
 
-  if (city && Array.isArray(city.imageUrlFHD)) {
+  if (city && Array.isArray(city.imageUrlFHD) && !data) {
     trendsBody = (
       <Alert variant="warning" className="my-3">
         <p className="mb-2">
@@ -36,12 +61,13 @@ export const CityTrends = ({city, isLoading, fetchError}: CityTrendsProps) => {
         </p>
         <Button
           variant="outline-warning"
+          onClick={() => !data && refetch()}
         >
           Load trends chart
         </Button>
       </Alert>
     );
-  } else if (isLoading) {
+  } else if (isLoading || isFetching) {
     trendsBody = (
       <div className="d-flex justify-content-center my-5 py-5">
         <Spinner animation="border" role="status">
@@ -49,11 +75,11 @@ export const CityTrends = ({city, isLoading, fetchError}: CityTrendsProps) => {
         </Spinner>
       </div>
     );
-  } else if (fetchError) {
+  } else if (fetchError && !fetchError.message.includes("grouped screenshots") || error) {
     trendsBody = (
       <ErrorScreen
         errorSummary="Failed to get views/favorites data timestamps of this city :("
-        errorDetails={fetchError.message}
+        errorDetails={fetchError?.message || error?.message}
       />
     );
   } else if (city) {
