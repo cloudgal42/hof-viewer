@@ -5,15 +5,15 @@ import {TrendsChart} from "./TrendsChart.tsx";
 import {ErrorScreen} from "../ErrorScreen.tsx";
 
 interface CityTrendsProps {
-  city: City | GroupedCities;
+  city: City | GroupedCities | undefined;
   isLoading: boolean;
-  fetchStatus: number | undefined;
+  fetchError: Error | null;
 }
 
 const DAYS_IN_MILLISECONDS = 86400000;
 
-export const CityTrends = ({city, isLoading, fetchStatus}: CityTrendsProps) => {
-  const createdAtEpoch = new Date(city.createdAt).getTime();
+export const CityTrends = ({city, isLoading, fetchError}: CityTrendsProps) => {
+  const createdAtEpoch = city?.createdAt ? new Date(city.createdAt).getTime() : new Date().getTime();
   const currEpoch = new Date().getTime();
 
   const [trendType, setTrendType] = useState<string>("views");
@@ -26,7 +26,7 @@ export const CityTrends = ({city, isLoading, fetchStatus}: CityTrendsProps) => {
 
   let trendsBody;
 
-  if (Array.isArray(city.imageUrlFHD)) {
+  if (city && Array.isArray(city.imageUrlFHD)) {
     trendsBody = (
       <Alert variant="warning" className="my-3">
         <p className="mb-2">
@@ -49,18 +49,18 @@ export const CityTrends = ({city, isLoading, fetchStatus}: CityTrendsProps) => {
         </Spinner>
       </div>
     );
-  } else if (fetchStatus === 200) {
+  } else if (fetchError) {
+    trendsBody = (
+      <ErrorScreen
+        errorSummary="Failed to get views/favorites data timestamps of this city :("
+        errorDetails={fetchError.message}
+      />
+    );
+  } else if (city) {
     trendsBody = (
       <div className="bg-white position-relative" style={{minHeight: "50vh"}}>
         <TrendsChart city={city} trendType={trendType} groupPeriod={groupPeriod}/>
       </div>
-    );
-  } else if (fetchStatus !== 200) {
-    trendsBody = (
-      <ErrorScreen
-        errorSummary="Failed to get views/favorites data timestamps of this city :("
-        errorDetails={`HTTP Status: ${fetchStatus}. Please wait and try again.`}
-      />
     );
   }
 

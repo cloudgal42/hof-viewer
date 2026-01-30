@@ -2,18 +2,19 @@ import {Button, Card, OverlayTrigger, Tooltip} from "react-bootstrap";
 import {NavLink, useNavigate, useOutletContext, useParams, useSearchParams} from "react-router";
 import type {ContextType} from "../App.tsx";
 import {BoxArrowUpRight, ChevronDown, ChevronLeft, Eye, Heart, Person, Trophy} from "react-bootstrap-icons";
-import {lazy, Suspense, useEffect, useState} from "react";
+import {lazy, Suspense, useState} from "react";
 import {DEFAULT_IMAGES_PER_PAGE} from "../components/details/CityGallery.tsx";
 
 import PlaceholderImg from "../assets/placeholder.svg"
-import SadChirper from "../assets/sadChirpyOutline.svg";
-import {PlaceholderFeatModCard} from "../components/details/PlaceholderFeatModCard.tsx";
-import {FeatModCard} from "../components/details/FeatModCard.tsx";
 import {ModList} from "../components/details/ModList.tsx";
 import {RenderSettings} from "../components/details/RenderSettings.tsx";
 import {PlaceholderDetails} from "../components/details/PlaceholderDetails.tsx";
 import {CityTrends} from "../components/details/CityTrends.tsx";
 import {ErrorScreen} from "../components/ErrorScreen.tsx";
+import {useQuery, useQueryClient} from "@tanstack/react-query";
+import type {City, GroupedCities} from "../interfaces/City.ts";
+import {PlaceholderFeatModCard} from "../components/details/PlaceholderFeatModCard.tsx";
+import {FeatModCard} from "../components/details/FeatModCard.tsx";
 
 const CityGallery = lazy(() => import("../components/details/CityGallery.tsx"));
 
@@ -42,86 +43,60 @@ const cityMilestones = [
 
 const CityDetails = () => {
   const {
-    city, setCity,
+    city,
   } = useOutletContext<ContextType>();
   const navigate = useNavigate();
 
   const [page, setPage] = useState<number>(1);
   const [isLoadMoreHovered, setIsLoadMoreHovered] = useState<boolean>(false);
-  const [fetchStatus, setFetchStatus] = useState<number>();
-
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isLoadingExtraDetails, setisLoadingExtraDetails] = useState<boolean>(false);
 
   const [searchParams] = useSearchParams();
   const cityParam = useParams().city;
 
   const isCitiesGrouped = searchParams.get("groupStatus") === "on";
 
-  useEffect(() => {
-    let ignore = false;
-    if (!city && isCitiesGrouped || isCitiesGrouped) return;
+  const {error, data, isFetching} = useQuery<City>({
+    queryKey: ["city", {id: cityParam}],
+    queryFn: async () => {
+      // maybe FIXME?
+      if (isCitiesGrouped) return Promise.reject(new Error(`For now grouped screenshots will be inaccessible upon page reload. Sorry about that!`));
 
-    async function getCity() {
-      if (!city) {
-        setIsLoading(true);
-      }
-
-      setisLoadingExtraDetails(true);
       const res = await fetch(`https://halloffame.cs2.mtq.io/api/v1/screenshots/${cityParam}?favorites=true&views=true`);
       const data = await res.json();
 
-      setFetchStatus(res.status);
-
-      if (res.ok && !ignore) {
-        setCity(data);
-        setIsLoading(false);
-        setisLoadingExtraDetails(false);
-      } else {
-        setisLoadingExtraDetails(false);
-        setIsLoading(false);
+      if (!res.ok) {
+        return Promise.reject(new Error(`${data.statusCode}: ${data.message}`));
       }
 
-    }
+      return data;
+    },
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
 
-    getCity();
+  console.log(data);
 
-    return () => {
-      ignore = true;
-    }
+  const cityDetails = data || city;
 
-  }, []);
-
-
-  // console.log(city);
-  // console.log("Fetch status:", fetchStatus);
-  // console.log("Is the page loading?", isLoading);
-
-  if (!city) {
-    if (fetchStatus !== 200 && fetchStatus || isCitiesGrouped) {
+  if (!cityDetails) {
+    if (error || isCitiesGrouped) {
       return (
         <ErrorScreen
-          errorSummary={fetchStatus === 404 || !fetchStatus ?
-            "No city/screenshot found :(" :
-            "Something went wrong :("
-          }
-          errorDetails={fetchStatus === 404 || !fetchStatus ? (
+          errorSummary="Failed to load screenshot/city details :("
+          errorDetails={
             <>
               <p className="mb-1">
-                The city/screenshot you are looking for does not exist.
+                {error?.message ? `${error.message} ` :
+                  "For now grouped screenshots will be inaccessible upon page reload. Sorry about that!"
+                }
                 Try searching in <NavLink to="/">Browse by Creator ID</NavLink>?
               </p>
-              <p>NOTE: For now grouped screenshots will be inaccessible upon page reload. Sorry about that!</p>
+
             </>
-          ) : (
-            <>
-              <p className="mb-1">HTTP status code: {fetchStatus}. Please wait for a while and try again.</p>
-              <p>NOTE: For now grouped screenshots will be inaccessible upon page reload. Sorry about that!</p>
-            </>
-          )}
+          }
         />
       )
-    } else if (isLoading || fetchStatus === 200) {
+    } else if (isFetching) {
       return (
         <PlaceholderDetails/>
       );
@@ -131,7 +106,7 @@ const CityDetails = () => {
     }
   }
 
-  const imageUrlFHD = !Array.isArray(city.imageUrlFHD) ? [city.imageUrlFHD] : city.imageUrlFHD;
+  const imageUrlFHD = !Array.isArray(cityDetails.imageUrlFHD) ? [cityDetails.imageUrlFHD] : cityDetails.imageUrlFHD;
   const isLastPage = (Math.ceil(imageUrlFHD.length / DEFAULT_IMAGES_PER_PAGE) - page) === 0;
 
   return (
@@ -148,9 +123,9 @@ const CityDetails = () => {
             <ChevronLeft width="24" height="24"/>
           </Button>
         </OverlayTrigger>
-        <h2 className="mb-0">{city.cityName}{city.cityNameTranslated && `(${city.cityNameTranslated})`}</h2>
+        <h2 className="mb-0">{cityDetails.cityName}{cityDetails.cityNameTranslated && `(${cityDetails.cityNameTranslated})`}</h2>
       </div>
-      <h3 className="text-muted fs-5">by {city.creator.creatorName}</h3>
+      <h3 className="text-muted fs-5">by {cityDetails.creator.creatorName}</h3>
       <section id="gallery" className="mt-3 position-relative">
         <Suspense fallback={
           <img
@@ -184,13 +159,13 @@ const CityDetails = () => {
       >
         <Card>
           <Card.Body>
-            {city.showcasedModId && (
+            {cityDetails.showcasedModId && (
               <section className="mb-3">
                 <Card.Title>Showcased Asset/Map</Card.Title>
-                {isLoadingExtraDetails || !city.showcasedMod ? (
+                {isFetching && !cityDetails.showcasedMod ? (
                   <PlaceholderFeatModCard/>
                 ) : (
-                  <FeatModCard fetchStatus={fetchStatus} showcasedMod={city.showcasedMod}/>
+                  <FeatModCard fetchError={error} showcasedMod={cityDetails.showcasedMod}/>
                 )}
                 {/*<a href={`https://mods.paradoxplaza.com/mods/${city.showcasedModId}/Windows`} target="_blank">*/}
                 {/*  {city.showcasedModId}*/}
@@ -199,42 +174,42 @@ const CityDetails = () => {
             )}
             <section className="mb-3">
               <Card.Title>Stats</Card.Title>
-              <OverlayTrigger overlay={<Tooltip>{city.createdAtFormattedDistance}</Tooltip>}>
+              <OverlayTrigger overlay={<Tooltip>{cityDetails.createdAtFormattedDistance}</Tooltip>}>
                 <p className="d-inline-block text-muted mb-1">First posted
-                  on: {new Date(city.createdAt).toLocaleString()}</p>
+                  on: {new Date(cityDetails.createdAt).toLocaleString()}</p>
               </OverlayTrigger>
               <ul className="list-unstyled mb-0 row">
                 <li className="col-sm-6 col-md-4 col-lg-3 d-flex align-items-center gap-2">
                   <Person/>
                   <span className="visually-hidden">Population</span>
-                  {city.cityPopulation.toLocaleString()}
+                  {cityDetails.cityPopulation.toLocaleString()}
                 </li>
                 <li className="col-sm-6 col-md-4 col-lg-3 d-flex align-items-center gap-2">
                   <Trophy/>
                   <span className="visually-hidden">Milestone</span>
-                  {cityMilestones[city.cityMilestone - 1]}
+                  {cityMilestones[cityDetails.cityMilestone - 1]}
                 </li>
                 <li className="col-sm-6 col-md-4 col-lg-3 d-flex align-items-center gap-2">
                   <Eye/>
                   <span className="visually-hidden">Unique Views</span>
-                  {`${city.viewsCount.toLocaleString()} (Unique: ${city.uniqueViewsCount.toLocaleString()})`}
+                  {`${cityDetails.viewsCount.toLocaleString()} (Unique: ${cityDetails.uniqueViewsCount.toLocaleString()})`}
                 </li>
                 <li className="col-sm-6 col-md-4 col-lg-3 d-flex align-items-center gap-2">
                   <Heart/>
                   <span className="visually-hidden">Favorites</span>
-                  {`${city.favoritesCount.toLocaleString()} (${city.favoritingPercentage}% of unique views)`}
+                  {`${cityDetails.favoritesCount.toLocaleString()} (${cityDetails.favoritingPercentage}% of unique views)`}
                 </li>
               </ul>
             </section>
             <section className="mb-3">
               <Card.Title>Map Used</Card.Title>
-              {city.mapName ? (
+              {cityDetails.mapName ? (
                 <p>
-                  <span>{city.mapName} (</span>
+                  <span>{cityDetails.mapName} (</span>
                   <a
                     target="_blank"
                     className="d-inline-flex align-items-center gap-2"
-                    href={`https://mods.paradoxplaza.com/games/cities_skylines_2?search=${city.mapName}`}
+                    href={`https://mods.paradoxplaza.com/games/cities_skylines_2?search=${cityDetails.mapName}`}
                   >
                     Search on PDX Mods
                     <BoxArrowUpRight width="16" height="16"/>
@@ -247,11 +222,11 @@ const CityDetails = () => {
             </section>
             <section className="mb-3">
               <Card.Title>Playset</Card.Title>
-              <ModList city={city}/>
+              <ModList city={cityDetails}/>
             </section>
             <section>
               <Card.Title>Render Settings</Card.Title>
-              <RenderSettings city={city}/>
+              <RenderSettings city={cityDetails}/>
             </section>
           </Card.Body>
         </Card>
@@ -260,7 +235,7 @@ const CityDetails = () => {
         id="trends"
         className={`mt-3 position-relative ${(isLoadMoreHovered && !isLastPage) && "load-more-hovered"}`}
       >
-        <CityTrends city={city} isLoading={isLoadingExtraDetails} fetchStatus={fetchStatus}/>
+        <CityTrends city={cityDetails} isLoading={isFetching} fetchError={error}/>
       </section>
     </div>
   )
