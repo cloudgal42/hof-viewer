@@ -33,8 +33,8 @@ const Home = () => {
     setCity,
   } = useOutletContext<ContextType>();
 
-  const {error, data, isFetching} = useQuery({
-    queryKey: ["cities", {creator: creator}],
+  const {error, data, isFetching} = useQuery<City[]>({
+    queryKey: ["cities", creator],
     queryFn: async () => {
       if (!creator) return [];
 
@@ -47,7 +47,8 @@ const Home = () => {
 
       return data;
     },
-    staleTime: Infinity,
+    staleTime: 30 * 60 * 1000,
+    refetchOnWindowFocus: false,
     retry: false,
   });
 
@@ -120,7 +121,7 @@ const Home = () => {
     if (sortOrder === "Ascending") copiedCities.reverse();
 
     return copiedCities;
-  }, [data, groupStatus, sortBy, sortOrder]);
+  }, [data, creator, groupStatus, sortBy, sortOrder]);
 
   const paginatedCities = sortedCities.toSpliced(page * DEFAULT_CITIES_PER_PAGE);
 
@@ -134,7 +135,6 @@ const Home = () => {
     const queryString = query?.toString() || "";
     if (queryString === creator) return;
 
-    queryClient.invalidateQueries({queryKey: ["cities", {creator: creator}]});
     setSearchParams(handleSetSearchParams(searchParams, "creator", queryString));
   }
 
@@ -165,7 +165,7 @@ const Home = () => {
         errorDetails="Double check your Internet connection and try again."
       />
     )
-  } else if (data.length > 0) {
+  } else if (sortedCities.length > 0) {
     content = (
       <InfiniteScroll
         next={() => setPage(a => a + 1)}
