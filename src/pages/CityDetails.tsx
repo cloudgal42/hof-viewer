@@ -15,6 +15,7 @@ import {useQuery, useQueryClient} from "@tanstack/react-query";
 import type {City, GroupedCities} from "../interfaces/City.ts";
 import {PlaceholderFeatModCard} from "../components/details/PlaceholderFeatModCard.tsx";
 import {FeatModCard} from "../components/details/FeatModCard.tsx";
+import * as React from "react";
 
 const CityGallery = lazy(() => import("../components/details/CityGallery.tsx"));
 
@@ -79,7 +80,14 @@ const CityDetails = () => {
   const cityDetails = data || city;
 
   if (!cityDetails) {
-    if (error || isCitiesGrouped) {
+    if (!navigator.onLine) {
+      return (
+        <ErrorScreen
+          errorSummary="You are offline :("
+          errorDetails="Double check your Internet connection and try again."
+        />
+      )
+    } else if (error || isCitiesGrouped) {
       return (
         <ErrorScreen
           errorSummary="Failed to load screenshot/city details :("
@@ -123,7 +131,8 @@ const CityDetails = () => {
             <ChevronLeft width="24" height="24"/>
           </Button>
         </OverlayTrigger>
-        <h2 className="mb-0">{cityDetails.cityName}{cityDetails.cityNameTranslated && `(${cityDetails.cityNameTranslated})`}</h2>
+        <h2
+          className="mb-0">{cityDetails.cityName}{cityDetails.cityNameTranslated && `(${cityDetails.cityNameTranslated})`}</h2>
       </div>
       <h3 className="text-muted fs-5">by {cityDetails.creator.creatorName}</h3>
       <section id="gallery" className="mt-3 position-relative">
