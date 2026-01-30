@@ -11,6 +11,7 @@ import Fuse from "fuse.js";
 import type {City, GroupedCities} from "../../interfaces/City.ts";
 import type {Mod} from "../../interfaces/Mod.ts";
 import {ErrorScreen} from "../ErrorScreen.tsx";
+import {useQuery} from "@tanstack/react-query";
 
 interface ModCategories {
   mod: boolean;
@@ -25,9 +26,8 @@ interface ModListProps {
 const DEFAULT_MODS_PER_PAGE = 12;
 
 export const ModList = ({city}: ModListProps) => {
-  const [fetchStatus, setFetchStatus] = useState<number>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [modList, setModList] = useState<Mod[]>([]);
+  const [isDebouncing, setIsDebouncing] = useState<boolean>(false);
+  // const [modList, setModList] = useState<Mod[]>([]);
 
   const [categories, setCategories] = useState<ModCategories>({
     mod: false,
@@ -36,12 +36,31 @@ export const ModList = ({city}: ModListProps) => {
   });
   const [search, setSearch] = useState<string>("");
   const [page, setPage] = useState<number>(1);
-
   const [isCompactMode, setIsCompactMode] = useState<boolean>(false);
+
+  const {isFetching, data, error, refetch} = useQuery<Mod[]>({
+    queryKey: ["playset", {city: city.id}],
+    queryFn: async () => {
+      if (city.paradoxModIds.length === 0 || !city.shareParadoxModIds) {
+        return [];
+      }
+      const res = await fetch(`https://halloffame.cs2.mtq.io/api/v1/screenshots/${city.id}/playset`)
+      const data = await res.json();
+
+      if (!res.ok) {
+        return Promise.reject(new Error(`${data.statusCode}: ${data.message}`));
+      }
+
+      return data;
+    },
+    refetchOnWindowFocus: false,
+    staleTime: Infinity,
+    enabled: false,
+  })
 
   const debouncedSetSearch = useDebounceCallback((e) => {
     setSearch(e.target.value);
-    setIsLoading(false);
+    setIsDebouncing(false);
   }, 600);
 
   function handleSetCategory(e: React.ChangeEvent<HTMLInputElement>) {
@@ -72,26 +91,26 @@ export const ModList = ({city}: ModListProps) => {
     });
   }
 
-  async function getPlayset() {
-    if (modList.length > 0 || city.paradoxModIds.length === 0 || !city.shareParadoxModIds) {
-      return;
-    }
+  // async function getPlayset() {
+  //   if (modList.length > 0 || city.paradoxModIds.length === 0 || !city.shareParadoxModIds) {
+  //     return;
+  //   }
+  //
+  //   setIsLoading(true);
+  //   const res = await fetch(`https://halloffame.cs2.mtq.io/api/v1/screenshots/${city.id}/playset`)
+  //   const data = await res.json();
+  //
+  //   setFetchStatus(res.status);
+  //
+  //   if (res.ok) {
+  //     setModList(data);
+  //     setIsLoading(false);
+  //   } else {
+  //     setIsLoading(false);
+  //   }
+  // }
 
-    setIsLoading(true);
-    const res = await fetch(`https://halloffame.cs2.mtq.io/api/v1/screenshots/${city.id}/playset`)
-    const data = await res.json();
-
-    setFetchStatus(res.status);
-
-    if (res.ok) {
-      setModList(data);
-      setIsLoading(false);
-    } else {
-      setIsLoading(false);
-    }
-  }
-
-  const filteredModList = filterModList(modList);
+  const filteredModList = filterModList(data || []);
   const fuse = new Fuse(filteredModList, {
     threshold: 0.2,
     includeScore: false,
@@ -110,7 +129,14 @@ export const ModList = ({city}: ModListProps) => {
   let content;
   let accordionBody;
 
-  if (isLoading) {
+  if (!navigator.onLine) {
+    accordionBody = (
+      <ErrorScreen
+        errorSummary="You are offline :("
+        errorDetails="Double check your Internet connection and try again."
+      />
+    )
+  } else if (isFetching || isDebouncing || !data) {
     accordionBody = (
       <div className="playset-container d-flex flex-wrap gap-2">
         <PlaceholderModCard/>
@@ -127,14 +153,11 @@ export const ModList = ({city}: ModListProps) => {
         <PlaceholderModCard/>
       </div>
     )
-  } else if (fetchStatus !== 200 && fetchStatus) {
+  } else if (error) {
     accordionBody = (
       <ErrorScreen
         errorSummary={"Failed to get playset data :("}
-        errorDetails={fetchStatus === 404 ?
-          "The playset data does not exist" :
-          `HTTP Status: ${fetchStatus}. Please wait for a moment and try again.`
-        }
+        errorDetails={error.message}
       />
     )
   } else if (searchedModList.length === 0 && (search.length > 0 || isPlaysetFiltered)) {
@@ -179,7 +202,7 @@ export const ModList = ({city}: ModListProps) => {
       <Accordion>
         <Accordion.Item eventKey="0">
           <Accordion.Header
-            onClick={getPlayset}
+            onClick={() => !data && refetch()}
           >
             {city.paradoxModIds.length} PDX mods packages
           </Accordion.Header>
@@ -192,7 +215,7 @@ export const ModList = ({city}: ModListProps) => {
                   aria-label="Search by name, tags or author"
                   placeholder="Search by name, tags or author..."
                   onChange={(e) => {
-                    setIsLoading(true);
+                    setIsDebouncing(true);
                     debouncedSetSearch(e);
                   }}
                 />
