@@ -62,7 +62,7 @@ const CityDetails = () => {
       // maybe FIXME?
       if (isCitiesGrouped) return Promise.reject(new Error(`For now grouped screenshots will be inaccessible upon page reload. Sorry about that!`));
 
-      const res = await fetch(`https://halloffame.cs2.mtq.io/api/v1/screenshots/${cityParam}?favorites=true&views=true`);
+      const res = await fetch(`${import.meta.env.VITE_HOF_SERVER}/screenshots/${cityParam}?favorites=true&views=true`);
       const data = await res.json();
 
       if (!res.ok) {

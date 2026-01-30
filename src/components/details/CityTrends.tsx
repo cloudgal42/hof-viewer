@@ -34,7 +34,7 @@ export const CityTrends = ({city, isLoading, fetchError}: CityTrendsProps) => {
     queryFn: async () => {
       if (!city?.creatorId) return [];
 
-      const res = await fetch(`https://halloffame.cs2.mtq.io/api/v1/screenshots?creatorId=${city.creatorId}&favorites=true&views=true`);
+      const res = await fetch(`${import.meta.env.VITE_HOF_SERVER}/screenshots?creatorId=${city.creatorId}&favorites=true&views=true`);
       const data = await res.json();
 
       if (!res.ok) {

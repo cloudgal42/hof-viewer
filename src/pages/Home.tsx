@@ -38,7 +38,7 @@ const Home = () => {
     queryFn: async () => {
       if (!creator) return [];
 
-      const res = await fetch(`https://halloffame.cs2.mtq.io/api/v1/screenshots?creatorId=${creator}`);
+      const res = await fetch(`${import.meta.env.VITE_HOF_SERVER}/screenshots?creatorId=${creator}`);
       const data = await res.json();
 
       if (!res.ok) {
@@ -51,39 +51,6 @@ const Home = () => {
     refetchOnWindowFocus: false,
     retry: false,
   });
-
-  // useEffect(() => {
-  //   let ignore = false;
-  //   const creatorMatchesCities = cities[0]?.creatorId === creator || cities[0]?.creator.creatorName.toLowerCase() === creator.toLowerCase();
-  //   if (!creator || (cities.length !== 0 && creatorMatchesCities)) return;
-  //
-  //   async function getCreatorCities() {
-  //     setIsLoading(true);
-  //     const res = await fetch(`https://halloffame.cs2.mtq.io/api/v1/screenshots?creatorId=${creator}`);
-  //     const data = await res.json();
-  //
-  //     setFetchStatus(res.status);
-  //
-  //     if (res.ok && !ignore) {
-  //       setCities(data);
-  //       setIsLoading(false);
-  //     } else {
-  //       setCities([]);
-  //       setIsLoading(false);
-  //     }
-  //
-  //     // const screenshots = JSON.parse(Screenshots);
-  //     // setCities(screenshots);
-  //     // setIsLoading(false);
-  //
-  //   }
-  //
-  //   getCreatorCities();
-  //
-  //   return () => {
-  //     ignore = true
-  //   };
-  // }, [creator]);
 
   const cities =
     queryClient.getQueryData<City[]>(["detailedCities", data && data[0]?.creatorId])

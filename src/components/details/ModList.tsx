@@ -44,7 +44,7 @@ export const ModList = ({city}: ModListProps) => {
       if (city.paradoxModIds.length === 0 || !city.shareParadoxModIds) {
         return [];
       }
-      const res = await fetch(`https://halloffame.cs2.mtq.io/api/v1/screenshots/${city.id}/playset`)
+      const res = await fetch(`${import.meta.env.VITE_HOF_SERVER}/screenshots/${city.id}/playset`)
       const data = await res.json();
 
       if (!res.ok) {

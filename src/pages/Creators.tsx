@@ -21,8 +21,8 @@ const Creators = () => {
 
     async function getCreatorDetails() {
       setIsCreatorLoading(true);
-      const creatorRes = await fetch(`https://halloffame.cs2.mtq.io/api/v1/creators/${creator}`);
-      const creatorStatsRes = await fetch(`https://halloffame.cs2.mtq.io/api/v1/creators/${creator}/stats`);
+      const creatorRes = await fetch(`${import.meta.env.VITE_HOF_SERVER}/creators/${creator}`);
+      const creatorStatsRes = await fetch(`${import.meta.env.VITE_HOF_SERVER}/creators/${creator}/stats`);
 
       const creatorInfo = await creatorRes.json();
       const creatorStats = await creatorStatsRes.json();
