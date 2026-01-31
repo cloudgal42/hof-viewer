@@ -11,8 +11,8 @@ import {RenderSettings} from "../components/details/RenderSettings.tsx";
 import {PlaceholderDetails} from "../components/details/PlaceholderDetails.tsx";
 import {CityTrends} from "../components/details/CityTrends.tsx";
 import {ErrorScreen} from "../components/ErrorScreen.tsx";
-import {useQuery, useQueryClient} from "@tanstack/react-query";
-import type {City, GroupedCities} from "../interfaces/City.ts";
+import {useQuery} from "@tanstack/react-query";
+import type {City} from "../interfaces/City.ts";
 import {PlaceholderFeatModCard} from "../components/details/PlaceholderFeatModCard.tsx";
 import {FeatModCard} from "../components/details/FeatModCard.tsx";
 import * as React from "react";
@@ -144,7 +144,7 @@ const CityDetails = () => {
             style={{aspectRatio: "16/9"}}
           />
         }>
-          <CityGallery page={page} imageUrls={imageUrlFHD}/>
+          <CityGallery page={page} city={cityDetails} />
         </Suspense>
         {/* TODO: Move this button to the CityGallery component. Research React's useContext hook */}
         {!isLastPage && (
