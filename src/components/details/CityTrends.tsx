@@ -1,9 +1,10 @@
 import {Alert, Button, Card, Form, Spinner, ToggleButton, ToggleButtonGroup} from "react-bootstrap";
-import {lazy, useState} from "react";
+import {useState} from "react";
 import type {City, GroupedCities} from "../../interfaces/City.ts";
 import {ErrorScreen} from "../ErrorScreen.tsx";
 import {useQuery} from "@tanstack/react-query";
 import TrendsChart from "./TrendsChart.tsx";
+import {groupCities} from "../../utils/GroupCities.ts";
 
 // const TrendsChart = lazy(() => import("./TrendsChart.tsx"));
 
@@ -49,6 +50,9 @@ export const CityTrends = ({city, isLoading, fetchError}: CityTrendsProps) => {
     retry: false,
   });
 
+  const cityDetails = Array.isArray(city?.imageUrlFHD) ?
+    data && groupCities(data).find(entry => entry.cityName === city?.cityName)
+    : city;
   let trendsBody;
 
   if (city && Array.isArray(city.imageUrlFHD) && !data) {
@@ -62,8 +66,9 @@ export const CityTrends = ({city, isLoading, fetchError}: CityTrendsProps) => {
         <Button
           variant="outline-warning"
           onClick={() => !data && refetch()}
+          disabled={isFetching}
         >
-          Load trends chart
+          {isFetching ? "Fetching data from HoF..." : "Load trends"}
         </Button>
       </Alert>
     );
@@ -82,10 +87,10 @@ export const CityTrends = ({city, isLoading, fetchError}: CityTrendsProps) => {
         errorDetails={fetchError?.message || error?.message}
       />
     );
-  } else if (city) {
+  } else if (cityDetails) {
     trendsBody = (
       <div className="bg-white position-relative" style={{minHeight: "50vh"}}>
-        <TrendsChart city={city} trendType={trendType} groupPeriod={groupPeriod}/>
+        <TrendsChart city={cityDetails} trendType={trendType} groupPeriod={groupPeriod}/>
       </div>
     );
   }
