@@ -4,6 +4,7 @@ import type {City, GroupedCities} from "../../../interfaces/City.ts";
 import {ErrorScreen} from "../../ErrorScreen.tsx";
 import {useQuery} from "@tanstack/react-query";
 import {groupCities} from "../../../utils/GroupCities.ts";
+import {ExclamationTriangle} from "react-bootstrap-icons";
 
 const TrendsChart = lazy(() => import("./TrendsChart.tsx"));
 
@@ -59,7 +60,8 @@ export const CityTrends = ({city, isLoading, fetchError}: CityTrendsProps) => {
       <Alert variant="warning" className="my-3">
         <p className="mb-2">
           <strong>Warning:</strong> Loading trends for grouped screenshots <strong>will be performance
-          intensive</strong> on the Hall of Fame server and potentially your browser.
+          intensive</strong> on the Hall of Fame server and potentially your browser, <strong>especially on popular
+          accounts</strong>.
           Do you want to continue?
         </p>
         <Button

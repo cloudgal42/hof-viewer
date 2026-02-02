@@ -8,14 +8,14 @@ import {
   Legend, type ChartEvent,
 } from 'chart.js';
 import {Bar} from 'react-chartjs-2';
-import type {City, GroupedCities} from "../../../interfaces/City.ts";
+import type {GroupedCities} from "../../../interfaces/City.ts";
 import {useMemo, useRef, useState} from "react";
 import {ClickedCityCard} from "./ClickedCityCard.tsx";
 import zoomPlugin from 'chartjs-plugin-zoom';
 import {Button} from "react-bootstrap";
 
 import "../../../css/components/StackedChart.scss";
-import {Dash, Plus} from "react-bootstrap-icons";
+import {ZoomIn, ZoomOut} from "react-bootstrap-icons";
 import type {PercentageStat} from "../../../interfaces/PercentageStat.ts";
 
 ChartJS.register(
@@ -154,16 +154,18 @@ export const StackedChart = ({city, type}: StackedChartProps) => {
           <Button
             variant="outline-primary"
             onClick={() => handleZoom(0.25)}
+            className="d-flex align-items-center justify-content-center"
           >
             <span className="visually-hidden">Zoom In</span>
-            <Plus />
+            <ZoomIn />
           </Button>
           <Button
             variant="outline-primary"
             onClick={() => handleZoom(-0.25)}
+            className="d-flex align-items-center justify-content-center"
           >
             <span className="visually-hidden">Zoom Out</span>
-            <Dash />
+            <ZoomOut />
           </Button>
         </div>
       </section>
