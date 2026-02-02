@@ -1,12 +1,12 @@
 import {Alert, Button, Card, Form, Spinner, ToggleButton, ToggleButtonGroup} from "react-bootstrap";
-import {useState} from "react";
+import {lazy, Suspense, useState} from "react";
 import type {City, GroupedCities} from "../../interfaces/City.ts";
 import {ErrorScreen} from "../ErrorScreen.tsx";
 import {useQuery} from "@tanstack/react-query";
-import TrendsChart from "./TrendsChart.tsx";
+// import TrendsChart from "./TrendsChart.tsx";
 import {groupCities} from "../../utils/GroupCities.ts";
 
-// const TrendsChart = lazy(() => import("./TrendsChart.tsx"));
+const TrendsChart = lazy(() => import("./TrendsChart.tsx"));
 
 interface CityTrendsProps {
   city: City | GroupedCities | undefined;
@@ -19,8 +19,6 @@ const DAYS_IN_MILLISECONDS = 86400000;
 export const CityTrends = ({city, isLoading, fetchError}: CityTrendsProps) => {
   const createdAtEpoch = city?.createdAt ? new Date(city.createdAt).getTime() : new Date().getTime();
   const currEpoch = new Date().getTime();
-
-  console.log(city);
 
   const [trendType, setTrendType] = useState<string>("views");
   const [groupPeriod, setGroupPeriod] = useState<number>(() => {
@@ -92,9 +90,9 @@ export const CityTrends = ({city, isLoading, fetchError}: CityTrendsProps) => {
     );
   } else if (cityDetails) {
     trendsBody = (
-      <div className="bg-white position-relative" style={{minHeight: "50vh"}}>
+      <Suspense fallback={<div>Loading...</div>}>
         <TrendsChart city={cityDetails} trendType={trendType} groupPeriod={groupPeriod}/>
-      </div>
+      </Suspense>
     );
   }
 
