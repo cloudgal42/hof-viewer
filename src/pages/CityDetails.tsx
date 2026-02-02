@@ -72,6 +72,7 @@ const CityDetails = () => {
       return data;
     },
     refetchOnWindowFocus: false,
+    enabled: Boolean(!city?.favorites && !city?.views || city?.showcasedModId),
     retry: false,
   });
 
