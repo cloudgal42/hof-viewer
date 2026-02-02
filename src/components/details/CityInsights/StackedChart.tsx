@@ -47,8 +47,10 @@ export const StackedChart = ({city, type}: StackedChartProps) => {
 
   const totalStats = (type === "favorites") ? city.favoritesCount : city.viewsCount
   const stats: PercentageStat[] = useMemo(() => {
+    const cities = [...city.cities];
+
     if (type === "favorites") {
-      return city.cities
+      return cities
         .sort((a, b) => b.favoritesCount - a.favoritesCount)
         .map((entry) => {
         return {
@@ -60,7 +62,7 @@ export const StackedChart = ({city, type}: StackedChartProps) => {
         }
       })
     } else {
-      return city.cities
+      return cities
         .sort((a, b) => b.viewsCount - a.viewsCount)
         .map((entry) => {
         return {
