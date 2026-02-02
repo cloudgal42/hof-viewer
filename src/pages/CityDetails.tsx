@@ -6,15 +6,15 @@ import {lazy, Suspense, useState} from "react";
 import {DEFAULT_IMAGES_PER_PAGE} from "../components/details/CityGallery.tsx";
 
 import PlaceholderImg from "../assets/placeholder.svg"
-import {ModList} from "../components/details/ModList.tsx";
+import {ModList} from "../components/details/Playset/ModList.tsx";
 import {RenderSettings} from "../components/details/RenderSettings.tsx";
 import {PlaceholderDetails} from "../components/details/PlaceholderDetails.tsx";
-import {CityTrends} from "../components/details/CityTrends.tsx";
+import {CityTrends} from "../components/details/CityTrends/CityTrends.tsx";
 import {ErrorScreen} from "../components/ErrorScreen.tsx";
 import {useQuery} from "@tanstack/react-query";
 import type {City} from "../interfaces/City.ts";
-import {PlaceholderFeatModCard} from "../components/details/PlaceholderFeatModCard.tsx";
-import {FeatModCard} from "../components/details/FeatModCard.tsx";
+import {PlaceholderFeatModCard} from "../components/details/FeatModCard/PlaceholderFeatModCard.tsx";
+import {FeatModCard} from "../components/details/FeatModCard/FeatModCard.tsx";
 import * as React from "react";
 
 const CityGallery = lazy(() => import("../components/details/CityGallery.tsx"));

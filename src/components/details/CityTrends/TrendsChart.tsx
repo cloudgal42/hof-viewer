@@ -1,4 +1,4 @@
-import type {City, GroupedCities} from "../../interfaces/City.ts";
+import type {City, GroupedCities} from "../../../interfaces/City.ts";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,7 +10,7 @@ import {
 } from 'chart.js';
 import {Bar} from 'react-chartjs-2';
 import * as React from "react";
-import type {TrendsData, WorkerParams} from "../../interfaces/TrendsData.ts";
+import type {TrendsData, WorkerParams} from "../../../interfaces/TrendsData.ts";
 import {useEffect, useRef, useState} from "react";
 
 interface TrendsChartProps {
@@ -47,7 +47,7 @@ const TrendsChart = React.memo(({city, trendType, groupPeriod}: TrendsChartProps
 
   useEffect(() => {
     workerRef.current = new Worker(
-      new URL("../../workers/TrendsWorker.ts", import.meta.url), {
+      new URL("../../../workers/TrendsWorker.ts", import.meta.url), {
         type: "module",
       }
     );

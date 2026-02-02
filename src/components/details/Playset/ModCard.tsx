@@ -1,8 +1,8 @@
 import {Card} from "react-bootstrap";
-import PlaceholderImg from "../../assets/placeholder.svg";
+import PlaceholderImg from "../../../assets/placeholder.svg";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import {BoxArrowUpRight} from "react-bootstrap-icons";
-import type {Mod} from "../../interfaces/Mod.ts";
+import type {Mod} from "../../../interfaces/Mod.ts";
 
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 

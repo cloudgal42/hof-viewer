@@ -1,10 +1,9 @@
 import {Alert, Button, Card, Form, Spinner, ToggleButton, ToggleButtonGroup} from "react-bootstrap";
 import {lazy, Suspense, useState} from "react";
-import type {City, GroupedCities} from "../../interfaces/City.ts";
-import {ErrorScreen} from "../ErrorScreen.tsx";
+import type {City, GroupedCities} from "../../../interfaces/City.ts";
+import {ErrorScreen} from "../../ErrorScreen.tsx";
 import {useQuery} from "@tanstack/react-query";
-// import TrendsChart from "./TrendsChart.tsx";
-import {groupCities} from "../../utils/GroupCities.ts";
+import {groupCities} from "../../../utils/GroupCities.ts";
 
 const TrendsChart = lazy(() => import("./TrendsChart.tsx"));
 
@@ -94,7 +93,14 @@ export const CityTrends = ({city, isLoading, fetchError}: CityTrendsProps) => {
     )
   } else if (cityDetails) {
     trendsBody = (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={
+        <div className="d-flex flex-column align-items-center my-5 py-5">
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+          <p className="text-center text-muted">Processing...</p>
+        </div>
+      }>
         <TrendsChart city={cityDetails} trendType={trendType} groupPeriod={groupPeriod}/>
       </Suspense>
     );

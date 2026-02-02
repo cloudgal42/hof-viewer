@@ -2,15 +2,15 @@ import {useState} from "react";
 import {Accordion, Form, InputGroup, OverlayTrigger, Tooltip} from "react-bootstrap";
 import {ModCard} from "./ModCard.tsx";
 
-import "../../css/components/ModList.scss"
+import "../../../css/components/ModList.scss"
 import InfiniteScroll from "react-infinite-scroll-component";
 import {PlaceholderModCard} from "./PlaceholderModCard.tsx";
 import {useDebounceCallback} from "usehooks-ts";
 import * as React from "react";
 import Fuse from "fuse.js";
-import type {City, GroupedCities} from "../../interfaces/City.ts";
-import type {Mod} from "../../interfaces/Mod.ts";
-import {ErrorScreen} from "../ErrorScreen.tsx";
+import type {City, GroupedCities} from "../../../interfaces/City.ts";
+import type {Mod} from "../../../interfaces/Mod.ts";
+import {ErrorScreen} from "../../ErrorScreen.tsx";
 import {useQuery} from "@tanstack/react-query";
 
 interface ModCategories {

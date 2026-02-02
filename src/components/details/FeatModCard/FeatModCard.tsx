@@ -1,10 +1,10 @@
 import {Card} from "react-bootstrap";
 import {BoxArrowUpRight} from "react-bootstrap-icons";
 import {LazyLoadImage} from "react-lazy-load-image-component";
-import PlaceholderImg from "../../assets/placeholder.svg";
+import PlaceholderImg from "../../../assets/placeholder.svg";
 
-import type {Mod} from "../../interfaces/Mod.ts";
-import {ErrorScreen} from "../ErrorScreen.tsx";
+import type {Mod} from "../../../interfaces/Mod.ts";
+import {ErrorScreen} from "../../ErrorScreen.tsx";
 
 interface ModCardProps {
   fetchError?: Error | null;
