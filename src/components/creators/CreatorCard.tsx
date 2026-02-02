@@ -21,7 +21,9 @@ export const CreatorCard = ({creator}: CreatorCardProps) => {
     <Card className="w-100">
       <Card.Body className="row">
         <div className="col-12 col-sm-6">
-          <Card.Title>{creator.creatorName}</Card.Title>
+          <h3>
+            <Card.Title>{creator.creatorName}</Card.Title>
+          </h3>
           <Card.Subtitle>{creator.creatorNameLatinized}</Card.Subtitle>
           <p className="d-flex mb-2 gap-2 align-items-center">
             <Cake />

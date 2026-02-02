@@ -53,7 +53,9 @@ export const CityCard = ({city, setCity, isCitiesGrouped}: CityCardProps) => {
           to={isCitiesGrouped ? `/city/${city.cityName}?groupStatus=on` : `/city/${city.id}?groupStatus=off`}
           onClick={() => setCity(city)}
         >
-          <Card.Title>{city.cityName}</Card.Title>
+          <h3>
+            <Card.Title>{city.cityName}</Card.Title>
+          </h3>
         </NavLink>
         <Card.Subtitle className="mb-1">{city.cityNameTranslated}</Card.Subtitle>
         <div style={{fontSize: "0.9rem"}} className="text-muted">
