@@ -136,7 +136,7 @@ function groupData(city: City | GroupedCities, day: number, type: string): Trend
     } else if (type === "favorites") {
       rangeCount = city.favorites!.filter(entry => {
         const viewEpoch = new Date(entry.favoritedAt).getTime();
-        return viewEpoch > startRange && viewEpoch < endRange;
+        return viewEpoch >= startRange && viewEpoch < endRange;
       }).length
     }
 
