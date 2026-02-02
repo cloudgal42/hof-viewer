@@ -22,8 +22,8 @@ export const CityTrends = ({city, isLoading, fetchError}: CityTrendsProps) => {
 
   const [trendType, setTrendType] = useState<string>("views");
   const [groupPeriod, setGroupPeriod] = useState<number>(() => {
-    if (currEpoch > createdAtEpoch + (DAYS_IN_MILLISECONDS * 365)) return 7;
-    else if (currEpoch > createdAtEpoch + (DAYS_IN_MILLISECONDS * 365 * 2)) return 30;
+    if (currEpoch >= createdAtEpoch + (DAYS_IN_MILLISECONDS * 6 * 30)) return 7;
+    else if (currEpoch >= createdAtEpoch + (DAYS_IN_MILLISECONDS * 365 * 2)) return 30;
 
     return 1;
   });
@@ -88,6 +88,10 @@ export const CityTrends = ({city, isLoading, fetchError}: CityTrendsProps) => {
         errorDetails={fetchError?.message || error?.message}
       />
     );
+  } else if (currEpoch - createdAtEpoch < DAYS_IN_MILLISECONDS) {
+    trendsBody = (
+      <p className="text-center text-muted my-5 py-5">Come back on another day to see your city trends!</p>
+    )
   } else if (cityDetails) {
     trendsBody = (
       <Suspense fallback={<div>Loading...</div>}>
