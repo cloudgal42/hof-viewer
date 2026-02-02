@@ -234,10 +234,13 @@ const CityDetails = () => {
               <Card.Title>Playset</Card.Title>
               <ModList city={cityDetails}/>
             </section>
-            <section>
-              <Card.Title>Render Settings</Card.Title>
-              <RenderSettings city={cityDetails}/>
-            </section>
+            {/* Avoid displaying render settings for grouped cities */}
+            {!Array.isArray(city?.imageUrlFHD) && (
+              <section>
+                <Card.Title>Render Settings</Card.Title>
+                <RenderSettings city={cityDetails}/>
+              </section>
+            )}
           </Card.Body>
         </Card>
       </section>
