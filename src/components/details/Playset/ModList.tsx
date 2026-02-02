@@ -91,25 +91,6 @@ export const ModList = ({city}: ModListProps) => {
     });
   }
 
-  // async function getPlayset() {
-  //   if (modList.length > 0 || city.paradoxModIds.length === 0 || !city.shareParadoxModIds) {
-  //     return;
-  //   }
-  //
-  //   setIsLoading(true);
-  //   const res = await fetch(`https://halloffame.cs2.mtq.io/api/v1/screenshots/${city.id}/playset`)
-  //   const data = await res.json();
-  //
-  //   setFetchStatus(res.status);
-  //
-  //   if (res.ok) {
-  //     setModList(data);
-  //     setIsLoading(false);
-  //   } else {
-  //     setIsLoading(false);
-  //   }
-  // }
-
   const filteredModList = filterModList(data || []);
   const fuse = new Fuse(filteredModList, {
     threshold: 0.2,
@@ -191,7 +172,8 @@ export const ModList = ({city}: ModListProps) => {
     )
   }
 
-  if (new Date(city.createdAt).getTime() < new Date("2025-03-24T00:00:00.000Z").getTime()) {
+  if (new Date(city.createdAt).getTime() < new Date("2025-03-24T00:00:00.000Z").getTime()
+      && city.paradoxModIds.length === 0) {
     content = <p>This screenshot was posted before playset sharing was possible.</p>
   } else if (city.paradoxModIds.length === 0 && city.shareParadoxModIds) {
     content = <p>The creator did not use mods for this screenshot.</p>
