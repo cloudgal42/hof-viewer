@@ -16,6 +16,7 @@ import {Button} from "react-bootstrap";
 
 import "../../../css/components/StackedChart.scss";
 import {Dash, Plus} from "react-bootstrap-icons";
+import type {PercentageStat} from "../../../interfaces/PercentageStat.ts";
 
 ChartJS.register(
   CategoryScale,
@@ -42,12 +43,14 @@ function getRandomColor() {
 
 export const StackedChart = ({city, type}: StackedChartProps) => {
   const chartRef = useRef<ChartJS<"bar">>(null);
-  const [clickedCity, setClickedCity] = useState<City>();
+  const [clickedBar, setClickedBar] = useState<PercentageStat>();
 
   const totalStats = (type === "favorites") ? city.favoritesCount : city.viewsCount
-  const stats = useMemo(() => {
+  const stats: PercentageStat[] = useMemo(() => {
     if (type === "favorites") {
-      return city.cities.map((entry, i) => {
+      return city.cities
+        .sort((a, b) => b.favoritesCount - a.favoritesCount)
+        .map((entry) => {
         return {
           id: entry.id,
           label: `Screenshot ${new Date(entry.createdAt).toLocaleString()})`,
@@ -57,7 +60,9 @@ export const StackedChart = ({city, type}: StackedChartProps) => {
         }
       })
     } else {
-      return city.cities.map((entry, i) => {
+      return city.cities
+        .sort((a, b) => b.viewsCount - a.viewsCount)
+        .map((entry) => {
         return {
           id: entry.id,
           label: `Screenshot ${new Date(entry.createdAt).toLocaleString()})`,
@@ -110,7 +115,7 @@ export const StackedChart = ({city, type}: StackedChartProps) => {
 
       // @ts-expect-error because Mismatched event types, FIXME
       const points = chart.getElementsAtEventForMode(e, "nearest", {intersect: true}, true);
-      setClickedCity(stats[points[0].datasetIndex].details);
+      setClickedBar(stats[points[0].datasetIndex]);
     },
   }), [stats])
 
@@ -163,8 +168,8 @@ export const StackedChart = ({city, type}: StackedChartProps) => {
         </div>
       </section>
       <section>
-        {clickedCity && (
-          <ClickedCityCard key={clickedCity.id} city={clickedCity}/>
+        {clickedBar && (
+          <ClickedCityCard key={clickedBar.id} data={clickedBar}/>
         )}
       </section>
     </>

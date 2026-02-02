@@ -6,12 +6,13 @@ import PlaceholderImg from "../../../assets/placeholder.svg";
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 import {BoxArrowUpRight, Eye, Heart, Person, SquareFill} from "react-bootstrap-icons";
 import {useState} from "react";
+import type {PercentageStat} from "../../../interfaces/PercentageStat.ts";
 
 interface ClickedCityCardProps {
-  city: City;
+  data: PercentageStat;
 }
 
-export const ClickedCityCard = ({city}: ClickedCityCardProps) => {
+export const ClickedCityCard = ({data}: ClickedCityCardProps) => {
   const [visibility, setVisibility] = useState(true);
 
   if (visibility) {
@@ -20,7 +21,7 @@ export const ClickedCityCard = ({city}: ClickedCityCardProps) => {
         <LazyLoadImage
           wrapperClassName="col-12 col-md-4 w-100 w-md-25"
           className="h-100 w-100 object-fit-cover"
-          src={city.imageUrlFHD}
+          src={data.details.imageUrlFHD}
           style={{aspectRatio: "1/1"}}
           alt=""
           effect="black-and-white"
@@ -30,30 +31,35 @@ export const ClickedCityCard = ({city}: ClickedCityCardProps) => {
         />
         <Card.Body className="mb-2 col-auto">
           <h4>
-            <Card.Title>{city.cityName}</Card.Title>
+            <SquareFill className="d-inline me-2" style={{color: data.backgroundColor}} />
+            <Card.Title className="d-inline">{data.details.cityName}</Card.Title>
           </h4>
           <Card.Subtitle className="mb-2 text-muted">
-            Posted on {new Date(city.createdAt).toLocaleString()}
+            Posted on {new Date(data.details.createdAt).toLocaleString()}
           </Card.Subtitle>
+          <Card.Text className="mb-2">
+            {/* Round to 2d.p. */}
+            ~ {Math.round(data.data[0] * 100) / 100}% of total
+          </Card.Text>
           <ul className="list-unstyled mb-2">
             <li className="d-flex align-items-center gap-2">
               <Person/>
               <span className="visually-hidden">Population</span>
-              {city.cityPopulation.toLocaleString()}
+              {data.details.cityPopulation.toLocaleString()}
             </li>
             <li className="d-flex align-items-center gap-2">
               <Eye/>
               <span className="visually-hidden">Views</span>
-              {city.viewsCount.toLocaleString()} (Unique: {city.uniqueViewsCount.toLocaleString()})
+              {data.details.viewsCount.toLocaleString()} (Unique: {data.details.uniqueViewsCount.toLocaleString()})
             </li>
             <li className="d-flex align-items-center gap-2">
               <Heart/>
               <span className="visually-hidden">Favorites</span>
-              {city.favoritesCount.toLocaleString()}
+              {data.details.favoritesCount.toLocaleString()}
             </li>
           </ul>
           <a
-            href={`/city/${city.id}?groupStatus=off`}
+            href={`/city/${data.id}?groupStatus=off`}
             className="d-inline-flex gap-2 align-items-center"
             target="_blank"
           >
