@@ -4,7 +4,7 @@ import {LazyLoadImage} from "react-lazy-load-image-component";
 import PlaceholderImg from "../../../assets/placeholder.svg";
 
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
-import {BoxArrowUpRight, Eye, Heart, Person} from "react-bootstrap-icons";
+import {BoxArrowUpRight, Eye, Heart, Person, SquareFill} from "react-bootstrap-icons";
 import {useState} from "react";
 
 interface ClickedCityCardProps {
@@ -16,7 +16,7 @@ export const ClickedCityCard = ({city}: ClickedCityCardProps) => {
 
   if (visibility) {
     return (
-      <Card className="row flex-md-row gx-0 position-relative">
+      <Card className="mb-3 row flex-md-row gx-0 position-relative">
         <LazyLoadImage
           wrapperClassName="col-12 col-md-4 w-100 w-md-25"
           className="h-100 w-100 object-fit-cover"

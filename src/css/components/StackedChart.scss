@@ -1,0 +1,9 @@
+.chart-container {
+  height: 64px;
+}
+
+@media all and (max-width: 576px) {
+  .chart-container {
+    height: 96px;
+  }
+}

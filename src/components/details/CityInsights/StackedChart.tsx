@@ -5,13 +5,17 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend, type ChartEvent, type ChartType,
+  Legend, type ChartEvent,
 } from 'chart.js';
 import {Bar} from 'react-chartjs-2';
 import type {City, GroupedCities} from "../../../interfaces/City.ts";
 import {useMemo, useRef, useState} from "react";
-import {getRelativePosition} from "chart.js/helpers";
 import {ClickedCityCard} from "./ClickedCityCard.tsx";
+import zoomPlugin from 'chartjs-plugin-zoom';
+import {Button} from "react-bootstrap";
+
+import "../../../css/components/StackedChart.scss";
+import {Dash, Plus} from "react-bootstrap-icons";
 
 ChartJS.register(
   CategoryScale,
@@ -19,7 +23,8 @@ ChartJS.register(
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  zoomPlugin,
 );
 
 interface StackedChartProps {
@@ -64,32 +69,38 @@ export const StackedChart = ({city, type}: StackedChartProps) => {
     }
   }, [city.cities, totalStats, type]);
 
-  const options = {
+  // options is memonized to prevent zoom level being reset whenever user clicks on the graph
+  const options = useMemo(() => ({
     plugins: {
-      title: {
-        display: false,
+      title: {display: false},
+      legend: {display: false},
+      zoom: {
+        zoom: {
+          wheel: {enabled: true},
+          pinch: {enabled: true},
+          limits: {
+            y: {min: "original", max: "original"},
+          },
+          mode: 'x' as const,
+        },
+        pan: {
+          enabled: true,
+          mode: 'x' as const,
+        },
       },
-      legend: {
-        display: false,
-      }
     },
     indexAxis: "y" as const,
     responsive: true,
     maintainAspectRatio: false,
     scales: {
       x: {
-        ticks: {
-          display: false,
-
-        },
+        ticks: {display: false},
         max: 100,
         stacked: true,
         display: false,
       },
       y: {
-        ticks: {
-          display: false,
-        },
+        ticks: {display: false},
         stacked: true,
       },
     },
@@ -101,22 +112,61 @@ export const StackedChart = ({city, type}: StackedChartProps) => {
       const points = chart.getElementsAtEventForMode(e, "nearest", {intersect: true}, true);
       setClickedCity(stats[points[0].datasetIndex].details);
     },
-  };
+  }), [stats])
 
   const data = {
     labels: [""],
     datasets: stats,
   };
 
+  function handleZoom(value: number) {
+    const chart = chartRef.current;
+
+    if (chart) {
+      chart.zoom(1 + value, "zoom");
+    }
+  }
+
   return (
     <>
-      <div className="w-100" style={{height: "64px"}}>
+      <section className="w-100 chart-container">
         <Bar ref={chartRef} options={options} data={data}/>
-      </div>
-      <p className="mb-2 text-muted">Hover to see % value, Click to see screenshot details.</p>
-      {clickedCity && (
-        <ClickedCityCard key={clickedCity.id} city={clickedCity} />
-      )}
+      </section>
+      <section className="mb-3">
+        <p className="mb-2 text-muted">
+          Hover to see % value, Click to see screenshot details. Drag to pan.
+        </p>
+        <div className="d-flex gap-2">
+          <Button
+            variant="outline-primary"
+            onClick={() => {
+              const chart = chartRef.current;
+              if (chart) chart.resetZoom();
+            }}
+          >
+            Reset zoom
+          </Button>
+          <Button
+            variant="outline-primary"
+            onClick={() => handleZoom(0.25)}
+          >
+            <span className="visually-hidden">Zoom In</span>
+            <Plus />
+          </Button>
+          <Button
+            variant="outline-primary"
+            onClick={() => handleZoom(-0.25)}
+          >
+            <span className="visually-hidden">Zoom Out</span>
+            <Dash />
+          </Button>
+        </div>
+      </section>
+      <section>
+        {clickedCity && (
+          <ClickedCityCard key={clickedCity.id} city={clickedCity}/>
+        )}
+      </section>
     </>
   )
 }
