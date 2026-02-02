@@ -38,14 +38,17 @@ export const ClickedCityCard = ({city}: ClickedCityCardProps) => {
           <ul className="list-unstyled mb-2">
             <li className="d-flex align-items-center gap-2">
               <Person/>
+              <span className="visually-hidden">Population</span>
               {city.cityPopulation.toLocaleString()}
             </li>
             <li className="d-flex align-items-center gap-2">
               <Eye/>
+              <span className="visually-hidden">Views</span>
               {city.viewsCount.toLocaleString()} (Unique: {city.uniqueViewsCount.toLocaleString()})
             </li>
             <li className="d-flex align-items-center gap-2">
               <Heart/>
+              <span className="visually-hidden">Favorites</span>
               {city.favoritesCount.toLocaleString()}
             </li>
           </ul>

@@ -63,14 +63,17 @@ export const CityCard = ({city, setCity, isCitiesGrouped}: CityCardProps) => {
           <Card.Text className="d-flex mb-1 gap-2">
             <span className="d-flex flex-grow-1 align-items-center">
               <Person/>
+              <span className="visually-hidden">Population</span>
               <span className="ms-1">{city.cityPopulation.toLocaleString()}</span>
             </span>
             <span className="d-flex flex-grow-1 align-items-center">
               <Eye/>
+              <span className="visually-hidden">Unique Views</span>
               <span className="ms-1">{city.uniqueViewsCount.toLocaleString()}</span>
             </span>
             <span className="d-flex flex-grow-1 align-items-center">
               <Heart/>
+              <span className="visually-hidden">Favorites</span>
               <span className="ms-1">{city.favoritesCount.toLocaleString()}</span>
             </span>
           </Card.Text>

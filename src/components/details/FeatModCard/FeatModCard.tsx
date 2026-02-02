@@ -38,16 +38,18 @@ export const FeatModCard = ({fetchError, showcasedMod}: ModCardProps) => {
           }
         />
         <Card.Body className="col-12 col-md-8">
-          <Card.Title>
-            <a href={`https://mods.paradoxplaza.com/mods/${showcasedMod?.paradoxModId}/Windows`} target="_blank"
-               className="d-inline-flex gap-2 me-2 align-items-center">
-              {showcasedMod?.name}
-              <BoxArrowUpRight width="16" height="16"/>
-            </a>
-            <span className="text-muted" style={{fontSize: "0.9rem"}}>
+          <h4>
+            <Card.Title>
+              <a href={`https://mods.paradoxplaza.com/mods/${showcasedMod?.paradoxModId}/Windows`} target="_blank"
+                 className="d-inline-flex gap-2 me-2 align-items-center">
+                {showcasedMod?.name}
+                <BoxArrowUpRight width="16" height="16"/>
+              </a>
+              <span className="text-muted" style={{fontSize: "0.9rem"}}>
               {showcasedMod?.subscribersCount.toLocaleString()} subscribers
             </span>
-          </Card.Title>
+            </Card.Title>
+          </h4>
           <Card.Subtitle className="text-muted mb-1">by {showcasedMod?.authorName}</Card.Subtitle>
           {/* TODO: add date range after version number */}
           <ul className="list-unstyled text-muted mb-1 d-inline-flex flex-wrap w-100">
