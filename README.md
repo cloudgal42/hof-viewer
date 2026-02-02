@@ -6,8 +6,6 @@ Features:
 - View screenshot details, such as views & favorites count, as well as city stats such as milestone and population.
 - View, search and filter playset used.
 - View render settings used for that screenshot.
-- View count and favorite count trends graph
-- Find which screenshot in a city is the most successful
 
 ### Acknowledgements
 - [toverux](https://github.com/toverux/) for the original Hall of Fame mod for Cities: Skylines 2
