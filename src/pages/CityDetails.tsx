@@ -16,6 +16,7 @@ import type {City} from "../interfaces/City.ts";
 import {PlaceholderFeatModCard} from "../components/details/FeatModCard/PlaceholderFeatModCard.tsx";
 import {FeatModCard} from "../components/details/FeatModCard/FeatModCard.tsx";
 import * as React from "react";
+import {CityInsights} from "../components/details/CityInsights/CityInsights.tsx";
 
 const CityGallery = lazy(() => import("../components/details/CityGallery.tsx"));
 
@@ -260,6 +261,15 @@ const CityDetails = () => {
       >
         <CityTrends city={cityDetails} isLoading={isFetching} fetchError={error}/>
       </section>
+      {/* City insights only available for grouped screenshots */}
+      {("cities" in cityDetails) && (
+        <section
+          id="insights"
+          className={`mt-3 position-relative ${(isLoadMoreHovered && !isLastPage) && "load-more-hovered"}`}
+        >
+          <CityInsights city={cityDetails} />
+        </section>
+      )}
     </div>
   )
 
