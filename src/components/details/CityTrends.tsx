@@ -30,6 +30,9 @@ export const CityTrends = ({city, isLoading, fetchError}: CityTrendsProps) => {
     return 1;
   });
 
+  // Fetches all screenshots of the current creator, with a list of favorites and views entries if:
+  // 1. User clicks on the "load trends" button
+  // 2. If the creator ID is defined
   const {error, data, isFetching, refetch} = useQuery<City[]>({
     queryKey: ["detailedCities", city?.creatorId],
     queryFn: async () => {
@@ -44,7 +47,6 @@ export const CityTrends = ({city, isLoading, fetchError}: CityTrendsProps) => {
 
       return data;
     },
-    staleTime: 30 * 60 * 1000,
     refetchOnWindowFocus: false,
     enabled: false,
     retry: false,
@@ -80,7 +82,8 @@ export const CityTrends = ({city, isLoading, fetchError}: CityTrendsProps) => {
         </Spinner>
       </div>
     );
-  } else if (fetchError && !fetchError.message.includes("grouped screenshots") || error) {
+  } else if (fetchError && !fetchError.message.includes("grouped screenshots")
+    || error && city && Array.isArray(city.imageUrlFHD)) {
     trendsBody = (
       <ErrorScreen
         errorSummary="Failed to get views/favorites data timestamps of this city :("
