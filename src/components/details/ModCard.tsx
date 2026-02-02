@@ -29,9 +29,9 @@ export const ModCard = ({mod, isCompactMode}: ModListProps) => {
       }
       <Card.Body className="d-flex flex-column justify-content-between">
         <div className="mb-1">
-          <Card.Title className="mb-2">
-            {mod.name}
-          </Card.Title>
+          <h4>
+            <Card.Title className="mb-2">{mod.name}</Card.Title>
+          </h4>
           <Card.Subtitle className="text-muted mb-1">{mod.authorName}</Card.Subtitle>
           <Card.Text className="text-muted">{mod.subscribersCount.toLocaleString()} subscribers</Card.Text>
         </div>

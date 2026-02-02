@@ -103,7 +103,9 @@ export const CityTrends = ({city, isLoading, fetchError}: CityTrendsProps) => {
   return (
     <Card>
       <Card.Body>
-        <Card.Title>Trends</Card.Title>
+        <h3>
+          <Card.Title>Trends</Card.Title>
+        </h3>
         <section className="mb-2 d-flex flex-column flex-md-row justify-content-md-between align-items-md-center gap-2">
           <div>
             <ToggleButtonGroup

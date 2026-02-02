@@ -171,7 +171,9 @@ const CityDetails = () => {
           <Card.Body>
             {cityDetails.showcasedModId && (
               <section className="mb-3">
-                <Card.Title>Showcased Asset/Map</Card.Title>
+                <h3>
+                  <Card.Title>Showcased Asset/Map</Card.Title>
+                </h3>
                 {isFetching && !cityDetails.showcasedMod ? (
                   <PlaceholderFeatModCard/>
                 ) : (
@@ -183,7 +185,9 @@ const CityDetails = () => {
               </section>
             )}
             <section className="mb-3">
-              <Card.Title>Stats</Card.Title>
+              <h3>
+                <Card.Title>Stats</Card.Title>
+              </h3>
               <OverlayTrigger overlay={<Tooltip>{cityDetails.createdAtFormattedDistance}</Tooltip>}>
                 <p className="d-inline-block text-muted mb-1">First posted
                   on: {new Date(cityDetails.createdAt).toLocaleString()}</p>
@@ -212,7 +216,9 @@ const CityDetails = () => {
               </ul>
             </section>
             <section className="mb-3">
-              <Card.Title>Map Used</Card.Title>
+              <h3>
+                <Card.Title>Map Used</Card.Title>
+              </h3>
               {cityDetails.mapName ? (
                 <p>
                   <span>{cityDetails.mapName} (</span>
@@ -231,13 +237,17 @@ const CityDetails = () => {
               )}
             </section>
             <section className="mb-3">
-              <Card.Title>Playset</Card.Title>
+              <h3>
+                <Card.Title>Playset</Card.Title>
+              </h3>
               <ModList city={cityDetails}/>
             </section>
             {/* Avoid displaying render settings for grouped cities */}
             {!Array.isArray(city?.imageUrlFHD) && (
               <section>
-                <Card.Title>Render Settings</Card.Title>
+                <h3>
+                  <Card.Title>Render Settings</Card.Title>
+                </h3>
                 <RenderSettings city={cityDetails}/>
               </section>
             )}
