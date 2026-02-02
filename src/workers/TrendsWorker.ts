@@ -77,7 +77,7 @@ function groupData(city: City | GroupedCities, day: number, type: string): Trend
 
   // 1.5. TODO: Define viewEntries array and assign it based on type for unique and non-unique views
   // const viewEntries = (type === "uniqueViews")
-  console.log("Grouping data to prepare for the chart")
+  // console.log("Grouping data to prepare for the chart")
 
   // 2. Get grouped dates. groupedDates contain arrays of Date object with a length of 2
   // Index 0 is start, Index 1 is end
