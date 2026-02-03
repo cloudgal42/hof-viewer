@@ -1,7 +1,8 @@
 import {Card} from "react-bootstrap";
 import {ArrowUpRight, Cake, Eye, Heart, Images} from "react-bootstrap-icons";
 import {NavLink} from "react-router";
-import type {Creator} from "../home/CityCard.tsx";
+
+import type {CreatorDetails} from "../../../interfaces/Creator.ts";
 
 const Socials: {[key: string]: string} = {
   "discord": "Discord",
@@ -9,17 +10,6 @@ const Socials: {[key: string]: string} = {
   "kofi": "Ko-fi",
   "paradoxmods": "Paradox Mods",
   "paypal": "PayPal",
-}
-
-export interface CreatorDetails extends Creator {
-  // Stats (stats starting with all will not be used)
-  allCreatorsCount: number;
-  allScreenshotsCount: number;
-  allViewsCount: number;
-  screenshotsCount: number;
-  viewsCount: number;
-  uniqueViewsCount: number;
-  favoritesCount: number;
 }
 
 interface CreatorCardProps {
@@ -31,7 +21,9 @@ export const CreatorCard = ({creator}: CreatorCardProps) => {
     <Card className="w-100">
       <Card.Body className="row">
         <div className="col-12 col-sm-6">
-          <Card.Title>{creator.creatorName}</Card.Title>
+          <h3>
+            <Card.Title>{creator.creatorName}</Card.Title>
+          </h3>
           <Card.Subtitle>{creator.creatorNameLatinized}</Card.Subtitle>
           <p className="d-flex mb-2 gap-2 align-items-center">
             <Cake />

@@ -1,7 +1,7 @@
 {
   "name": "hof-feed",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -12,12 +12,16 @@
   "dependencies": {
     "@netlify/vite-plugin": "^2.7.20",
     "@popperjs/core": "^2.11.8",
+    "@tanstack/react-query": "^5.90.20",
     "bootstrap": "^5.3.8",
+    "chart.js": "^4.5.1",
+    "chartjs-plugin-zoom": "^2.2.0",
     "fuse.js": "^7.1.0",
     "lightgallery": "^2.9.0",
     "react": "^19.2.0",
     "react-bootstrap": "^2.10.10",
     "react-bootstrap-icons": "^1.11.6",
+    "react-chartjs-2": "^5.3.1",
     "react-dom": "^19.2.0",
     "react-infinite-scroll-component": "^6.1.1",
     "react-lazy-load-image-component": "^1.6.3",

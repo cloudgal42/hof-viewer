@@ -1,5 +1,5 @@
 import Form from "react-bootstrap/Form";
-import {handleSetSearchParams} from "../../utils/SearchParamHandlers.ts";
+import {handleSetSearchParams} from "../../../utils/SearchParamHandlers.ts";
 
 interface SortDropdownProps {
   searchParams: URLSearchParams;

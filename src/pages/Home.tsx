@@ -1,90 +1,24 @@
 import {Button, Form, OverlayTrigger, Tooltip} from "react-bootstrap";
-import {SortOrderButton} from "../components/home/SortOrderButton.tsx";
-import {useEffect, useMemo, useState} from "react";
+import {SortOrderButton} from "../components/home/SortOrderButton/SortOrderButton.tsx";
+import {useMemo, useState} from "react";
 import type {ContextType} from "../App.tsx";
-import {SortDropdown} from "../components/home/SortDropdown.tsx";
-import {type City, CityCard, type GroupedCities} from "../components/home/CityCard.tsx";
-import {PlaceholderCard} from "../components/home/PlaceholderCard.tsx";
+import {SortDropdown} from "../components/home/SortDropdown/SortDropdown.tsx";
+import {CityCard} from "../components/home/CityCard/CityCard.tsx";
+import {PlaceholderCard} from "../components/home/CityCard/PlaceholderCard.tsx";
 import {useOutletContext, useSearchParams} from "react-router";
 import {handleSetSearchParams} from "../utils/SearchParamHandlers.ts";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import SadChirper from "../assets/sadChirpyOutline.svg";
-
-interface TotalScreenshotStats {
-  combinedStats?: GroupedCities;
-}
-
-// Group all stats of each unique city name into one.
-function groupCities(citiesToGroup: City[]) {
-  const groupedScreenshots: City[][] = [];
-  const groupedCities: GroupedCities[] = [];
-
-  // 1. Get all distinct city names. Use Set() to filter down to only unique values
-  // Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set/Set
-  const cityNames = citiesToGroup.map(({cityName}) => cityName);
-  const uniqueCityNames = [...new Set(cityNames)];
-
-  // 2. Combine all unique city entries into 1 array
-  uniqueCityNames.forEach(cityName => {
-    const cityScreenshots = citiesToGroup.filter(city => city.cityName === cityName)
-    groupedScreenshots.push(cityScreenshots);
-  });
-
-  // 3. Iterate through groupedScreenshots[], and push the new data into groupedCities[]
-  groupedScreenshots.forEach(screenshotArr => {
-    const screenshotStat: TotalScreenshotStats = {};
-    screenshotArr.forEach(screenshot => {
-      screenshotStat.combinedStats = {
-        id: screenshot.id,
-        isApproved: screenshot.isApproved,
-        isReported: screenshot.isReported,
-        favoritesCount: (!screenshotStat.combinedStats?.favoritesCount) ? screenshot.favoritesCount : screenshotStat.combinedStats.favoritesCount + screenshot.favoritesCount,
-        favoritingPercentage: 0, // FIXME
-        viewsCount: (!screenshotStat.combinedStats?.viewsCount) ? screenshot.viewsCount : screenshotStat.combinedStats.viewsCount + screenshot.viewsCount,
-        uniqueViewsCount: (!screenshotStat.combinedStats?.uniqueViewsCount) ? screenshot.uniqueViewsCount : screenshotStat.combinedStats.uniqueViewsCount + screenshot.uniqueViewsCount,
-        cityName: screenshot.cityName,
-        cityNameLatinized: screenshot.cityNameLatinized,
-        cityNameLocale: screenshot.cityNameLocale,
-        cityNameTranslated: screenshot.cityNameTranslated,
-        cityMilestone: screenshot.cityMilestone,
-        cityPopulation: screenshot.cityPopulation,
-        renderSettings: screenshot.renderSettings,
-        createdAt: screenshotArr[0].createdAt,
-        createdAtFormatted: screenshotArr[0].createdAtFormatted,
-        createdAtFormattedDistance: screenshotArr[0].createdAtFormattedDistance,
-        creator: screenshot.creator,
-        creatorId: screenshot.creatorId,
-        imageUrl4K: (!screenshotStat.combinedStats?.imageUrl4K) ? [] : screenshotStat.combinedStats.imageUrl4K,
-        imageUrlFHD: (!screenshotStat.combinedStats?.imageUrlFHD) ? [] : screenshotStat.combinedStats.imageUrlFHD,
-        imageUrlThumbnail: (!screenshotStat.combinedStats?.imageUrlThumbnail) ? [] : screenshotStat.combinedStats.imageUrlThumbnail,
-        mapName: screenshot.mapName,
-        paradoxModIds: screenshot.paradoxModIds,
-        shareParadoxModIds: screenshot.shareParadoxModIds,
-        shareRenderSettings: screenshot.shareRenderSettings,
-        __favorited: false,
-      }
-
-      screenshotStat.combinedStats?.imageUrlFHD.push(screenshot.imageUrlFHD);
-      screenshotStat.combinedStats?.imageUrl4K.push(screenshot.imageUrl4K);
-      screenshotStat.combinedStats?.imageUrlThumbnail.push(screenshot.imageUrlThumbnail);
-    });
-
-    if (screenshotStat.combinedStats) {
-      screenshotStat.combinedStats.favoritingPercentage = Math.round((screenshotStat.combinedStats.favoritesCount / screenshotStat.combinedStats.uniqueViewsCount) * 100);
-      groupedCities.push(screenshotStat.combinedStats);
-    }
-  });
-  // 4. Return the grouped cities
-  return groupedCities;
-}
+import {groupCities} from "../utils/GroupCities.ts";
+import type {City, GroupedCities} from "../interfaces/City.ts";
+import {ErrorScreen} from "../components/misc/ErrorScreen/ErrorScreen.tsx";
+import {useQuery, useQueryClient} from "@tanstack/react-query";
 
 const DEFAULT_CITIES_PER_PAGE = 18;
 
 const Home = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [fetchStatus, setFetchStatus] = useState<number>();
-  // const [errMsg, setErrMsg] = useState<string>();
+  const queryClient = useQueryClient();
   const [page, setPage] = useState<number>(1);
 
   const creator = searchParams.get("creator") || "";
@@ -96,46 +30,38 @@ const Home = () => {
   // const [isGrouped, setIsGrouped] = useState<boolean>(false);
 
   const {
-    cities, setCities,
     setCity,
-    isLoading, setIsLoading,
   } = useOutletContext<ContextType>();
 
-  useEffect(() => {
-    let ignore = false;
-    const creatorMatchesCities = cities[0]?.creatorId === creator || cities[0]?.creator.creatorName.toLowerCase() === creator.toLowerCase();
-    if (!creator || (cities.length !== 0 && creatorMatchesCities)) return;
+  const {error, data, isFetching} = useQuery<City[]>({
+    queryKey: ["cities", creator],
+    queryFn: async () => {
+      if (!creator) return [];
 
-    async function getCreatorCities() {
-      setIsLoading(true);
-      const res = await fetch(`https://halloffame.cs2.mtq.io/api/v1/screenshots?creatorId=${creator}`);
+      const res = await fetch(`${import.meta.env.VITE_HOF_SERVER}/screenshots?creatorId=${creator}`);
       const data = await res.json();
 
-      setFetchStatus(res.status);
-
-      if (res.ok && !ignore) {
-        setCities(data);
-        setIsLoading(false);
-      } else {
-        setCities([]);
-        setIsLoading(false);
+      if (!res.ok) {
+        return Promise.reject(new Error(`${data.statusCode}: ${data.message}`));
       }
 
-      // const screenshots = JSON.parse(Screenshots);
-      // setCities(screenshots);
-      // setIsLoading(false);
+      return data;
+    },
+    staleTime: 30 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
 
-    }
-
-    getCreatorCities();
-
-    return () => {
-      ignore = true
-    };
-  }, [creator]);
-
+  const cities =
+    queryClient.getQueryData<City[]>(["detailedCities", data && data[0]?.creatorId])
+    || queryClient.getQueryData<City[]>(["detailedCities", creator])
+    || data;
   const sortedCities = useMemo(() => {
-    const citiesToSort = groupStatus === "on" ? groupCities(cities) : cities;
+    if (!creator || isFetching || error || !cities) return [];
+
+    // console.log(cities);
+
+    const citiesToSort: City[] | GroupedCities[] = groupStatus === "on" ? groupCities(cities) : cities;
     const copiedCities = [...citiesToSort];
 
     switch (sortBy) {
@@ -182,13 +108,12 @@ const Home = () => {
     const queryString = query?.toString() || "";
     if (queryString === creator) return;
 
-    setCities([]);
     setSearchParams(handleSetSearchParams(searchParams, "creator", queryString));
   }
 
   let content;
 
-  if (isLoading) {
+  if (isFetching) {
     content = (
       <div className="placeholder-feed d-flex flex-wrap gap-3">
         <PlaceholderCard/>
@@ -199,7 +124,21 @@ const Home = () => {
         <PlaceholderCard/>
       </div>
     )
-  } else if (cities.length > 0) {
+  } else if (error) {
+    content = (
+      <ErrorScreen
+        errorSummary="Failed to get screenshots for this creator :("
+        errorDetails={error.message}
+      />
+    )
+  } else if (!navigator.onLine) {
+    content = (
+      <ErrorScreen
+        errorSummary="You are offline :("
+        errorDetails="Double check your Internet connection and try again."
+      />
+    )
+  } else if (sortedCities.length > 0) {
     content = (
       <InfiniteScroll
         next={() => setPage(a => a + 1)}
@@ -222,21 +161,6 @@ const Home = () => {
         )}
       </InfiniteScroll>
     );
-  } else if (fetchStatus && fetchStatus !== 200) {
-    content = (
-      <div className="d-flex flex-column align-items-center text-center">
-        <img src={SadChirper} width="148" height="148" alt="" />
-        <p className="text-muted mb-1">
-          {fetchStatus === 404 ? "No cities found :(" : "Something went wrong :("}
-        </p>
-        <p className="text-muted mb-1">
-          {fetchStatus === 404 ?
-            "Either the creator doesn't exist, or they have not posted any screenshots."
-            : `HTTP status code: ${fetchStatus}. Please wait for a while and try again.`
-          }
-        </p>
-      </div>
-    )
   } else {
     content = <p>Search by the creator name/ID to get started.</p>
   }
@@ -275,7 +199,8 @@ const Home = () => {
                 }}
                 defaultChecked={groupStatus === "on"}
               />
-              <OverlayTrigger overlay={<Tooltip>When enabled, group all screenshots with the same city name into one entry.</Tooltip>}>
+              <OverlayTrigger overlay={<Tooltip>When enabled, group all screenshots with the same city name into one
+                entry.</Tooltip>}>
                 <Form.Label
                   htmlFor="groupCitiesCheck"
                   className="mb-0"

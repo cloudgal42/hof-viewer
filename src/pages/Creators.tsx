@@ -1,51 +1,82 @@
 import {Button, Form} from "react-bootstrap";
-import {CreatorCard, type CreatorDetails} from "../components/creators/CreatorCard.tsx";
-import {useEffect, useState} from "react";
-import {PlaceholderCreatorCard} from "../components/creators/PlaceholderCreatorCard.tsx";
+import {CreatorCard} from "../components/creators/CreatorCard/CreatorCard.tsx";
+import {PlaceholderCreatorCard} from "../components/creators/CreatorCard/PlaceholderCreatorCard.tsx";
 import {useSearchParams} from "react-router";
 import {handleSetSearchParams} from "../utils/SearchParamHandlers.ts";
-import SadChirper from "../assets/sadChirpyOutline.svg";
+import type {CreatorDetails} from "../interfaces/Creator.ts";
+import {useQuery} from "@tanstack/react-query";
+import {ErrorScreen} from "../components/misc/ErrorScreen/ErrorScreen.tsx";
 
 const Creators = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [fetchStatus, setFetchStatus] = useState<number>();
+  // const [fetchStatus, setFetchStatus] = useState<number>();
 
-  const [creatorDetails, setCreatorDetails] = useState<CreatorDetails | null>();
-  const [isCreatorLoading, setIsCreatorLoading] = useState<boolean>(false);
+  // const [creatorDetails, setCreatorDetails] = useState<CreatorDetails | null>();
+  // const [isCreatorLoading, setIsCreatorLoading] = useState<boolean>(false);
   const creator = searchParams.get("creator") || "";
 
-  useEffect(() => {
-    let ignore = false;
-    if (!creator) return;
+  const {error, data, isFetching} = useQuery<CreatorDetails>({
+    queryKey: ["creator", creator],
+    queryFn: async () => {
+      if (!creator) return null;
+      const [creatorRes, creatorStatsRes] = await Promise.all([
+        fetch(`${import.meta.env.VITE_HOF_SERVER}/creators/${creator}`),
+        fetch(`${import.meta.env.VITE_HOF_SERVER}/creators/${creator}/stats`),
+      ]);
 
-    async function getCreatorDetails() {
-      setIsCreatorLoading(true);
-      const creatorRes = await fetch(`https://halloffame.cs2.mtq.io/api/v1/creators/${creator}`);
-      const creatorStatsRes = await fetch(`https://halloffame.cs2.mtq.io/api/v1/creators/${creator}/stats`);
+      const [creatorData, creatorStats] = await Promise.all([
+        creatorRes.json(),
+        creatorStatsRes.json(),
+      ]);
 
-      const creatorInfo = await creatorRes.json();
-      const creatorStats = await creatorStatsRes.json();
-
-      setFetchStatus(creatorStatsRes.status);
-
-      if (creatorRes.ok && creatorStatsRes.ok && !ignore) {
-        setCreatorDetails({
-          ...creatorInfo,
-          ...creatorStats,
-        });
-        setIsCreatorLoading(false);
-      } else {
-        setIsCreatorLoading(false);
-        setCreatorDetails(null);
+      if (!creatorRes.ok || !creatorStatsRes) {
+        return Promise.reject(new Error(`${creatorData.statusCode}: ${creatorStats.message}`));
       }
-    }
 
-    getCreatorDetails();
+      return {
+        ...creatorData,
+        ...creatorStats,
+      }
+    },
+    staleTime: 30 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
 
-    return () => {
-      ignore = true
-    };
-  }, [creator]);
+  const creatorDetails = data;
+
+  // useEffect(() => {
+  //   let ignore = false;
+  //   if (!creator) return;
+  //
+  //   async function getCreatorDetails() {
+  //     setIsCreatorLoading(true);
+  //     const creatorRes = await fetch(`${import.meta.env.VITE_HOF_SERVER}/creators/${creator}`);
+  //     const creatorStatsRes = await fetch(`${import.meta.env.VITE_HOF_SERVER}/creators/${creator}/stats`);
+  //
+  //     const creatorInfo = await creatorRes.json();
+  //     const creatorStats = await creatorStatsRes.json();
+  //
+  //     setFetchStatus(creatorStatsRes.status);
+  //
+  //     if (creatorRes.ok && creatorStatsRes.ok && !ignore) {
+  //       setCreatorDetails({
+  //         ...creatorInfo,
+  //         ...creatorStats,
+  //       });
+  //       setIsCreatorLoading(false);
+  //     } else {
+  //       setIsCreatorLoading(false);
+  //       setCreatorDetails(null);
+  //     }
+  //   }
+  //
+  //   getCreatorDetails();
+  //
+  //   return () => {
+  //     ignore = true
+  //   };
+  // }, [creator]);
 
   // function validateAndSetCreator(creator: string) {
   //   setSearchParams(handleSetSearchParams(searchParams, "creator", creator));
@@ -60,24 +91,23 @@ const Creators = () => {
 
   let content;
 
-  if (isCreatorLoading) {
+  if (isFetching) {
     content = <PlaceholderCreatorCard/>;
   } else if (creatorDetails) {
     content = <CreatorCard creator={creatorDetails}/>;
-  } else if (fetchStatus && fetchStatus !== 200) {
+  } else if (error) {
     content = (
-      <div className="w-100 d-flex flex-column align-items-center text-center">
-        <img src={SadChirper} width="148" height="148" alt="" />
-        <p className="text-muted mb-1">
-          {fetchStatus === 404 ? "No creators found :(" : "Something went wrong :("}
-        </p>
-        <p className="text-muted mb-1">
-          {fetchStatus === 404 ?
-            "The creator likely have not registered an HoF account."
-            : `HTTP status code: ${fetchStatus}. Please wait for a while and try again.`
-          }
-        </p>
-      </div>
+      <ErrorScreen
+        errorSummary="Failed to get screenshots for this creator :("
+        errorDetails={error.message}
+      />
+    )
+  } else if (!navigator.onLine) {
+    content = (
+      <ErrorScreen
+        errorSummary="You are offline :("
+        errorDetails="Double check your Internet connection and try again."
+      />
     )
   } else {
     content = <p>Search by the creator name/ID to get started.</p>
@@ -107,26 +137,8 @@ const Creators = () => {
       <section>
         <div className="d-flex mb-3 align-items-sm-center justify-content-between flex-column flex-sm-row">
           <h2 className="mb-0">Creator</h2>
-          {/*<div className="d-flex justify-content-between align-items-center gap-2">*/}
-          {/*  <div className="d-flex gap-2 align-items-center text-nowrap">*/}
-          {/*    <Form.Check*/}
-          {/*      name="groupCities"*/}
-          {/*      id="groupCitiesCheck"*/}
-          {/*      onClick={(e) => setIsGrouped(e.currentTarget.checked)}/>*/}
-          {/*    <Form.Label*/}
-          {/*      htmlFor="groupCitiesCheck"*/}
-          {/*      className="mb-0"*/}
-          {/*    >*/}
-          {/*      Group Cities*/}
-          {/*    </Form.Label>*/}
-          {/*  </div>*/}
-          {/*  <div className="d-flex gap-2 align-items-center">*/}
-          {/*    <SortOrderButton sortOrder={sortOrder} setSortOrder={setSortOrder}/>*/}
-          {/*    <SortDropdown setSortBy={setSortBy}/>*/}
-          {/*  </div>*/}
-          {/*</div>*/}
         </div>
-        <div id="creator" className="d-flex flex-wrap gap-3">
+        <div id="creator">
           {content}
         </div>
       </section>

@@ -1,17 +1,24 @@
-import {Button, Card, OverlayTrigger, Placeholder, Tooltip} from "react-bootstrap";
+import {Button, Card, OverlayTrigger, Tooltip} from "react-bootstrap";
 import {NavLink, useNavigate, useOutletContext, useParams, useSearchParams} from "react-router";
 import type {ContextType} from "../App.tsx";
 import {BoxArrowUpRight, ChevronDown, ChevronLeft, Eye, Heart, Person, Trophy} from "react-bootstrap-icons";
-import {lazy, Suspense, useEffect, useState} from "react";
-import {DEFAULT_IMAGES_PER_PAGE} from "../components/details/CityGallery.tsx";
+import {lazy, Suspense, useState} from "react";
+import {DEFAULT_IMAGES_PER_PAGE} from "../components/details/CityGallery/CityGallery.tsx";
 
 import PlaceholderImg from "../assets/placeholder.svg"
-import SadChirper from "../assets/sadChirpyOutline.svg";
-import {PlaceholderFeatModCard} from "../components/details/PlaceholderFeatModCard.tsx";
-import {FeatModCard} from "../components/details/FeatModCard.tsx";
-import {ModList} from "../components/details/ModList.tsx";
+import {ModList} from "../components/details/Playset/ModList.tsx";
+import {RenderSettings} from "../components/details/RenderSettings/RenderSettings.tsx";
+import {PlaceholderDetails} from "../components/details/Details/PlaceholderDetails.tsx";
+import {CityTrends} from "../components/details/CityTrends/CityTrends.tsx";
+import {ErrorScreen} from "../components/misc/ErrorScreen/ErrorScreen.tsx";
+import {useQuery} from "@tanstack/react-query";
+import type {City} from "../interfaces/City.ts";
+import {PlaceholderFeatModCard} from "../components/details/FeatModCard/PlaceholderFeatModCard.tsx";
+import {FeatModCard} from "../components/details/FeatModCard/FeatModCard.tsx";
+import * as React from "react";
+import {CityInsights} from "../components/details/CityInsights/CityInsights.tsx";
 
-const CityGallery = lazy(() => import("../components/details/CityGallery.tsx"));
+const CityGallery = lazy(() => import("../components/details/CityGallery/CityGallery.tsx"));
 
 const cityMilestones = [
   "Tiny Village",
@@ -38,191 +45,70 @@ const cityMilestones = [
 
 const CityDetails = () => {
   const {
-    city, setCity,
+    city,
   } = useOutletContext<ContextType>();
   const navigate = useNavigate();
 
   const [page, setPage] = useState<number>(1);
   const [isLoadMoreHovered, setIsLoadMoreHovered] = useState<boolean>(false);
-  const [fetchStatus, setFetchStatus] = useState<number>();
-
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isLoadingMod, setIsLoadingMod] = useState<boolean>(false);
 
   const [searchParams] = useSearchParams();
   const cityParam = useParams().city;
 
   const isCitiesGrouped = searchParams.get("groupStatus") === "on";
 
-  useEffect(() => {
-    let ignore = false;
-    if (!city && isCitiesGrouped || isCitiesGrouped || city && !city.showcasedModId) return;
+  const {error, data, isFetching} = useQuery<City>({
+    queryKey: ["city", {id: cityParam}],
+    queryFn: async () => {
+      // maybe FIXME?
+      if (isCitiesGrouped) return Promise.reject(new Error(`For now grouped screenshots will be inaccessible upon page reload. Sorry about that!`));
 
-    async function getCity() {
-      if (!city) {
-        setIsLoading(true);
-      }
-      setIsLoadingMod(true);
-      const res = await fetch(`https://halloffame.cs2.mtq.io/api/v1/screenshots/${cityParam}`);
+      const res = await fetch(`${import.meta.env.VITE_HOF_SERVER}/screenshots/${cityParam}?favorites=true&views=true`);
       const data = await res.json();
 
-      setFetchStatus(res.status);
-
-      if (res.ok && !ignore) {
-        setCity(data);
-        setIsLoading(false);
-        setIsLoadingMod(false);
-      } else {
-        setIsLoadingMod(false);
-        setIsLoading(false);
+      if (!res.ok) {
+        return Promise.reject(new Error(`${data.statusCode}: ${data.message}`));
       }
 
-    }
+      return data;
+    },
+    refetchOnWindowFocus: false,
+    enabled: Boolean(!city?.favorites && !city?.views || city?.showcasedModId),
+    retry: false,
+  });
 
-    getCity();
+  // console.log(data);
 
-    return () => {
-      ignore = true;
-    }
+  const cityDetails = data || city;
 
-  }, []);
-
-
-  // console.log(city);
-  // console.log("Fetch status:", fetchStatus);
-  // console.log("Is the page loading?", isLoading);
-
-  if (!city) {
-    if (fetchStatus !== 200 && fetchStatus || isCitiesGrouped) {
+  if (!cityDetails) {
+    if (!navigator.onLine) {
       return (
-        <div className="d-flex flex-column align-items-center text-center">
-          <img src={SadChirper} width="148" height="148" alt=""/>
-          <p className="text-muted mb-1">
-            {fetchStatus === 404 || !fetchStatus ?
-              "No city/screenshot found :(" :
-              "Something went wrong :("
-            }
-          </p>
-          <p className="text-muted mb-1">
-            {fetchStatus === 404 || !fetchStatus ?
-              (
-                <>
-                  The city/screenshot you are looking for does not exist.
-                  Try searching in <NavLink to="/">Browse by Creator ID</NavLink>?
-                </>
-              ) : (
-                <>
-                  HTTP status code: {fetchStatus}. Please wait for a while and try again.
-                </>
-              )
-            }
-          </p>
-          <p className="text-muted mb-1">
-            NOTE: For now grouped screenshots will be inaccessible upon page reload. Sorry about that!
-          </p>
-        </div>
+        <ErrorScreen
+          errorSummary="You are offline :("
+          errorDetails="Double check your Internet connection and try again."
+        />
       )
-    } else if (isLoading || fetchStatus === 200) {
+    } else if (error || isCitiesGrouped) {
       return (
-        <div className="main-wrapper flex-grow-1 ms-sm-5 me-sm-5">
-          <div className="mb-2">
-            <h2 className="mb-0">
-              <Placeholder animation="glow">
-                <Placeholder xs={5} size="lg"/>
-              </Placeholder>
-            </h2>
-          </div>
-          <h3 className="text-muted fs-5">
-            <Placeholder animation="glow">
-              <Placeholder xs={3} size="lg"/>
-            </Placeholder>
-          </h3>
-          <section id="gallery" className="mt-3 position-relative">
-            <img
-              src={PlaceholderImg}
-              className="w-100 object-fit-contain"
-              style={{aspectRatio: "16/9"}}
-              alt=""
-            />
-          </section>
-          <section
-            id="details"
-            className="mt-3 position-relative"
-          >
-            <Card>
-              <Card.Body>
-                <section className="mb-3">
-                  <Placeholder className="mb-1" animation="glow">
-                    <Placeholder className="d-block mb-2" as={Card.Title} xs={3}/>
-                    <Placeholder className="d-block mb-2" as={Card.Text} xs={5}/>
-                  </Placeholder>
-                  <ul className="list-unstyled mb-0 row">
-                    <li className="d-flex gap-2 align-items-center col-sm-6 col-md-4 col-lg-3">
-                      <Person/>
-                      <span className="visually-hidden">Population</span>
-                      <Placeholder as={Card.Text} animation="glow" className="flex-grow-1">
-                        <Placeholder xs={1}/>
-                      </Placeholder>
-                    </li>
-                    <li className="d-flex gap-2 align-items-center col-sm-6 col-md-4 col-lg-3">
-                      <Trophy/>
-                      <span className="visually-hidden">Milestone</span>
-                      <Placeholder as={Card.Text} animation="glow" className="flex-grow-1">
-                        <Placeholder xs={1}/>
-                      </Placeholder>
-                    </li>
-                    <li className="d-flex gap-2 align-items-center col-sm-6 col-md-4 col-lg-3">
-                      <Eye/>
-                      <span className="visually-hidden">Unique Views</span>
-                      <Placeholder as={Card.Text} animation="glow" className="flex-grow-1">
-                        <Placeholder xs={1}/>
-                      </Placeholder>
-                    </li>
-                    <li className="d-flex gap-2 align-items-center col-sm-6 col-md-4 col-lg-3">
-                      <Heart/>
-                      <span className="visually-hidden">Favorites</span>
-                      <Placeholder as={Card.Text} animation="glow" className="flex-grow-1">
-                        <Placeholder xs={1}/>
-                      </Placeholder>
-                    </li>
-                  </ul>
-                </section>
-                <section className="mb-3">
-                  <Placeholder as={Card.Title} animation="glow">
-                    <Placeholder xs={5}/>
-                  </Placeholder>
-                  <Placeholder as={Card.Text} animation="glow">
-                    <Placeholder xs={7}/>
-                  </Placeholder>
-                </section>
-                <section className="mb-3">
-                  <Placeholder as={Card.Title} animation="glow">
-                    <Placeholder xs={5}/>
-                  </Placeholder>
-                  <Card>
-                    <Card.Body>
-                      <Placeholder as={Card.Text} animation="glow">
-                        <Placeholder xs={4}/>
-                      </Placeholder>
-                    </Card.Body>
-                  </Card>
-                </section>
-                <section>
-                  <Placeholder as={Card.Title} animation="glow">
-                    <Placeholder xs={5}/>
-                  </Placeholder>
-                  <Placeholder as={Card.Text} animation="glow">
-                    <Placeholder className="d-block mb-2" xs={6}/>
-                    <Placeholder className="d-block mb-2" xs={4}/>
-                    <Placeholder className="d-block mb-2" xs={5}/>
-                    <Placeholder className="d-block mb-2" xs={4}/>
-                    <Placeholder className="d-block mb-2" xs={3}/>
-                  </Placeholder>
-                </section>
-              </Card.Body>
-            </Card>
-          </section>
-        </div>
+        <ErrorScreen
+          errorSummary="Failed to load screenshot/city details :("
+          errorDetails={
+            <>
+              <p className="mb-1">
+                {error?.message ? `${error.message} ` :
+                  "For now grouped screenshots will be inaccessible upon page reload. Sorry about that!"
+                }
+                Try searching in <NavLink to="/">Browse by Creator ID</NavLink>?
+              </p>
+
+            </>
+          }
+        />
+      )
+    } else if (isFetching) {
+      return (
+        <PlaceholderDetails/>
       );
     } else {
       // TODO: There has to be a better solution to this
@@ -230,7 +116,7 @@ const CityDetails = () => {
     }
   }
 
-  const imageUrlFHD = !Array.isArray(city.imageUrlFHD) ? [city.imageUrlFHD] : city.imageUrlFHD;
+  const imageUrlFHD = !Array.isArray(cityDetails.imageUrlFHD) ? [cityDetails.imageUrlFHD] : cityDetails.imageUrlFHD;
   const isLastPage = (Math.ceil(imageUrlFHD.length / DEFAULT_IMAGES_PER_PAGE) - page) === 0;
 
   return (
@@ -247,9 +133,10 @@ const CityDetails = () => {
             <ChevronLeft width="24" height="24"/>
           </Button>
         </OverlayTrigger>
-        <h2 className="mb-0">{city.cityName}{city.cityNameTranslated && `(${city.cityNameTranslated})`}</h2>
+        <h2
+          className="mb-0">{cityDetails.cityName}{cityDetails.cityNameTranslated && `(${cityDetails.cityNameTranslated})`}</h2>
       </div>
-      <h3 className="text-muted fs-5">by {city.creator.creatorName}</h3>
+      <h3 className="text-muted fs-5">by {cityDetails.creator.creatorName}</h3>
       <section id="gallery" className="mt-3 position-relative">
         <Suspense fallback={
           <img
@@ -259,7 +146,7 @@ const CityDetails = () => {
             style={{aspectRatio: "16/9"}}
           />
         }>
-          <CityGallery page={page} imageUrls={imageUrlFHD}/>
+          <CityGallery page={page} city={cityDetails} />
         </Suspense>
         {/* TODO: Move this button to the CityGallery component. Research React's useContext hook */}
         {!isLastPage && (
@@ -283,13 +170,15 @@ const CityDetails = () => {
       >
         <Card>
           <Card.Body>
-            {city.showcasedModId && (
+            {cityDetails.showcasedModId && (
               <section className="mb-3">
-                <Card.Title>Showcased Asset/Map</Card.Title>
-                {isLoadingMod || !city.showcasedMod ? (
+                <h3>
+                  <Card.Title>Showcased Asset/Map</Card.Title>
+                </h3>
+                {isFetching && !cityDetails.showcasedMod ? (
                   <PlaceholderFeatModCard/>
                 ) : (
-                  <FeatModCard fetchStatus={fetchStatus} showcasedMod={city.showcasedMod}/>
+                  <FeatModCard fetchError={error} showcasedMod={cityDetails.showcasedMod}/>
                 )}
                 {/*<a href={`https://mods.paradoxplaza.com/mods/${city.showcasedModId}/Windows`} target="_blank">*/}
                 {/*  {city.showcasedModId}*/}
@@ -297,43 +186,47 @@ const CityDetails = () => {
               </section>
             )}
             <section className="mb-3">
-              <Card.Title>Stats</Card.Title>
-              <OverlayTrigger overlay={<Tooltip>{city.createdAtFormattedDistance}</Tooltip>}>
+              <h3>
+                <Card.Title>Stats</Card.Title>
+              </h3>
+              <OverlayTrigger overlay={<Tooltip>{cityDetails.createdAtFormattedDistance}</Tooltip>}>
                 <p className="d-inline-block text-muted mb-1">First posted
-                  on: {new Date(city.createdAt).toLocaleString()}</p>
+                  on: {new Date(cityDetails.createdAt).toLocaleString()}</p>
               </OverlayTrigger>
               <ul className="list-unstyled mb-0 row">
                 <li className="col-sm-6 col-md-4 col-lg-3 d-flex align-items-center gap-2">
                   <Person/>
                   <span className="visually-hidden">Population</span>
-                  {city.cityPopulation.toLocaleString()}
+                  {cityDetails.cityPopulation.toLocaleString()}
                 </li>
                 <li className="col-sm-6 col-md-4 col-lg-3 d-flex align-items-center gap-2">
                   <Trophy/>
                   <span className="visually-hidden">Milestone</span>
-                  {cityMilestones[city.cityMilestone - 1]}
+                  {cityMilestones[cityDetails.cityMilestone - 1]}
                 </li>
                 <li className="col-sm-6 col-md-4 col-lg-3 d-flex align-items-center gap-2">
                   <Eye/>
                   <span className="visually-hidden">Unique Views</span>
-                  {`${city.viewsCount.toLocaleString()} (Unique: ${city.uniqueViewsCount.toLocaleString()})`}
+                  {`${cityDetails.viewsCount.toLocaleString()} (Unique: ${cityDetails.uniqueViewsCount.toLocaleString()})`}
                 </li>
                 <li className="col-sm-6 col-md-4 col-lg-3 d-flex align-items-center gap-2">
                   <Heart/>
                   <span className="visually-hidden">Favorites</span>
-                  {`${city.favoritesCount.toLocaleString()} (${city.favoritingPercentage}% of unique views)`}
+                  {`${cityDetails.favoritesCount.toLocaleString()} (${cityDetails.favoritingPercentage}% of unique views)`}
                 </li>
               </ul>
             </section>
             <section className="mb-3">
-              <Card.Title>Map Used</Card.Title>
-              {city.mapName ? (
+              <h3>
+                <Card.Title>Map Used</Card.Title>
+              </h3>
+              {cityDetails.mapName ? (
                 <p>
-                  <span>{city.mapName} (</span>
+                  <span>{cityDetails.mapName} (</span>
                   <a
                     target="_blank"
                     className="d-inline-flex align-items-center gap-2"
-                    href={`https://mods.paradoxplaza.com/games/cities_skylines_2?search=${city.mapName}`}
+                    href={`https://mods.paradoxplaza.com/games/cities_skylines_2?search=${cityDetails.mapName}`}
                   >
                     Search on PDX Mods
                     <BoxArrowUpRight width="16" height="16"/>
@@ -345,24 +238,38 @@ const CityDetails = () => {
               )}
             </section>
             <section className="mb-3">
-              <Card.Title>Playset</Card.Title>
-              <ModList city={city}/>
+              <h3>
+                <Card.Title>Playset</Card.Title>
+              </h3>
+              <ModList city={cityDetails}/>
             </section>
-            <section>
-              <Card.Title>Render Settings</Card.Title>
-              {Object.entries(city.renderSettings).length !== 0 ? (
-                <ul>
-                  {Object.entries(city.renderSettings).map(([key, value]) =>
-                    <li key={key}>{`${key}: ${value}`}</li>
-                  )}
-                </ul>
-              ) : (
-                <p>No render settings found.</p>
-              )}
-            </section>
+            {/* Avoid displaying render settings for grouped cities */}
+            {!Array.isArray(city?.imageUrlFHD) && (
+              <section>
+                <h3>
+                  <Card.Title>Render Settings</Card.Title>
+                </h3>
+                <RenderSettings city={cityDetails}/>
+              </section>
+            )}
           </Card.Body>
         </Card>
       </section>
+      <section
+        id="trends"
+        className={`mt-3 position-relative ${(isLoadMoreHovered && !isLastPage) && "load-more-hovered"}`}
+      >
+        <CityTrends city={cityDetails} isLoading={isFetching} fetchError={error}/>
+      </section>
+      {/* City insights only available for grouped screenshots */}
+      {("cities" in cityDetails) && (
+        <section
+          id="insights"
+          className={`mt-3 position-relative ${(isLoadMoreHovered && !isLastPage) && "load-more-hovered"}`}
+        >
+          <CityInsights city={cityDetails} />
+        </section>
+      )}
     </div>
   )
 

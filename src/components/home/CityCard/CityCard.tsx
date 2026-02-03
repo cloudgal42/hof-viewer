@@ -1,77 +1,10 @@
 import {Badge, Card, OverlayTrigger, Tooltip} from "react-bootstrap";
-import {Heart, Eye, Person, Images} from "react-bootstrap-icons";
+import {Eye, Heart, Images, Person} from "react-bootstrap-icons";
 import {LazyLoadImage} from "react-lazy-load-image-component";
-import PlaceholderImg from "../../assets/placeholder.svg"
+import PlaceholderImg from "../../../assets/placeholder.svg"
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 import {NavLink} from "react-router";
-
-export interface Mod {
-  id: string;
-  paradoxModId: number;
-  name: string;
-  authorName: string;
-  shortDescription: string;
-  thumbnailUrl: string;
-  tags: string[];
-  subscribersCount: number;
-  knownLastUpdatedAt: string;
-}
-
-export interface City {
-  id: string;
-  isApproved: boolean;
-  isReported: boolean;
-  favoritesCount: number;
-  favoritingPercentage: number;
-  viewsCount: number;
-  uniqueViewsCount: number;
-  cityName: string;
-  cityNameLocale?: string;
-  cityNameLatinized?: string;
-  cityNameTranslated?: string;
-  cityMilestone: number;
-  cityPopulation: number;
-  mapName?: string;
-  imageUrlThumbnail: string;
-  imageUrlFHD: string;
-  imageUrl4K: string;
-  shareParadoxModIds: boolean;
-  paradoxModIds: number[];
-  shareRenderSettings: boolean;
-  creatorId: string;
-  creator: Creator;
-  createdAt: string;
-  createdAtFormatted?: string;
-  createdAtFormattedDistance: string;
-  description?: string;
-  renderSettings: object; // TODO: Maybe define an interface for this?
-  showcasedMod?: Mod;
-  showcasedModId?: number;
-  __favorited: boolean;
-}
-
-interface SocialPlatform {
-  platform: string;
-  link: string;
-  clicks: number;
-}
-
-export interface GroupedCities extends Omit<City, "imageUrlFHD" | "imageUrl4K" | "imageUrlThumbnail"> {
-  imageUrlFHD: string[];
-  imageUrl4K: string[];
-  imageUrlThumbnail: string[];
-}
-
-export interface Creator {
-  id: string;
-  creatorName: string;
-  creatorNameSlug: string;
-  creatorNameLocale?: string;
-  creatorNameLatinized?: string;
-  creatorNameTranslated?: string;
-  createdAt: string;
-  socials: SocialPlatform[];
-}
+import type {City, GroupedCities} from "../../../interfaces/City.ts";
 
 interface CityCardProps {
   city: City | GroupedCities;
@@ -120,7 +53,9 @@ export const CityCard = ({city, setCity, isCitiesGrouped}: CityCardProps) => {
           to={isCitiesGrouped ? `/city/${city.cityName}?groupStatus=on` : `/city/${city.id}?groupStatus=off`}
           onClick={() => setCity(city)}
         >
-          <Card.Title>{city.cityName}</Card.Title>
+          <h3>
+            <Card.Title>{city.cityName}</Card.Title>
+          </h3>
         </NavLink>
         <Card.Subtitle className="mb-1">{city.cityNameTranslated}</Card.Subtitle>
         <div style={{fontSize: "0.9rem"}} className="text-muted">
@@ -128,14 +63,17 @@ export const CityCard = ({city, setCity, isCitiesGrouped}: CityCardProps) => {
           <Card.Text className="d-flex mb-1 gap-2">
             <span className="d-flex flex-grow-1 align-items-center">
               <Person/>
+              <span className="visually-hidden">Population</span>
               <span className="ms-1">{city.cityPopulation.toLocaleString()}</span>
             </span>
             <span className="d-flex flex-grow-1 align-items-center">
               <Eye/>
+              <span className="visually-hidden">Unique Views</span>
               <span className="ms-1">{city.uniqueViewsCount.toLocaleString()}</span>
             </span>
             <span className="d-flex flex-grow-1 align-items-center">
               <Heart/>
+              <span className="visually-hidden">Favorites</span>
               <span className="ms-1">{city.favoritesCount.toLocaleString()}</span>
             </span>
           </Card.Text>

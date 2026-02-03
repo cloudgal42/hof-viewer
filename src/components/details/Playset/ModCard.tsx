@@ -1,8 +1,10 @@
-import type {Mod} from "../home/CityCard.tsx";
 import {Card} from "react-bootstrap";
-import PlaceholderImg from "../../assets/placeholder.svg";
+import PlaceholderImg from "../../../assets/placeholder.svg";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import {BoxArrowUpRight} from "react-bootstrap-icons";
+import type {Mod} from "../../../interfaces/Mod.ts";
+
+import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 
 interface ModListProps {
   mod: Mod;
@@ -27,9 +29,9 @@ export const ModCard = ({mod, isCompactMode}: ModListProps) => {
       }
       <Card.Body className="d-flex flex-column justify-content-between">
         <div className="mb-1">
-          <Card.Title className="mb-2">
-            {mod.name}
-          </Card.Title>
+          <h4>
+            <Card.Title className="mb-2">{mod.name}</Card.Title>
+          </h4>
           <Card.Subtitle className="text-muted mb-1">{mod.authorName}</Card.Subtitle>
           <Card.Text className="text-muted">{mod.subscribersCount.toLocaleString()} subscribers</Card.Text>
         </div>

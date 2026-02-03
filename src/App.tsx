@@ -1,30 +1,29 @@
 import './css/App.scss'
-import {type City, type GroupedCities} from "./components/home/CityCard.tsx";
 import {Container, Navbar, Spinner} from "react-bootstrap";
 import {Suspense, useEffect, useState} from "react";
-import {Sidebar} from "./components/Sidebar.tsx";
-import {HamburgerButton} from "./components/HamburgerButton.tsx";
-import {Outlet} from "react-router";
+import {Sidebar} from "./components/misc/Sidebar/Sidebar.tsx";
+import {HamburgerButton} from "./components/misc/Hamburger/HamburgerButton.tsx";
+import {Outlet, useLocation} from "react-router";
 import {useLocalStorage} from "usehooks-ts";
-import {ToTopBtn} from "./components/ToTopBtn.tsx";
+import {ToTopBtn} from "./components/misc/ToTopButton/ToTopBtn.tsx";
+import type {City, GroupedCities} from "./interfaces/City.ts";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 // import {Screenshots} from "./temp/screenshots.ts";
 
 export type ContextType = {
-  cities: City[];
   city?: City | GroupedCities;
-  isLoading: boolean;
   setCity: (newCity: City | GroupedCities) => void;
-  setCities: (cities: City[]) => void;
-  setIsLoading: (isLoading: boolean) => void;
 }
 
+const queryClient = new QueryClient();
+
 const App = () => {
-  const [cities, setCities] = useState<City[] | []>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [city, setCity] = useState<City | GroupedCities | undefined>();
 
   const [isAsideOpened, setIsAsideOpened] = useState<boolean>(false);
   const [isDarkMode, setIsDarkMode] = useLocalStorage<boolean>('isDarkMode', false);
+
+  const location = useLocation();
 
   // We manipulate the DOM here bc Bootstrap CSS scopes
   // the theme to the <html> document element
@@ -34,9 +33,7 @@ const App = () => {
   }, [isDarkMode]);
 
   const contextParams = {
-    cities, setCities,
     city, setCity,
-    isLoading, setIsLoading,
   }
 
   // TODO: Migrate all regular bootstrap classes with react-bootstrap
@@ -62,14 +59,16 @@ const App = () => {
             />
           </aside>
           <main className="mt-3 mb-3 d-flex flex-grow-1 justify-content-center">
-            <Suspense fallback={
+            <Suspense key={location.key} fallback={
               <div className="d-flex align-items-center justify-content-center h-100">
                 <Spinner animation="border" role="status">
                   <span className="visually-hidden">Loading...</span>
                 </Spinner>
               </div>
             }>
-              <Outlet context={contextParams satisfies ContextType} />
+              <QueryClientProvider client={queryClient}>
+                <Outlet context={contextParams satisfies ContextType} />
+              </QueryClientProvider>
             </Suspense>
           </main>
         </div>

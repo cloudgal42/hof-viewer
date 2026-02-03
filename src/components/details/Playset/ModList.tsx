@@ -1,15 +1,17 @@
-import {useMemo, useState} from "react";
+import {useState} from "react";
 import {Accordion, Form, InputGroup, OverlayTrigger, Tooltip} from "react-bootstrap";
-import type {City, GroupedCities, Mod} from "../home/CityCard.tsx";
-import SadChirper from "../../assets/sadChirpyOutline.svg";
 import {ModCard} from "./ModCard.tsx";
 
-import "../../css/components/ModList.scss"
+import "../../../css/components/ModList.scss"
 import InfiniteScroll from "react-infinite-scroll-component";
 import {PlaceholderModCard} from "./PlaceholderModCard.tsx";
 import {useDebounceCallback} from "usehooks-ts";
 import * as React from "react";
 import Fuse from "fuse.js";
+import type {City, GroupedCities} from "../../../interfaces/City.ts";
+import type {Mod} from "../../../interfaces/Mod.ts";
+import {ErrorScreen} from "../../misc/ErrorScreen/ErrorScreen.tsx";
+import {useQuery} from "@tanstack/react-query";
 
 interface ModCategories {
   mod: boolean;
@@ -24,9 +26,8 @@ interface ModListProps {
 const DEFAULT_MODS_PER_PAGE = 12;
 
 export const ModList = ({city}: ModListProps) => {
-  const [fetchStatus, setFetchStatus] = useState<number>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [modList, setModList] = useState<Mod[]>([]);
+  const [isDebouncing, setIsDebouncing] = useState<boolean>(false);
+  // const [modList, setModList] = useState<Mod[]>([]);
 
   const [categories, setCategories] = useState<ModCategories>({
     mod: false,
@@ -35,12 +36,31 @@ export const ModList = ({city}: ModListProps) => {
   });
   const [search, setSearch] = useState<string>("");
   const [page, setPage] = useState<number>(1);
-
   const [isCompactMode, setIsCompactMode] = useState<boolean>(false);
+
+  const {isFetching, data, error, refetch} = useQuery<Mod[]>({
+    queryKey: ["playset", {city: city.id}],
+    queryFn: async () => {
+      if (city.paradoxModIds.length === 0 || !city.shareParadoxModIds) {
+        return [];
+      }
+      const res = await fetch(`${import.meta.env.VITE_HOF_SERVER}/screenshots/${city.id}/playset`)
+      const data = await res.json();
+
+      if (!res.ok) {
+        return Promise.reject(new Error(`${data.statusCode}: ${data.message}`));
+      }
+
+      return data;
+    },
+    refetchOnWindowFocus: false,
+    staleTime: Infinity,
+    enabled: false,
+  })
 
   const debouncedSetSearch = useDebounceCallback((e) => {
     setSearch(e.target.value);
-    setIsLoading(false);
+    setIsDebouncing(false);
   }, 600);
 
   function handleSetCategory(e: React.ChangeEvent<HTMLInputElement>) {
@@ -71,26 +91,7 @@ export const ModList = ({city}: ModListProps) => {
     });
   }
 
-  async function getPlayset() {
-    if (modList.length > 0 || city.paradoxModIds.length === 0 || !city.shareParadoxModIds) {
-      return;
-    }
-
-    setIsLoading(true);
-    const res = await fetch(`https://halloffame.cs2.mtq.io/api/v1/screenshots/${city.id}/playset`)
-    const data = await res.json();
-
-    setFetchStatus(res.status);
-
-    if (res.ok) {
-      setModList(data);
-      setIsLoading(false);
-    } else {
-      setIsLoading(false);
-    }
-  }
-
-  const filteredModList = filterModList(modList);
+  const filteredModList = filterModList(data || []);
   const fuse = new Fuse(filteredModList, {
     threshold: 0.2,
     includeScore: false,
@@ -104,11 +105,19 @@ export const ModList = ({city}: ModListProps) => {
     });
 
   const paginatedModList = searchedModList.toSpliced(page * DEFAULT_MODS_PER_PAGE);
+  const isPlaysetFiltered = Object.values(categories).some(value => value === true);
 
   let content;
   let accordionBody;
 
-  if (isLoading) {
+  if (!navigator.onLine) {
+    accordionBody = (
+      <ErrorScreen
+        errorSummary="You are offline :("
+        errorDetails="Double check your Internet connection and try again."
+      />
+    )
+  } else if (isFetching || isDebouncing || !data) {
     accordionBody = (
       <div className="playset-container d-flex flex-wrap gap-2">
         <PlaceholderModCard/>
@@ -125,33 +134,19 @@ export const ModList = ({city}: ModListProps) => {
         <PlaceholderModCard/>
       </div>
     )
-  } else if (fetchStatus !== 200 && fetchStatus) {
+  } else if (error) {
     accordionBody = (
-      <div className="text-center m-auto my-3">
-        <img
-          width="128"
-          height="128"
-          src={SadChirper}
-          alt=""
-        />
-        <p className="mb-1 text-muted">Failed to get playset data :(</p>
-        <p className="mb-1 text-muted">
-          {fetchStatus === 404 ? "The playset data does not exist" : `HTTP Status: ${fetchStatus}. Please wait for a moment and try again.`}
-        </p>
-      </div>
+      <ErrorScreen
+        errorSummary={"Failed to get playset data :("}
+        errorDetails={error.message}
+      />
     )
-  } else if (searchedModList.length === 0 && search.length > 0) {
+  } else if (searchedModList.length === 0 && (search.length > 0 || isPlaysetFiltered)) {
     accordionBody = (
-      <div className="text-center m-auto my-5">
-        <img
-          width="128"
-          height="128"
-          src={SadChirper}
-          alt=""
-        />
-        <p className="mb-1 text-muted">No mods found :(</p>
-        <p className="mb-1 text-muted">Double check your query and try again.</p>
-      </div>
+      <ErrorScreen
+        errorSummary={"No packages found :("}
+        errorDetails={"Double check your query or filters and try again."}
+      />
     )
   } else {
     accordionBody = (
@@ -177,7 +172,8 @@ export const ModList = ({city}: ModListProps) => {
     )
   }
 
-  if (new Date(city.createdAt).getTime() < new Date("2025-03-24T00:00:00.000Z").getTime()) {
+  if (new Date(city.createdAt).getTime() < new Date("2025-03-24T00:00:00.000Z").getTime()
+      && city.paradoxModIds.length === 0) {
     content = <p>This screenshot was posted before playset sharing was possible.</p>
   } else if (city.paradoxModIds.length === 0 && city.shareParadoxModIds) {
     content = <p>The creator did not use mods for this screenshot.</p>
@@ -188,7 +184,7 @@ export const ModList = ({city}: ModListProps) => {
       <Accordion>
         <Accordion.Item eventKey="0">
           <Accordion.Header
-            onClick={getPlayset}
+            onClick={() => !data && refetch()}
           >
             {city.paradoxModIds.length} PDX mods packages
           </Accordion.Header>
@@ -201,7 +197,7 @@ export const ModList = ({city}: ModListProps) => {
                   aria-label="Search by name, tags or author"
                   placeholder="Search by name, tags or author..."
                   onChange={(e) => {
-                    setIsLoading(true);
+                    setIsDebouncing(true);
                     debouncedSetSearch(e);
                   }}
                 />
