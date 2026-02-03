@@ -10,7 +10,7 @@ import {ModList} from "../components/details/Playset/ModList.tsx";
 import {RenderSettings} from "../components/details/RenderSettings/RenderSettings.tsx";
 import {PlaceholderDetails} from "../components/details/Details/PlaceholderDetails.tsx";
 import {CityTrends} from "../components/details/CityTrends/CityTrends.tsx";
-import {ErrorScreen} from "../components/ErrorScreen/ErrorScreen.tsx";
+import {ErrorScreen} from "../components/misc/ErrorScreen/ErrorScreen.tsx";
 import {useQuery} from "@tanstack/react-query";
 import type {City} from "../interfaces/City.ts";
 import {PlaceholderFeatModCard} from "../components/details/FeatModCard/PlaceholderFeatModCard.tsx";

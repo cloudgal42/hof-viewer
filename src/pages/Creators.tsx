@@ -5,7 +5,7 @@ import {useSearchParams} from "react-router";
 import {handleSetSearchParams} from "../utils/SearchParamHandlers.ts";
 import type {CreatorDetails} from "../interfaces/Creator.ts";
 import {useQuery} from "@tanstack/react-query";
-import {ErrorScreen} from "../components/ErrorScreen/ErrorScreen.tsx";
+import {ErrorScreen} from "../components/misc/ErrorScreen/ErrorScreen.tsx";
 
 const Creators = () => {
   const [searchParams, setSearchParams] = useSearchParams();

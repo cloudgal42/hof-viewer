@@ -11,7 +11,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 import {groupCities} from "../utils/GroupCities.ts";
 import type {City, GroupedCities} from "../interfaces/City.ts";
-import {ErrorScreen} from "../components/ErrorScreen/ErrorScreen.tsx";
+import {ErrorScreen} from "../components/misc/ErrorScreen/ErrorScreen.tsx";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 
 const DEFAULT_CITIES_PER_PAGE = 18;

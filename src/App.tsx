@@ -1,11 +1,11 @@
 import './css/App.scss'
 import {Container, Navbar, Spinner} from "react-bootstrap";
 import {Suspense, useEffect, useState} from "react";
-import {Sidebar} from "./components/Sidebar/Sidebar.tsx";
-import {HamburgerButton} from "./components/Hamburger/HamburgerButton.tsx";
+import {Sidebar} from "./components/misc/Sidebar/Sidebar.tsx";
+import {HamburgerButton} from "./components/misc/Hamburger/HamburgerButton.tsx";
 import {Outlet, useLocation} from "react-router";
 import {useLocalStorage} from "usehooks-ts";
-import {ToTopBtn} from "./components/ToTopButton/ToTopBtn.tsx";
+import {ToTopBtn} from "./components/misc/ToTopButton/ToTopBtn.tsx";
 import type {City, GroupedCities} from "./interfaces/City.ts";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 // import {Screenshots} from "./temp/screenshots.ts";

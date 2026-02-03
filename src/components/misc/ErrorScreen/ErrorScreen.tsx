@@ -1,4 +1,4 @@
-import SadChirper from "../../assets/sadChirpyOutline.svg";
+import SadChirper from "../../../assets/sadChirpyOutline.svg";
 import type {ReactNode} from "react";
 
 interface ErrorScreenProps {
