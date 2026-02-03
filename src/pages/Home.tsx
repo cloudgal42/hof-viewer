@@ -1,17 +1,17 @@
 import {Button, Form, OverlayTrigger, Tooltip} from "react-bootstrap";
-import {SortOrderButton} from "../components/home/SortOrderButton.tsx";
+import {SortOrderButton} from "../components/home/SortOrderButton/SortOrderButton.tsx";
 import {useMemo, useState} from "react";
 import type {ContextType} from "../App.tsx";
-import {SortDropdown} from "../components/home/SortDropdown.tsx";
-import {CityCard} from "../components/home/CityCard.tsx";
-import {PlaceholderCard} from "../components/home/PlaceholderCard.tsx";
+import {SortDropdown} from "../components/home/SortDropdown/SortDropdown.tsx";
+import {CityCard} from "../components/home/CityCard/CityCard.tsx";
+import {PlaceholderCard} from "../components/home/CityCard/PlaceholderCard.tsx";
 import {useOutletContext, useSearchParams} from "react-router";
 import {handleSetSearchParams} from "../utils/SearchParamHandlers.ts";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 import {groupCities} from "../utils/GroupCities.ts";
 import type {City, GroupedCities} from "../interfaces/City.ts";
-import {ErrorScreen} from "../components/ErrorScreen.tsx";
+import {ErrorScreen} from "../components/ErrorScreen/ErrorScreen.tsx";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 
 const DEFAULT_CITIES_PER_PAGE = 18;

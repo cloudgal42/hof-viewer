@@ -3,14 +3,14 @@ import {NavLink, useNavigate, useOutletContext, useParams, useSearchParams} from
 import type {ContextType} from "../App.tsx";
 import {BoxArrowUpRight, ChevronDown, ChevronLeft, Eye, Heart, Person, Trophy} from "react-bootstrap-icons";
 import {lazy, Suspense, useState} from "react";
-import {DEFAULT_IMAGES_PER_PAGE} from "../components/details/CityGallery.tsx";
+import {DEFAULT_IMAGES_PER_PAGE} from "../components/details/CityGallery/CityGallery.tsx";
 
 import PlaceholderImg from "../assets/placeholder.svg"
 import {ModList} from "../components/details/Playset/ModList.tsx";
-import {RenderSettings} from "../components/details/RenderSettings.tsx";
-import {PlaceholderDetails} from "../components/details/PlaceholderDetails.tsx";
+import {RenderSettings} from "../components/details/RenderSettings/RenderSettings.tsx";
+import {PlaceholderDetails} from "../components/details/Details/PlaceholderDetails.tsx";
 import {CityTrends} from "../components/details/CityTrends/CityTrends.tsx";
-import {ErrorScreen} from "../components/ErrorScreen.tsx";
+import {ErrorScreen} from "../components/ErrorScreen/ErrorScreen.tsx";
 import {useQuery} from "@tanstack/react-query";
 import type {City} from "../interfaces/City.ts";
 import {PlaceholderFeatModCard} from "../components/details/FeatModCard/PlaceholderFeatModCard.tsx";
@@ -18,7 +18,7 @@ import {FeatModCard} from "../components/details/FeatModCard/FeatModCard.tsx";
 import * as React from "react";
 import {CityInsights} from "../components/details/CityInsights/CityInsights.tsx";
 
-const CityGallery = lazy(() => import("../components/details/CityGallery.tsx"));
+const CityGallery = lazy(() => import("../components/details/CityGallery/CityGallery.tsx"));
 
 const cityMilestones = [
   "Tiny Village",

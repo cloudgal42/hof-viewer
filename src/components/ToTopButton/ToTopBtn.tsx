@@ -2,7 +2,7 @@ import {Button, OverlayTrigger, Tooltip} from "react-bootstrap";
 import {ArrowUp} from "react-bootstrap-icons";
 import {useEffect, useState} from "react";
 
-import "../css/components/ToTopBtn.scss"
+import "../../css/components/ToTopBtn.scss"
 
 export const ToTopBtn = () => {
   const [isVisible, setIsVisible] = useState<boolean>(false);

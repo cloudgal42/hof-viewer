@@ -13,11 +13,11 @@ import lgFullscreen from 'lightgallery/plugins/fullscreen';
 import lgAutoplay from 'lightgallery/plugins/autoplay';
 
 import {LazyLoadImage} from "react-lazy-load-image-component";
-import PlaceholderImg from "../../assets/placeholder.svg";
+import PlaceholderImg from "../../../assets/placeholder.svg";
 import {useCallback, useRef} from "react";
 import type {InitDetail} from "lightgallery/lg-events";
 import type {GalleryItem} from "lightgallery/lg-utils";
-import type {City, GroupedCities} from "../../interfaces/City.ts";
+import type {City, GroupedCities} from "../../../interfaces/City.ts";
 
 interface GalleryProps {
   city: City | GroupedCities;

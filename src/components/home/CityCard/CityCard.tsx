@@ -1,10 +1,10 @@
 import {Badge, Card, OverlayTrigger, Tooltip} from "react-bootstrap";
 import {Eye, Heart, Images, Person} from "react-bootstrap-icons";
 import {LazyLoadImage} from "react-lazy-load-image-component";
-import PlaceholderImg from "../../assets/placeholder.svg"
+import PlaceholderImg from "../../../assets/placeholder.svg"
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 import {NavLink} from "react-router";
-import type {City, GroupedCities} from "../../interfaces/City.ts";
+import type {City, GroupedCities} from "../../../interfaces/City.ts";
 
 interface CityCardProps {
   city: City | GroupedCities;

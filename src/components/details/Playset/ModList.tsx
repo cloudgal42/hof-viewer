@@ -10,7 +10,7 @@ import * as React from "react";
 import Fuse from "fuse.js";
 import type {City, GroupedCities} from "../../../interfaces/City.ts";
 import type {Mod} from "../../../interfaces/Mod.ts";
-import {ErrorScreen} from "../../ErrorScreen.tsx";
+import {ErrorScreen} from "../../ErrorScreen/ErrorScreen.tsx";
 import {useQuery} from "@tanstack/react-query";
 
 interface ModCategories {

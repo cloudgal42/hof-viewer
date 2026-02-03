@@ -1,7 +1,7 @@
 import {Alert, Button, Card, Form, Spinner, ToggleButton, ToggleButtonGroup} from "react-bootstrap";
 import {lazy, Suspense, useState} from "react";
 import type {City, GroupedCities} from "../../../interfaces/City.ts";
-import {ErrorScreen} from "../../ErrorScreen.tsx";
+import {ErrorScreen} from "../../ErrorScreen/ErrorScreen.tsx";
 import {useQuery} from "@tanstack/react-query";
 import {groupCities} from "../../../utils/GroupCities.ts";
 import {ExclamationTriangle} from "react-bootstrap-icons";

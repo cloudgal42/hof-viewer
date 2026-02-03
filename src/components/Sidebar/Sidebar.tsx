@@ -20,7 +20,7 @@ export const Sidebar = ({isOpened, isDarkMode, setIsOpened, setIsDarkMode}: Side
     >
       <div className="d-lg-none d-flex justify-content-between align-items-center mb-0">
         <a
-          href="/"
+          href="/public"
           className="text-decoration-none"
         >
           <span className="fs-5">

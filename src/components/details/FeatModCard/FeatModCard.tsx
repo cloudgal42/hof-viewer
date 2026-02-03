@@ -4,7 +4,7 @@ import {LazyLoadImage} from "react-lazy-load-image-component";
 import PlaceholderImg from "../../../assets/placeholder.svg";
 
 import type {Mod} from "../../../interfaces/Mod.ts";
-import {ErrorScreen} from "../../ErrorScreen.tsx";
+import {ErrorScreen} from "../../ErrorScreen/ErrorScreen.tsx";
 
 interface ModCardProps {
   fetchError?: Error | null;

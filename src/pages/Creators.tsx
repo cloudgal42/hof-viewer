@@ -1,11 +1,11 @@
 import {Button, Form} from "react-bootstrap";
-import {CreatorCard} from "../components/creators/CreatorCard.tsx";
-import {PlaceholderCreatorCard} from "../components/creators/PlaceholderCreatorCard.tsx";
+import {CreatorCard} from "../components/creators/CreatorCard/CreatorCard.tsx";
+import {PlaceholderCreatorCard} from "../components/creators/CreatorCard/PlaceholderCreatorCard.tsx";
 import {useSearchParams} from "react-router";
 import {handleSetSearchParams} from "../utils/SearchParamHandlers.ts";
 import type {CreatorDetails} from "../interfaces/Creator.ts";
 import {useQuery} from "@tanstack/react-query";
-import {ErrorScreen} from "../components/ErrorScreen.tsx";
+import {ErrorScreen} from "../components/ErrorScreen/ErrorScreen.tsx";
 
 const Creators = () => {
   const [searchParams, setSearchParams] = useSearchParams();

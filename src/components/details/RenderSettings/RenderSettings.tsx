@@ -1,6 +1,6 @@
 
 import {Fragment} from "react";
-import type {City, GroupedCities} from "../../interfaces/City.ts";
+import type {City, GroupedCities} from "../../../interfaces/City.ts";
 
 interface RenderSettingsProps {
   city: City | GroupedCities;
