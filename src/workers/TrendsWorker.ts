@@ -82,7 +82,6 @@ function groupData(city: City | GroupedCities, day: number, type: string): Trend
   // 2. Get grouped dates. groupedDates contain arrays of Date object with a length of 2
   // Index 0 is start, Index 1 is end
   const groupedDates = groupDates(datePosted, currDate, day);
-  // console.log(groupedDates);
 
   // 3. Loop through groupedDates. Within this array, loop through the views/favorites entries
   const groupedData = groupedDates.map(range => {
@@ -97,7 +96,7 @@ function groupData(city: City | GroupedCities, day: number, type: string): Trend
     if (type === "views") {
       rangeCount = city.views!.filter(entry => {
         const viewEpoch = new Date(entry.viewedAt).getTime();
-        return viewEpoch > startRange && viewEpoch < endRange;
+        return viewEpoch >= startRange && viewEpoch < endRange;
       }).length
     } else if (type === "favorites") {
       rangeCount = city.favorites!.filter(entry => {

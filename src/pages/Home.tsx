@@ -13,6 +13,7 @@ import {groupCities} from "../utils/GroupCities.ts";
 import type {City, GroupedCities} from "../interfaces/City.ts";
 import {ErrorScreen} from "../components/misc/ErrorScreen/ErrorScreen.tsx";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
+import {useCreatorCities} from "../hooks/useCreatorCities.ts";
 
 const DEFAULT_CITIES_PER_PAGE = 18;
 
@@ -33,24 +34,7 @@ const Home = () => {
     setCity,
   } = useOutletContext<ContextType>();
 
-  const {error, data, isFetching} = useQuery<City[]>({
-    queryKey: ["cities", creator],
-    queryFn: async () => {
-      if (!creator) return [];
-
-      const res = await fetch(`${import.meta.env.VITE_HOF_SERVER}/screenshots?creatorId=${creator}`);
-      const data = await res.json();
-
-      if (!res.ok) {
-        return Promise.reject(new Error(`${data.statusCode}: ${data.message}`));
-      }
-
-      return data;
-    },
-    staleTime: 30 * 60 * 1000,
-    refetchOnWindowFocus: false,
-    retry: false,
-  });
+  const {error, data, isFetching} = useCreatorCities(creator);
 
   const cities =
     queryClient.getQueryData<City[]>(["detailedCities", data && data[0]?.creatorId])

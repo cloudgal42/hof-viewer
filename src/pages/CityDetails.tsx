@@ -17,6 +17,8 @@ import {PlaceholderFeatModCard} from "../components/details/FeatModCard/Placehol
 import {FeatModCard} from "../components/details/FeatModCard/FeatModCard.tsx";
 import * as React from "react";
 import {CityInsights} from "../components/details/CityInsights/CityInsights.tsx";
+import {useCreatorCities} from "../hooks/useCreatorCities.ts";
+import {groupCities} from "../utils/GroupCities.ts";
 
 const CityGallery = lazy(() => import("../components/details/CityGallery/CityGallery.tsx"));
 
@@ -56,13 +58,17 @@ const CityDetails = () => {
   const cityParam = useParams().city;
 
   const isCitiesGrouped = searchParams.get("groupStatus") === "on";
+  const cityCreator = searchParams.get("creator");
+  const {
+    data: creatorCities,
+    error: creatorCitiesError,
+    isFetching: isCreatorCitiesFetching
+  } = useCreatorCities(cityCreator);
 
   const {error, data, isFetching} = useQuery<City>({
     queryKey: ["city", {id: cityParam}],
     queryFn: async () => {
       // maybe FIXME?
-      if (isCitiesGrouped) return Promise.reject(new Error(`For now grouped screenshots will be inaccessible upon page reload. Sorry about that!`));
-
       const res = await fetch(`${import.meta.env.VITE_HOF_SERVER}/screenshots/${cityParam}?favorites=true&views=true`);
       const data = await res.json();
 
@@ -73,13 +79,15 @@ const CityDetails = () => {
       return data;
     },
     refetchOnWindowFocus: false,
-    enabled: Boolean(!city?.favorites && !city?.views || city?.showcasedModId),
+    enabled: Boolean(!city?.favorites && !city?.views && !isCitiesGrouped ||
+      city?.showcasedModId && !isCitiesGrouped || !isCitiesGrouped),
     retry: false,
   });
 
-  // console.log(data);
+  const fetchError = error || creatorCitiesError;
 
-  const cityDetails = data || city;
+  const cityDetails = data || city ||
+    creatorCities && groupCities(creatorCities).find(entry => entry.cityName === cityParam);
 
   if (!cityDetails) {
     if (!navigator.onLine) {
@@ -89,30 +97,38 @@ const CityDetails = () => {
           errorDetails="Double check your Internet connection and try again."
         />
       )
-    } else if (error || isCitiesGrouped) {
+    } else if (fetchError) {
       return (
         <ErrorScreen
           errorSummary="Failed to load screenshot/city details :("
           errorDetails={
             <>
               <p className="mb-1">
-                {error?.message ? `${error.message} ` :
-                  "For now grouped screenshots will be inaccessible upon page reload. Sorry about that!"
-                }
-                Try searching in <NavLink to="/">Browse by Creator ID</NavLink>?
+                {fetchError.message}. Try searching in <NavLink to="/">Browse by Creator ID</NavLink>?
               </p>
-
             </>
           }
         />
       )
-    } else if (isFetching) {
+    } else if (isFetching || isCreatorCitiesFetching) {
       return (
         <PlaceholderDetails/>
       );
     } else {
       // TODO: There has to be a better solution to this
-      return;
+      return (
+        <ErrorScreen
+          errorSummary="Failed to load screenshot/city details :("
+          errorDetails={
+            <>
+              <p className="mb-1">
+                Cannot find city with the name "{cityParam}" by creator "{cityCreator}". Try searching in <NavLink
+                to="/">Browse by Creator ID</NavLink>?
+              </p>
+            </>
+          }
+        />
+      );
     }
   }
 
@@ -146,7 +162,7 @@ const CityDetails = () => {
             style={{aspectRatio: "16/9"}}
           />
         }>
-          <CityGallery page={page} city={cityDetails} />
+          <CityGallery page={page} city={cityDetails}/>
         </Suspense>
         {/* TODO: Move this button to the CityGallery component. Research React's useContext hook */}
         {!isLastPage && (
@@ -267,7 +283,7 @@ const CityDetails = () => {
           id="insights"
           className={`mt-3 position-relative ${(isLoadMoreHovered && !isLastPage) && "load-more-hovered"}`}
         >
-          <CityInsights city={cityDetails} />
+          <CityInsights city={cityDetails}/>
         </section>
       )}
     </div>
