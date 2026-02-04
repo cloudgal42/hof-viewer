@@ -25,7 +25,7 @@ export const CityCard = ({city, setCity, isCitiesGrouped}: CityCardProps) => {
     <Card>
       <div className="position-relative" style={{backgroundColor: "#868e96"}}>
         <NavLink
-          to={isCitiesGrouped ? `/city/${city.cityName}?groupStatus=on` : `/city/${city.id}?groupStatus=off`}
+          to={isCitiesGrouped ? `/city/${city.cityName}?groupStatus=on&creator=${city.creator.creatorName}` : `/city/${city.id}?groupStatus=off`}
           onClick={() => setCity(city)}
         >
           <LazyLoadImage
@@ -50,7 +50,7 @@ export const CityCard = ({city, setCity, isCitiesGrouped}: CityCardProps) => {
       </div>
       <Card.Body>
         <NavLink
-          to={isCitiesGrouped ? `/city/${city.cityName}?groupStatus=on` : `/city/${city.id}?groupStatus=off`}
+          to={isCitiesGrouped ? `/city/${city.cityName}?groupStatus=on&creator=${city.creator.creatorName}` : `/city/${city.id}?groupStatus=off`}
           onClick={() => setCity(city)}
         >
           <h3>
