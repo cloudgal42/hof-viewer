@@ -20,6 +20,7 @@
         "npm:@types/react-lazy-load-image-component@^1.6.5",
         "npm:@types/react@^19.2.5",
         "npm:@vitejs/plugin-react@^5.1.1",
+        "npm:babel-plugin-react-compiler@1",
         "npm:bootstrap@^5.3.8",
         "npm:chart.js@^4.5.1",
         "npm:chartjs-plugin-zoom@^2.2.0",
