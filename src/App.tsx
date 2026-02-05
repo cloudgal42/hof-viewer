@@ -8,6 +8,8 @@ import {useLocalStorage} from "usehooks-ts";
 import {ToTopBtn} from "./components/misc/ToTopButton/ToTopBtn.tsx";
 import type {City, GroupedCities} from "./interfaces/City.ts";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import {ErrorBoundary, type FallbackProps} from "react-error-boundary";
+import {ErrorScreen} from "./components/misc/ErrorScreen/ErrorScreen.tsx";
 // import {Screenshots} from "./temp/screenshots.ts";
 
 export type ContextType = {
@@ -36,18 +38,32 @@ const App = () => {
     city, setCity,
   }
 
-  // TODO: Migrate all regular bootstrap classes with react-bootstrap
   return (
-    <>
+    <ErrorBoundary
+      fallbackRender={({error}) => {
+        const err = error as Error;
+        return (
+          <div className="my-5 py-5">
+            <ErrorScreen
+              errorSummary="Something went wrong when loading the webpage :("
+              errorDetails={
+                <p>{err.message}</p>
+              }
+            />
+          </div>
+        )
+      }
+      }
+    >
       <Navbar className="bg-body-tertiary" style={{position: "sticky", top: "0px", zIndex: "2"}}>
         <Container fluid className="justify-content-start align-items-center ps-2 ps-sm-3 ms-sm-3 ms-lg-0">
-          <HamburgerButton isOpened={isAsideOpened} setIsOpened={setIsAsideOpened} />
+          <HamburgerButton isOpened={isAsideOpened} setIsOpened={setIsAsideOpened}/>
           <Navbar.Brand href="/">
             <h1 className="mb-0 fs-2">HoF</h1>
           </Navbar.Brand>
         </Container>
       </Navbar>
-      <ToTopBtn />
+      <ToTopBtn/>
       <div className="d-flex flex-grow-1 flex-column flex-nowrap">
         <div className="d-flex flex-row flex-grow-1">
           <aside className="d-none d-lg-block flex-shrink-0">
@@ -67,7 +83,7 @@ const App = () => {
               </div>
             }>
               <QueryClientProvider client={queryClient}>
-                <Outlet context={contextParams satisfies ContextType} />
+                <Outlet context={contextParams satisfies ContextType}/>
               </QueryClientProvider>
             </Suspense>
           </main>
@@ -102,7 +118,7 @@ const App = () => {
           </ul>
         </footer>
       </div>
-    </>
+    </ErrorBoundary>
   )
 }
 
