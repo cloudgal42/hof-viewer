@@ -260,7 +260,7 @@ const CityDetails = () => {
               <ModList city={cityDetails}/>
             </section>
             {/* Avoid displaying render settings for grouped cities */}
-            {!Array.isArray(city?.imageUrlFHD) && (
+            {!Array.isArray(cityDetails?.imageUrlFHD) && (
               <section>
                 <h3>
                   <Card.Title>Render Settings</Card.Title>
