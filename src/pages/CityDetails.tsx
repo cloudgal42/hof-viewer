@@ -114,7 +114,7 @@ const CityDetails = () => {
       )
     } else if (isFetching || isCreatorCitiesFetching) {
       return (
-        <PlaceholderDetails/>
+        <PlaceholderDetails isCityGrouped={isCitiesGrouped} />
       );
     } else {
       // TODO: There has to be a better solution to this
