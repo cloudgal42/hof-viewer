@@ -138,7 +138,7 @@ const CityDetails = () => {
   const isLastPage = (Math.ceil(imageUrlFHD.length / DEFAULT_IMAGES_PER_PAGE) - page) === 0;
 
   return (
-    <div className={`${!("cities" in cityDetails) && "main-wrapper gx-0"} flex-grow-1 ms-sm-5 me-sm-5 row align-items-start`}>
+    <div className={`${!("cities" in cityDetails && cityDetails.imageUrlFHD.length > 1) && "main-wrapper gx-0"} flex-grow-1 ms-sm-5 me-sm-5 row align-items-start`}>
       <div className="px-0 px-xl-3">
         <div className="d-flex align-items-center mb-2">
           <OverlayTrigger overlay={<Tooltip>Back</Tooltip>}>
@@ -157,7 +157,7 @@ const CityDetails = () => {
         </div>
         <h3 className="text-muted fs-5">by {cityDetails.creator.creatorName}</h3>
       </div>
-      <div className={`col-12 px-0 px-xl-3 ${"cities" in cityDetails && "col-xl-6 adaptive-overflow"}`} >
+      <div className={`col-12 px-0 px-xl-3 ${"cities" in cityDetails && cityDetails.imageUrlFHD.length > 1 && "col-xl-6 adaptive-overflow"}`} >
         <section id="gallery" className="mt-3 position-relative">
           <Suspense fallback={
             <img
@@ -186,7 +186,7 @@ const CityDetails = () => {
           )}
         </section>
       </div>
-      <div className={`col-12 px-0 px-xl-3 ${"cities" in cityDetails && "col-xl-6 adaptive-overflow"}`} >
+      <div className={`col-12 px-0 px-xl-3 ${"cities" in cityDetails && cityDetails.imageUrlFHD.length > 1 && "col-xl-6 adaptive-overflow"}`} >
         <section
           id="details"
           className={`mt-3 position-relative ${(isLoadMoreHovered && !isLastPage && !("cities" in cityDetails)) && "load-more-hovered"}`}
