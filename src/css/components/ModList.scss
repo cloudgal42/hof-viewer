@@ -13,7 +13,7 @@
   }
 }
 
-@container mod-list (width < 684px) {
+@container mod-list (width < 625px) {
   .playset-container .card {
     flex-basis: calc(50% - 0.25rem);
   }

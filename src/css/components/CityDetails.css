@@ -1,0 +1,6 @@
+@media all and (min-width: 1201px) {
+  .adaptive-overflow {
+    overflow-y: scroll;
+    height: calc(100vh - 172px);
+  }
+}

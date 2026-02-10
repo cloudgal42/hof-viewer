@@ -202,11 +202,11 @@ export const ModList = ({city}: ModListProps) => {
                   }}
                 />
               </div>
-              <div className="d-flex flex-column flex-md-row">
+              <div className="d-flex flex-wrap text-nowrap">
                 <OverlayTrigger overlay={
                   <Tooltip>Hides mod thumbnail for a more compact view.</Tooltip>
                 }>
-                  <div className="pe-md-2">
+                  <div className="pe-4">
                     <Form.Check
                       type="checkbox"
                       name="compactMode"
@@ -216,8 +216,7 @@ export const ModList = ({city}: ModListProps) => {
                     />
                   </div>
                 </OverlayTrigger>
-                <div className="d-none d-md-block" style={{borderRight: "1px solid gray"}}></div>
-                <div className="ps-md-2 d-flex flex-column flex-md-row gap-1 gap-md-3">
+                <div className="d-flex gap-3">
                   <p className="mb-0">Category: </p>
                   <Form.Check
                     type="checkbox"
