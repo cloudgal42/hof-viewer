@@ -4,7 +4,6 @@ import type {City, GroupedCities} from "../../../interfaces/City.ts";
 import {ErrorScreen} from "../../misc/ErrorScreen/ErrorScreen.tsx";
 import {useQuery} from "@tanstack/react-query";
 import {groupCities} from "../../../utils/GroupCities.ts";
-import {ExclamationTriangle} from "react-bootstrap-icons";
 
 const TrendsChart = lazy(() => import("./TrendsChart.tsx"));
 
@@ -68,8 +67,16 @@ export const CityTrends = ({city, isLoading, fetchError}: CityTrendsProps) => {
           variant="outline-warning"
           onClick={() => !data && refetch()}
           disabled={isFetching}
+          style={{cursor: (isFetching) ? "wait" : "default"}}
         >
-          {isFetching ? "Fetching data from HoF..." : "Load trends"}
+          {isFetching ? (
+            <>
+              Fetching data from HoF...
+              <Spinner animation="border" className="ms-2" role="status" size="sm">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+            </>
+          ) : "Load trends"}
         </Button>
       </Alert>
     );
@@ -100,7 +107,7 @@ export const CityTrends = ({city, isLoading, fetchError}: CityTrendsProps) => {
           <Spinner animation="border" role="status">
             <span className="visually-hidden">Loading...</span>
           </Spinner>
-          <p className="text-center text-muted">Processing...</p>
+          <p className="mt-2 text-center text-muted">Processing...</p>
         </div>
       }>
         <TrendsChart city={cityDetails} trendType={trendType} groupPeriod={groupPeriod}/>
