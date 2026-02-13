@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useContext, useState} from "react";
 import {Accordion, Form, InputGroup, OverlayTrigger, Tooltip} from "react-bootstrap";
 import {ModCard} from "./ModCard.tsx";
 
@@ -12,6 +12,8 @@ import type {City, GroupedCities} from "../../../interfaces/City.ts";
 import type {Mod} from "../../../interfaces/Mod.ts";
 import {ErrorScreen} from "../../misc/ErrorScreen/ErrorScreen.tsx";
 import {useQuery} from "@tanstack/react-query";
+import {useOutletContext} from "react-router";
+import {SplitLayoutContext} from "../../../context/SplitLayoutContext.ts";
 
 interface ModCategories {
   mod: boolean;
@@ -38,11 +40,8 @@ export const ModList = ({city}: ModListProps) => {
   const [page, setPage] = useState<number>(1);
   const [isCompactMode, setIsCompactMode] = useState<boolean>(false);
 
-  const isWidthNeededForSplitLayout = useMediaQuery("(min-width: 1201px)");
-  const isSplitLayout = isWidthNeededForSplitLayout && "cities" in city && city.imageUrlFHD.length > 1;
+  const isSplitLayout = useContext(SplitLayoutContext);
   const scrollParentProps = isSplitLayout ? {scrollableTarget: "detailsContainer"} : {};
-
-  console.log("Width suitable for split layout?", isWidthNeededForSplitLayout)
 
   const {isFetching, data, error, refetch} = useQuery<Mod[]>({
     queryKey: ["playset", {city: city.id}],
