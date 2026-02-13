@@ -186,7 +186,7 @@ const CityDetails = () => {
           )}
         </section>
       </div>
-      <div className={`col-12 px-0 px-xl-3 ${"cities" in cityDetails && cityDetails.imageUrlFHD.length > 1 && "col-xl-6 adaptive-overflow"}`} >
+      <div id="detailsContainer" className={`col-12 px-0 px-xl-3 ${"cities" in cityDetails && cityDetails.imageUrlFHD.length > 1 && "col-xl-6 adaptive-overflow"}`} >
         <section
           id="details"
           className={`mt-3 position-relative ${(isLoadMoreHovered && !isLastPage && !("cities" in cityDetails)) && "load-more-hovered"}`}

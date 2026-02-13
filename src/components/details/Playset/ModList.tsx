@@ -5,7 +5,7 @@ import {ModCard} from "./ModCard.tsx";
 import "../../../css/components/ModList.scss"
 import InfiniteScroll from "react-infinite-scroll-component";
 import {PlaceholderModCard} from "./PlaceholderModCard.tsx";
-import {useDebounceCallback} from "usehooks-ts";
+import {useDebounceCallback, useMediaQuery} from "usehooks-ts";
 import * as React from "react";
 import Fuse from "fuse.js";
 import type {City, GroupedCities} from "../../../interfaces/City.ts";
@@ -37,6 +37,12 @@ export const ModList = ({city}: ModListProps) => {
   const [search, setSearch] = useState<string>("");
   const [page, setPage] = useState<number>(1);
   const [isCompactMode, setIsCompactMode] = useState<boolean>(false);
+
+  const isWidthNeededForSplitLayout = useMediaQuery("(min-width: 1201px)");
+  const isSplitLayout = isWidthNeededForSplitLayout && "cities" in city && city.imageUrlFHD.length > 1;
+  const scrollParentProps = isSplitLayout ? {scrollableTarget: "detailsContainer"} : {};
+
+  console.log("Width suitable for split layout?", isWidthNeededForSplitLayout)
 
   const {isFetching, data, error, refetch} = useQuery<Mod[]>({
     queryKey: ["playset", {city: city.id}],
@@ -151,9 +157,11 @@ export const ModList = ({city}: ModListProps) => {
   } else {
     accordionBody = (
       <InfiniteScroll
+        key={`splitLayout${isSplitLayout}`}
         next={() => setPage(a => a + 1)}
         hasMore={searchedModList.length > paginatedModList.length}
         className="playset-container d-flex flex-wrap gap-2"
+        {...scrollParentProps}
         dataLength={paginatedModList.length}
         loader={
           <>
