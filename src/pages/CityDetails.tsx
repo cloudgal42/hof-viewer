@@ -164,7 +164,7 @@ const CityDetails = () => {
           </div>
           <h3 className="text-muted fs-5">by {cityDetails.creator.creatorName}</h3>
         </div>
-        <div className={`col-12 px-0 px-xl-3 ${isEligibleForSplitLayout && "col-xl-6 adaptive-overflow"}`} >
+        <div id="galleryContainer" className={`col-12 px-0 px-xl-3 ${isEligibleForSplitLayout && "col-xl-6 adaptive-overflow"}`} >
           <section id="gallery" className="mt-3 position-relative">
             <Suspense fallback={
               <img
@@ -174,10 +174,10 @@ const CityDetails = () => {
                 style={{aspectRatio: "16/9"}}
               />
             }>
-              <CityGallery page={page} city={cityDetails}/>
+              <CityGallery page={page} setPage={setPage} city={cityDetails}/>
             </Suspense>
             {/* TODO: Move this button to the CityGallery component. Research React's useContext hook */}
-            {!isLastPage && (
+            {(!isLastPage && !isSplitLayout) && (
               <Button
                 variant="outline"
                 style={{border: "none", backgroundColor: "transparent"}}
