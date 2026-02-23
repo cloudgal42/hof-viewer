@@ -1,6 +1,6 @@
 import './css/App.scss'
 import {Container, Navbar, Spinner} from "react-bootstrap";
-import {Suspense, useEffect, useState} from "react";
+import {createContext, Suspense, useEffect, useState} from "react";
 import {Sidebar} from "./components/misc/Sidebar/Sidebar.tsx";
 import {HamburgerButton} from "./components/misc/Hamburger/HamburgerButton.tsx";
 import {Outlet, useLocation} from "react-router";
@@ -10,6 +10,7 @@ import type {City, GroupedCities} from "./interfaces/City.ts";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {ErrorBoundary, type FallbackProps} from "react-error-boundary";
 import {ErrorScreen} from "./components/misc/ErrorScreen/ErrorScreen.tsx";
+import {ThemeContext} from "./context/ThemeContext.ts";
 // import {Screenshots} from "./temp/screenshots.ts";
 
 export type ContextType = {
@@ -83,7 +84,9 @@ const App = () => {
               </div>
             }>
               <QueryClientProvider client={queryClient}>
-                <Outlet context={contextParams satisfies ContextType}/>
+                <ThemeContext value={isDarkMode ? "dark" : "light"}>
+                  <Outlet context={contextParams satisfies ContextType}/>
+                </ThemeContext>
               </QueryClientProvider>
             </Suspense>
           </main>
