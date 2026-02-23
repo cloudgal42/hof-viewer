@@ -11,6 +11,7 @@ import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {ErrorBoundary, type FallbackProps} from "react-error-boundary";
 import {ErrorScreen} from "./components/misc/ErrorScreen/ErrorScreen.tsx";
 import {ThemeContext} from "./context/ThemeContext.ts";
+import {CrashFallback} from "./components/misc/CrashFallback/CrashFallback.tsx";
 // import {Screenshots} from "./temp/screenshots.ts";
 
 export type ContextType = {
@@ -44,14 +45,7 @@ const App = () => {
       fallbackRender={({error}) => {
         const err = error as Error;
         return (
-          <div className="my-5 py-5">
-            <ErrorScreen
-              errorSummary="Something went wrong when loading the webpage :("
-              errorDetails={
-                <p>{err.message}</p>
-              }
-            />
-          </div>
+          <CrashFallback err={err} />
         )
       }
       }

@@ -7,6 +7,7 @@ $utilities: (
     class: w,
     responsive: true,
     values: (
+      15: 15%,
       25: 25%,
       33: 33%,
       50: 50%,
@@ -35,7 +36,7 @@ html, body, #root {
   $primary: #fff;
   --bs-primary: #fff;
 
-  a:not(.btn) {
+  a:not(.btn, .alert-link) {
     color: var(--bs-primary);
 
     &:hover {
