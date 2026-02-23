@@ -20,6 +20,7 @@ import {CityInsights} from "../components/details/CityInsights/CityInsights.tsx"
 import {useCreatorCities} from "../hooks/useCreatorCities.ts";
 import {groupCities} from "../utils/GroupCities.ts";
 import {CreatorPreviewTrigger} from "../components/misc/CreatorPreview/CreatorPreviewTrigger.tsx";
+import {BackButton} from "../components/misc/BackButton/BackButton.tsx";
 
 const CityGallery = lazy(() => import("../components/details/CityGallery/CityGallery.tsx"));
 
@@ -50,7 +51,6 @@ const CityDetails = () => {
   const {
     city,
   } = useOutletContext<ContextType>();
-  const navigate = useNavigate();
 
   const [page, setPage] = useState<number>(1);
   const [isLoadMoreHovered, setIsLoadMoreHovered] = useState<boolean>(false);
@@ -139,19 +139,7 @@ const CityDetails = () => {
   return (
     <div className="main-wrapper flex-grow-1 ms-sm-5 me-sm-5">
       <div className="d-flex align-items-center mb-2">
-        {window.history.length > 1 && (
-          <OverlayTrigger overlay={<Tooltip>Back</Tooltip>}>
-            <Button
-              variant="outline"
-              style={{border: "none", backgroundColor: "transparent"}}
-              className="ps-0"
-              aria-label="Back"
-              onClick={() => navigate(-1)}
-            >
-              <ChevronLeft width="24" height="24"/>
-            </Button>
-          </OverlayTrigger>
-        )}
+        <BackButton />
         <h2 className="mb-0">
           {cityDetails.cityName}{cityDetails.cityNameTranslated && `(${cityDetails.cityNameTranslated})`}
         </h2>
