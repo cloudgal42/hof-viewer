@@ -14,13 +14,29 @@ export const CreatorPreviewTrigger = (
   }
 ) => {
   const [show, setShow] = useState(false);
+  const [showType, setShowType] = useState<"hover" | "click">("hover");
+
+  function handleShowClick() {
+    if (showType === "hover" && show) {
+      setShowType("click");
+      setShow(true);
+    } else {
+      setShow(!show);
+    }
+  }
+
+  function handleShowHover(showStatus: boolean) {
+    setShow(showStatus);
+    if (showType === "click") setShowType("hover");
+  }
 
   return (
     <OverlayTrigger
       overlay={
         <Popover
-          onMouseEnter={() => setShow(true)}
-          onMouseLeave={() => setShow(false)}
+          onClick={handleShowClick}
+          onMouseEnter={() => handleShowHover(true)}
+          onMouseLeave={() => handleShowHover(false)}
         >
           <CreatorPreviewPopoverBody creator={creator} showLinks={showLinks} />
         </Popover>
@@ -29,8 +45,9 @@ export const CreatorPreviewTrigger = (
       show={show}
     >
       <span
-        onMouseEnter={() => setShow(true)}
-        onMouseLeave={() => setShow(false)}
+        onClick={handleShowClick}
+        onMouseEnter={() => handleShowHover(true)}
+        onMouseLeave={() => handleShowHover(false)}
       >
         {children}
       </span>
