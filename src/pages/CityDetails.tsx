@@ -156,7 +156,6 @@ const CityDetails = () => {
       </div>
       <CreatorPreviewTrigger
         creator={cityDetails.creator.creatorName}
-        placement="right"
         showLinks={true}
       >
         <h3 className="text-muted fs-5 d-inline">by {cityDetails.creator.creatorName}</h3>

@@ -1,18 +1,15 @@
 import {type ReactElement, useState} from "react";
 import {CreatorPreviewPopoverBody} from "./CreatorPreviewPopoverBody.tsx";
 import {OverlayTrigger, Popover} from "react-bootstrap";
-import type {Placement} from "@popperjs/core";
 
 export const CreatorPreviewTrigger = (
   {
     creator,
     children,
-    placement,
     showLinks,
   } : {
     creator: string | null,
     children: ReactElement,
-    placement: Placement,
     showLinks: boolean,
   }
 ) => {
@@ -28,7 +25,7 @@ export const CreatorPreviewTrigger = (
           <CreatorPreviewPopoverBody creator={creator} showLinks={showLinks} />
         </Popover>
       }
-      placement={placement}
+      placement="auto"
       show={show}
     >
       <span
