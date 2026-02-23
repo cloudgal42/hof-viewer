@@ -5,7 +5,7 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend, type ChartEvent,
+  Legend, type ChartEvent, defaults,
 } from 'chart.js';
 import {Bar} from 'react-chartjs-2';
 import type {GroupedCities} from "../../../interfaces/City.ts";
@@ -40,6 +40,10 @@ function getRandomColor() {
 
   return `rgb(${r}, ${g}, ${b})`;
 }
+
+defaults.font.family = "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\"," +
+  " \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", " +
+  "\"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\""
 
 export const StackedChart = ({city, type}: StackedChartProps) => {
   const chartRef = useRef<ChartJS<"bar">>(null);
@@ -105,10 +109,12 @@ export const StackedChart = ({city, type}: StackedChartProps) => {
         max: 100,
         stacked: true,
         display: false,
+        grid: {display: false}
       },
       y: {
         ticks: {display: false},
         stacked: true,
+        grid: {display: false}
       },
     },
     onClick: (e: ChartEvent) => {
