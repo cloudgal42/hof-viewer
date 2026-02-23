@@ -42,6 +42,7 @@ export const ModCard = ({mod, isCompactMode}: ModListProps) => {
             variant="outline-primary"
             className="d-flex gap-2 align-items-center"
             href={`https://mods.paradoxplaza.com/mods/${mod.paradoxModId}/Windows`}
+            target="_blank"
           >
             <img src={pdxModsIcon} width="18" height="16" alt=""/>
             PDX Mods
@@ -51,6 +52,7 @@ export const ModCard = ({mod, isCompactMode}: ModListProps) => {
             variant="outline-primary"
             className="d-flex gap-2 align-items-center"
             href={`https://skyve-mod.com/app/mods/${mod.paradoxModId}`}
+            target="_blank"
           >
             <img src={skyveIcon} width="18" height="18" alt=""/>
             Skyve
