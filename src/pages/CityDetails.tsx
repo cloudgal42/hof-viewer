@@ -139,17 +139,19 @@ const CityDetails = () => {
   return (
     <div className="main-wrapper flex-grow-1 ms-sm-5 me-sm-5">
       <div className="d-flex align-items-center mb-2">
-        <OverlayTrigger overlay={<Tooltip>Back</Tooltip>}>
-          <Button
-            variant="outline"
-            style={{border: "none", backgroundColor: "transparent"}}
-            className="ps-0"
-            aria-label="Back"
-            onClick={() => navigate(-1)}
-          >
-            <ChevronLeft width="24" height="24"/>
-          </Button>
-        </OverlayTrigger>
+        {window.history.length > 1 && (
+          <OverlayTrigger overlay={<Tooltip>Back</Tooltip>}>
+            <Button
+              variant="outline"
+              style={{border: "none", backgroundColor: "transparent"}}
+              className="ps-0"
+              aria-label="Back"
+              onClick={() => navigate(-1)}
+            >
+              <ChevronLeft width="24" height="24"/>
+            </Button>
+          </OverlayTrigger>
+        )}
         <h2 className="mb-0">
           {cityDetails.cityName}{cityDetails.cityNameTranslated && `(${cityDetails.cityNameTranslated})`}
         </h2>
