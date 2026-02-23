@@ -4,8 +4,8 @@ import {LazyLoadImage} from "react-lazy-load-image-component";
 import {BoxArrowUpRight} from "react-bootstrap-icons";
 import type {Mod} from "../../../interfaces/Mod.ts";
 
-import pdxModsIcon from "../../../../public/pdx-mods.png";
-import skyveIcon from "../../../../public/skyve.ico";
+import pdxModsIcon from "../../../assets/pdx-mods.png";
+import skyveIcon from "../../../assets/skyve.ico";
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 
 interface ModListProps {
