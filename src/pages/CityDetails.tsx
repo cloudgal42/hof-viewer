@@ -19,6 +19,7 @@ import * as React from "react";
 import {CityInsights} from "../components/details/CityInsights/CityInsights.tsx";
 import {useCreatorCities} from "../hooks/useCreatorCities.ts";
 import {groupCities} from "../utils/GroupCities.ts";
+import {CreatorPreviewTrigger} from "../components/misc/CreatorPreview/CreatorPreviewTrigger.tsx";
 
 const CityGallery = lazy(() => import("../components/details/CityGallery/CityGallery.tsx"));
 
@@ -149,10 +150,17 @@ const CityDetails = () => {
             <ChevronLeft width="24" height="24"/>
           </Button>
         </OverlayTrigger>
-        <h2
-          className="mb-0">{cityDetails.cityName}{cityDetails.cityNameTranslated && `(${cityDetails.cityNameTranslated})`}</h2>
+        <h2 className="mb-0">
+          {cityDetails.cityName}{cityDetails.cityNameTranslated && `(${cityDetails.cityNameTranslated})`}
+        </h2>
       </div>
-      <h3 className="text-muted fs-5">by {cityDetails.creator.creatorName}</h3>
+      <CreatorPreviewTrigger
+        creator={cityDetails.creator.creatorName}
+        placement="right"
+        showLinks={true}
+      >
+        <h3 className="text-muted fs-5 d-inline">by {cityDetails.creator.creatorName}</h3>
+      </CreatorPreviewTrigger>
       <section id="gallery" className="mt-3 position-relative">
         <Suspense fallback={
           <img
