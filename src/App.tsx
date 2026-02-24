@@ -56,7 +56,7 @@ const App = () => {
           <Container fluid className="justify-content-start align-items-center ps-2 ps-sm-3 ms-sm-3 ms-lg-0">
             <HamburgerButton isOpened={isAsideOpened} setIsOpened={setIsAsideOpened}/>
             <Navbar.Brand className="py-1" href="/">
-              <span className="mb-0 fs-2 fw-semibold">HoF</span>
+              <span className="mb-0 fs-3 fw-semibold">HoF</span>
             </Navbar.Brand>
           </Container>
         </Navbar>
