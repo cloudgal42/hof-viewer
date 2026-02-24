@@ -71,7 +71,7 @@ const CityDetails = () => {
   const fetchError = error || creatorCitiesError;
 
   const cityDetails = data || city ||
-    creatorCities && groupCities(creatorCities).find(entry => entry.cityName === cityParam);
+    creatorCities && groupCities(creatorCities).find(entry => entry.cityName === cityParam?.toLowerCase());
 
   if (!cityDetails) {
     if (!navigator.onLine) {
