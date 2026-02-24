@@ -37,28 +37,28 @@ export const PlaceholderDetails = () => {
                 <Placeholder className="d-block mb-2" as={Card.Text} xs={5}/>
               </Placeholder>
               <ul className="list-unstyled mb-0 row">
-                <li className="d-flex gap-2 align-items-center col-sm-6 col-md-4 col-lg-3">
+                <li className="d-flex gap-2 align-items-center col-sm-6">
                   <Person/>
                   <span className="visually-hidden">Population</span>
                   <Placeholder as={Card.Text} animation="glow" className="flex-grow-1">
                     <Placeholder xs={1}/>
                   </Placeholder>
                 </li>
-                <li className="d-flex gap-2 align-items-center col-sm-6 col-md-4 col-lg-3">
+                <li className="d-flex gap-2 align-items-center col-sm-6">
                   <Trophy/>
                   <span className="visually-hidden">Milestone</span>
                   <Placeholder as={Card.Text} animation="glow" className="flex-grow-1">
                     <Placeholder xs={1}/>
                   </Placeholder>
                 </li>
-                <li className="d-flex gap-2 align-items-center col-sm-6 col-md-4 col-lg-3">
+                <li className="d-flex gap-2 align-items-center col-sm-6">
                   <Eye/>
                   <span className="visually-hidden">Unique Views</span>
                   <Placeholder as={Card.Text} animation="glow" className="flex-grow-1">
                     <Placeholder xs={1}/>
                   </Placeholder>
                 </li>
-                <li className="d-flex gap-2 align-items-center col-sm-6 col-md-4 col-lg-3">
+                <li className="d-flex gap-2 align-items-center col-sm-6">
                   <Heart/>
                   <span className="visually-hidden">Favorites</span>
                   <Placeholder as={Card.Text} animation="glow" className="flex-grow-1">
@@ -91,13 +91,18 @@ export const PlaceholderDetails = () => {
               <Placeholder as={Card.Title} animation="glow">
                 <Placeholder xs={5}/>
               </Placeholder>
-              <Placeholder as={Card.Text} animation="glow">
-                <Placeholder className="d-block mb-2" xs={6}/>
-                <Placeholder className="d-block mb-2" xs={4}/>
-                <Placeholder className="d-block mb-2" xs={5}/>
-                <Placeholder className="d-block mb-2" xs={4}/>
-                <Placeholder className="d-block mb-2" xs={3}/>
-              </Placeholder>
+              <div className="row">
+                <Placeholder className="col-12 col-md-6" as={Card.Text} animation="glow">
+                  <Placeholder className="d-block mb-2" xs={6}/>
+                  <Placeholder className="d-block mb-2" xs={4}/>
+                  <Placeholder className="d-block mb-2" xs={4}/>
+                </Placeholder>
+                <Placeholder className="col-12 col-md-6" as={Card.Text} animation="glow">
+                  <Placeholder className="d-block mb-2" xs={6}/>
+                  <Placeholder className="d-block mb-2" xs={4}/>
+                  <Placeholder className="d-block mb-2" xs={4}/>
+                </Placeholder>
+              </div>
             </section>
           </Card.Body>
         </Card>
