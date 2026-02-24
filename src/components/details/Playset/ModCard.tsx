@@ -5,7 +5,7 @@ import {BoxArrowUpRight} from "react-bootstrap-icons";
 import type {Mod} from "../../../interfaces/Mod.ts";
 
 import pdxModsIcon from "../../../assets/pdx-mods.png";
-import skyveIcon from "../../../assets/skyve.ico";
+import skyveIcon from "../../../assets/skyve.webp";
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 
 interface ModListProps {
