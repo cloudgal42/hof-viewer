@@ -60,22 +60,22 @@ export const Details = (
               on: {new Date(cityDetails.createdAt).toLocaleString()}</p>
           </OverlayTrigger>
           <ul className="list-unstyled mb-0 row">
-            <li className="col-sm-6 col-md-4 col-lg-3 d-flex align-items-center gap-2">
+            <li className="col-sm-6 d-flex align-items-center gap-2">
               <Person/>
               <span className="visually-hidden">Population</span>
               {cityDetails.cityPopulation.toLocaleString()}
             </li>
-            <li className="col-sm-6 col-md-4 col-lg-3 d-flex align-items-center gap-2">
+            <li className="col-sm-6 d-flex align-items-center gap-2">
               <Trophy/>
               <span className="visually-hidden">Milestone</span>
               {cityMilestones[cityDetails.cityMilestone - 1]}
             </li>
-            <li className="col-sm-6 col-md-4 col-lg-3 d-flex align-items-center gap-2">
+            <li className="col-sm-6 d-flex align-items-center gap-2">
               <Eye/>
               <span className="visually-hidden">Unique Views</span>
               {`${cityDetails.viewsCount.toLocaleString()} (Unique: ${cityDetails.uniqueViewsCount.toLocaleString()})`}
             </li>
-            <li className="col-sm-6 col-md-4 col-lg-3 d-flex align-items-center gap-2">
+            <li className="col-sm-6 d-flex align-items-center gap-2">
               <Heart/>
               <span className="visually-hidden">Favorites</span>
               {`${cityDetails.favoritesCount.toLocaleString()} (${cityDetails.favoritingPercentage}% of unique views)`}
