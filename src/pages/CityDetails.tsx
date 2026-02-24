@@ -2,7 +2,7 @@ import {Button} from "react-bootstrap";
 import {NavLink, useOutletContext, useParams, useSearchParams} from "react-router";
 import type {ContextType} from "../App.tsx";
 import {ChevronDown} from "react-bootstrap-icons";
-import {lazy, Suspense, useState} from "react";
+import {lazy, Suspense, useEffect, useState} from "react";
 import {DEFAULT_IMAGES_PER_PAGE} from "../components/details/CityGallery/CityGallery.tsx";
 
 import PlaceholderImg from "../assets/placeholder.svg"
@@ -19,6 +19,7 @@ import {AdaptiveHeader} from "../components/details/AdaptiveHeader/AdaptiveHeade
 import {Details} from "../components/details/Details/Details.tsx";
 
 const CityGallery = lazy(() => import("../components/details/CityGallery/CityGallery.tsx"));
+
 
 const CityDetails = () => {
   const {
@@ -38,6 +39,15 @@ const CityDetails = () => {
     error: creatorCitiesError,
     isFetching: isCreatorCitiesFetching
   } = useCreatorCities(cityCreator);
+
+  // Scrolls to top whenever the city details page is loaded
+  useEffect(() => {
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: "instant",
+    });
+  }, []);
 
   const {error, data, isFetching} = useQuery<City>({
     queryKey: ["city", {id: cityParam}],
@@ -111,7 +121,7 @@ const CityDetails = () => {
 
   return (
     <div className="flex-grow-1">
-      <AdaptiveHeader cityDetails={cityDetails} />
+      <AdaptiveHeader cityDetails={cityDetails}/>
       <div className="main-wrapper m-auto">
         <section id="gallery" className="mt-3 position-relative">
           <Suspense fallback={<img
@@ -141,7 +151,7 @@ const CityDetails = () => {
           id="details"
           className={`mt-3 position-relative ${(isLoadMoreHovered && !isLastPage) && "load-more-hovered"}`}
         >
-          <Details cityDetails={cityDetails} error={error} isFetching={isFetching} />
+          <Details cityDetails={cityDetails} error={error} isFetching={isFetching}/>
         </section>
         <section
           id="trends"
