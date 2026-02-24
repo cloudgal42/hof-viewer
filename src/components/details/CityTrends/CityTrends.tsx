@@ -67,7 +67,6 @@ export const CityTrends = ({city, isLoading, fetchError}: CityTrendsProps) => {
           variant="outline-warning"
           onClick={() => !data && refetch()}
           disabled={isFetching}
-          style={{cursor: (isFetching) ? "wait" : "default"}}
         >
           {isFetching ? (
             <>
