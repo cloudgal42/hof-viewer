@@ -24,7 +24,7 @@ export const CrashFallback = (
           <Alert.Heading>Uh oh!</Alert.Heading>
         </h1>
         <p>
-          Something went wrong while rendering the UI for this website :(. If you believe
+          Rendering the UI was not very wonderhoy (i.e. the UI crashed) :(. If you believe
           this is a bug, please report it on
           <Alert.Link
             href="https://github.com/cloudgal42/hof-viewer/issues"
