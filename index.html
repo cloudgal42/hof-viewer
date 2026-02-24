@@ -9,5 +9,13 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script type="module">
+      const isDarkModePreferred = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      if (window.localStorage.length === 0 && isDarkModePreferred) {
+        console.log("Detected user preferring dark mode, so lets not blind them");
+        document.querySelector("html").setAttribute("data-bs-theme", "dark");
+        localStorage.setItem("isDarkMode", "true");
+      }
+    </script>
   </body>
 </html>
