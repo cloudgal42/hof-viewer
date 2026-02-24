@@ -6,10 +6,11 @@ export const CrashFallback = (
   {err}: { err: Error }
 ) => {
   const [isCopied, setIsCopied] = useState(false);
+  const stacktrace = `${!(err.stack?.includes(err.message)) ? `${err.message}\n` : ""}${err.stack || err.message}`
 
   function copyToClipboard() {
     if (err.stack) {
-      navigator.clipboard.writeText(err.stack).then(() => setIsCopied(true));
+      navigator.clipboard.writeText(stacktrace).then(() => setIsCopied(true));
     }
   }
 
@@ -58,8 +59,7 @@ export const CrashFallback = (
       <Card>
         <Card.Body>
           <pre style={{maxHeight: "50vh", maxWidth: "100%"}}>
-            {!(err.stack?.includes(err.message)) && `${err.message}\n`}
-            {err.stack || err.message}
+            {stacktrace}
           </pre>
         </Card.Body>
       </Card>
