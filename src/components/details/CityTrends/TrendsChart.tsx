@@ -14,6 +14,9 @@ import type {TrendsData, WorkerParams} from "../../../interfaces/TrendsData.ts";
 import {useContext, useEffect, useRef, useState} from "react";
 import {ThemeContext} from "../../../context/ThemeContext.ts";
 
+import "../../../css/components/TrendsChart.css";
+import {Spinner} from "react-bootstrap";
+
 interface TrendsChartProps {
   city: City | GroupedCities;
   trendType: string;
@@ -46,6 +49,7 @@ defaults.font.family = "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvet
 
 const TrendsChart = React.memo(({city, trendType, groupPeriod}: TrendsChartProps) => {
   const [groupedCounts, setGroupedCounts] = useState<TrendsData>({});
+  const [isProcessing, setIsProcessing] = useState(false);
   const chartName = `${getFormattedTrendType(trendType)} per ${groupPeriod} day(s)`;
 
   const workerRef = useRef<Worker>(null);
@@ -67,12 +71,17 @@ const TrendsChart = React.memo(({city, trendType, groupPeriod}: TrendsChartProps
     }
 
     workerRef.current.postMessage(params);
+    // Only show loading state if its taking longer than 67ms
+    const timerId = setTimeout(() => setIsProcessing(true), 67);
 
     workerRef.current.onmessage = (e) => {
       setGroupedCounts(e.data);
+      clearTimeout(timerId);
+      setIsProcessing(false);
     }
 
     return () => {
+      clearTimeout(timerId);
       if (workerRef.current) workerRef.current.terminate();
     }
   }, [city, trendType, groupPeriod]);
@@ -121,8 +130,14 @@ const TrendsChart = React.memo(({city, trendType, groupPeriod}: TrendsChartProps
   };
 
   return (
-    <div className="position-relative" style={{minHeight: "50vh"}}>
-      <Bar data={data} options={options}/>
+    <div className="position-relative">
+      <div className={`spinner-container ${isProcessing && "spinner-container-active"} position-absolute top-50 start-50 translate-middle d-flex flex-column align-items-center`}>
+        <Spinner animation="border" aria-describedby="spinnerLabel" role="status" />
+        <p className="mt-2 text-center" id="spinnerLabel">Processing...</p>
+      </div>
+      <div className={`position-relative trends-chart-container ${isProcessing && "trends-chart-container-processing"}`}>
+        <Bar data={data} options={options}/>
+      </div>
     </div>
   )
 })
