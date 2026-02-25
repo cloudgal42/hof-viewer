@@ -12,12 +12,12 @@ export function groupCities(citiesToGroup: City[]) {
 
   // 1. Get all distinct city names. Use Set() to filter down to only unique values
   // Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set/Set
-  const cityNames = citiesToGroup.map(({cityName}) => cityName);
+  const cityNames = citiesToGroup.map(({cityName}) => cityName.toLowerCase());
   const uniqueCityNames = [...new Set(cityNames)];
 
   // 2. Combine all unique city entries into 1 array
   uniqueCityNames.forEach(cityName => {
-    const cityScreenshots = citiesToGroup.filter(city => city.cityName === cityName)
+    const cityScreenshots = citiesToGroup.filter(city => city.cityName.toLowerCase() === cityName)
     groupedScreenshots.push(cityScreenshots);
   });
 
@@ -45,17 +45,23 @@ export function groupCities(citiesToGroup: City[]) {
         createdAtFormattedDistance: screenshotArr[0].createdAtFormattedDistance,
         creator: screenshot.creator,
         creatorId: screenshot.creatorId,
-        imageUrl4K: (!screenshotStat.combinedStats?.imageUrl4K) ? [] : screenshotStat.combinedStats.imageUrl4K,
-        imageUrlFHD: (!screenshotStat.combinedStats?.imageUrlFHD) ? [] : screenshotStat.combinedStats.imageUrlFHD,
-        imageUrlThumbnail: (!screenshotStat.combinedStats?.imageUrlThumbnail) ? [] : screenshotStat.combinedStats.imageUrlThumbnail,
+        imageUrl4K: (!screenshotStat.combinedStats?.imageUrl4K) ?
+          [] : screenshotStat.combinedStats.imageUrl4K,
+        imageUrlFHD: (!screenshotStat.combinedStats?.imageUrlFHD) ?
+          [] : screenshotStat.combinedStats.imageUrlFHD,
+        imageUrlThumbnail: (!screenshotStat.combinedStats?.imageUrlThumbnail) ?
+          [] : screenshotStat.combinedStats.imageUrlThumbnail,
         mapName: screenshot.mapName,
         paradoxModIds: screenshot.paradoxModIds,
         shareParadoxModIds: screenshot.shareParadoxModIds,
         shareRenderSettings: screenshot.shareRenderSettings,
         __favorited: false,
-        favorites: (!screenshotStat.combinedStats?.favorites) ? [] : screenshotStat.combinedStats.favorites,
-        views: (!screenshotStat.combinedStats?.views) ? [] : screenshotStat.combinedStats.views,
-        cities: (!screenshotStat.combinedStats?.cities) ? [] : screenshotStat.combinedStats.cities,
+        favorites: (!screenshotStat.combinedStats?.favorites) ?
+          [] : screenshotStat.combinedStats.favorites,
+        views: (!screenshotStat.combinedStats?.views) ?
+          [] : screenshotStat.combinedStats.views,
+        cities: (!screenshotStat.combinedStats?.cities) ?
+          [] : screenshotStat.combinedStats.cities,
       }
 
       screenshotStat.combinedStats?.cities.push(screenshot);

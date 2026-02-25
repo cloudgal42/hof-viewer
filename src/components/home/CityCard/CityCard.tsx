@@ -5,6 +5,7 @@ import PlaceholderImg from "../../../assets/placeholder.svg"
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 import {NavLink} from "react-router";
 import type {City, GroupedCities} from "../../../interfaces/City.ts";
+import {CreatorPreviewTrigger} from "../../misc/CreatorPreview/CreatorPreviewTrigger.tsx";
 
 interface CityCardProps {
   city: City | GroupedCities;
@@ -59,7 +60,12 @@ export const CityCard = ({city, setCity, isCitiesGrouped}: CityCardProps) => {
         </NavLink>
         <Card.Subtitle className="mb-1">{city.cityNameTranslated}</Card.Subtitle>
         <div style={{fontSize: "0.9rem"}} className="text-muted">
-          <Card.Text className="d-block mb-1">by {city.creator.creatorName}</Card.Text>
+          <CreatorPreviewTrigger
+            creator={city.creator.creatorName}
+            showLinks={false}
+          >
+            <Card.Text className="d-inline-block mb-1">by {city.creator.creatorName}</Card.Text>
+          </CreatorPreviewTrigger>
           <Card.Text className="d-flex mb-1 gap-2">
             <span className="d-flex flex-grow-1 align-items-center">
               <Person/>

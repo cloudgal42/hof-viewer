@@ -1,4 +1,4 @@
-import type {City, GroupedCities} from "../interfaces/City.ts";
+import type {City, GroupedCities, Views} from "../interfaces/City.ts";
 import type {TrendsData, WorkerParams} from "../interfaces/TrendsData.ts";
 
 const DAYS_IN_MILLISECONDS = 86400000;
@@ -50,6 +50,15 @@ function formatDatesLabel(start: Date, end: Date, period: number) {
     : `${start.toLocaleString(navigator.language, options)} - ${end.toLocaleString("en-US", options)}`
 }
 
+function filterUniqueViews(views: Views[]) {
+  const uniqueCreatorIds: (string)[] = [];
+  return views.filter(entry => {
+    const isUnique = !(uniqueCreatorIds.includes(entry.creatorId));
+    uniqueCreatorIds.push(entry.creatorId);
+    return isUnique;
+  });
+}
+
 function groupDates(start: Date, end: Date, period: number) {
   const startEpoch = start.getTime();
   const endEpoch = end.getTime();
@@ -75,9 +84,8 @@ function groupData(city: City | GroupedCities, day: number, type: string): Trend
   // FIXME: Implement better undefined check
   if (!city.views && !city.favorites) return [];
 
-  // 1.5. TODO: Define viewEntries array and assign it based on type for unique and non-unique views
-  // const viewEntries = (type === "uniqueViews")
-  // console.log("Grouping data to prepare for the chart")
+  // 1.5. If type is "uniqueViews", filter views to only unique view entries
+  const uniqueViews = filterUniqueViews(city.views!);
 
   // 2. Get grouped dates. groupedDates contain arrays of Date object with a length of 2
   // Index 0 is start, Index 1 is end
@@ -101,6 +109,11 @@ function groupData(city: City | GroupedCities, day: number, type: string): Trend
     } else if (type === "favorites") {
       rangeCount = city.favorites!.filter(entry => {
         const viewEpoch = new Date(entry.favoritedAt).getTime();
+        return viewEpoch >= startRange && viewEpoch < endRange;
+      }).length
+    } else if (type === "uniqueViews") {
+      rangeCount = uniqueViews.filter(entry => {
+        const viewEpoch = new Date(entry.viewedAt).getTime();
         return viewEpoch >= startRange && viewEpoch < endRange;
       }).length
     }

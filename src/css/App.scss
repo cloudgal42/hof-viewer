@@ -7,6 +7,7 @@ $utilities: (
     class: w,
     responsive: true,
     values: (
+      15: 15%,
       25: 25%,
       33: 33%,
       50: 50%,
@@ -35,19 +36,19 @@ html, body, #root {
   $primary: #fff;
   --bs-primary: #fff;
 
+  a:not(.btn, .alert-link) {
+    color: var(--bs-primary);
+
+    &:hover {
+      color: var(--bs-primary);
+    }
+  }
   .btn-primary {
     @extend .btn-light;
   }
   .btn-outline-primary {
     @extend .btn-outline-light;
     border-color: $input-border-color;
-  }
-  a {
-    color: var(--bs-primary);
-
-    &:hover {
-      color: var(--bs-primary);
-    }
   }
   input:focus,
   select:focus,

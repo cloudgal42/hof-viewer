@@ -31,16 +31,17 @@ const CityGallery = ({city, page}: GalleryProps) => {
   const galleryRef = useRef<ILightGallery>(null);
 
   const imageUrls = ("cities" in city) ?
-    city.cities.map(city => city.imageUrlFHD)
+    city.cities.map(city => city.imageUrlFHD).reverse()
     : [city.imageUrlFHD];
   const currImageUrls = imageUrls.toSpliced(page * DEFAULT_IMAGES_PER_PAGE);
   const lightboxItems: GalleryItem[] = ("cities" in city) ?
-    city.cities.map(city => {
-      return {
-        src: city.imageUrlFHD,
-        alt: "",
-        thumb: city.imageUrlFHD,
-        subHtml: `
+    city.cities
+      .map(city => {
+        return {
+          src: city.imageUrlFHD,
+          alt: "",
+          thumb: city.imageUrlFHD,
+          subHtml: `
           <span class="text-muted" style="font-size: 0.9rem">
             Posted on ${new Date(city.createdAt).toLocaleString()} (${city.createdAtFormattedDistance}).<br /> 
             Views: ${city.viewsCount} (Unique: ${city.uniqueViewsCount}) | Favorites: ${city.favoritesCount} |
@@ -49,15 +50,18 @@ const CityGallery = ({city, page}: GalleryProps) => {
             </a>
           </span>
         `
-      }
-    }) : imageUrls.map(imageUrl => {
-    return {
-      src: imageUrl,
-      alt: "",
-      // TODO: Use imageUrlThumbnail for thumbnails
-      thumb: imageUrl,
-    }
-  })
+        }
+      })
+      .reverse() : imageUrls
+      .map(imageUrl => {
+        return {
+          src: imageUrl,
+          alt: "",
+          // TODO: Use imageUrlThumbnail for thumbnails
+          thumb: imageUrl,
+        }
+      })
+      .reverse()
 
   const onInit = useCallback((detail: InitDetail) => {
     if (detail) {
@@ -67,7 +71,8 @@ const CityGallery = ({city, page}: GalleryProps) => {
 
   return (
     <>
-      <div className={`d-flex gap-1 flex-row flex-wrap ${currImageUrls.length > 4 ? "img-gallery-container-multiple" : "img-gallery-container"}`}>
+      <div
+        className={`d-flex gap-1 flex-row flex-wrap ${currImageUrls.length > 4 ? "img-gallery-container-multiple" : "img-gallery-container"}`}>
         {currImageUrls.map((url, i) => (
           <div key={i} style={{backgroundColor: "#868e96"}}>
             <LazyLoadImage
@@ -84,7 +89,7 @@ const CityGallery = ({city, page}: GalleryProps) => {
                   style={{aspectRatio: "16/9"}}
                   alt=""
                 />
-            }
+              }
               onClick={() => galleryRef.current && galleryRef.current.openGallery(i)}
             />
           </div>

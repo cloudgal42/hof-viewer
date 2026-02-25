@@ -23,7 +23,7 @@ const Home = () => {
   const [page, setPage] = useState<number>(1);
 
   const creator = searchParams.get("creator") || "";
-  const sortOrder = searchParams.get("sortOrder") || "Ascending";
+  const sortOrder = searchParams.get("sortOrder") || "Descending";
   const sortBy = searchParams.get("sortBy") || "date";
   const groupStatus = searchParams.get("groupCities") || "off";
   // const [sortOrder, setSortOrder] = useState<SortOrder>("Ascending");
