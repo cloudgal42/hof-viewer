@@ -53,7 +53,6 @@ function formatDatesLabel(start: Date, end: Date, period: number) {
 function filterUniqueViews(views: Views[]) {
   const uniqueCreatorIds: (string)[] = [];
   return views.filter(entry => {
-    console.log(entry.creatorId);
     const isUnique = !(uniqueCreatorIds.includes(entry.creatorId));
     uniqueCreatorIds.push(entry.creatorId);
     return isUnique;
