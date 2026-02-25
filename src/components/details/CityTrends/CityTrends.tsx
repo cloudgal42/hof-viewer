@@ -1,9 +1,10 @@
 import {Alert, Button, Card, Form, Spinner, ToggleButton, ToggleButtonGroup} from "react-bootstrap";
-import {lazy, Suspense, useState} from "react";
+import {lazy, Suspense, useContext, useState} from "react";
 import type {City, GroupedCities} from "../../../interfaces/City.ts";
 import {ErrorScreen} from "../../misc/ErrorScreen/ErrorScreen.tsx";
 import {useQuery} from "@tanstack/react-query";
 import {groupCities} from "../../../utils/GroupCities.ts";
+import {ThemeContext} from "../../../context/ThemeContext.ts";
 
 const TrendsChart = lazy(() => import("./TrendsChart.tsx"));
 
@@ -18,6 +19,7 @@ const DAYS_IN_MILLISECONDS = 86400000;
 export const CityTrends = ({city, isLoading, fetchError}: CityTrendsProps) => {
   const createdAtEpoch = city?.createdAt ? new Date(city.createdAt).getTime() : new Date().getTime();
   const currEpoch = new Date().getTime();
+  const theme = useContext(ThemeContext);
 
   const [trendType, setTrendType] = useState<string>("views");
   const [groupPeriod, setGroupPeriod] = useState<number>(() => {
@@ -65,6 +67,7 @@ export const CityTrends = ({city, isLoading, fetchError}: CityTrendsProps) => {
         </p>
         <Button
           variant="outline-warning"
+          className={theme === "light" ? "text-reset" : ""}
           onClick={() => !data && refetch()}
           disabled={isFetching}
         >
