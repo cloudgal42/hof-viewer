@@ -1,7 +1,7 @@
 import type {Creator} from "./Creator.ts";
 import type {Mod} from "./Mod.ts";
 
-interface Views {
+export interface Views {
   id: string;
   viewedAt: string;
   creatorId: string;

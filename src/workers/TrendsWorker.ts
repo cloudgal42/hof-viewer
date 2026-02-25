@@ -1,4 +1,4 @@
-import type {City, GroupedCities} from "../interfaces/City.ts";
+import type {City, GroupedCities, Views} from "../interfaces/City.ts";
 import type {TrendsData, WorkerParams} from "../interfaces/TrendsData.ts";
 
 const DAYS_IN_MILLISECONDS = 86400000;
@@ -48,6 +48,16 @@ function formatDatesLabel(start: Date, end: Date, period: number) {
   return period === 1 ?
     `${start.toLocaleString(navigator.language, options)}`
     : `${start.toLocaleString(navigator.language, options)} - ${end.toLocaleString("en-US", options)}`
+}
+
+function filterUniqueViews(views: Views[]) {
+  const uniqueCreatorIds: (string)[] = [];
+  return views.filter(entry => {
+    console.log(entry.creatorId);
+    const isUnique = !(uniqueCreatorIds.includes(entry.creatorId));
+    uniqueCreatorIds.push(entry.creatorId);
+    return isUnique;
+  });
 }
 
 function groupDates(start: Date, end: Date, period: number) {
@@ -101,6 +111,11 @@ function groupData(city: City | GroupedCities, day: number, type: string): Trend
     } else if (type === "favorites") {
       rangeCount = city.favorites!.filter(entry => {
         const viewEpoch = new Date(entry.favoritedAt).getTime();
+        return viewEpoch >= startRange && viewEpoch < endRange;
+      }).length
+    } else if (type === "uniqueViews") {
+      rangeCount = filterUniqueViews(city.views!).filter(entry => {
+        const viewEpoch = new Date(entry.viewedAt).getTime();
         return viewEpoch >= startRange && viewEpoch < endRange;
       }).length
     }

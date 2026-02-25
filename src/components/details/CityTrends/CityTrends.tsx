@@ -137,13 +137,13 @@ export const CityTrends = ({city, isLoading, fetchError}: CityTrendsProps) => {
               >
                 Views
               </ToggleButton>
-              {/*<ToggleButton*/}
-              {/*  value="uniqueViews"*/}
-              {/*  id="uniqueViews"*/}
-              {/*  variant="outline-primary"*/}
-              {/*>*/}
-              {/*  Views (Unique)*/}
-              {/*</ToggleButton>*/}
+              <ToggleButton
+                value="uniqueViews"
+                id="uniqueViews"
+                variant="outline-primary"
+              >
+                Views (Unique)
+              </ToggleButton>
               <ToggleButton
                 value="favorites"
                 id="favorites"
