@@ -84,9 +84,8 @@ function groupData(city: City | GroupedCities, day: number, type: string): Trend
   // FIXME: Implement better undefined check
   if (!city.views && !city.favorites) return [];
 
-  // 1.5. TODO: Define viewEntries array and assign it based on type for unique and non-unique views
-  // const viewEntries = (type === "uniqueViews")
-  // console.log("Grouping data to prepare for the chart")
+  // 1.5. If type is "uniqueViews", filter views to only unique view entries
+  const uniqueViews = filterUniqueViews(city.views!);
 
   // 2. Get grouped dates. groupedDates contain arrays of Date object with a length of 2
   // Index 0 is start, Index 1 is end
@@ -113,7 +112,7 @@ function groupData(city: City | GroupedCities, day: number, type: string): Trend
         return viewEpoch >= startRange && viewEpoch < endRange;
       }).length
     } else if (type === "uniqueViews") {
-      rangeCount = filterUniqueViews(city.views!).filter(entry => {
+      rangeCount = uniqueViews.filter(entry => {
         const viewEpoch = new Date(entry.viewedAt).getTime();
         return viewEpoch >= startRange && viewEpoch < endRange;
       }).length
