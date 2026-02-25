@@ -55,7 +55,7 @@ const TrendsChart = React.memo(({city, trendType, groupPeriod}: TrendsChartProps
   const workerRef = useRef<Worker>(null);
   const theme = useContext(ThemeContext);
 
-  const fontColor = theme === "dark" ? "#fff" : "gray";
+  const fontColor = theme === "dark" ? "#fff" : "#222";
   const gridColor = theme === "dark" ? {color: "#3a3a3a"} : {};
 
   useEffect(() => {
