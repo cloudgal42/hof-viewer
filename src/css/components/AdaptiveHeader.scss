@@ -74,3 +74,15 @@
     }
   }
 }
+
+@media all and (max-width: 477px) {
+  .header-collapsed {
+    top: 59px;
+  }
+}
+
+@media all and (max-width: 365px) {
+  .header-collapsed {
+    top: 57px;
+  }
+}
