@@ -32,8 +32,8 @@ export const PlaceholderFeatModCard = () => {
           <Placeholder xs={7} /> <Placeholder xs={4} /> <Placeholder xs={4} />{' '}
           <Placeholder xs={6} /> <Placeholder xs={8} />
         </Placeholder>
-        <Placeholder.Button className="me-2" variant="outline-primary" xs={2} />
-        <Placeholder.Button variant="outline-primary" xs={2} />
+        <Placeholder.Button className="me-2" variant="outline-primary" aria-hidden={true} xs={2} />
+        <Placeholder.Button variant="outline-primary" aria-hidden={true} xs={2} />
       </Card.Body>
     </Card>
   )
