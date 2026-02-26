@@ -87,14 +87,14 @@ const RandomCity = () => {
               <ChevronLeft width="20" height="20" />
             </OverlayTrigger>
           </Button>
-          <div className="d-flex gap-3 flex-row align-items-center justify-content-between">
-            <div className="h2-container mb-0 d-flex align-items-center gap-2">
-              <h2 className="mb-0">{data.cityName}</h2>
+          <div className="d-flex gap-2 gap-sm-3 flex-row align-items-center justify-content-between">
+            <div className="h2-container mb-0 d-flex flex-column flex-sm-row align-items-center gap-sm-2">
+              <h2 className="mb-0 text-center text-sm-start">{data.cityName}</h2>
               <CreatorPreviewTrigger
                 creator={data.creator.creatorName}
                 showLinks={true}
               >
-                <h3 className="text-muted d-inline">by {data.creator.creatorName}</h3>
+                <h3 className="text-muted text-center text-sm-start d-inline">by {data.creator.creatorName}</h3>
               </CreatorPreviewTrigger>
             </div>
             <Dropdown>
