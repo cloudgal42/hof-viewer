@@ -28,6 +28,10 @@ html, body, #root {
   min-height: 100vh;
 }
 
+.btn-outline:disabled {
+  border: none;
+}
+
 .btn-outline-primary {
   border-color: $input-border-color;
 }
@@ -36,7 +40,7 @@ html, body, #root {
   $primary: #fff;
   --bs-primary: #fff;
 
-  a:not(.btn, .alert-link) {
+  a:not(.btn, .alert-link, .dropdown-item) {
     color: var(--bs-primary);
 
     &:hover {
@@ -59,7 +63,7 @@ html, body, #root {
     background-color: var(--bs-primary);
     color: black;
   }
-  .nav-link.active {
+  .nav-link.active, .dropdown-item:active {
     background-color: var(--bs-primary);
     color: black;
   }
