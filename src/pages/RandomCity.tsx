@@ -4,9 +4,9 @@ import {Suspense, useContext, useState} from "react";
 import {AdaptiveHeaderContext} from "../context/AdaptiveHeaderContext.ts";
 import {Button, Dropdown, OverlayTrigger, Tooltip} from "react-bootstrap";
 import {MoreActionsBtn} from "../components/misc/MoreActionsBtn/MoreActionsBtn.tsx";
-import {Building, ChevronDown, ChevronLeft, ChevronRight, Person, Share} from "react-bootstrap-icons";
+import {Building, ChevronLeft, ChevronRight, Person, Share} from "react-bootstrap-icons";
 import type {City} from "../interfaces/City.ts";
-import {useQuery} from "@tanstack/react-query";
+import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {ErrorScreen} from "../components/misc/ErrorScreen/ErrorScreen.tsx";
 import {PlaceholderDetails} from "../components/details/Details/PlaceholderDetails.tsx";
 import PlaceholderImg from "../assets/placeholder.svg";
@@ -17,26 +17,40 @@ import {
   PlaceholderHeaderWithControls
 } from "../components/randomcity/PlaceholderHeaderWithControls/PlaceholderHeaderWithControls.tsx";
 
+async function fetchRandomCity() {
+  const res = await fetch(`${import.meta.env.VITE_HOF_SERVER}/screenshots/weighted`);
+  const data = await res.json();
+
+  if (!res.ok) {
+    return Promise.reject(new Error(`${data.statusCode}: ${data.message}`));
+  }
+
+  return data;
+}
+
 const RandomCity = () => {
   const headerCollapsed = useContext(AdaptiveHeaderContext);
   const [page, setPage] = useState<number>(0);
+  const queryClient = useQueryClient();
 
   const {data, isFetching, error} = useQuery<City>({
     queryKey: ["city", page],
-    queryFn: async () => {
-      const res = await fetch(`${import.meta.env.VITE_HOF_SERVER}/screenshots/weighted`);
-      const data = await res.json();
-
-      if (!res.ok) {
-        return Promise.reject(new Error(`${data.statusCode}: ${data.message}`));
-      }
-
-      return data;
-    },
-    enabled: true,
-    staleTime: 30 * 60 * 1000,
+    queryFn: fetchRandomCity,
+    staleTime: 1000 * 60 * 30,
     retry: false,
-  })
+    enabled: true,
+  });
+
+  // Optimistically fetch the next random city data as well as images for a snappier UX
+  queryClient.fetchQuery<City>({
+    queryKey: ["city", page + 1],
+    queryFn: fetchRandomCity,
+    staleTime: 1000 * 60 * 30,
+    retry: false,
+  }).then((data) => {
+    const img = new Image();
+    img.src = data.imageUrlFHD;
+  });
 
   if (!navigator.onLine) {
     return (
@@ -121,11 +135,13 @@ const RandomCity = () => {
       </AdaptiveHeaderProvider>
       <div className="main-wrapper m-auto">
         <section id="gallery" className="mt-3 position-relative">
-          <Suspense fallback={<img
-            src={PlaceholderImg}
-            alt=""
-            className="w-100"
-            style={{aspectRatio: "16/9"}}/>}
+          <Suspense fallback={
+            <img
+              src={PlaceholderImg}
+              alt=""
+              className="w-100"
+              style={{aspectRatio: "16/9"}}
+            />}
           >
             <CityGallery page={1} city={data}/>
           </Suspense>
