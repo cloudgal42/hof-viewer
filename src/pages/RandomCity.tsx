@@ -12,9 +12,10 @@ import {PlaceholderDetails} from "../components/details/Details/PlaceholderDetai
 import PlaceholderImg from "../assets/placeholder.svg";
 import {Details} from "../components/details/Details/Details.tsx";
 import CityGallery from "../components/details/CityGallery/CityGallery.tsx";
-import {NavLink} from "react-router";
 import {CreatorPreviewTrigger} from "../components/misc/CreatorPreview/CreatorPreviewTrigger.tsx";
-import {PlaceholderDetailsHeader} from "../components/details/Details/PlaceholderDetailsHeader.tsx";
+import {
+  PlaceholderHeaderWithControls
+} from "../components/randomcity/PlaceholderHeaderWithControls/PlaceholderHeaderWithControls.tsx";
 
 const RandomCity = () => {
   const headerCollapsed = useContext(AdaptiveHeaderContext);
@@ -53,7 +54,7 @@ const RandomCity = () => {
   } else if (isFetching || !data) {
     return (
       <div className="main-wrapper flex-grow-1 ms-sm-5 me-sm-5">
-        <PlaceholderDetailsHeader/>
+        <PlaceholderHeaderWithControls />
         <PlaceholderDetails/>
       </div>
     )
