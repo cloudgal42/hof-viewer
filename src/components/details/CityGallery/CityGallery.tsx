@@ -14,7 +14,7 @@ import lgAutoplay from 'lightgallery/plugins/autoplay';
 
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import PlaceholderImg from "../../../assets/placeholder.svg";
-import {useCallback, useRef} from "react";
+import {useCallback, useRef, useState} from "react";
 import type {InitDetail} from "lightgallery/lg-events";
 import type {GalleryItem} from "lightgallery/lg-utils";
 import type {City, GroupedCities} from "../../../interfaces/City.ts";
@@ -29,6 +29,7 @@ export const DEFAULT_IMAGES_PER_PAGE = 12;
 
 const CityGallery = ({city, page}: GalleryProps) => {
   const galleryRef = useRef<ILightGallery>(null);
+  const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
 
   const imageUrls = ("cities" in city) ?
     city.cities.map(city => city.imageUrlFHD).reverse()
@@ -72,7 +73,9 @@ const CityGallery = ({city, page}: GalleryProps) => {
   return (
     <>
       <div
-        className={`d-flex gap-1 flex-row flex-wrap ${currImageUrls.length > 4 ? "img-gallery-container-multiple" : "img-gallery-container"}`}>
+        style={imageUrls.length < 4 && isImageLoaded ? {aspectRatio: "16/9"} : {}}
+        className={`w-100 d-flex gap-1 flex-row flex-wrap ${currImageUrls.length > 4 ? "img-gallery-container-multiple" : "img-gallery-container"}`}
+      >
         {currImageUrls.map((url, i) => (
           <div key={i} style={{backgroundColor: "#868e96"}}>
             <LazyLoadImage
@@ -82,6 +85,7 @@ const CityGallery = ({city, page}: GalleryProps) => {
               effect="black-and-white"
               alt=""
               height={currImageUrls.length > 4 ? "150" : ""}
+              onLoad={() => setIsImageLoaded(true)}
               placeholder={
                 <img
                   src={PlaceholderImg}
