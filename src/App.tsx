@@ -52,7 +52,10 @@ const App = () => {
     >
       <ThemeContext value={isDarkMode ? "dark" : "light"}>
         <h1 className="visually-hidden">Hall of Fame Viewer</h1>
-        <Navbar className="bg-body-tertiary d-lg-none" style={{position: "sticky", top: "0px", zIndex: "2"}}>
+        <Navbar
+          className="bg-body-tertiary d-lg-none"
+          style={{position: "sticky", top: "0px", zIndex: "4"}}
+        >
           <Container fluid className="justify-content-start align-items-center ps-2 ps-sm-3 ms-sm-3 ms-lg-0">
             <HamburgerButton isOpened={isAsideOpened} setIsOpened={setIsAsideOpened}/>
             <Navbar.Brand className="py-1" href="/">

@@ -6,7 +6,12 @@ export const PlaceholderCard = () => {
   return (
     <>
       <Card>
-        <Card.Img variant="top" src={PlaceholderImg}/>
+        <Card.Img
+          variant="top"
+          src={PlaceholderImg}
+          height="170"
+          style={{aspectRatio: "16/9"}}
+        />
         <Card.Body>
           <Placeholder as={Card.Title} animation="glow">
             <Placeholder xs={6}/>
