@@ -1,5 +1,5 @@
 import {AdaptiveHeader} from "../components/details/AdaptiveHeader/AdaptiveHeader.tsx";
-import {AdaptiveHeaderProvider} from "../components/providers/AdaptiveHeaderProvider.tsx";
+import {AdaptiveHeaderProvider} from "../providers/AdaptiveHeaderProvider.tsx";
 import {Suspense, useContext, useState} from "react";
 import {AdaptiveHeaderContext} from "../context/AdaptiveHeaderContext.ts";
 import {Button, Dropdown, OverlayTrigger, Tooltip} from "react-bootstrap";

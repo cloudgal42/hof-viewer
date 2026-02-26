@@ -1,5 +1,5 @@
 import {type ReactNode, useEffect, useState} from "react";
-import {AdaptiveHeaderContext} from "../../context/AdaptiveHeaderContext.ts";
+import {AdaptiveHeaderContext} from "../context/AdaptiveHeaderContext.ts";
 
 export const AdaptiveHeaderProvider = (
   {children}: { children: ReactNode }

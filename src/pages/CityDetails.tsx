@@ -19,7 +19,7 @@ import {AdaptiveHeader} from "../components/details/AdaptiveHeader/AdaptiveHeade
 import {Details} from "../components/details/Details/Details.tsx";
 import {BackButton} from "../components/misc/BackButton/BackButton.tsx";
 import {CreatorPreviewTrigger} from "../components/misc/CreatorPreview/CreatorPreviewTrigger.tsx";
-import {AdaptiveHeaderProvider} from "../components/providers/AdaptiveHeaderProvider.tsx";
+import {AdaptiveHeaderProvider} from "../providers/AdaptiveHeaderProvider.tsx";
 import {PlaceholderDetailsHeader} from "../components/details/Details/PlaceholderDetailsHeader.tsx";
 
 const CityGallery = lazy(() => import("../components/details/CityGallery/CityGallery.tsx"));
