@@ -16,6 +16,7 @@ import {CreatorPreviewTrigger} from "../components/misc/CreatorPreview/CreatorPr
 import {
   PlaceholderHeaderWithControls
 } from "../components/randomcity/PlaceholderHeaderWithControls/PlaceholderHeaderWithControls.tsx";
+import {shareContent} from "../utils/ShareContent.ts";
 
 async function fetchRandomCity() {
   const res = await fetch(`${import.meta.env.VITE_HOF_SERVER}/screenshots/weighted`);
@@ -100,7 +101,13 @@ const RandomCity = () => {
             <Dropdown>
               <Dropdown.Toggle as={MoreActionsBtn}/>
               <Dropdown.Menu>
-                <Dropdown.Item className="d-flex align-items-center gap-2">
+                <Dropdown.Item
+                  onClick={() => shareContent({
+                    title: data.cityName,
+                    url: `${window.location.origin}/city/${data.id}`
+                  })}
+                  className="d-flex align-items-center gap-2"
+                >
                   <Share/>
                   Share
                 </Dropdown.Item>
