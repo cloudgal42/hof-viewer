@@ -20,6 +20,7 @@ import {Details} from "../components/details/Details/Details.tsx";
 import {BackButton} from "../components/misc/BackButton/BackButton.tsx";
 import {CreatorPreviewTrigger} from "../components/misc/CreatorPreview/CreatorPreviewTrigger.tsx";
 import {AdaptiveHeaderProvider} from "../components/providers/AdaptiveHeaderProvider.tsx";
+import {PlaceholderHeader} from "../components/details/Details/PlaceholderHeader.tsx";
 
 const CityGallery = lazy(() => import("../components/details/CityGallery/CityGallery.tsx"));
 
@@ -99,7 +100,10 @@ const CityDetails = () => {
       )
     } else if (isFetching || isCreatorCitiesFetching) {
       return (
-        <PlaceholderDetails/>
+        <div className="main-wrapper flex-grow-1 ms-sm-5 me-sm-5">
+          <PlaceholderHeader/>
+          <PlaceholderDetails/>
+        </div>
       );
     } else {
       // TODO: There has to be a better solution to this
@@ -127,7 +131,7 @@ const CityDetails = () => {
       <AdaptiveHeaderProvider>
         <AdaptiveHeader>
           <div className="h2-container d-flex align-items-center">
-            <BackButton />
+            <BackButton/>
             <h2 className="mb-0">
               {cityDetails.cityName}{cityDetails.cityNameTranslated && `(${cityDetails.cityNameTranslated})`}
             </h2>

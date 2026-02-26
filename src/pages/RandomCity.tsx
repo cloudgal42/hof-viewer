@@ -14,6 +14,7 @@ import {Details} from "../components/details/Details/Details.tsx";
 import CityGallery from "../components/details/CityGallery/CityGallery.tsx";
 import {NavLink} from "react-router";
 import {CreatorPreviewTrigger} from "../components/misc/CreatorPreview/CreatorPreviewTrigger.tsx";
+import {PlaceholderHeader} from "../components/details/Details/PlaceholderHeader.tsx";
 
 const RandomCity = () => {
   const headerCollapsed = useContext(AdaptiveHeaderContext);
@@ -50,7 +51,12 @@ const RandomCity = () => {
       />
     );
   } else if (isFetching || !data) {
-    return <PlaceholderDetails/>
+    return (
+      <div className="main-wrapper flex-grow-1 ms-sm-5 me-sm-5">
+        <PlaceholderHeader/>
+        <PlaceholderDetails/>
+      </div>
+    )
   }
 
   return (

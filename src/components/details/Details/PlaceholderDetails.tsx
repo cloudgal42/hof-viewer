@@ -4,26 +4,13 @@ import {Eye, Heart, Person, Trophy} from "react-bootstrap-icons";
 
 export const PlaceholderDetails = () => {
   return (
-    <div className="main-wrapper flex-grow-1 ms-sm-5 me-sm-5">
-      <div className="mb-2">
-        <h2 className="mb-0">
-          <Placeholder animation="glow">
-            <Placeholder xs={5} size="lg"/>
-          </Placeholder>
-        </h2>
-      </div>
-      <h3 className="text-muted fs-5">
-        <Placeholder animation="glow">
-          <Placeholder xs={3} size="lg"/>
-        </Placeholder>
-      </h3>
+    <>
       <section id="gallery" className="mt-3 position-relative">
         <img
           src={PlaceholderImg}
           className="w-100 object-fit-contain"
           style={{aspectRatio: "16/9"}}
-          alt=""
-        />
+          alt=""/>
       </section>
       <section
         id="details"
@@ -107,6 +94,7 @@ export const PlaceholderDetails = () => {
           </Card.Body>
         </Card>
       </section>
-    </div>
-  )
+    </>
+
+)
 }
