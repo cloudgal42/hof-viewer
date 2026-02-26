@@ -19,6 +19,7 @@ import {AdaptiveHeader} from "../components/details/AdaptiveHeader/AdaptiveHeade
 import {Details} from "../components/details/Details/Details.tsx";
 import {BackButton} from "../components/misc/BackButton/BackButton.tsx";
 import {CreatorPreviewTrigger} from "../components/misc/CreatorPreview/CreatorPreviewTrigger.tsx";
+import {AdaptiveHeaderProvider} from "../components/providers/AdaptiveHeaderProvider.tsx";
 
 const CityGallery = lazy(() => import("../components/details/CityGallery/CityGallery.tsx"));
 
@@ -123,20 +124,22 @@ const CityDetails = () => {
 
   return (
     <div className="flex-grow-1">
-      <AdaptiveHeader>
-        <div className="h2-container d-flex align-items-center">
-          <BackButton />
-          <h2 className="mb-0">
-            {cityDetails.cityName}{cityDetails.cityNameTranslated && `(${cityDetails.cityNameTranslated})`}
-          </h2>
-        </div>
-        <CreatorPreviewTrigger
-          creator={cityDetails.creator.creatorName}
-          showLinks={true}
-        >
-          <h3 className="text-muted d-inline">by {cityDetails.creator.creatorName}</h3>
-        </CreatorPreviewTrigger>
-      </AdaptiveHeader>
+      <AdaptiveHeaderProvider>
+        <AdaptiveHeader>
+          <div className="h2-container d-flex align-items-center">
+            <BackButton />
+            <h2 className="mb-0">
+              {cityDetails.cityName}{cityDetails.cityNameTranslated && `(${cityDetails.cityNameTranslated})`}
+            </h2>
+          </div>
+          <CreatorPreviewTrigger
+            creator={cityDetails.creator.creatorName}
+            showLinks={true}
+          >
+            <h3 className="text-muted d-inline">by {cityDetails.creator.creatorName}</h3>
+          </CreatorPreviewTrigger>
+        </AdaptiveHeader>
+      </AdaptiveHeaderProvider>
       <div className="main-wrapper m-auto">
         <section id="gallery" className="mt-3 position-relative">
           <Suspense fallback={<img
