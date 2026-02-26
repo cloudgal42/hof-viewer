@@ -1,6 +1,6 @@
 import {Placeholder} from "react-bootstrap";
 
-export const PlaceholderHeader = () => (
+export const PlaceholderDetailsHeader = () => (
   <>
     <div className="mb-2">
       <h2 className="mb-0">
