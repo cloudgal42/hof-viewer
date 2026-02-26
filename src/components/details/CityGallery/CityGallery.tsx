@@ -73,7 +73,7 @@ const CityGallery = ({city, page}: GalleryProps) => {
   return (
     <>
       <div
-        style={imageUrls.length < 4 && isImageLoaded ? {aspectRatio: "16/9"} : {}}
+        style={imageUrls.length < 4 && !isImageLoaded ? {aspectRatio: "16/9"} : {}}
         className={`w-100 d-flex gap-1 flex-row flex-wrap ${currImageUrls.length > 4 ? "img-gallery-container-multiple" : "img-gallery-container"}`}
       >
         {currImageUrls.map((url, i) => (
