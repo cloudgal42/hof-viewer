@@ -135,7 +135,7 @@ const RandomCity = () => {
       </AdaptiveHeaderProvider>
       <div className="main-wrapper m-auto">
         <section id="gallery" className="mt-3 position-relative">
-          <Suspense fallback={
+          <Suspense key={page} fallback={
             <img
               src={PlaceholderImg}
               alt=""
