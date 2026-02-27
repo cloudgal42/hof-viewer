@@ -154,7 +154,7 @@ const RandomCity = () => {
                     <Dropdown.Item
                       onClick={() => shareContent({
                         title: data.cityName,
-                        url: `${window.location.origin}/city/${data.id}`
+                        url: `${window.location.origin}/city/${data.id}?groupStatus=off`
                       })}
                       className="d-flex align-items-center gap-2"
                     >
