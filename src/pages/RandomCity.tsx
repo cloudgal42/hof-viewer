@@ -43,7 +43,7 @@ const RandomCity = () => {
   const queryClient = useQueryClient();
 
   const {data, isFetching, error} = useQuery<City>({
-    queryKey: ["city", page],
+    queryKey: ["randomCity", page],
     queryFn: fetchRandomCity,
     staleTime: Infinity,
     retry: false,
@@ -52,7 +52,7 @@ const RandomCity = () => {
 
   // Optimistically fetch the next random city data as well as images for a snappier UX
   queryClient.fetchQuery<City>({
-    queryKey: ["city", page + 1],
+    queryKey: ["randomCity", page + 1],
     queryFn: fetchRandomCity,
     staleTime: Infinity,
     retry: false,
