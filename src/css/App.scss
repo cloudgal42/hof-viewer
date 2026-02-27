@@ -51,11 +51,15 @@ input[type="range"] {
   }
 }
 
+.btn-link:hover {
+  @extend .link-body-emphasis, :hover;
+}
+
 [data-bs-theme="dark"] {
   $primary: #fff;
   --bs-primary: #fff;
 
-  a:not(.btn, .alert-link, .dropdown-item) {
+  a:not(.btn, .alert-link, .dropdown-item), .btn-link {
     color: var(--bs-primary);
 
     &:hover {
