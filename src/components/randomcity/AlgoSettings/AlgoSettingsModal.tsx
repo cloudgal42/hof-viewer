@@ -89,7 +89,7 @@ export const AlgoSettingsModal = (
     >
       <Modal.Header closeButton>
         <Modal.Title>
-          <h3 className="fs-4 mb-1">Algorithm Settings</h3>
+          <h3 className="fs-4 mb-0">Algorithm Settings</h3>
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
