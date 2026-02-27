@@ -22,6 +22,7 @@ import {CreatorPreviewTrigger} from "../components/misc/CreatorPreview/CreatorPr
 import {AdaptiveHeaderProvider} from "../providers/AdaptiveHeaderProvider.tsx";
 import {PlaceholderDetailsHeader} from "../components/details/Details/PlaceholderDetailsHeader.tsx";
 import {shareContent} from "../utils/ShareContent.ts";
+import {useScrollToTop} from "../hooks/useScrollToTop.ts";
 
 const CityGallery = lazy(() => import("../components/details/CityGallery/CityGallery.tsx"));
 
@@ -46,13 +47,7 @@ const CityDetails = () => {
   } = useCreatorCities(cityCreator);
 
   // Scrolls to top whenever the city details page is loaded
-  useEffect(() => {
-    window.scroll({
-      top: 0,
-      left: 0,
-      behavior: "instant",
-    });
-  }, []);
+  useScrollToTop();
 
   const {error, data, isFetching} = useQuery<City>({
     queryKey: ["city", {id: cityParam}],
