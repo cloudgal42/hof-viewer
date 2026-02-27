@@ -22,6 +22,7 @@ import {
 } from "../components/randomcity/AlgoSettings/AlgoSettingsModal.tsx";
 import {useLocalStorage} from "usehooks-ts";
 import type {RandomAlgoSettings} from "../interfaces/RandomAlgoSettings.ts";
+import {useScrollToTop} from "../hooks/useScrollToTop.ts";
 
 const RandomCity = () => {
   const headerCollapsed = useContext(AdaptiveHeaderContext);
@@ -76,6 +77,8 @@ const RandomCity = () => {
   function openSettings() {
     setIsSettingsShown(true);
   }
+
+  useScrollToTop();
 
   if (!navigator.onLine) {
     return (
