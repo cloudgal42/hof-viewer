@@ -4,7 +4,7 @@ import {Suspense, useContext, useState} from "react";
 import {AdaptiveHeaderContext} from "../context/AdaptiveHeaderContext.ts";
 import {Button, Dropdown, OverlayTrigger, Tooltip} from "react-bootstrap";
 import {MoreActionsBtn} from "../components/misc/MoreActionsBtn/MoreActionsBtn.tsx";
-import {Building, ChevronLeft, ChevronRight, Person, Share} from "react-bootstrap-icons";
+import {Building, ChevronLeft, ChevronRight, Gear, Person, Share} from "react-bootstrap-icons";
 import type {City} from "../interfaces/City.ts";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {ErrorScreen} from "../components/misc/ErrorScreen/ErrorScreen.tsx";
@@ -17,7 +17,11 @@ import {
   PlaceholderHeaderWithControls
 } from "../components/randomcity/PlaceholderHeaderWithControls/PlaceholderHeaderWithControls.tsx";
 import {shareContent} from "../utils/ShareContent.ts";
+import {
+  AlgoSettingsModal,
+} from "../components/randomcity/AlgoSettings/AlgoSettingsModal.tsx";
 
+// TODO: Add labels to all buttons that only use tooltips as labels
 async function fetchRandomCity() {
   const res = await fetch(`${import.meta.env.VITE_HOF_SERVER}/screenshots/weighted`);
   const data = await res.json();
@@ -32,6 +36,8 @@ async function fetchRandomCity() {
 const RandomCity = () => {
   const headerCollapsed = useContext(AdaptiveHeaderContext);
   const [page, setPage] = useState<number>(0);
+  const [isSettingsShown, setIsSettingsShown] = useState<boolean>(false);
+
   const queryClient = useQueryClient();
 
   const {data, isFetching, error} = useQuery<City>({
@@ -53,6 +59,10 @@ const RandomCity = () => {
     img.src = data.imageUrlFHD;
   });
 
+  function openSettings() {
+    setIsSettingsShown(true);
+  }
+
   if (!navigator.onLine) {
     return (
       <ErrorScreen
@@ -69,7 +79,7 @@ const RandomCity = () => {
   } else if (isFetching || !data) {
     return (
       <div className="main-wrapper flex-grow-1 ms-sm-5 me-sm-5">
-        <PlaceholderHeaderWithControls />
+        <PlaceholderHeaderWithControls/>
         <PlaceholderDetails/>
       </div>
     )
@@ -77,6 +87,7 @@ const RandomCity = () => {
 
   return (
     <div className="flex-grow-1">
+      <AlgoSettingsModal show={isSettingsShown} setShow={setIsSettingsShown}/>
       <AdaptiveHeaderProvider>
         <AdaptiveHeader className="w-100 d-flex flex-row align-items-center justify-content-between">
           <Button
@@ -85,7 +96,7 @@ const RandomCity = () => {
             disabled={page === 0}
           >
             <OverlayTrigger overlay={<Tooltip>To previous city</Tooltip>}>
-              <ChevronLeft width="20" height="20" />
+              <ChevronLeft width="20" height="20"/>
             </OverlayTrigger>
           </Button>
           <div className="d-flex gap-2 gap-sm-3 flex-row align-items-center justify-content-between">
@@ -98,44 +109,64 @@ const RandomCity = () => {
                 <h3 className="text-muted text-center text-sm-start d-inline">by {data.creator.creatorName}</h3>
               </CreatorPreviewTrigger>
             </div>
-            <Dropdown>
-              <Dropdown.Toggle as={MoreActionsBtn}/>
-              <Dropdown.Menu>
-                <Dropdown.Item
-                  onClick={() => shareContent({
-                    title: data.cityName,
-                    url: `${window.location.origin}/city/${data.id}`
-                  })}
-                  className="d-flex align-items-center gap-2"
+            <div>
+              <OverlayTrigger overlay={<Tooltip>Settings</Tooltip>}>
+                <Button
+                  className="d-none d-sm-inline"
+                  variant="outline"
+                  onClick={openSettings}
                 >
-                  <Share/>
-                  Share
-                </Dropdown.Item>
-                <Dropdown.Item
-                  href={`/?creator=${data.creatorId}`}
-                  className="d-flex align-items-center gap-2"
-                  target="_blank"
-                >
-                  <Building/>
-                  View creator cities
-                </Dropdown.Item>
-                <Dropdown.Item
-                  href={`/creators/?creator=${data.creatorId}`}
-                  className="d-flex align-items-center gap-2"
-                  target="_blank"
-                >
-                  <Person/>
-                  View creator info
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+                  <Gear/>
+                </Button>
+              </OverlayTrigger>
+              <OverlayTrigger overlay={<Tooltip>More options...</Tooltip>}>
+                <Dropdown className="d-inline">
+                  <Dropdown.Toggle as={MoreActionsBtn}/>
+                  <Dropdown.Menu>
+                    <Dropdown.Item
+                      className="d-flex d-sm-none align-items-center gap-2"
+                      onClick={openSettings}
+                    >
+                      <Gear/>
+                      Settings
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      onClick={() => shareContent({
+                        title: data.cityName,
+                        url: `${window.location.origin}/city/${data.id}`
+                      })}
+                      className="d-flex align-items-center gap-2"
+                    >
+                      <Share/>
+                      Share
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      href={`/?creator=${data.creatorId}`}
+                      className="d-flex align-items-center gap-2"
+                      target="_blank"
+                    >
+                      <Building/>
+                      View creator cities
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      href={`/creators/?creator=${data.creatorId}`}
+                      className="d-flex align-items-center gap-2"
+                      target="_blank"
+                    >
+                      <Person/>
+                      View creator info
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </OverlayTrigger>
+            </div>
           </div>
           <Button
             variant="outline"
             onClick={() => setPage(a => a + 1)}
           >
             <OverlayTrigger overlay={<Tooltip>To next city</Tooltip>}>
-              <ChevronRight width="20" height="20" />
+              <ChevronRight width="20" height="20"/>
             </OverlayTrigger>
           </Button>
         </AdaptiveHeader>

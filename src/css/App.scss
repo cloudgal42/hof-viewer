@@ -54,6 +54,22 @@ html, body, #root {
     @extend .btn-outline-light;
     border-color: $input-border-color;
   }
+
+  input[type="range"] {
+    &::-webkit-slider-thumb {
+      background-color: var(--bs-primary);
+    }
+    &::-moz-range-thumb {
+      background-color: var(--bs-primary);
+    }
+    &:focus::-webkit-slider-thumb {
+      box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
+    }
+    &:focus::-moz-range-thumb {
+      box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
+    }
+  }
+
   input:focus,
   select:focus,
   .accordion-button:focus {
