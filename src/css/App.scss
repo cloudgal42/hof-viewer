@@ -40,6 +40,17 @@ html, body, #root {
   color: #fff !important;
 }
 
+input[type="range"] {
+  &::-webkit-slider-thumb {
+    border: 1.5px solid $gray-500;
+    background-color: #fff;
+  }
+  &::-moz-range-thumb {
+    border: 1.5px solid $gray-500;
+    background-color: #fff;
+  }
+}
+
 [data-bs-theme="dark"] {
   $primary: #fff;
   --bs-primary: #fff;
@@ -67,10 +78,12 @@ html, body, #root {
 
   input[type="range"] {
     &::-webkit-slider-thumb {
-      background-color: var(--bs-primary);
+      border: 1.5px solid #fff;
+      background-color: #fff;
     }
     &::-moz-range-thumb {
-      background-color: var(--bs-primary);
+      border: 1.5px solid #fff;
+      background-color: #fff;
     }
     &:focus::-webkit-slider-thumb {
       box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
