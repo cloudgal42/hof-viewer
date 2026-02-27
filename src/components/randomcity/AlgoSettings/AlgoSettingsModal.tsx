@@ -64,7 +64,7 @@ export const AlgoSettingsModal = (
       popular: popularVal,
       trending: trendingVal,
       recent: recentVal,
-      archeologist: 0,
+      archeologist: archeologistVal,
       supporter: supporterVal,
       viewMaxAge: viewMaxAgeVal,
     });
