@@ -35,6 +35,14 @@ export const AlgoSettingsModal = (
   const [supporterVal, setSupporterVal] = useState<number>(randomAlgoSettings.supporter);
   const [viewMaxAgeVal, setViewMaxAgeVal] = useState<number>(randomAlgoSettings.viewMaxAge);
 
+  const isSettingsChanged = (randomVal !== randomAlgoSettings.random)
+    || (popularVal !== randomAlgoSettings.popular)
+    || (trendingVal !== randomAlgoSettings.trending)
+    || (recentVal !== randomAlgoSettings.recent)
+    || (archeologistVal !== randomAlgoSettings.archeologist)
+    || (supporterVal !== randomAlgoSettings.supporter)
+    || (viewMaxAgeVal !== randomAlgoSettings.viewMaxAge)
+
   function hideModal() {
     // Reset settings to currently saved value
     setRandomVal(randomAlgoSettings.random);
@@ -317,6 +325,7 @@ export const AlgoSettingsModal = (
         <Button
           variant="primary"
           onClick={handleSaveSettings}
+          disabled={!isSettingsChanged}
         >
           Save Changes
         </Button>
