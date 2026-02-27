@@ -121,7 +121,7 @@ const RandomCity = () => {
             </OverlayTrigger>
           </Button>
           <div className="d-flex gap-2 gap-sm-3 flex-row align-items-center justify-content-between">
-            <div className="h2-container mb-0 d-flex flex-column flex-sm-row align-items-center gap-sm-2">
+            <div className="h2-container mb-0 d-flex flex-column flex-sm-row align-items-center gap-1 gap-sm-2">
               <h2 className="mb-0 text-center text-sm-start">{data.cityName}</h2>
               <CreatorPreviewTrigger
                 creator={data.creator.creatorName}
