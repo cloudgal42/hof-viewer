@@ -170,7 +170,14 @@ export const AlgoSettingsModal = (
           <div className="mb-2">
             <Form.Label htmlFor="supporterVal" className="d-flex align-items-center gap-2">
               Supporter
-              <OverlayTrigger overlay={<Tooltip>Screenshots from Hall of Fame's community members.</Tooltip>}>
+              <OverlayTrigger
+                overlay={
+                  <Tooltip>
+                    Screenshots from Hall of Fame's members that assist the platform's development (e.g.
+                    donations, being a positive contributor to the platform).
+                  </Tooltip>
+                }
+              >
                 <InfoCircle/>
               </OverlayTrigger>
             </Form.Label>
