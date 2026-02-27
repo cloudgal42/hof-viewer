@@ -41,7 +41,7 @@ export const Sidebar = ({isOpened, setIsOpened, setIsDarkMode}: SidebarProps) =>
           <li className="nav-item">
             <NavLink
               to="/"
-              className="nav-link d-flex align-items-center"
+              className="nav-link link-body-emphasis d-flex align-items-center"
               onClick={() => setIsOpened(false)}
             >
               <Search height="18" width="18" className="me-2"/>
@@ -51,7 +51,7 @@ export const Sidebar = ({isOpened, setIsOpened, setIsDarkMode}: SidebarProps) =>
           <li>
             <NavLink
               to="/random"
-              className="nav-link d-flex align-items-center"
+              className="nav-link link-body-emphasis d-flex align-items-center"
               onClick={() => setIsOpened(false)}
             >
             <Dice3 height="18" width="18" className="me-2" />
@@ -60,7 +60,7 @@ export const Sidebar = ({isOpened, setIsOpened, setIsDarkMode}: SidebarProps) =>
           <li className="nav-item">
             <NavLink
               to="/creators"
-              className="nav-link d-flex align-items-center"
+              className="nav-link link-body-emphasis d-flex align-items-center"
               onClick={() => setIsOpened(false)}
             >
               <PersonCircle height="18" width="18" className="me-2"/>

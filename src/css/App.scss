@@ -36,6 +36,10 @@ html, body, #root {
   border-color: $input-border-color;
 }
 
+.nav-link.link-body-emphasis.active {
+  color: #fff !important;
+}
+
 [data-bs-theme="dark"] {
   $primary: #fff;
   --bs-primary: #fff;
@@ -47,9 +51,15 @@ html, body, #root {
       color: var(--bs-primary);
     }
   }
+
+  .nav-link.link-body-emphasis.active {
+    color: #000 !important;
+  }
+
   .btn-primary {
     @extend .btn-light;
   }
+
   .btn-outline-primary {
     @extend .btn-outline-light;
     border-color: $input-border-color;
