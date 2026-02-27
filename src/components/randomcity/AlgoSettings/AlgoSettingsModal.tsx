@@ -22,7 +22,7 @@ export const AlgoSettingsModal = (
   const [popularVal, setPopularVal] = useState<number>(randomAlgoSettings.popular);
   const [trendingVal, setTrendingVal] = useState<number>(randomAlgoSettings.trending);
   const [recentVal, setRecentVal] = useState<number>(randomAlgoSettings.recent);
-  // const [archeologistVal, setArcheologistVal] = useState<number>(randomAlgoSettings.archeologist);
+  const [archeologistVal, setArcheologistVal] = useState<number>(randomAlgoSettings.archeologist);
   const [supporterVal, setSupporterVal] = useState<number>(randomAlgoSettings.supporter);
   const [viewMaxAgeVal, setViewMaxAgeVal] = useState<number>(randomAlgoSettings.viewMaxAge);
 
@@ -32,6 +32,7 @@ export const AlgoSettingsModal = (
     setPopularVal(randomAlgoSettings.popular);
     setTrendingVal(randomAlgoSettings.trending);
     setRecentVal(randomAlgoSettings.recent);
+    setArcheologistVal(randomAlgoSettings.archeologist);
     setSupporterVal(randomAlgoSettings.supporter);
     setViewMaxAgeVal(randomAlgoSettings.viewMaxAge);
 
@@ -147,20 +148,25 @@ export const AlgoSettingsModal = (
               <span id="recentValCounter">{recentVal}</span>
             </div>
           </div>
-          {/*<div className="mb-2">*/}
-          {/*  <Form.Label htmlFor="archeologistVal">Archelogist</Form.Label>*/}
-          {/*  <div className="d-flex align-items-center gap-4">*/}
-          {/*    <Form.Range*/}
-          {/*      id="archeologistVal"*/}
-          {/*      aria-describedby="archeologistValCounter"*/}
-          {/*      min="0"*/}
-          {/*      max="10"*/}
-          {/*      value={archeologistVal}*/}
-          {/*      onChange={e => setArcheologistVal(parseInt(e.currentTarget.value))}*/}
-          {/*    />*/}
-          {/*    <span id="archeologistValCounter">{archeologistVal}</span>*/}
-          {/*  </div>*/}
-          {/*</div>*/}
+          <div className="mb-2">
+            <Form.Label htmlFor="archeologistVal" className="d-flex align-items-center gap-2">
+              Forgotten Ones
+              <OverlayTrigger overlay={<Tooltip>Screenshots that have not seen any activity for some time.</Tooltip>}>
+                <InfoCircle/>
+              </OverlayTrigger>
+            </Form.Label>
+            <div className="d-flex align-items-center gap-4">
+              <Form.Range
+                id="archeologistVal"
+                aria-describedby="archeologistValCounter"
+                min="0"
+                max="10"
+                value={archeologistVal}
+                onChange={e => setArcheologistVal(parseInt(e.currentTarget.value))}
+              />
+              <span id="archeologistValCounter">{archeologistVal}</span>
+            </div>
+          </div>
           <div className="mb-2">
             <Form.Label htmlFor="supporterVal" className="d-flex align-items-center gap-2">
               Supporter
