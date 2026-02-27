@@ -45,7 +45,7 @@ const RandomCity = () => {
   const {data, isFetching, error} = useQuery<City>({
     queryKey: ["city", page],
     queryFn: fetchRandomCity,
-    staleTime: 1000 * 60 * 30,
+    staleTime: Infinity,
     retry: false,
     enabled: true,
   });
@@ -54,7 +54,7 @@ const RandomCity = () => {
   queryClient.fetchQuery<City>({
     queryKey: ["city", page + 1],
     queryFn: fetchRandomCity,
-    staleTime: 1000 * 60 * 30,
+    staleTime: Infinity,
     retry: false,
   }).then((data) => {
     const img = new Image();
