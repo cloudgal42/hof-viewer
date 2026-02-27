@@ -110,7 +110,7 @@ const RandomCity = () => {
         setRandomAlgoSettings={setRandomAlgoSettings}
       />
       <AdaptiveHeaderProvider>
-        <AdaptiveHeader className="w-100 d-flex flex-row align-items-center justify-content-between">
+        <AdaptiveHeader className="header-collapsed-body w-100 d-flex flex-row align-items-center justify-content-between">
           <Button
             variant="outline"
             onClick={() => setPage(a => a - 1)}

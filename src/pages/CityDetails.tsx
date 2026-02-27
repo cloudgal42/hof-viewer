@@ -1,7 +1,7 @@
-import {Button} from "react-bootstrap";
+import {Button, OverlayTrigger, Tooltip} from "react-bootstrap";
 import {NavLink, useOutletContext, useParams, useSearchParams} from "react-router";
 import type {ContextType} from "../App.tsx";
-import {ChevronDown} from "react-bootstrap-icons";
+import {ChevronDown, Share} from "react-bootstrap-icons";
 import {lazy, Suspense, useEffect, useState} from "react";
 import {DEFAULT_IMAGES_PER_PAGE} from "../components/details/CityGallery/CityGallery.tsx";
 
@@ -21,6 +21,7 @@ import {BackButton} from "../components/misc/BackButton/BackButton.tsx";
 import {CreatorPreviewTrigger} from "../components/misc/CreatorPreview/CreatorPreviewTrigger.tsx";
 import {AdaptiveHeaderProvider} from "../providers/AdaptiveHeaderProvider.tsx";
 import {PlaceholderDetailsHeader} from "../components/details/Details/PlaceholderDetailsHeader.tsx";
+import {shareContent} from "../utils/ShareContent.ts";
 
 const CityGallery = lazy(() => import("../components/details/CityGallery/CityGallery.tsx"));
 
@@ -129,19 +130,40 @@ const CityDetails = () => {
   return (
     <div className="flex-grow-1">
       <AdaptiveHeaderProvider>
-        <AdaptiveHeader>
-          <div className="h2-container d-flex align-items-center">
-            <BackButton/>
-            <h2 className="mb-0">
-              {cityDetails.cityName}{cityDetails.cityNameTranslated && `(${cityDetails.cityNameTranslated})`}
-            </h2>
+        <AdaptiveHeader className="d-flex justify-content-between align-items-center">
+          <div className="header-collapsed-body d-flex">
+            <div className="h2-container d-flex align-items-center">
+              <BackButton/>
+              <h2 className="mb-0">
+                {cityDetails.cityName}{cityDetails.cityNameTranslated && `(${cityDetails.cityNameTranslated})`}
+              </h2>
+            </div>
+            <CreatorPreviewTrigger
+              creator={cityDetails.creator.creatorName}
+              showLinks={true}
+            >
+              <h3 className="text-muted d-inline">by {cityDetails.creator.creatorName}</h3>
+            </CreatorPreviewTrigger>
           </div>
-          <CreatorPreviewTrigger
-            creator={cityDetails.creator.creatorName}
-            showLinks={true}
-          >
-            <h3 className="text-muted d-inline">by {cityDetails.creator.creatorName}</h3>
-          </CreatorPreviewTrigger>
+          {cityDetails && (
+            <OverlayTrigger overlay={
+              <Tooltip>Share</Tooltip>
+            }>
+              <Button
+                variant="outline"
+                className="d-inline"
+                onClick={() => shareContent({
+                  title: cityDetails.cityName,
+                  url: ("cities" in cityDetails) ?
+                    `${window.location.origin}/city/${cityDetails.cityName}?groupStatus=on&creator=${cityDetails.creator.creatorName}`
+                    : `${window.location.origin}/city/${cityDetails.id}?groupStatus=off`
+                })}
+              >
+                <span className="visually-hidden">Share</span>
+                <Share />
+              </Button>
+            </OverlayTrigger>
+          )}
         </AdaptiveHeader>
       </AdaptiveHeaderProvider>
       <div className="main-wrapper m-auto">

@@ -9,7 +9,7 @@ export const AdaptiveHeader = (
   const headerCollapsed = useContext(AdaptiveHeaderContext);
   return (
     <div className={headerCollapsed ? " header-collapsed" : "adaptive-header"}>
-      <div className={`header-collapsed-body main-wrapper m-auto ${className}`}>
+      <div className={`main-wrapper m-auto ${className}`}>
         {children}
       </div>
     </div>
