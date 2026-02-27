@@ -85,7 +85,7 @@ export const AlgoSettingsModal = (
             </div>
           </div>
           <div className="mb-2">
-            <Form.Label htmlFor="popularVal" className="d-flex align-items-center gap-2">
+            <Form.Label htmlFor="trendingVal" className="d-flex align-items-center gap-2">
               Trending
               <OverlayTrigger overlay={<Tooltip>Popular screenshots that have the highest likes/views ratio, regardless of age.</Tooltip>}>
                 <InfoCircle />
@@ -93,7 +93,7 @@ export const AlgoSettingsModal = (
             </Form.Label>
             <div className="d-flex align-items-center gap-4">
               <Form.Range
-                id="popularVal"
+                id="trendingVal"
                 aria-describedby="trendingValCounter"
                 min="0"
                 max="10"
