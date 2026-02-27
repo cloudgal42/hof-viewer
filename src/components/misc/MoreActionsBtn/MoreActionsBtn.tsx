@@ -13,6 +13,7 @@ export const MoreActionsBtn = forwardRef((
       onClick(e);
     }}
   >
+    <span className="visually-hidden">More actions...</span>
     <ThreeDotsVertical />
   </Button>
 ));

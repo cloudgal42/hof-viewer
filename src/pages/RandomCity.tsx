@@ -23,8 +23,6 @@ import {
 import {useLocalStorage} from "usehooks-ts";
 import type {RandomAlgoSettings} from "../interfaces/RandomAlgoSettings.ts";
 
-// TODO: Add labels to all buttons that only use tooltips as labels
-
 const RandomCity = () => {
   const headerCollapsed = useContext(AdaptiveHeaderContext);
   const [page, setPage] = useState<number>(0);
@@ -116,6 +114,7 @@ const RandomCity = () => {
             onClick={() => setPage(a => a - 1)}
             disabled={page === 0}
           >
+            <span className="visually-hidden">To previous city</span>
             <OverlayTrigger overlay={<Tooltip>To previous city</Tooltip>}>
               <ChevronLeft width="20" height="20"/>
             </OverlayTrigger>
@@ -137,6 +136,7 @@ const RandomCity = () => {
                   variant="outline"
                   onClick={openSettings}
                 >
+                  <span className="visually-hidden">Algorithm Settings</span>
                   <Gear/>
                 </Button>
               </OverlayTrigger>
@@ -186,6 +186,7 @@ const RandomCity = () => {
             variant="outline"
             onClick={() => setPage(a => a + 1)}
           >
+            <span className="visually-hidden">To next city</span>
             <OverlayTrigger overlay={<Tooltip>To next city</Tooltip>}>
               <ChevronRight width="20" height="20"/>
             </OverlayTrigger>
