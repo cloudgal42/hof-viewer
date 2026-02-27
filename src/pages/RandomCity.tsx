@@ -31,13 +31,13 @@ const RandomCity = () => {
   const [isSettingsShown, setIsSettingsShown] = useState<boolean>(false);
   const [randomAlgoSettings, setRandomAlgoSettings]
     = useLocalStorage<RandomAlgoSettings>("randomAlgoSettings", {
-    random: 0,
-    popular: 0,
-    trending: 0,
-    recent: 0,
+    random: 5,
+    popular: 10,
+    trending: 10,
+    recent: 10,
     archeologist: 0,
-    supporter: 0,
-    viewMaxAge: 0,
+    supporter: 1,
+    viewMaxAge: 60,
   });
 
   const queryClient = useQueryClient();
