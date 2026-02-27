@@ -20,23 +20,25 @@ import {shareContent} from "../utils/ShareContent.ts";
 import {
   AlgoSettingsModal,
 } from "../components/randomcity/AlgoSettings/AlgoSettingsModal.tsx";
+import {useLocalStorage} from "usehooks-ts";
+import type {RandomAlgoSettings} from "../interfaces/RandomAlgoSettings.ts";
 
 // TODO: Add labels to all buttons that only use tooltips as labels
-async function fetchRandomCity() {
-  const res = await fetch(`${import.meta.env.VITE_HOF_SERVER}/screenshots/weighted`);
-  const data = await res.json();
-
-  if (!res.ok) {
-    return Promise.reject(new Error(`${data.statusCode}: ${data.message}`));
-  }
-
-  return data;
-}
 
 const RandomCity = () => {
   const headerCollapsed = useContext(AdaptiveHeaderContext);
   const [page, setPage] = useState<number>(0);
   const [isSettingsShown, setIsSettingsShown] = useState<boolean>(false);
+  const [randomAlgoSettings, setRandomAlgoSettings]
+    = useLocalStorage<RandomAlgoSettings>("randomAlgoSettings", {
+    random: 0,
+    popular: 0,
+    trending: 0,
+    recent: 0,
+    archeologist: 0,
+    supporter: 0,
+    viewMaxAge: 0,
+  });
 
   const queryClient = useQueryClient();
 
@@ -58,6 +60,20 @@ const RandomCity = () => {
     const img = new Image();
     img.src = data.imageUrlFHD;
   });
+
+  async function fetchRandomCity() {
+    const options: string[][] = Object.entries(randomAlgoSettings)
+      .map(([key, value]) => [key, value.toString()]);
+    const query = new URLSearchParams(options).toString();
+    const res = await fetch(`${import.meta.env.VITE_HOF_SERVER}/screenshots/weighted?${query}`);
+    const data = await res.json();
+
+    if (!res.ok) {
+      return Promise.reject(new Error(`${data.statusCode}: ${data.message}`));
+    }
+
+    return data;
+  }
 
   function openSettings() {
     setIsSettingsShown(true);
@@ -87,7 +103,12 @@ const RandomCity = () => {
 
   return (
     <div className="flex-grow-1">
-      <AlgoSettingsModal show={isSettingsShown} setShow={setIsSettingsShown}/>
+      <AlgoSettingsModal
+        show={isSettingsShown}
+        setShow={setIsSettingsShown}
+        randomAlgoSettings={randomAlgoSettings}
+        setRandomAlgoSettings={setRandomAlgoSettings}
+      />
       <AdaptiveHeaderProvider>
         <AdaptiveHeader className="w-100 d-flex flex-row align-items-center justify-content-between">
           <Button
