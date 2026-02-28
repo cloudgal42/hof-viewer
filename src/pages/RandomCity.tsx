@@ -23,6 +23,7 @@ import {
 import {useLocalStorage} from "usehooks-ts";
 import type {RandomAlgoSettings} from "../interfaces/RandomAlgoSettings.ts";
 import {useScrollToTop} from "../hooks/useScrollToTop.ts";
+import {Helmet} from "@dr.pogodin/react-helmet";
 
 const RandomCity = () => {
   const headerCollapsed = useContext(AdaptiveHeaderContext);
@@ -104,6 +105,9 @@ const RandomCity = () => {
 
   return (
     <div className="flex-grow-1">
+      <Helmet>
+        <script>window.prerenderReady = true;</script>
+      </Helmet>
       <AlgoSettingsModal
         show={isSettingsShown}
         setShow={setIsSettingsShown}

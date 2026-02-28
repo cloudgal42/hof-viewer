@@ -143,6 +143,8 @@ const CityDetails = () => {
           <meta property="article:published_time" content={cityDetails.createdAt}/>
           <meta property="article:author" content={cityDetails.creator.creatorName}/>
           <meta property="og:url" content={window.location.href}/>
+
+          <script>window.prerenderReady = true;</script>
         </Helmet>
       )}
       <AdaptiveHeaderProvider>
