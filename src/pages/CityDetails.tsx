@@ -23,6 +23,7 @@ import {AdaptiveHeaderProvider} from "../providers/AdaptiveHeaderProvider.tsx";
 import {PlaceholderDetailsHeader} from "../components/details/Details/PlaceholderDetailsHeader.tsx";
 import {shareContent} from "../utils/ShareContent.ts";
 import {useScrollToTop} from "../hooks/useScrollToTop.ts";
+import {Helmet} from "@dr.pogodin/react-helmet";
 
 const CityGallery = lazy(() => import("../components/details/CityGallery/CityGallery.tsx"));
 
@@ -121,9 +122,29 @@ const CityDetails = () => {
 
   const imageUrlFHD = !Array.isArray(cityDetails.imageUrlFHD) ? [cityDetails.imageUrlFHD] : cityDetails.imageUrlFHD;
   const isLastPage = (Math.ceil(imageUrlFHD.length / DEFAULT_IMAGES_PER_PAGE) - page) === 0;
+  // Used for embeds via OpenGraph meta tags
+  const bestImageUrls = ("cities" in cityDetails) ?
+    cityDetails.cities
+      .sort((a, b) => b.favoritesCount - a.favoritesCount)
+      .toSpliced(6)
+      .map(entry => entry.imageUrlFHD)
+    : imageUrlFHD;
 
   return (
     <div className="flex-grow-1">
+      {cityDetails && (
+        <Helmet>
+          <title>{`${cityDetails.cityName} - Hall of Fame Viewer`}</title>
+          <meta property="og:title" content={`${cityDetails.cityName} on Hall of Fame`}/>
+          <meta property="og:type" content="article"/>
+          {bestImageUrls.map(url => (
+            <meta property="og:image" content={url}/>
+          ))}
+          <meta property="article:published_time" content={cityDetails.createdAt}/>
+          <meta property="article:author" content={cityDetails.creator.creatorName}/>
+          <meta property="og:url" content={window.location.href}/>
+        </Helmet>
+      )}
       <AdaptiveHeaderProvider>
         <AdaptiveHeader className="d-flex justify-content-between align-items-center">
           <div className="header-collapsed-body d-flex">
@@ -155,7 +176,7 @@ const CityDetails = () => {
                 })}
               >
                 <span className="visually-hidden">Share</span>
-                <Share />
+                <Share/>
               </Button>
             </OverlayTrigger>
           )}

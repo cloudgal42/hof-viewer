@@ -12,6 +12,7 @@ import {ErrorBoundary, type FallbackProps} from "react-error-boundary";
 import {ErrorScreen} from "./components/misc/ErrorScreen/ErrorScreen.tsx";
 import {ThemeContext} from "./context/ThemeContext.ts";
 import {CrashFallback} from "./components/misc/CrashFallback/CrashFallback.tsx";
+import {HelmetProvider} from "@dr.pogodin/react-helmet";
 // import {Screenshots} from "./temp/screenshots.ts";
 
 export type ContextType = {
@@ -91,8 +92,9 @@ const App = () => {
                 </div>
               }>
                 <QueryClientProvider client={queryClient}>
-
-                  <Outlet context={contextParams satisfies ContextType}/>
+                  <HelmetProvider>
+                    <Outlet context={contextParams satisfies ContextType}/>
+                  </HelmetProvider>
                 </QueryClientProvider>
               </Suspense>
             </main>
