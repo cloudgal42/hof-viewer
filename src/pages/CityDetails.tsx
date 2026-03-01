@@ -39,6 +39,10 @@ const CityDetails = () => {
   const [searchParams] = useSearchParams();
   const cityParam = useParams().city;
 
+  // Checking for prerender environment is guesswork atp
+  const isInPrerenderEnv = window.navigator.userAgent.includes("Prerender")
+    || window.navigator.userAgent.includes("HeadlessChrome");
+
   const isCitiesGrouped = searchParams.get("groupStatus") === "on";
   const cityCreator = searchParams.get("creator");
   const {
@@ -53,8 +57,10 @@ const CityDetails = () => {
   const {error, data, isFetching} = useQuery<City>({
     queryKey: ["city", {id: cityParam}],
     queryFn: async () => {
-      // maybe FIXME?
-      const res = await fetch(`${import.meta.env.VITE_HOF_SERVER}/screenshots/${cityParam}?favorites=true&views=true`);
+      const link = isInPrerenderEnv ?
+        `${import.meta.env.VITE_HOF_SERVER}/screenshots/${cityParam}`
+        : `${import.meta.env.VITE_HOF_SERVER}/screenshots/${cityParam}?favorites=true&views=true`
+      const res = await fetch(link);
       const data = await res.json();
 
       if (!res.ok) {
@@ -215,12 +221,15 @@ const CityDetails = () => {
         >
           <Details cityDetails={cityDetails} error={error} isFetching={isFetching}/>
         </section>
-        <section
-          id="trends"
-          className={`mt-3 position-relative ${(isLoadMoreHovered && !isLastPage) && "load-more-hovered"}`}
-        >
-          <CityTrends city={cityDetails} isLoading={isFetching} fetchError={error}/>
-        </section>
+        {/* Don't render trends on prerender env to save computational costs */}
+        {!isInPrerenderEnv && (
+          <section
+            id="trends"
+            className={`mt-3 position-relative ${(isLoadMoreHovered && !isLastPage) && "load-more-hovered"}`}
+          >
+            <CityTrends city={cityDetails} isLoading={isFetching} fetchError={error}/>
+          </section>
+        )}
         {/* City insights only available for grouped screenshots */}
         {("cities" in cityDetails) && (
           <section
