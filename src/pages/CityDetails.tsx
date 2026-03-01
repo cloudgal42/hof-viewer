@@ -153,7 +153,10 @@ const CityDetails = () => {
             content={`by ${cityDetails.creator.creatorName}\n\n👤 ${cityDetails.cityPopulation.toLocaleString()} ♥️ ${cityDetails.favoritesCount.toLocaleString()} 👁️ ${cityDetails.uniqueViewsCount.toLocaleString()}`}
           />
           {bestImageUrls.map(url => (
-            <meta property="og:image" content={url}/>
+            <>
+              <meta property="og:image" content={url}/>
+              <meta property="twitter:image" content={url}/>
+            </>
           ))}
           <meta property="article:published_time" content={cityDetails.createdAt}/>
           <meta property="profile:username" content={cityDetails.creator.creatorName}/>
