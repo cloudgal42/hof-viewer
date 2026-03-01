@@ -171,7 +171,7 @@ const Home = () => {
         </form>
       </section>
       <section>
-        <div className="d-flex mb-3 align-items-sm-center justify-content-between flex-column flex-sm-row">
+        <div className="d-flex gap-2 gap-md-0 mb-3 align-items-md-center justify-content-between flex-column flex-md-row">
           <h2 className="mb-0">
             Cities
             {(sortedCities && creator.length > 0 && !isFetching) && (
