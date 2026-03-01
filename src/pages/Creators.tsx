@@ -8,6 +8,7 @@ import {useQuery} from "@tanstack/react-query";
 import {ErrorScreen} from "../components/misc/ErrorScreen/ErrorScreen.tsx";
 import {useCreator} from "../hooks/useCreator.ts";
 import {Helmet} from "@dr.pogodin/react-helmet";
+import {DefaultHelmet} from "../components/misc/DefaultHelmet/DefaultHelmet.tsx";
 
 const Creators = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -91,9 +92,7 @@ const Creators = () => {
 
   return (
     <div className="main-wrapper flex-grow-1 ms-sm-5 me-sm-5">
-      <Helmet>
-        <script>window.prerenderReady = true;</script>
-      </Helmet>
+      <DefaultHelmet />
       <h2>Creator Search</h2>
       <section className="mt-3 mb-3">
         <Form.Label htmlFor="creatorId">Enter the Creator ID:</Form.Label>
