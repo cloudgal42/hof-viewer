@@ -144,14 +144,13 @@ const CityDetails = () => {
           <meta name="twitter:card" content="summary_large_image"/>
           <meta
             property="twitter:description"
-            content={`Population: ${cityDetails.cityPopulation.toLocaleString()}|  Favorites: ${cityDetails.favoritesCount.toLocaleString()} | Unique Views: ${cityDetails.uniqueViewsCount.toLocaleString()}`}
+            content={`by ${cityDetails.creator.creatorName}\n\n👤 ${cityDetails.cityPopulation.toLocaleString()} ♥️ ${cityDetails.favoritesCount.toLocaleString()} 👁️ ${cityDetails.uniqueViewsCount.toLocaleString()}`}
           />
-
           <meta property="og:title" content={`${cityDetails.cityName} on Hall of Fame`}/>
           <meta property="og:type" content="article"/>
           <meta
             property="og:description"
-            content={`Population: ${cityDetails.cityPopulation.toLocaleString()} | Favorites: ${cityDetails.favoritesCount.toLocaleString()} | Unique Views: ${cityDetails.uniqueViewsCount.toLocaleString()}`}
+            content={`by ${cityDetails.creator.creatorName}\n\n👤 ${cityDetails.cityPopulation.toLocaleString()} ♥️ ${cityDetails.favoritesCount.toLocaleString()} 👁️ ${cityDetails.uniqueViewsCount.toLocaleString()}`}
           />
           {bestImageUrls.map(url => (
             <meta property="og:image" content={url}/>
