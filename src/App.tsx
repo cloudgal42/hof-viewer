@@ -21,7 +21,6 @@ export type ContextType = {
 
 const queryClient = new QueryClient();
 
-// This code is only for TypeScript
 declare global {
   interface Window {
     __TANSTACK_QUERY_CLIENT__:
@@ -29,8 +28,9 @@ declare global {
   }
 }
 
-// This code is for all users
-window.__TANSTACK_QUERY_CLIENT__ = queryClient;
+if (import.meta.env.DEV) {
+  window.__TANSTACK_QUERY_CLIENT__ = queryClient;
+}
 
 const App = () => {
   const [city, setCity] = useState<City | GroupedCities | undefined>();
