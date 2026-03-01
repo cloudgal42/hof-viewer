@@ -174,7 +174,7 @@ const Home = () => {
         <div className="d-flex mb-3 align-items-sm-center justify-content-between flex-column flex-sm-row">
           <h2 className="mb-0">
             Cities
-            {(sortedCities && creator.length > 0) && (
+            {(sortedCities && creator.length > 0 && !isFetching) && (
               <span className="ms-2 fs-6 text-muted text-nowrap">{sortedCities.length} results</span>
             )}
           </h2>
