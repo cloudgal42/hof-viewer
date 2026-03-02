@@ -8,6 +8,8 @@ interface CardImgTopProps {
   src: string;
   style?: CSSProperties;
   alt: string;
+  height?: number | string;
+  width?: number | string;
   effect: Effect | undefined;
 }
 
@@ -15,7 +17,7 @@ export const CardImg = (props: CardImgTopProps) => {
   const [isError, setIsError] = useState<boolean>(false);
 
   if (isError) return (
-    <div className="text-muted w-100 d-flex align-items-center justify-content-center">
+    <div style={{height: props.height + "px"}} className="text-muted w-100 d-flex align-items-center justify-content-center">
       Oops... failed to load image :(
     </div>
   )

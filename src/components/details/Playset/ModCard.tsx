@@ -1,12 +1,11 @@
 import {Button, ButtonGroup, Card} from "react-bootstrap";
-import PlaceholderImg from "../../../assets/placeholder.svg";
-import {LazyLoadImage} from "react-lazy-load-image-component";
 import {BoxArrowUpRight} from "react-bootstrap-icons";
 import type {Mod} from "../../../interfaces/Mod.ts";
 
 import pdxModsIcon from "../../../assets/pdx-mods.webp";
 import skyveIcon from "../../../assets/skyve.webp";
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
+import {CardImg} from "../../misc/CardImg/CardImg.tsx";
 
 interface ModListProps {
   mod: Mod;
@@ -17,16 +16,13 @@ export const ModCard = ({mod, isCompactMode}: ModListProps) => {
   return (
     <Card>
       {!isCompactMode &&
-        <LazyLoadImage
+        <CardImg
           wrapperClassName="col-12 col-md-4 w-100"
           className="h-100 w-100 object-fit-cover"
           src={mod.thumbnailUrl}
           style={{aspectRatio: "1/1"}}
           alt=""
           effect="black-and-white"
-          placeholder={
-            <img src={PlaceholderImg} alt=""/>
-          }
         />
       }
       <Card.Body className="d-flex flex-column justify-content-between">
