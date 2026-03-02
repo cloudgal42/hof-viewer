@@ -126,8 +126,8 @@ const CityDetails = () => {
     <div className="flex-grow-1">
       <AdaptiveHeaderProvider>
         <AdaptiveHeader className="d-flex justify-content-between align-items-center">
-          <div className="header-collapsed-body d-flex">
-            <div className="h2-container d-flex align-items-center">
+          <div className="header-collapsed-body gap-0 d-flex flex-wrap">
+            <div className="me-2 h2-container d-flex align-items-center">
               <BackButton/>
               <h2 className="mb-0">
                 {cityDetails.cityName}{cityDetails.cityNameTranslated && `(${cityDetails.cityNameTranslated})`}
@@ -155,7 +155,7 @@ const CityDetails = () => {
                 })}
               >
                 <span className="visually-hidden">Share</span>
-                <Share />
+                <Share/>
               </Button>
             </OverlayTrigger>
           )}
