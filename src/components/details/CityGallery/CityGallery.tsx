@@ -7,6 +7,8 @@ import 'lightgallery/css/lg-thumbnail.css';
 import 'lightgallery/css/lg-fullscreen.css';
 import 'lightgallery/css/lg-autoplay.css';
 
+import '../../../css/components/CityGallery.scss';
+
 import lgThumbnail from 'lightgallery/plugins/thumbnail';
 import lgZoom from 'lightgallery/plugins/zoom';
 import lgFullscreen from 'lightgallery/plugins/fullscreen';

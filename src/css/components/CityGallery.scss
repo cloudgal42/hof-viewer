@@ -1,0 +1,60 @@
+.img-gallery-container-multiple {
+  container-type: inline-size;
+  container-name: img-gallery;
+}
+
+.img-gallery-container-multiple div {
+  max-width: calc(24.7% - 0.05rem);
+}
+
+.lg-toolbar {
+  button, a, .lg-counter {
+    background: rgba(0, 0, 0, 0.5) !important;
+  }
+  .lg-counter {
+    padding-right: 20px;
+  }
+}
+
+.lg-media-overlap .lg-sub-html {
+  position: relative;
+  top: -10px;
+  width: fit-content;
+  margin: auto;
+  padding: 0.75rem;
+  background: rgba(0, 0, 0, 0.5);
+  background-image: unset !important;
+
+  span {
+    opacity: 100%;
+    font-size: 0.9rem;
+    color: var(--bs-gray-300);
+    width: fit-content;
+  }
+}
+
+.img-gallery-container-multiple span img,
+.img-gallery-container span img {
+  cursor: pointer;
+  min-width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+@container img-gallery (width < 800px) {
+  .img-gallery-container-multiple div {
+    max-width: calc(33% - 0.05rem);
+  }
+}
+
+@container img-gallery (width < 557px) {
+  .img-gallery-container-multiple div {
+    max-width: calc(50% - 0.15rem);
+  }
+}
+
+@container img-gallery (width < 280px) {
+  .img-gallery-container-multiple div {
+    max-width: 100%;
+  }
+}
