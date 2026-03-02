@@ -24,6 +24,8 @@ import {PlaceholderDetailsHeader} from "../components/details/Details/Placeholde
 import {shareContent} from "../utils/ShareContent.ts";
 import {useScrollToTop} from "../hooks/useScrollToTop.ts";
 
+import '../css/components/CityGallery.scss';
+
 const CityGallery = lazy(() => import("../components/details/CityGallery/CityGallery.tsx"));
 
 
@@ -98,7 +100,7 @@ const CityDetails = () => {
       return (
         <div className="main-wrapper flex-grow-1 ms-sm-5 me-sm-5">
           <PlaceholderDetailsHeader/>
-          <PlaceholderDetails/>
+          <PlaceholderDetails isGroupedCities={isCitiesGrouped} />
         </div>
       );
     } else {
@@ -163,11 +165,20 @@ const CityDetails = () => {
       </AdaptiveHeaderProvider>
       <div className="main-wrapper m-auto">
         <section id="gallery" className="mt-3 position-relative">
-          <Suspense fallback={<img
-            src={PlaceholderImg}
-            alt=""
-            className="w-100"
-            style={{aspectRatio: "16/9"}}/>}>
+          <Suspense fallback={
+            <div className="w-100 d-flex gap-1 flex-row flex-wrap img-gallery-container-multiple">
+              {Array.from({length: DEFAULT_IMAGES_PER_PAGE}).map((emptyItem, i) => (
+                <div key={i} style={{aspectRatio: "16/9"}}>
+                  <img
+                    src={PlaceholderImg}
+                    alt=""
+                    className="w-100"
+                    style={{aspectRatio: "16/9"}}
+                  />
+                </div>
+              ))}
+            </div>
+          }>
             <CityGallery page={page} city={cityDetails}/>
           </Suspense>
           {/* TODO: Move this button to the CityGallery component. Research React's useContext hook */}
