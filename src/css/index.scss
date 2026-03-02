@@ -7,28 +7,6 @@
   container-name: city-feed;
 }
 
-#loadMoreBtn {
-  p {
-    transition: opacity 0.25s;
-    opacity: 0;
-  }
-  svg {
-    transition: top 0.25s;
-    position: absolute;
-    top: 0px;
-  }
-  &:hover {
-    p {
-      transition: opacity 0.25s;
-      opacity: 1;
-    }
-    svg {
-      transition: top 0.25s;
-      top: 24px;
-    }
-  }
-}
-
 #details, #trends {
   transition: top 0.25s;
   top: 0px;

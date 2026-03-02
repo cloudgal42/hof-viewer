@@ -6,7 +6,7 @@ interface GalleryItemProps {
   url: string;
   currImageUrls: string[];
   setIsImageLoaded: Dispatch<SetStateAction<boolean>>;
-  onClick: MouseEventHandler<HTMLImageElement>;
+  onClick: MouseEventHandler<HTMLButtonElement>;
 }
 
 export const GalleryImg = (
@@ -21,7 +21,12 @@ export const GalleryImg = (
   )
 
   return (
-    <div className="w-100" style={{backgroundColor: "#868e96"}}>
+    <button
+      className="p-0 border-0 w-100"
+      style={{backgroundColor: "#868e96"}}
+      onClick={onClick}
+      aria-label="Open image on lightbox"
+    >
       <LazyLoadImage
         className="w-100"
         src={url}
@@ -30,7 +35,6 @@ export const GalleryImg = (
         height={currImageUrls.length > 4 ? "150" : ""}
         onLoad={() => setIsImageLoaded(true)}
         onError={() => setIsError(true)}
-        onClick={onClick}
         placeholder={
           <img
             src={PlaceholderImg}
@@ -40,6 +44,6 @@ export const GalleryImg = (
           />
         }
       />
-    </div>
+    </button>
   )
 }

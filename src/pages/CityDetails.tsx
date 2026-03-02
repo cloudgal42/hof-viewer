@@ -189,6 +189,8 @@ const CityDetails = () => {
               className="p-0 d-flex justify-content-center position-relative m-auto mt-3"
               id="loadMoreBtn"
               onClick={() => setPage(page + 1)}
+              onFocus={() => setIsLoadMoreHovered(true)}
+              onBlur={() => setIsLoadMoreHovered(false)}
               onMouseEnter={() => setIsLoadMoreHovered(true)}
               onMouseLeave={() => setIsLoadMoreHovered(false)}
             >
