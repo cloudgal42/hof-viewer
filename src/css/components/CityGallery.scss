@@ -16,6 +16,18 @@
   }
 }
 
+.lg-thumb {
+  .lg-thumb-item {
+    border: 2px solid transparent;
+    border-radius: 0;
+    transition: border-color 0.25s;
+  }
+
+  .lg-thumb-item:hover, .lg-thumb-item:active {
+    border: 2px solid rgb(169, 7, 7);
+  }
+}
+
 .lg-media-overlap .lg-sub-html {
   position: relative;
   top: -10px;
