@@ -16,6 +16,21 @@
   max-width: calc(24.7% - 0.05rem);
 }
 
+.lg-media-overlap .lg-sub-html {
+  position: relative;
+  top: -10px;
+  width: fit-content;
+  margin: auto;
+  padding: 0.75rem;
+  border-radius: var(--bs-border-radius);
+  background: rgba(0, 0, 0, 0.5);
+  background-image: unset !important;
+
+  span {
+    opacity: 100%;
+  }
+}
+
 .img-gallery-container-multiple span img,
 .img-gallery-container span img {
   cursor: pointer;

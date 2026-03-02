@@ -12,8 +12,6 @@ import lgZoom from 'lightgallery/plugins/zoom';
 import lgFullscreen from 'lightgallery/plugins/fullscreen';
 import lgAutoplay from 'lightgallery/plugins/autoplay';
 
-import {LazyLoadImage} from "react-lazy-load-image-component";
-import PlaceholderImg from "../../../assets/placeholder.svg";
 import {useCallback, useRef, useState} from "react";
 import type {InitDetail} from "lightgallery/lg-events";
 import type {GalleryItem} from "lightgallery/lg-utils";
@@ -40,36 +38,41 @@ const CityGallery = ({city, page}: GalleryProps) => {
     city.cities
       .map(city => {
         return {
-          src: city.imageUrlFHD,
+          src: city.imageUrl4K,
           alt: "",
-          thumb: city.imageUrlFHD,
+          thumb: city.imageUrlThumbnail,
           subHtml: `
-          <span class="text-muted" style="font-size: 0.9rem">
-            Posted on ${new Date(city.createdAt).toLocaleString()} (${city.createdAtFormattedDistance}).<br /> 
-            Views: ${city.viewsCount} (Unique: ${city.uniqueViewsCount}) | Favorites: ${city.favoritesCount} |
-            <a href="/city/${city.id}?groupStatus=off" target="_blank">
-              Details (opens in new tab)
-            </a>
-          </span>
-        `
-        }
-      })
-      .reverse() : imageUrls
-      .map(imageUrl => {
-        return {
-          src: imageUrl,
-          alt: "",
-          // TODO: Use imageUrlThumbnail for thumbnails
-          thumb: imageUrl,
+            <span style="font-size: 0.9rem; width: fit-content">
+              Posted on ${new Date(city.createdAt).toLocaleString()} (${city.createdAtFormattedDistance}).<br /> 
+              Views: ${city.viewsCount} (Unique: ${city.uniqueViewsCount}) | Favorites: ${city.favoritesCount} |
+              <a href="/city/${city.id}?groupStatus=off" target="_blank">
+                Details (opens in new tab)
+              </a>
+            </span>
+         `
         }
       })
       .reverse()
+    : [{
+      src: city.imageUrl4K,
+      alt: ""
+    }]
 
   const onInit = useCallback((detail: InitDetail) => {
     if (detail) {
       galleryRef.current = detail.instance;
     }
-  }, [])
+  }, []);
+
+  function handleOpenGallery(index: number) {
+    if (galleryRef.current) {
+
+      if (galleryRef.current.galleryItems.length === 0) {
+        galleryRef.current.refresh(lightboxItems);
+      }
+      galleryRef.current.openGallery(index);
+    }
+  }
 
   return (
     <>
@@ -80,11 +83,10 @@ const CityGallery = ({city, page}: GalleryProps) => {
         {currImageUrls.map((url, i) => (
           <GalleryImg
             url={url}
-            galleryRef={galleryRef}
             currImageUrls={currImageUrls}
-            index={i}
             setIsImageLoaded={setIsImageLoaded}
             key={i}
+            onClick={() => handleOpenGallery(i)}
           />
         ))}
       </div>
@@ -94,7 +96,7 @@ const CityGallery = ({city, page}: GalleryProps) => {
           speed={500}
           plugins={[lgThumbnail, lgZoom, lgFullscreen, lgAutoplay]}
           dynamic={true}
-          dynamicEl={lightboxItems}
+          dynamicEl={[]}
           licenseKey="0000-0000-000-000" // FIXME
         />
       </div>
