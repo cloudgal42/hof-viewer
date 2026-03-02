@@ -43,7 +43,7 @@ export const Details = (
             </h3>
             {isFetching && !cityDetails.showcasedMod ? (
               <PlaceholderFeatModCard/>
-            ) : (
+            ) : cityDetails.showcasedMod && (
               <FeatModCard fetchError={error} showcasedMod={cityDetails.showcasedMod}/>
             )}
             {/*<a href={`https://mods.paradoxplaza.com/mods/${city.showcasedModId}/Windows`} target="_blank">*/}
