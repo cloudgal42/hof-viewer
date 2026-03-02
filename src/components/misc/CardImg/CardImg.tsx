@@ -1,6 +1,6 @@
-import type {CSSProperties} from "react";
+import {type CSSProperties, useState} from "react";
 import PlaceholderImg from "../../../assets/placeholder.svg";
-import {LazyLoadImage} from "react-lazy-load-image-component";
+import {type Effect, LazyLoadImage} from "react-lazy-load-image-component";
 
 interface CardImgTopProps {
   wrapperClassName?: string;
@@ -8,16 +8,25 @@ interface CardImgTopProps {
   src: string;
   style?: CSSProperties;
   alt: string;
-  effect: string;
+  effect: Effect | undefined;
 }
 
-export const CardImgTop = (
-  props: {wrapperClassName, className, src, style, alt, effect}
-) => {
-  <LazyLoadImage
-    {...props}
-    placeholder={
-      <img src={PlaceholderImg} alt=""/>
-    }
-  />
+export const CardImg = (props: CardImgTopProps) => {
+  const [isError, setIsError] = useState<boolean>(false);
+
+  if (isError) return (
+    <div className="text-muted w-100 d-flex align-items-center justify-content-center">
+      Oops... failed to load image :(
+    </div>
+  )
+
+  return (
+    <LazyLoadImage
+      {...props}
+      onError={() => setIsError(true)}
+      placeholder={
+        <img src={PlaceholderImg} alt=""/>
+      }
+    />
+  )
 }
