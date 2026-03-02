@@ -3,7 +3,7 @@ import {Container, Navbar, Spinner} from "react-bootstrap";
 import {createContext, Suspense, useEffect, useState} from "react";
 import {Sidebar} from "./components/misc/Sidebar/Sidebar.tsx";
 import {HamburgerButton} from "./components/misc/Hamburger/HamburgerButton.tsx";
-import {Outlet, useLocation} from "react-router";
+import {NavLink, Outlet, useLocation} from "react-router";
 import {useLocalStorage} from "usehooks-ts";
 import {ToTopBtn} from "./components/misc/ToTopButton/ToTopBtn.tsx";
 import type {City, GroupedCities} from "./interfaces/City.ts";
@@ -61,6 +61,9 @@ const App = () => {
       }
       }
     >
+      <a id="mainContentLink" href="#mainContent">
+        Skip to main content
+      </a>
       <ThemeContext value={isDarkMode ? "dark" : "light"}>
         <h1 className="visually-hidden">Hall of Fame Viewer</h1>
         <Navbar
@@ -82,7 +85,7 @@ const App = () => {
               setIsOpened={setIsAsideOpened}
               setIsDarkMode={setIsDarkMode}
             />
-            <main className="mt-3 mt-lg-5 mb-3 d-flex flex-grow-1 justify-content-center">
+            <main id="mainContent" className="mt-3 mt-lg-5 mb-3 d-flex flex-grow-1 justify-content-center">
               <Suspense key={location.key} fallback={
                 <div className="d-flex align-items-center justify-content-center h-100">
                   <Spinner animation="border" role="status">
