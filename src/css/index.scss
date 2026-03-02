@@ -16,6 +16,15 @@
   max-width: calc(24.7% - 0.05rem);
 }
 
+.lg-toolbar {
+  button, a, .lg-counter {
+    background: rgba(0, 0, 0, 0.5) !important;
+  }
+  .lg-counter {
+    padding-right: 20px;
+  }
+}
+
 .lg-media-overlap .lg-sub-html {
   position: relative;
   top: -10px;
@@ -28,6 +37,9 @@
 
   span {
     opacity: 100%;
+    font-size: 0.9rem;
+    color: var(--bs-gray-300);
+    width: fit-content;
   }
 }
 

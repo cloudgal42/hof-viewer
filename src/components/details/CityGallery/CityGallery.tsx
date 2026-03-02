@@ -42,7 +42,7 @@ const CityGallery = ({city, page}: GalleryProps) => {
           alt: "",
           thumb: city.imageUrlThumbnail,
           subHtml: `
-            <span style="font-size: 0.9rem; width: fit-content">
+            <span>
               Posted on ${new Date(city.createdAt).toLocaleString()} (${city.createdAtFormattedDistance}).<br /> 
               Views: ${city.viewsCount} (Unique: ${city.uniqueViewsCount}) | Favorites: ${city.favoritesCount} |
               <a href="/city/${city.id}?groupStatus=off" target="_blank">
@@ -92,6 +92,9 @@ const CityGallery = ({city, page}: GalleryProps) => {
       </div>
       <div className="App">
         <LightGallery
+          mobileSettings={{showCloseIcon: true}}
+          allowMediaOverlap={true}
+          mousewheel={true}
           onInit={onInit}
           speed={500}
           plugins={[lgThumbnail, lgZoom, lgFullscreen, lgAutoplay]}
