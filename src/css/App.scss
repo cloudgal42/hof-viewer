@@ -32,6 +32,10 @@ html, body, #root {
   border: none;
 }
 
+.btn-outline:focus {
+  @extend .btn-outline, :active;
+}
+
 .btn-outline-primary {
   border-color: $input-border-color;
 }
