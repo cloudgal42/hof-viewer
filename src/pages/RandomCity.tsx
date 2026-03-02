@@ -137,8 +137,8 @@ const RandomCity = () => {
             </OverlayTrigger>
           </Button>
           <div className="d-flex gap-2 gap-sm-3 flex-row align-items-center justify-content-between">
-            <div className="h2-container mb-0 d-flex flex-column flex-sm-row align-items-center gap-1 gap-sm-2">
-              <h2 className="mb-0 text-center text-sm-start">{cityName}</h2>
+            <div className="h2-container mb-0 d-flex flex-wrap flex-column flex-sm-row justify-content-center align-items-center gap-1 gap-sm-0">
+              <h2 className="mb-0 me-2 text-center flex-grow-1">{cityName}</h2>
               <CreatorPreviewTrigger
                 creator={creatorName}
                 showLinks={true}
@@ -146,7 +146,7 @@ const RandomCity = () => {
                 <h3 className="text-muted text-center text-sm-start d-inline">by {creatorName}</h3>
               </CreatorPreviewTrigger>
             </div>
-            <div>
+            <div className="text-nowrap">
               <OverlayTrigger overlay={<Tooltip>Settings</Tooltip>}>
                 <Button
                   className="d-none d-sm-inline"
