@@ -18,6 +18,7 @@ import {useCallback, useRef, useState} from "react";
 import type {InitDetail} from "lightgallery/lg-events";
 import type {GalleryItem} from "lightgallery/lg-utils";
 import type {City, GroupedCities} from "../../../interfaces/City.ts";
+import {GalleryImg} from "./GalleryImg.tsx";
 
 interface GalleryProps {
   city: City | GroupedCities;
@@ -77,26 +78,14 @@ const CityGallery = ({city, page}: GalleryProps) => {
         className={`w-100 d-flex gap-1 flex-row flex-wrap ${currImageUrls.length > 4 ? "img-gallery-container-multiple" : "img-gallery-container"}`}
       >
         {currImageUrls.map((url, i) => (
-          <div key={i} style={{backgroundColor: "#868e96"}}>
-            <LazyLoadImage
-              className="w-100"
-              key={i}
-              src={url}
-              effect="black-and-white"
-              alt=""
-              height={currImageUrls.length > 4 ? "150" : ""}
-              onLoad={() => setIsImageLoaded(true)}
-              placeholder={
-                <img
-                  src={PlaceholderImg}
-                  className="w-100"
-                  style={{aspectRatio: "16/9"}}
-                  alt=""
-                />
-              }
-              onClick={() => galleryRef.current && galleryRef.current.openGallery(i)}
-            />
-          </div>
+          <GalleryImg
+            url={url}
+            galleryRef={galleryRef}
+            currImageUrls={currImageUrls}
+            index={i}
+            setIsImageLoaded={setIsImageLoaded}
+            key={i}
+          />
         ))}
       </div>
       <div className="App">
