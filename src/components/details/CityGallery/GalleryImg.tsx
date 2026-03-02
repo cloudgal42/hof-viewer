@@ -10,25 +10,23 @@ interface GalleryItemProps {
   currImageUrls: string[];
   index: number;
   setIsImageLoaded: Dispatch<SetStateAction<boolean>>;
-  key: Key;
 }
 
 export const GalleryImg = (
-  {url, galleryRef, key, index, currImageUrls, setIsImageLoaded}: GalleryItemProps
+  {url, galleryRef, index, currImageUrls, setIsImageLoaded}: GalleryItemProps
 ) => {
   const [isError, setIsError] = useState<boolean>(false);
 
   if (isError) return (
-    <div key={key} className="text-muted w-100 d-flex align-items-center justify-content-center">
+    <div className="text-muted w-100 d-flex align-items-center justify-content-center">
       Oops... failed to load image :(
     </div>
   )
 
   return (
-    <div key={key} className="w-100" style={{backgroundColor: "#868e96"}}>
+    <div className="w-100" style={{backgroundColor: "#868e96"}}>
       <LazyLoadImage
         className="w-100"
-        key={key}
         src={url}
         effect="black-and-white"
         alt=""
