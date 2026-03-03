@@ -83,7 +83,7 @@
 .img-gallery-container-multiple span img:focus ,
 .img-gallery-container span img:focus {
   transition: opacity 0.3s, filter 0.25s !important;
-  filter: brightness(0.7);
+  filter: brightness(0.85);
 }
 
 @container img-gallery (width < 800px) {
