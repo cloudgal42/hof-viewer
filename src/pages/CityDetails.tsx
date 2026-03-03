@@ -166,7 +166,20 @@ const CityDetails = () => {
       </AdaptiveHeaderProvider>
       <div className="main-wrapper m-auto">
         <section id="gallery" className="mt-3 position-relative">
-          <Suspense fallback={<PlaceholderGallery />}>
+          <Suspense fallback={
+            <>
+              {("cities" in cityDetails) ? (
+                <PlaceholderGallery />
+              ) : (
+                <img
+                  src={PlaceholderImg}
+                  alt=""
+                  className="w-100"
+                  style={{aspectRatio: "16/9"}}
+                />
+              )}
+            </>
+          }>
             <CityGallery page={page} city={cityDetails}/>
           </Suspense>
           {/* TODO: Move this button to the CityGallery component. Research React's useContext hook */}
