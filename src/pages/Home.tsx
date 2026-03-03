@@ -5,15 +5,17 @@ import type {ContextType} from "../App.tsx";
 import {SortDropdown} from "../components/home/SortDropdown/SortDropdown.tsx";
 import {CityCard} from "../components/home/CityCard/CityCard.tsx";
 import {PlaceholderCard} from "../components/home/CityCard/PlaceholderCard.tsx";
-import {useOutletContext, useSearchParams} from "react-router";
+import {NavLink, useOutletContext, useSearchParams} from "react-router";
 import {handleSetSearchParams} from "../utils/SearchParamHandlers.ts";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 import {groupCities} from "../utils/GroupCities.ts";
 import type {City, GroupedCities} from "../interfaces/City.ts";
 import {ErrorScreen} from "../components/misc/ErrorScreen/ErrorScreen.tsx";
-import {useQuery, useQueryClient} from "@tanstack/react-query";
+import {useQueryClient} from "@tanstack/react-query";
 import {useCreatorCities} from "../hooks/useCreatorCities.ts";
+
+import Chirper from "../assets/Chirper.svg";
 
 const DEFAULT_CITIES_PER_PAGE = 18;
 
@@ -146,7 +148,16 @@ const Home = () => {
       </InfiniteScroll>
     );
   } else {
-    content = <p>Search by the creator name/ID to get started.</p>
+    content = (
+      <div className="d-flex text-muted flex-column align-items-center text-center">
+        <img src={Chirper} width="162" height="162" alt="Chirper" />
+        <p className="mb-1">Search by the creator name/ID to get started.</p>
+        <p className="mb-1">
+          Don't know who to search for? Browse screenshots from great HoF creators <NavLink to={`/random`}>
+          here</NavLink>
+        </p>
+      </div>
+    );
   }
 
   return (

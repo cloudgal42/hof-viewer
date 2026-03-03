@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="42"
+   height="42"
+   viewBox="0 0 42 42"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="Chirper.svg"
+   inkscape:version="1.4.3 (0d15f75042, 2025-12-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#cccccc"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="1"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="4"
+     inkscape:cx="-119.625"
+     inkscape:cy="32.75"
+     inkscape:window-width="1920"
+     inkscape:window-height="1011"
+     inkscape:window-x="0"
+     inkscape:window-y="32"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="Chirper" />
+  <defs
+     id="defs1">
+    <clipPath
+       id="clip-Chirper">
+      <rect
+         width="42"
+         height="42"
+         id="rect1" />
+    </clipPath>
+  </defs>
+  <g
+     id="Chirper"
+     clip-path="url(#clip-Chirper)">
+    <path
+       id="Path_3680"
+       data-name="Path 3680"
+       d="M49.4,9.091a6.31,6.31,0,0,1,1.043-3.054c.878-1.674,3.767-3.237,4.516-3.1.136.024-.4.574-.774,1.54a3.808,3.808,0,0,0-.34,2.242c.064.322.338-.587,1.8-1.662,1.136-.834,5.473.094,5.391.348a17.722,17.722,0,0,1-1.9.029A3.233,3.233,0,0,0,56.8,7.152a3.918,3.918,0,0,1,2.8-.516c.988.421.972,1.563,2.939,1.782a6.589,6.589,0,0,0,3.29-.6,3.982,3.982,0,0,1-.863,2.037,3.487,3.487,0,0,1-2.266.728,3.71,3.71,0,0,1-.482.018A14.7,14.7,0,1,1,49.4,9.091Z"
+       transform="translate(-32.876 -0.424)"
+       fill="#4dcaf4"
+       fill-rule="evenodd"
+       style="stroke:#999999;stroke-opacity:1;fill:none" />
+    <g
+       id="Group_2731"
+       data-name="Group 2731"
+       transform="translate(-32.876 -0.424)">
+      <ellipse
+         id="Ellipse_916"
+         data-name="Ellipse 916"
+         cx="0.837"
+         cy="2.189"
+         rx="0.837"
+         ry="2.189"
+         transform="translate(56.835 20.604)"
+         fill="#032a3f"
+         style="fill:#999999;fill-opacity:1" />
+    </g>
+    <g
+       id="Group_2732"
+       data-name="Group 2732"
+       transform="translate(-32.876 -2.581)">
+      <ellipse
+         id="Ellipse_917"
+         data-name="Ellipse 917"
+         cx="0.876"
+         cy="2.19"
+         rx="0.876"
+         ry="2.19"
+         transform="translate(40.419 22.761)"
+         fill="#032a3f"
+         style="fill:#999999;fill-opacity:1" />
+    </g>
+    <path
+       id="Path_3681"
+       data-name="Path 3681"
+       d="M38.765,27.834l7.669-3.673,3.722,3.256S38.686,27.834,38.765,27.834Z"
+       transform="translate(-32.876 -0.424)"
+       fill="#d8f0fa"
+       fill-rule="evenodd"
+       style="fill:#999999;fill-opacity:1" />
+    <path
+       id="Path_3682"
+       data-name="Path 3682"
+       d="m 50.156,27.416 c -0.016,-0.049 -3.377,3.949 -3.377,3.949 L 39.28157,27.788225 C 38.943584,27.36281 47.014575,25.727093 50.156,27.416 Z"
+       transform="translate(-32.876,-0.424)"
+       fill="#16667f"
+       fill-rule="evenodd"
+       style="fill:#999999;fill-opacity:1"
+       sodipodi:nodetypes="cccc" />
+    <path
+       id="Path_3685"
+       data-name="Path 3685"
+       d="M-75.193,714.423a4.473,4.473,0,0,1,1.056-2.315c.867-.843,3.017-.551,3.017-.551s-2.076,1.7-1.26,2.059,1.923-1.461,3.922-1.109,4.073,2.519,4.073,2.519a14.11,14.11,0,0,1-4.073,1.5c-1.848.251-1.582.126-3.266-.4A16.383,16.383,0,0,1-75.193,714.423Z"
+       transform="translate(94 -705)"
+       fill="#13b0e5"
+       style="fill:none" />
+  </g>
+</svg>
