@@ -1,14 +1,17 @@
 import {type ReactElement, useState} from "react";
 import {CreatorPreviewPopoverBody} from "./CreatorPreviewPopoverBody.tsx";
 import {OverlayTrigger, Popover} from "react-bootstrap";
+import type {Creator} from "../../../interfaces/Creator.ts";
 
 export const CreatorPreviewTrigger = (
   {
     creator,
+    creatorName,
     children,
     showLinks,
   } : {
-    creator: string | null,
+    creator: Creator,
+    creatorName: string,
     children: ReactElement,
     showLinks: boolean,
   }
@@ -38,7 +41,7 @@ export const CreatorPreviewTrigger = (
           onMouseEnter={() => handleShowHover(true)}
           onMouseLeave={() => handleShowHover(false)}
         >
-          <CreatorPreviewPopoverBody creator={creator} showLinks={showLinks} />
+          <CreatorPreviewPopoverBody creator={creator} creatorName={creatorName} showLinks={showLinks} />
         </Popover>
       }
       placement="auto"

@@ -137,7 +137,8 @@ const CityDetails = () => {
               </h2>
             </div>
             <CreatorPreviewTrigger
-              creator={cityDetails.creator.creatorName}
+              creator={cityDetails.creator}
+              creatorName={cityDetails.creator.creatorName}
               showLinks={true}
             >
               <h3 className="text-muted d-inline">by {cityDetails.creator.creatorName}</h3>

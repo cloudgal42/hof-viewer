@@ -140,7 +140,8 @@ const RandomCity = () => {
             <div className="h2-container mb-0 d-flex flex-wrap flex-column flex-sm-row justify-content-center align-items-center gap-1 gap-sm-0">
               <h2 className="mb-0 me-2 text-center flex-grow-1">{cityName}</h2>
               <CreatorPreviewTrigger
-                creator={creatorName}
+                creator={data.creator}
+                creatorName={creatorName}
                 showLinks={true}
               >
                 <h3 className="text-muted text-center text-sm-start d-inline">by {creatorName}</h3>

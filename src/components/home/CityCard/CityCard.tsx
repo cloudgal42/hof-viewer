@@ -58,7 +58,8 @@ export const CityCard = ({city, setCity, isCitiesGrouped}: CityCardProps) => {
         <Card.Subtitle className="mb-1">{city.cityNameTranslated}</Card.Subtitle>
         <div style={{fontSize: "0.9rem"}} className="text-muted">
           <CreatorPreviewTrigger
-            creator={city.creator.creatorName}
+            creator={city.creator}
+            creatorName={city.creator.creatorName}
             showLinks={false}
           >
             <Card.Text className="d-inline-block mb-1">by {city.creator.creatorName}</Card.Text>
