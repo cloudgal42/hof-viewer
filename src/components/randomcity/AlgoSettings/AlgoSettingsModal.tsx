@@ -109,7 +109,7 @@ export const AlgoSettingsModal = (
       <Modal.Body>
         <Form>
           <section id="translate-settings" className="mb-3">
-            <h4 className="fs-5">Translate</h4>
+            <h4 className="fs-5">Translation Settings</h4>
             <DropdownSetting
               name="City Names"
               value={translateCityType}
@@ -126,7 +126,7 @@ export const AlgoSettingsModal = (
             />
           </section>
           <section id="algorithm-settings">
-            <h4 className="fs-5">Algorithm</h4>
+            <h4 className="fs-5">Algorithm Settings</h4>
             <p className="text-muted fw-normal">
               Change how should Hall of Fame (HoF) weigh the next random screenshot. Note that HoF may not respect these
               settings if it is unable to find a suitable screenshot.
