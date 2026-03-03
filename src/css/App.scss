@@ -78,7 +78,7 @@ input[type="range"] {
   }
 }
 
-.btn-link:hover {
+.btn-link:hover, .btn-link:focus {
   @extend .link-body-emphasis, :hover;
 }
 
