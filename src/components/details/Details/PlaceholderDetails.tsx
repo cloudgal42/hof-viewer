@@ -1,28 +1,17 @@
 import {Card, Placeholder} from "react-bootstrap";
 import PlaceholderImg from "../../../assets/placeholder.svg";
 import {Eye, Heart, Person, Trophy} from "react-bootstrap-icons";
-import {DEFAULT_IMAGES_PER_PAGE} from "../CityGallery/CityGallery.tsx";
+import {PlaceholderGallery} from "../CityGallery/PlaceholderGallery.tsx";
 
 export const PlaceholderDetails = (
-  {isGroupedCities}: {isGroupedCities?: boolean}
+  {isGroupedCities}: { isGroupedCities?: boolean }
 ) => {
   return (
     <>
       <section id="gallery" className="mt-3 position-relative">
         {isGroupedCities ? (
-          <div className="w-100 d-flex gap-1 flex-row flex-wrap img-gallery-container-multiple">
-            {Array.from({length: DEFAULT_IMAGES_PER_PAGE}).map((emptyItem, i) => (
-              <div key={i} style={{aspectRatio: "16/9"}}>
-                <img
-                  src={PlaceholderImg}
-                  alt=""
-                  className="w-100"
-                  style={{aspectRatio: "16/9"}}
-                />
-              </div>
-            ))}
-          </div>
-          ) : (
+          <PlaceholderGallery/>
+        ) : (
           <img
             src={PlaceholderImg}
             className="w-100 object-fit-contain"
@@ -115,5 +104,5 @@ export const PlaceholderDetails = (
       </section>
     </>
 
-)
+  )
 }
