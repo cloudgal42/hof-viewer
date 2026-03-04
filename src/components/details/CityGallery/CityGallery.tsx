@@ -33,7 +33,8 @@ const CityGallery = ({city, page}: GalleryProps) => {
   const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
 
   const imageUrls = ("cities" in city) ?
-    city.cities.map(city => city.imageUrlFHD).reverse()
+    (city.imageUrlFHD.length > 4) ? city.cities.map(city => city.imageUrlThumbnail).reverse()
+      : city.cities.map(city => city.imageUrlFHD).reverse()
     : [city.imageUrlFHD];
   const currImageUrls = imageUrls.toSpliced(page * DEFAULT_IMAGES_PER_PAGE);
   const lightboxItems: GalleryItem[] = ("cities" in city) ?
