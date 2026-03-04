@@ -1,6 +1,5 @@
 import {Popover} from "react-bootstrap";
 import {ArrowUpRight, Eye, Heart, Images} from "react-bootstrap-icons";
-import {NavLink} from "react-router";
 import * as React from "react";
 import {useCreator} from "../../../hooks/useCreator.ts";
 import type {Creator} from "../../../interfaces/Creator.ts";
@@ -38,10 +37,10 @@ export const CreatorPreviewPopoverBody = (
             </li>
           </ul>
           {showLinks && (
-            <NavLink to={`/?creator=${data.id}`} >
+            <a href={`/?creator=${data.id}`} target="blank">
               To {creatorName}'s cities
               <ArrowUpRight className="ms-2" />
-            </NavLink>
+            </a>
           )}
         </Popover.Body>
       </>

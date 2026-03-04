@@ -1,7 +1,7 @@
 import {Card, CloseButton} from "react-bootstrap";
 
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
-import {BoxArrowUpRight, Eye, Heart, Person, SquareFill} from "react-bootstrap-icons";
+import {ArrowUpRight, Eye, Heart, Person, SquareFill} from "react-bootstrap-icons";
 import {useState} from "react";
 import type {PercentageStat} from "../../../interfaces/PercentageStat.ts";
 import {CardImg} from "../../misc/CardImg/CardImg.tsx";
@@ -58,7 +58,7 @@ export const ClickedCityCard = ({data}: ClickedCityCardProps) => {
             className="d-inline-flex gap-2 align-items-center"
             target="_blank"
           >
-            View details <BoxArrowUpRight />
+            View details <ArrowUpRight />
           </a>
         </Card.Body>
         <CloseButton

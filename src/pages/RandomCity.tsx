@@ -4,7 +4,7 @@ import {Suspense, useContext, useState} from "react";
 import {AdaptiveHeaderContext} from "../context/AdaptiveHeaderContext.ts";
 import {Button, Dropdown, OverlayTrigger, Tooltip} from "react-bootstrap";
 import {MoreActionsBtn} from "../components/misc/MoreActionsBtn/MoreActionsBtn.tsx";
-import {Building, ChevronLeft, ChevronRight, Gear, Person, Share} from "react-bootstrap-icons";
+import {ArrowUp, ArrowUpRight, Building, ChevronLeft, ChevronRight, Gear, Person, Share} from "react-bootstrap-icons";
 import type {City} from "../interfaces/City.ts";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {ErrorScreen} from "../components/misc/ErrorScreen/ErrorScreen.tsx";
@@ -186,6 +186,7 @@ const RandomCity = () => {
                     >
                       <Building/>
                       View creator cities
+                      <ArrowUpRight />
                     </Dropdown.Item>
                     <Dropdown.Item
                       href={`/creators/?creator=${data.creatorId}`}
@@ -194,6 +195,7 @@ const RandomCity = () => {
                     >
                       <Person/>
                       View creator info
+                      <ArrowUpRight />
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
