@@ -97,6 +97,7 @@ const CityGallery = ({city, page}: GalleryProps) => {
         <LightGallery
           mobileSettings={{showCloseIcon: true}}
           allowMediaOverlap={true}
+          toggleThumb={true}
           mousewheel={true}
           onInit={onInit}
           speed={500}
