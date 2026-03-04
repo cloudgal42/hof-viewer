@@ -55,7 +55,7 @@
     position: absolute;
     top: 0px;
   }
-  &:hover, &:focus {
+  &:hover, &:focus-visible {
     p {
       transition: opacity 0.25s;
       opacity: 1;
