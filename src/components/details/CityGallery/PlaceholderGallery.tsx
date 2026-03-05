@@ -7,14 +7,13 @@ export const PlaceholderGallery = () => (
       <button
         className="p-0 border-0 w-100"
         key={i}
-        style={{aspectRatio: "16/9"}}
+        style={{aspectRatio: "16/9", height: "150px"}}
         disabled={true}
       >
         <img
           src={PlaceholderImg}
           alt=""
-          height="150"
-          className="w-100"
+          className="w-100 h-100"
           style={{aspectRatio: "16/9"}}
         />
       </button>
