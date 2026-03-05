@@ -4,7 +4,7 @@ import {useLocation} from "react-router";
 import type {QueryClient} from "@tanstack/react-query";
 
 // 30 min
-const DEFAULT_GC_TIME = 1000 * 60 * 1;
+const DEFAULT_GC_TIME = 1000 * 60 * 30;
 
 export const useRandomCityGc =
   (queryClient: QueryClient, callback?: () => void) => {
