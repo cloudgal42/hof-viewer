@@ -39,6 +39,7 @@ export const GalleryImg = (
           <img
             src={PlaceholderImg}
             className="w-100"
+            height="150"
             style={{aspectRatio: "16/9"}}
             alt=""
           />
