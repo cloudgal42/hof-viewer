@@ -136,7 +136,7 @@ const CityDetails = () => {
     cityDetails.cities
       .sort((a, b) => b.favoritesCount - a.favoritesCount)
       .toSpliced(4)
-      .map(entry => entry.imageUrlThumbnail)
+      .map(entry => entry.imageUrlFHD)
     : imageUrlFHD;
 
   return (
