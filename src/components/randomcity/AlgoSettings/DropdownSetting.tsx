@@ -14,7 +14,6 @@ interface DropdownSettingProps {
 export const DropdownSetting = (
   {name, value, ogValue, setValue, inputId}: DropdownSettingProps
 ) => {
-  console.log(ogValue);
   return (
     <div className="mb-2 row align-items-center gx-2">
       <div className="col-6 col-sm-4">
