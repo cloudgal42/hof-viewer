@@ -1,6 +1,6 @@
 import {AdaptiveHeader} from "../components/details/AdaptiveHeader/AdaptiveHeader.tsx";
 import {AdaptiveHeaderProvider} from "../providers/AdaptiveHeaderProvider.tsx";
-import {Suspense, useContext, useState} from "react";
+import {Suspense, use, useContext, useEffect, useState} from "react";
 import {AdaptiveHeaderContext} from "../context/AdaptiveHeaderContext.ts";
 import {Button, Dropdown, OverlayTrigger, Tooltip} from "react-bootstrap";
 import {MoreActionsBtn} from "../components/misc/MoreActionsBtn/MoreActionsBtn.tsx";
@@ -23,6 +23,8 @@ import {
 import {useLocalStorage} from "usehooks-ts";
 import type {RandomAlgoSettings} from "../interfaces/RandomAlgoSettings.ts";
 import {useScrollToTop} from "../hooks/useScrollToTop.ts";
+import {useOutletContext} from "react-router";
+import type {ContextType} from "../App.tsx";
 
 const RandomCity = () => {
   const headerCollapsed = useContext(AdaptiveHeaderContext);
@@ -41,7 +43,21 @@ const RandomCity = () => {
     viewMaxAge: 60,
   });
 
+  const {startGc, gcCount} = useOutletContext<ContextType>();
   const queryClient = useQueryClient();
+
+  // Restart garbage collector countdown when
+  // - User enters this page
+  // - User loads the new page
+  useEffect(() => {
+    startGc();
+  }, [startGc, page]);
+
+  useEffect(() => {
+    // Since page is not a derived value from gcCount, this is fine?
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (gcCount > 0) setPage(0);
+  }, [gcCount, setPage]);
 
   const {data, isFetching, error} = useQuery<City>({
     queryKey: ["randomCity", page],
@@ -49,6 +65,7 @@ const RandomCity = () => {
     staleTime: Infinity,
     retry: false,
     enabled: true,
+    gcTime: Infinity,
   });
 
   // Optimistically fetch the next random city data as well as images for a snappier UX
@@ -57,6 +74,7 @@ const RandomCity = () => {
     queryFn: fetchRandomCity,
     staleTime: Infinity,
     retry: false,
+    gcTime: Infinity,
   }).then((data) => {
     const img = new Image();
     img.src = data.imageUrlFHD;

@@ -1,22 +1,24 @@
 import './css/App.scss'
 import {Container, Navbar, Spinner} from "react-bootstrap";
-import {createContext, Suspense, useEffect, useState} from "react";
+import {Suspense, useEffect, useState} from "react";
 import {Sidebar} from "./components/misc/Sidebar/Sidebar.tsx";
 import {HamburgerButton} from "./components/misc/Hamburger/HamburgerButton.tsx";
-import {NavLink, Outlet, useLocation} from "react-router";
+import {Outlet, useLocation} from "react-router";
 import {useLocalStorage} from "usehooks-ts";
 import {ToTopBtn} from "./components/misc/ToTopButton/ToTopBtn.tsx";
 import type {City, GroupedCities} from "./interfaces/City.ts";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
-import {ErrorBoundary, type FallbackProps} from "react-error-boundary";
-import {ErrorScreen} from "./components/misc/ErrorScreen/ErrorScreen.tsx";
+import {ErrorBoundary} from "react-error-boundary";
 import {ThemeContext} from "./context/ThemeContext.ts";
 import {CrashFallback} from "./components/misc/CrashFallback/CrashFallback.tsx";
+import {useRandomCityGc} from "./hooks/useRandomCityGc.ts";
 // import {Screenshots} from "./temp/screenshots.ts";
 
 export type ContextType = {
   city?: City | GroupedCities;
   setCity: (newCity: City | GroupedCities) => void;
+  startGc: () => void;
+  gcCount: number;
 }
 
 const queryClient = new QueryClient();
@@ -37,8 +39,12 @@ const App = () => {
 
   const [isAsideOpened, setIsAsideOpened] = useState<boolean>(false);
   const [isDarkMode, setIsDarkMode] = useLocalStorage<boolean>('isDarkMode', false);
+  const [gcCount, setGcCount] = useState<number>(0);
 
   const location = useLocation();
+  const {startGc} = useRandomCityGc(queryClient, () => {
+    setGcCount(c => c + 1);
+  });
 
   // We manipulate the DOM here bc Bootstrap CSS scopes
   // the theme to the <html> document element
@@ -48,7 +54,7 @@ const App = () => {
   }, [isDarkMode]);
 
   const contextParams = {
-    city, setCity,
+    city, setCity, startGc, gcCount
   }
 
   return (
@@ -94,7 +100,6 @@ const App = () => {
                 </div>
               }>
                 <QueryClientProvider client={queryClient}>
-
                   <Outlet context={contextParams satisfies ContextType}/>
                 </QueryClientProvider>
               </Suspense>
