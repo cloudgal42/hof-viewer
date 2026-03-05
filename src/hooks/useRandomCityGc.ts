@@ -4,7 +4,7 @@ import {useLocation} from "react-router";
 import type {QueryClient} from "@tanstack/react-query";
 
 // 30 min
-const DEFAULT_GC_TIME = 1000 * 60 * 30;
+const DEFAULT_GC_TIME = 1000 * 60 * 1;
 
 export const useRandomCityGc =
   (queryClient: QueryClient, callback?: () => void) => {
@@ -25,21 +25,22 @@ export const useRandomCityGc =
 
     // Start the random city GC countdown. If it already started, the timer is restarted.
     function startGc() {
-      console.debug("GC for Random city queries started.")
+      console.debug("GC for randomCity query cache started.");
+      gcPendingRef.current = false;
       setIsGcArmed(false);
       setTimeout(() => setIsGcArmed(true), 1);
     }
 
     const clearRandomCitiesCache = useCallback(() => {
-      console.debug("Clearing random city cache...");
+      console.time("Clearing randomCity query cache took");
       queryClient.removeQueries({queryKey: ["randomCity"]});
       if (callback) {
         callback();
       }
+      console.timeEnd("Clearing randomCity query cache took");
     }, [callback, queryClient]);
 
     useTimeout(() => {
-      console.debug("GC Countdown exhausted");
       if (isOnRandomCity && isAppFocused) {
         console.debug("Detected user focused on random city page, deferring GC...");
         gcPendingRef.current = true;
