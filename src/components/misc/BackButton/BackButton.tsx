@@ -12,7 +12,6 @@ export const BackButton = () => {
         <OverlayTrigger overlay={<Tooltip>Back</Tooltip>}>
           <Button
             variant="outline"
-            style={{border: "none", backgroundColor: "transparent"}}
             className="ps-0"
             aria-label="Back"
             onClick={() => navigate(-1)}

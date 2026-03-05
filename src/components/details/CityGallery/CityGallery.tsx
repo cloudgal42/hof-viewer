@@ -7,17 +7,18 @@ import 'lightgallery/css/lg-thumbnail.css';
 import 'lightgallery/css/lg-fullscreen.css';
 import 'lightgallery/css/lg-autoplay.css';
 
+import '../../../css/components/CityGallery.scss';
+
 import lgThumbnail from 'lightgallery/plugins/thumbnail';
 import lgZoom from 'lightgallery/plugins/zoom';
 import lgFullscreen from 'lightgallery/plugins/fullscreen';
 import lgAutoplay from 'lightgallery/plugins/autoplay';
 
-import {LazyLoadImage} from "react-lazy-load-image-component";
-import PlaceholderImg from "../../../assets/placeholder.svg";
 import {useCallback, useRef, useState} from "react";
 import type {InitDetail} from "lightgallery/lg-events";
 import type {GalleryItem} from "lightgallery/lg-utils";
 import type {City, GroupedCities} from "../../../interfaces/City.ts";
+import {GalleryImg} from "./GalleryImg.tsx";
 
 interface GalleryProps {
   city: City | GroupedCities;
@@ -32,43 +33,49 @@ const CityGallery = ({city, page}: GalleryProps) => {
   const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
 
   const imageUrls = ("cities" in city) ?
-    city.cities.map(city => city.imageUrlFHD).reverse()
+    (city.imageUrlFHD.length > 4) ? city.cities.map(city => city.imageUrlThumbnail).reverse()
+      : city.cities.map(city => city.imageUrlFHD).reverse()
     : [city.imageUrlFHD];
   const currImageUrls = imageUrls.toSpliced(page * DEFAULT_IMAGES_PER_PAGE);
   const lightboxItems: GalleryItem[] = ("cities" in city) ?
     city.cities
       .map(city => {
         return {
-          src: city.imageUrlFHD,
+          src: city.imageUrl4K,
           alt: "",
-          thumb: city.imageUrlFHD,
+          thumb: city.imageUrlThumbnail,
           subHtml: `
-          <span class="text-muted" style="font-size: 0.9rem">
-            Posted on ${new Date(city.createdAt).toLocaleString()} (${city.createdAtFormattedDistance}).<br /> 
-            Views: ${city.viewsCount} (Unique: ${city.uniqueViewsCount}) | Favorites: ${city.favoritesCount} |
-            <a href="/city/${city.id}?groupStatus=off" target="_blank">
-              Details (opens in new tab)
-            </a>
-          </span>
-        `
-        }
-      })
-      .reverse() : imageUrls
-      .map(imageUrl => {
-        return {
-          src: imageUrl,
-          alt: "",
-          // TODO: Use imageUrlThumbnail for thumbnails
-          thumb: imageUrl,
+            <span>
+              Posted on ${new Date(city.createdAt).toLocaleString()} (${city.createdAtFormattedDistance}).<br /> 
+              Views: ${city.viewsCount} (Unique: ${city.uniqueViewsCount}) | Favorites: ${city.favoritesCount} |
+              <a href="/city/${city.id}?groupStatus=off" target="_blank">
+                Details (opens in new tab)
+              </a>
+            </span>
+         `
         }
       })
       .reverse()
+    : [{
+      src: city.imageUrl4K,
+      alt: ""
+    }]
 
   const onInit = useCallback((detail: InitDetail) => {
     if (detail) {
       galleryRef.current = detail.instance;
     }
-  }, [])
+  }, []);
+
+  function handleOpenGallery(index: number) {
+    if (galleryRef.current) {
+
+      if (galleryRef.current.galleryItems.length === 0) {
+        galleryRef.current.refresh(lightboxItems);
+      }
+      galleryRef.current.openGallery(index);
+    }
+  }
 
   return (
     <>
@@ -77,35 +84,26 @@ const CityGallery = ({city, page}: GalleryProps) => {
         className={`w-100 d-flex gap-1 flex-row flex-wrap ${currImageUrls.length > 4 ? "img-gallery-container-multiple" : "img-gallery-container"}`}
       >
         {currImageUrls.map((url, i) => (
-          <div key={i} style={{backgroundColor: "#868e96"}}>
-            <LazyLoadImage
-              className="w-100"
-              key={i}
-              src={url}
-              effect="black-and-white"
-              alt=""
-              height={currImageUrls.length > 4 ? "150" : ""}
-              onLoad={() => setIsImageLoaded(true)}
-              placeholder={
-                <img
-                  src={PlaceholderImg}
-                  className="w-100"
-                  style={{aspectRatio: "16/9"}}
-                  alt=""
-                />
-              }
-              onClick={() => galleryRef.current && galleryRef.current.openGallery(i)}
-            />
-          </div>
+          <GalleryImg
+            url={url}
+            currImageUrls={currImageUrls}
+            setIsImageLoaded={setIsImageLoaded}
+            key={i}
+            onClick={() => handleOpenGallery(i)}
+          />
         ))}
       </div>
       <div className="App">
         <LightGallery
+          mobileSettings={{showCloseIcon: true}}
+          allowMediaOverlap={true}
+          toggleThumb={true}
+          mousewheel={true}
           onInit={onInit}
           speed={500}
           plugins={[lgThumbnail, lgZoom, lgFullscreen, lgAutoplay]}
           dynamic={true}
-          dynamicEl={lightboxItems}
+          dynamicEl={[]}
           licenseKey="0000-0000-000-000" // FIXME
         />
       </div>

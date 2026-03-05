@@ -1,10 +1,10 @@
 import {AdaptiveHeader} from "../components/details/AdaptiveHeader/AdaptiveHeader.tsx";
 import {AdaptiveHeaderProvider} from "../providers/AdaptiveHeaderProvider.tsx";
-import {Suspense, useContext, useState} from "react";
+import {Suspense, use, useContext, useEffect, useState} from "react";
 import {AdaptiveHeaderContext} from "../context/AdaptiveHeaderContext.ts";
 import {Button, Dropdown, OverlayTrigger, Tooltip} from "react-bootstrap";
 import {MoreActionsBtn} from "../components/misc/MoreActionsBtn/MoreActionsBtn.tsx";
-import {Building, ChevronLeft, ChevronRight, Gear, Person, Share} from "react-bootstrap-icons";
+import {ArrowUp, ArrowUpRight, Building, ChevronLeft, ChevronRight, Gear, Person, Share} from "react-bootstrap-icons";
 import type {City} from "../interfaces/City.ts";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {ErrorScreen} from "../components/misc/ErrorScreen/ErrorScreen.tsx";
@@ -25,6 +25,8 @@ import type {RandomAlgoSettings} from "../interfaces/RandomAlgoSettings.ts";
 import {useScrollToTop} from "../hooks/useScrollToTop.ts";
 import {Helmet} from "@dr.pogodin/react-helmet";
 import {DefaultHelmet} from "../components/misc/DefaultHelmet/DefaultHelmet.tsx";
+import {useOutletContext} from "react-router";
+import type {ContextType} from "../App.tsx";
 
 const RandomCity = () => {
   const headerCollapsed = useContext(AdaptiveHeaderContext);
@@ -32,6 +34,8 @@ const RandomCity = () => {
   const [isSettingsShown, setIsSettingsShown] = useState<boolean>(false);
   const [randomAlgoSettings, setRandomAlgoSettings]
     = useLocalStorage<RandomAlgoSettings>("randomAlgoSettings", {
+    translateCityType: "transliterate",
+    translateCreatorType: "transliterate",
     random: 5,
     popular: 10,
     trending: 10,
@@ -41,7 +45,21 @@ const RandomCity = () => {
     viewMaxAge: 60,
   });
 
+  const {startGc, gcCount} = useOutletContext<ContextType>();
   const queryClient = useQueryClient();
+
+  // Restart garbage collector countdown when
+  // - User enters this page
+  // - User loads the new page
+  useEffect(() => {
+    startGc();
+  }, [startGc, page]);
+
+  useEffect(() => {
+    // Since page is not a derived value from gcCount, this is fine?
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (gcCount > 0) setPage(0);
+  }, [gcCount, setPage]);
 
   const {data, isFetching, error} = useQuery<City>({
     queryKey: ["randomCity", page],
@@ -49,6 +67,7 @@ const RandomCity = () => {
     staleTime: Infinity,
     retry: false,
     enabled: true,
+    gcTime: Infinity,
   });
 
   // Optimistically fetch the next random city data as well as images for a snappier UX
@@ -57,6 +76,7 @@ const RandomCity = () => {
     queryFn: fetchRandomCity,
     staleTime: Infinity,
     retry: false,
+    gcTime: Infinity,
   }).then((data) => {
     const img = new Image();
     img.src = data.imageUrlFHD;
@@ -104,6 +124,18 @@ const RandomCity = () => {
     )
   }
 
+  const creatorName = (randomAlgoSettings.translateCreatorType === "translate") ? 
+    data.creator.creatorNameTranslated || data.creator.creatorName 
+    : (randomAlgoSettings.translateCreatorType === "transliterate") ?
+      data.creator.creatorNameLatinized || data.creator.creatorName
+      : data.creator.creatorName
+
+  const cityName = (randomAlgoSettings.translateCityType === "translate") ?
+    data.cityNameTranslated || data.cityName
+    : (randomAlgoSettings.translateCityType === "transliterate") ?
+      data.cityNameLatinized || data.cityName
+      : data.cityName
+  
   return (
     <div className="flex-grow-1">
       <DefaultHelmet />
@@ -126,16 +158,17 @@ const RandomCity = () => {
             </OverlayTrigger>
           </Button>
           <div className="d-flex gap-2 gap-sm-3 flex-row align-items-center justify-content-between">
-            <div className="h2-container mb-0 d-flex flex-column flex-sm-row align-items-center gap-1 gap-sm-2">
-              <h2 className="mb-0 text-center text-sm-start">{data.cityName}</h2>
+            <div className="h2-container mb-0 d-flex flex-wrap flex-column flex-sm-row justify-content-center align-items-center gap-1 gap-sm-0">
+              <h2 className="mb-0 me-2 text-center flex-grow-1">{cityName}</h2>
               <CreatorPreviewTrigger
-                creator={data.creator.creatorName}
+                creator={data.creator}
+                creatorName={creatorName}
                 showLinks={true}
               >
-                <h3 className="text-muted text-center text-sm-start d-inline">by {data.creator.creatorName}</h3>
+                <h3 className="text-muted text-center text-sm-start d-inline">by {creatorName}</h3>
               </CreatorPreviewTrigger>
             </div>
-            <div>
+            <div className="text-nowrap">
               <OverlayTrigger overlay={<Tooltip>Settings</Tooltip>}>
                 <Button
                   className="d-none d-sm-inline"
@@ -159,7 +192,7 @@ const RandomCity = () => {
                     </Dropdown.Item>
                     <Dropdown.Item
                       onClick={() => shareContent({
-                        title: data.cityName,
+                        title: cityName,
                         url: `${window.location.origin}/city/${data.id}?groupStatus=off`
                       })}
                       className="d-flex align-items-center gap-2"
@@ -174,6 +207,7 @@ const RandomCity = () => {
                     >
                       <Building/>
                       View creator cities
+                      <ArrowUpRight />
                     </Dropdown.Item>
                     <Dropdown.Item
                       href={`/creators/?creator=${data.creatorId}`}
@@ -182,6 +216,7 @@ const RandomCity = () => {
                     >
                       <Person/>
                       View creator info
+                      <ArrowUpRight />
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>

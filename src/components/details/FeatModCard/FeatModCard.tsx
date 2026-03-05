@@ -8,10 +8,11 @@ import {ErrorScreen} from "../../misc/ErrorScreen/ErrorScreen.tsx";
 
 import pdxModsIcon from "../../../assets/pdx-mods.webp";
 import skyveIcon from "../../../assets/skyve.webp";
+import {CardImg} from "../../misc/CardImg/CardImg.tsx";
 
 interface ModCardProps {
   fetchError?: Error | null;
-  showcasedMod?: Mod;
+  showcasedMod: Mod;
 }
 
 export const FeatModCard = ({fetchError, showcasedMod}: ModCardProps) => {
@@ -29,16 +30,13 @@ export const FeatModCard = ({fetchError, showcasedMod}: ModCardProps) => {
   } else {
     content = (
       <Card className="row flex-md-row gx-0">
-        <LazyLoadImage
+        <CardImg
           wrapperClassName="col-12 col-md-4 w-100 w-md-25"
           className="h-100 w-100 object-fit-cover"
           src={showcasedMod?.thumbnailUrl}
           style={{aspectRatio: "1/1"}}
           alt=""
           effect="black-and-white"
-          placeholder={
-            <img src={PlaceholderImg} alt=""/>
-          }
         />
         <Card.Body className="col-12 col-md-8">
           <h4>

@@ -1,6 +1,6 @@
 import './css/App.scss'
 import {Container, Navbar, Spinner} from "react-bootstrap";
-import {createContext, Suspense, useEffect, useState} from "react";
+import {Suspense, useEffect, useState} from "react";
 import {Sidebar} from "./components/misc/Sidebar/Sidebar.tsx";
 import {HamburgerButton} from "./components/misc/Hamburger/HamburgerButton.tsx";
 import {Outlet, useLocation} from "react-router";
@@ -8,38 +8,44 @@ import {useLocalStorage} from "usehooks-ts";
 import {ToTopBtn} from "./components/misc/ToTopButton/ToTopBtn.tsx";
 import type {City, GroupedCities} from "./interfaces/City.ts";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
-import {ErrorBoundary, type FallbackProps} from "react-error-boundary";
-import {ErrorScreen} from "./components/misc/ErrorScreen/ErrorScreen.tsx";
+import {ErrorBoundary} from "react-error-boundary";
 import {ThemeContext} from "./context/ThemeContext.ts";
 import {CrashFallback} from "./components/misc/CrashFallback/CrashFallback.tsx";
 import {HelmetProvider} from "@dr.pogodin/react-helmet";
+import {useRandomCityGc} from "./hooks/useRandomCityGc.ts";
 // import {Screenshots} from "./temp/screenshots.ts";
 
 export type ContextType = {
   city?: City | GroupedCities;
   setCity: (newCity: City | GroupedCities) => void;
+  startGc: () => void;
+  gcCount: number;
 }
 
 const queryClient = new QueryClient();
 
-// This code is only for TypeScript
-// declare global {
-//   interface Window {
-//     __TANSTACK_QUERY_CLIENT__:
-//       import("@tanstack/query-core").QueryClient;
-//   }
-// }
-//
-// // This code is for all users
-// window.__TANSTACK_QUERY_CLIENT__ = queryClient;
+declare global {
+  interface Window {
+    __TANSTACK_QUERY_CLIENT__:
+      import("@tanstack/query-core").QueryClient;
+  }
+}
+
+if (import.meta.env.DEV) {
+  window.__TANSTACK_QUERY_CLIENT__ = queryClient;
+}
 
 const App = () => {
   const [city, setCity] = useState<City | GroupedCities | undefined>();
 
   const [isAsideOpened, setIsAsideOpened] = useState<boolean>(false);
   const [isDarkMode, setIsDarkMode] = useLocalStorage<boolean>('isDarkMode', false);
+  const [gcCount, setGcCount] = useState<number>(0);
 
   const location = useLocation();
+  const {startGc} = useRandomCityGc(queryClient, () => {
+    setGcCount(c => c + 1);
+  });
 
   // We manipulate the DOM here bc Bootstrap CSS scopes
   // the theme to the <html> document element
@@ -49,7 +55,7 @@ const App = () => {
   }, [isDarkMode]);
 
   const contextParams = {
-    city, setCity,
+    city, setCity, startGc, gcCount
   }
 
   return (
@@ -62,6 +68,9 @@ const App = () => {
       }
       }
     >
+      <a id="mainContentLink" href="#mainContent">
+        Skip to main content
+      </a>
       <ThemeContext value={isDarkMode ? "dark" : "light"}>
         <h1 className="visually-hidden">Hall of Fame Viewer</h1>
         <Navbar
@@ -83,7 +92,7 @@ const App = () => {
               setIsOpened={setIsAsideOpened}
               setIsDarkMode={setIsDarkMode}
             />
-            <main className="mt-3 mt-lg-5 mb-3 d-flex flex-grow-1 justify-content-center">
+            <main id="mainContent" className="mt-3 mt-lg-5 mb-3 d-flex flex-grow-1 justify-content-center">
               <Suspense key={location.key} fallback={
                 <div className="d-flex align-items-center justify-content-center h-100">
                   <Spinner animation="border" role="status">

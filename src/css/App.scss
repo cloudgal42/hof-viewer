@@ -28,8 +28,34 @@ html, body, #root {
   min-height: 100vh;
 }
 
+#mainContentLink {
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+
+  &:focus {
+    width: unset;
+    height: unset;
+    padding: unset;
+    margin: unset;
+    overflow: unset;
+    clip: unset;
+    white-space: unset;
+    border: unset;
+  }
+}
+
 .btn-outline:disabled {
   border: none;
+}
+
+.btn-outline:focus {
+  @extend .btn-outline, :active;
 }
 
 .btn-outline-primary {
@@ -45,13 +71,14 @@ input[type="range"] {
     border: 1.5px solid $gray-500;
     background-color: #fff;
   }
+
   &::-moz-range-thumb {
     border: 1.5px solid $gray-500;
     background-color: #fff;
   }
 }
 
-.btn-link:hover {
+.btn-link:hover, .btn-link:focus {
   @extend .link-body-emphasis, :hover;
 }
 
@@ -85,13 +112,16 @@ input[type="range"] {
       border: 1.5px solid #fff;
       background-color: #fff;
     }
+
     &::-moz-range-thumb {
       border: 1.5px solid #fff;
       background-color: #fff;
     }
+
     &:focus::-webkit-slider-thumb {
       box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
     }
+
     &:focus::-moz-range-thumb {
       box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
     }
@@ -102,18 +132,22 @@ input[type="range"] {
   .accordion-button:focus {
     box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
   }
+
   .accordion-button:not(.collapsed) {
     background-color: var(--bs-primary);
     color: black;
   }
+
   .nav-link.active, .dropdown-item:active {
     background-color: var(--bs-primary);
     color: black;
   }
+
   .form-check-input {
     &:focus {
       box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.25);
     }
+
     &:checked {
       filter: invert(1);
     }

@@ -25,6 +25,9 @@ import {shareContent} from "../utils/ShareContent.ts";
 import {useScrollToTop} from "../hooks/useScrollToTop.ts";
 import {Helmet} from "@dr.pogodin/react-helmet";
 
+import '../css/components/CityGallery.scss';
+import {PlaceholderGallery} from "../components/details/CityGallery/PlaceholderGallery.tsx";
+
 const CityGallery = lazy(() => import("../components/details/CityGallery/CityGallery.tsx"));
 
 
@@ -105,7 +108,7 @@ const CityDetails = () => {
       return (
         <div className="main-wrapper flex-grow-1 ms-sm-5 me-sm-5">
           <PlaceholderDetailsHeader/>
-          <PlaceholderDetails/>
+          <PlaceholderDetails isGroupedCities={isCitiesGrouped} />
         </div>
       );
     } else {
@@ -167,15 +170,16 @@ const CityDetails = () => {
       )}
       <AdaptiveHeaderProvider>
         <AdaptiveHeader className="d-flex justify-content-between align-items-center">
-          <div className="header-collapsed-body d-flex">
-            <div className="h2-container d-flex align-items-center">
+          <div className="header-collapsed-body gap-0 d-flex flex-wrap">
+            <div className="me-2 h2-container d-flex align-items-center">
               <BackButton/>
               <h2 className="mb-0">
                 {cityDetails.cityName}{cityDetails.cityNameTranslated && `(${cityDetails.cityNameTranslated})`}
               </h2>
             </div>
             <CreatorPreviewTrigger
-              creator={cityDetails.creator.creatorName}
+              creator={cityDetails.creator}
+              creatorName={cityDetails.creator.creatorName}
               showLinks={true}
             >
               <h3 className="text-muted d-inline">by {cityDetails.creator.creatorName}</h3>
@@ -204,11 +208,20 @@ const CityDetails = () => {
       </AdaptiveHeaderProvider>
       <div className="main-wrapper m-auto">
         <section id="gallery" className="mt-3 position-relative">
-          <Suspense fallback={<img
-            src={PlaceholderImg}
-            alt=""
-            className="w-100"
-            style={{aspectRatio: "16/9"}}/>}>
+          <Suspense fallback={
+            <>
+              {("cities" in cityDetails) ? (
+                <PlaceholderGallery />
+              ) : (
+                <img
+                  src={PlaceholderImg}
+                  alt=""
+                  className="w-100"
+                  style={{aspectRatio: "16/9"}}
+                />
+              )}
+            </>
+          }>
             <CityGallery page={page} city={cityDetails}/>
           </Suspense>
           {/* TODO: Move this button to the CityGallery component. Research React's useContext hook */}
@@ -219,6 +232,8 @@ const CityDetails = () => {
               className="p-0 d-flex justify-content-center position-relative m-auto mt-3"
               id="loadMoreBtn"
               onClick={() => setPage(page + 1)}
+              onFocus={() => setIsLoadMoreHovered(true)}
+              onBlur={() => setIsLoadMoreHovered(false)}
               onMouseEnter={() => setIsLoadMoreHovered(true)}
               onMouseLeave={() => setIsLoadMoreHovered(false)}
             >
