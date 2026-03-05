@@ -192,15 +192,15 @@ export const AlgoSettingsModal = (
               setValue={setSupporterVal}
               inputId="supporterVal"
             />
-            <RangeSetting
-              name="Minimum days until a screenshot can be shown again"
-              value={viewMaxAgeVal}
-              ogValue={randomAlgoSettings.viewMaxAge}
-              min={0}
-              max={365}
-              setValue={setViewMaxAgeVal}
-              inputId="viewMaxAgeVal"
-            />
+            {/*<RangeSetting*/}
+            {/*  name="Minimum days until a screenshot can be shown again"*/}
+            {/*  value={viewMaxAgeVal}*/}
+            {/*  ogValue={randomAlgoSettings.viewMaxAge}*/}
+            {/*  min={0}*/}
+            {/*  max={365}*/}
+            {/*  setValue={setViewMaxAgeVal}*/}
+            {/*  inputId="viewMaxAgeVal"*/}
+            {/*/>*/}
           </section>
         </Form>
       </Modal.Body>
