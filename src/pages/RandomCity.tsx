@@ -23,6 +23,8 @@ import {
 import {useLocalStorage} from "usehooks-ts";
 import type {RandomAlgoSettings} from "../interfaces/RandomAlgoSettings.ts";
 import {useScrollToTop} from "../hooks/useScrollToTop.ts";
+import {Helmet} from "@dr.pogodin/react-helmet";
+import {DefaultHelmet} from "../components/misc/DefaultHelmet/DefaultHelmet.tsx";
 import {useOutletContext} from "react-router";
 import type {ContextType} from "../App.tsx";
 
@@ -136,6 +138,7 @@ const RandomCity = () => {
   
   return (
     <div className="flex-grow-1">
+      <DefaultHelmet />
       <AlgoSettingsModal
         show={isSettingsShown}
         setShow={setIsSettingsShown}

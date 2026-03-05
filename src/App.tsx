@@ -11,6 +11,7 @@ import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {ErrorBoundary} from "react-error-boundary";
 import {ThemeContext} from "./context/ThemeContext.ts";
 import {CrashFallback} from "./components/misc/CrashFallback/CrashFallback.tsx";
+import {HelmetProvider} from "@dr.pogodin/react-helmet";
 import {useRandomCityGc} from "./hooks/useRandomCityGc.ts";
 // import {Screenshots} from "./temp/screenshots.ts";
 
@@ -100,7 +101,9 @@ const App = () => {
                 </div>
               }>
                 <QueryClientProvider client={queryClient}>
-                  <Outlet context={contextParams satisfies ContextType}/>
+                  <HelmetProvider>
+                    <Outlet context={contextParams satisfies ContextType}/>
+                  </HelmetProvider>
                 </QueryClientProvider>
               </Suspense>
             </main>

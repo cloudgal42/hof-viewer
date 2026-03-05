@@ -14,6 +14,8 @@ import type {City, GroupedCities} from "../interfaces/City.ts";
 import {ErrorScreen} from "../components/misc/ErrorScreen/ErrorScreen.tsx";
 import {useQueryClient} from "@tanstack/react-query";
 import {useCreatorCities} from "../hooks/useCreatorCities.ts";
+import {Helmet} from "@dr.pogodin/react-helmet";
+import {DefaultHelmet} from "../components/misc/DefaultHelmet/DefaultHelmet.tsx";
 
 import Chirper from "../assets/Chirper.svg";
 
@@ -162,6 +164,7 @@ const Home = () => {
 
   return (
     <div className="main-wrapper flex-grow-1 ms-sm-5 me-sm-5">
+      <DefaultHelmet />
       <h2>Browse</h2>
       <section className="mt-3 mb-3">
         <Form.Label htmlFor="creatorId">Enter the Creator ID:</Form.Label>

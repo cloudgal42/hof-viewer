@@ -23,6 +23,7 @@ import {AdaptiveHeaderProvider} from "../providers/AdaptiveHeaderProvider.tsx";
 import {PlaceholderDetailsHeader} from "../components/details/Details/PlaceholderDetailsHeader.tsx";
 import {shareContent} from "../utils/ShareContent.ts";
 import {useScrollToTop} from "../hooks/useScrollToTop.ts";
+import {Helmet} from "@dr.pogodin/react-helmet";
 
 import '../css/components/CityGallery.scss';
 import {PlaceholderGallery} from "../components/details/CityGallery/PlaceholderGallery.tsx";
@@ -41,6 +42,10 @@ const CityDetails = () => {
   const [searchParams] = useSearchParams();
   const cityParam = useParams().city;
 
+  // Checking for prerender environment is guesswork atp
+  const isInPrerenderEnv = window.navigator.userAgent.includes("Prerender")
+    || window.navigator.userAgent.includes("HeadlessChrome");
+
   const isCitiesGrouped = searchParams.get("groupStatus") === "on";
   const cityCreator = searchParams.get("creator");
   const {
@@ -55,8 +60,10 @@ const CityDetails = () => {
   const {error, data, isFetching} = useQuery<City>({
     queryKey: ["city", {id: cityParam}],
     queryFn: async () => {
-      // maybe FIXME?
-      const res = await fetch(`${import.meta.env.VITE_HOF_SERVER}/screenshots/${cityParam}?favorites=true&views=true`);
+      const link = isInPrerenderEnv ?
+        `${import.meta.env.VITE_HOF_SERVER}/screenshots/${cityParam}`
+        : `${import.meta.env.VITE_HOF_SERVER}/screenshots/${cityParam}?favorites=true&views=true`
+      const res = await fetch(link);
       const data = await res.json();
 
       if (!res.ok) {
@@ -124,9 +131,43 @@ const CityDetails = () => {
 
   const imageUrlFHD = !Array.isArray(cityDetails.imageUrlFHD) ? [cityDetails.imageUrlFHD] : cityDetails.imageUrlFHD;
   const isLastPage = (Math.ceil(imageUrlFHD.length / DEFAULT_IMAGES_PER_PAGE) - page) === 0;
+  // Used for embeds via OpenGraph meta tags
+  const bestImageUrls = ("cities" in cityDetails) ?
+    cityDetails.cities
+      .sort((a, b) => b.favoritesCount - a.favoritesCount)
+      .toSpliced(4)
+      .map(entry => entry.imageUrlThumbnail)
+    : imageUrlFHD;
 
   return (
     <div className="flex-grow-1">
+      {cityDetails && (
+        <Helmet>
+          <title>{`${cityDetails.cityName} - Hall of Fame Viewer`}</title>
+          <meta name="twitter:card" content="summary_large_image"/>
+          <meta
+            property="twitter:description"
+            content={`by ${cityDetails.creator.creatorName}\n\n👤 ${cityDetails.cityPopulation.toLocaleString()} ♥️ ${cityDetails.favoritesCount.toLocaleString()} 👁️ ${cityDetails.uniqueViewsCount.toLocaleString()}`}
+          />
+          <meta property="og:title" content={`${cityDetails.cityName} on Hall of Fame`}/>
+          <meta property="og:type" content="article"/>
+          <meta
+            property="og:description"
+            content={`by ${cityDetails.creator.creatorName}\n\n👤 ${cityDetails.cityPopulation.toLocaleString()} ♥️ ${cityDetails.favoritesCount.toLocaleString()} 👁️ ${cityDetails.uniqueViewsCount.toLocaleString()}`}
+          />
+          {bestImageUrls.map(url => (
+            <>
+              <meta property="og:image" content={url}/>
+              <meta property="twitter:image" content={url}/>
+            </>
+          ))}
+          <meta property="article:published_time" content={cityDetails.createdAt}/>
+          <meta property="profile:username" content={cityDetails.creator.creatorName}/>
+          <meta property="og:url" content={window.location.href}/>
+
+          <script>window.prerenderReady = true;</script>
+        </Helmet>
+      )}
       <AdaptiveHeaderProvider>
         <AdaptiveHeader className="d-flex justify-content-between align-items-center">
           <div className="header-collapsed-body gap-0 d-flex flex-wrap">
@@ -207,12 +248,15 @@ const CityDetails = () => {
         >
           <Details cityDetails={cityDetails} error={error} isFetching={isFetching}/>
         </section>
-        <section
-          id="trends"
-          className={`mt-3 position-relative ${(isLoadMoreHovered && !isLastPage) && "load-more-hovered"}`}
-        >
-          <CityTrends city={cityDetails} isLoading={isFetching} fetchError={error}/>
-        </section>
+        {/* Don't render trends on prerender env to save computational costs */}
+        {!isInPrerenderEnv && (
+          <section
+            id="trends"
+            className={`mt-3 position-relative ${(isLoadMoreHovered && !isLastPage) && "load-more-hovered"}`}
+          >
+            <CityTrends city={cityDetails} isLoading={isFetching} fetchError={error}/>
+          </section>
+        )}
         {/* City insights only available for grouped screenshots */}
         {("cities" in cityDetails) && (
           <section

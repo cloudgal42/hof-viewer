@@ -11,6 +11,7 @@
   "workspace": {
     "packageJson": {
       "dependencies": [
+        "npm:@dr.pogodin/react-helmet@^3.0.6",
         "npm:@eslint/js@^9.39.1",
         "npm:@netlify/vite-plugin@^2.7.20",
         "npm:@popperjs/core@^2.11.8",
