@@ -14,7 +14,7 @@ export const PlaceholderDetails = (
         ) : (
           <img
             src={PlaceholderImg}
-            className="w-100 object-fit-contain"
+            className="w-100 h-100"
             style={{aspectRatio: "16/9"}}
             alt=""
           />

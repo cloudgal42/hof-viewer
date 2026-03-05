@@ -56,12 +56,11 @@
 
 @media all and (max-width: 992px) {
   .header-collapsed {
-    top: 60px;
+    top: 59px;
     margin-top: 15px;
     border-top: 1px solid var(--bs-secondary-bg);
 
     .header-collapsed-body {
-
       padding: 1rem 0;
     }
 
@@ -77,7 +76,7 @@
 
 @media all and (max-width: 477px) {
   .header-collapsed {
-    top: 59px;
+    top: 58px;
   }
 }
 
