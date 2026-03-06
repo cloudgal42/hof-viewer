@@ -33,12 +33,24 @@ const CityGallery = ({city, page}: GalleryProps) => {
   const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
 
   const imageUrls = ("cities" in city) ?
-    (city.imageUrlFHD.length > 4) ? city.cities.map(city => city.imageUrlThumbnail).reverse()
-      : city.cities.map(city => city.imageUrlFHD).reverse()
+    [...city.cities]
+      .sort((a, b) => {
+        const cityADate = new Date(a.createdAt).getTime();
+        const cityBDate = new Date(b.createdAt).getTime();
+        return cityBDate - cityADate;
+      })
+      .map(city =>
+        (city.imageUrlFHD.length > 4) ? city.imageUrlThumbnail : city.imageUrlFHD
+      )
     : [city.imageUrlFHD];
   const currImageUrls = imageUrls.toSpliced(page * DEFAULT_IMAGES_PER_PAGE);
   const lightboxItems: GalleryItem[] = ("cities" in city) ?
-    city.cities
+    [...city.cities]
+      .sort((a, b) => {
+        const cityADate = new Date(a.createdAt).getTime();
+        const cityBDate = new Date(b.createdAt).getTime();
+        return cityBDate - cityADate;
+      })
       .map(city => {
         return {
           src: city.imageUrl4K,
@@ -55,7 +67,6 @@ const CityGallery = ({city, page}: GalleryProps) => {
          `
         }
       })
-      .reverse()
     : [{
       src: city.imageUrl4K,
       alt: ""
