@@ -212,7 +212,9 @@ const Home = () => {
           <h2 className="mb-0">
             Cities
             {(sortedCities && creator.length > 0 && !isFetching) && (
-              <span className="ms-2 fs-6 text-muted text-nowrap">{sortedCities.length} results</span>
+              <span className="ms-2 fs-6 text-muted text-nowrap">
+                {sortedCities.length} {sortedCities.length > 1 ? "results" : "result"}
+              </span>
             )}
           </h2>
           <div className="d-flex justify-content-between align-items-center gap-2">
