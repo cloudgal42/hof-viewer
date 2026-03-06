@@ -39,8 +39,8 @@ const CityGallery = ({city, page}: GalleryProps) => {
         const cityBDate = new Date(b.createdAt).getTime();
         return cityBDate - cityADate;
       })
-      .map(city =>
-        (city.imageUrlFHD.length > 4) ? city.imageUrlThumbnail : city.imageUrlFHD
+      .map(entry =>
+        (city.imageUrlFHD.length > 4) ? entry.imageUrlThumbnail : entry.imageUrlFHD
       )
     : [city.imageUrlFHD];
   const currImageUrls = imageUrls.toSpliced(page * DEFAULT_IMAGES_PER_PAGE);
