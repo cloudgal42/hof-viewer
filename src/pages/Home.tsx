@@ -14,10 +14,11 @@ import type {City, GroupedCities} from "../interfaces/City.ts";
 import {ErrorScreen} from "../components/misc/ErrorScreen/ErrorScreen.tsx";
 import {useQueryClient} from "@tanstack/react-query";
 import {useCreatorCities} from "../hooks/useCreatorCities.ts";
-import {Helmet} from "@dr.pogodin/react-helmet";
 import {DefaultHelmet} from "../components/misc/DefaultHelmet/DefaultHelmet.tsx";
 
 import Chirper from "../assets/Chirper.svg";
+import {useDebounceCallback} from "usehooks-ts";
+import Fuse from "fuse.js";
 
 const DEFAULT_CITIES_PER_PAGE = 18;
 
@@ -30,9 +31,15 @@ const Home = () => {
   const sortOrder = searchParams.get("sortOrder") || "Descending";
   const sortBy = searchParams.get("sortBy") || "date";
   const groupStatus = searchParams.get("groupCities") || "off";
-  // const [sortOrder, setSortOrder] = useState<SortOrder>("Ascending");
-  // const [sortBy, setSortBy] = useState("date");
-  // const [isGrouped, setIsGrouped] = useState<boolean>(false);
+  const searchQuery = searchParams.get("search") || "";
+
+  const [search, setSearch] = useState<string>(searchQuery);
+  const [isDebouncing, setIsDebouncing] = useState<boolean>(false);
+
+  const debouncedSetSearch = useDebounceCallback((e) => {
+    setSearch(e.target.value);
+    setIsDebouncing(false);
+  }, 500)
 
   const {
     setCity,
@@ -82,9 +89,17 @@ const Home = () => {
     if (sortOrder === "Ascending") copiedCities.reverse();
 
     return copiedCities;
-  }, [cities, groupStatus, sortBy, sortOrder]);
+  }, [cities, creator, error, groupStatus, isFetching, sortBy, sortOrder]);
 
-  const paginatedCities = sortedCities.toSpliced(page * DEFAULT_CITIES_PER_PAGE);
+  const fuse = new Fuse(sortedCities, {
+    threshold: 0.2,
+    includeScore: false,
+    keys: ["cityName", "cityNameTranslated", "cityNameLatinized"],
+  });
+  const searchedCities = search ?
+    fuse.search(search).map(entry => entry.item)
+    : sortedCities;
+  const paginatedCities = searchedCities.toSpliced(page * DEFAULT_CITIES_PER_PAGE);
 
   // function validateAndSetCreator(creator: string) {
   //   setCities([]);
@@ -101,7 +116,7 @@ const Home = () => {
 
   let content;
 
-  if (isFetching) {
+  if (isFetching || isDebouncing) {
     content = (
       <div className="placeholder-feed d-flex flex-wrap gap-3">
         <PlaceholderCard/>
@@ -119,6 +134,13 @@ const Home = () => {
         errorDetails={error.message}
       />
     )
+  } else if (search && searchedCities.length === 0) {
+    content = (
+      <ErrorScreen
+        errorSummary="No cities found :("
+        errorDetails="Double check your search query and try again."
+      />
+    )
   } else if (!navigator.onLine) {
     content = (
       <ErrorScreen
@@ -126,11 +148,11 @@ const Home = () => {
         errorDetails="Double check your Internet connection and try again."
       />
     )
-  } else if (sortedCities.length > 0) {
+  } else if (searchedCities.length > 0) {
     content = (
       <InfiniteScroll
         next={() => setPage(a => a + 1)}
-        hasMore={sortedCities.length > paginatedCities.length}
+        hasMore={searchedCities.length > paginatedCities.length}
         className="d-flex flex-wrap gap-3"
         loader={
           <div className="placeholder-feed d-flex flex-wrap gap-3">
@@ -152,7 +174,7 @@ const Home = () => {
   } else {
     content = (
       <div className="d-flex text-muted flex-column align-items-center text-center">
-        <img src={Chirper} width="162" height="162" alt="Chirper" />
+        <img src={Chirper} width="162" height="162" alt="Chirper"/>
         <p className="mb-1">Search by the creator name/ID to get started.</p>
         <p className="mb-1">
           Don't know who to search for? Browse screenshots from great HoF creators <NavLink to={`/random`}>
@@ -164,7 +186,7 @@ const Home = () => {
 
   return (
     <div className="main-wrapper flex-grow-1 ms-sm-5 me-sm-5">
-      <DefaultHelmet />
+      <DefaultHelmet/>
       <h2>Browse</h2>
       <section className="mt-3 mb-3">
         <Form.Label htmlFor="creatorId">Enter the Creator ID:</Form.Label>
@@ -185,7 +207,8 @@ const Home = () => {
         </form>
       </section>
       <section>
-        <div className="d-flex gap-2 gap-md-0 mb-3 align-items-md-center justify-content-between flex-column flex-md-row">
+        <div
+          className="d-flex gap-2 gap-sm-0 mb-2 align-items-md-center justify-content-between flex-column flex-md-row">
           <h2 className="mb-0">
             Cities
             {(sortedCities && creator.length > 0 && !isFetching) && (
@@ -198,7 +221,11 @@ const Home = () => {
                 name="groupCities"
                 id="groupCitiesCheck"
                 onClick={(e) => {
-                  setSearchParams(handleSetSearchParams(searchParams, "groupCities", e.currentTarget.checked ? "on" : "off"));
+                  setSearchParams(handleSetSearchParams(
+                    searchParams,
+                    "groupCities",
+                    e.currentTarget.checked ? "on" : "off"
+                  ));
                 }}
                 defaultChecked={groupStatus === "on"}
               />
@@ -219,6 +246,27 @@ const Home = () => {
             </div>
           </div>
         </div>
+        {creator && (
+          <Form.Control
+            className="mb-2"
+            type="search"
+            name="citySearch"
+            aria-label="Search by city name"
+            placeholder="Search by city name..."
+            onChange={(e) => {
+              setIsDebouncing(true);
+              debouncedSetSearch(e);
+            }}
+            defaultValue={searchQuery}
+            onBlur={(e) => {
+              setSearchParams(handleSetSearchParams(
+                searchParams,
+                "search",
+                e.target.value
+              ));
+            }}
+          />
+        )}
         <div id="city-feed">
           {content}
         </div>
