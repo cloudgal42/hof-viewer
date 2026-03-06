@@ -51,20 +51,20 @@ const CityGallery = ({city, page}: GalleryProps) => {
         const cityBDate = new Date(b.createdAt).getTime();
         return cityBDate - cityADate;
       })
-      .map(city => {
+      .map(entry => {
         return {
-          src: city.imageUrl4K,
+          src: entry.imageUrl4K,
           alt: "",
-          thumb: city.imageUrlThumbnail,
-          subHtml: `
+          thumb: entry.imageUrlThumbnail,
+          subHtml: imageUrls.length > 1 ? `
             <span>
-              Posted on ${new Date(city.createdAt).toLocaleString()} (${city.createdAtFormattedDistance}).<br /> 
-              Views: ${city.viewsCount} (Unique: ${city.uniqueViewsCount}) | Favorites: ${city.favoritesCount} |
-              <a href="/city/${city.id}?groupStatus=off" target="_blank">
+              Posted on ${new Date(entry.createdAt).toLocaleString()} (${entry.createdAtFormattedDistance}).<br /> 
+              Views: ${entry.viewsCount} (Unique: ${entry.uniqueViewsCount}) | Favorites: ${city.favoritesCount} |
+              <a href="/city/${entry.id}?groupStatus=off" target="_blank">
                 Details (opens in new tab)
               </a>
             </span>
-         `
+         ` : ""
         }
       })
     : [{
@@ -108,7 +108,7 @@ const CityGallery = ({city, page}: GalleryProps) => {
         <LightGallery
           mobileSettings={{showCloseIcon: true}}
           allowMediaOverlap={true}
-          toggleThumb={true}
+          toggleThumb={imageUrls.length > 1}
           mousewheel={true}
           onInit={onInit}
           speed={500}
