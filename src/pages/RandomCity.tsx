@@ -251,7 +251,7 @@ const RandomCity = () => {
           id="details"
           className={`mt-3 position-relative`}
         >
-          <Details cityDetails={data} error={error} isFetching={isFetching}/>
+          <Details key={data.id} cityDetails={data} error={error} isFetching={isFetching}/>
         </section>
       </div>
     </div>
