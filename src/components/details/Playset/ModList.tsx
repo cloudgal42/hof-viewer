@@ -192,7 +192,7 @@ export const ModList = ({city}: ModListProps) => {
             <InputGroup className="mb-3">
               <div className="w-100 mb-2">
                 <Form.Control
-                  type="text"
+                  type="search"
                   name="modSearch"
                   aria-label="Search by name, tags or author"
                   placeholder="Search by name, tags or author..."
