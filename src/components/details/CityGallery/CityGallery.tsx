@@ -59,7 +59,7 @@ const CityGallery = ({city, page}: GalleryProps) => {
           subHtml: imageUrls.length > 1 ? `
             <span>
               Posted on ${new Date(entry.createdAt).toLocaleString()} (${entry.createdAtFormattedDistance}).<br /> 
-              Views: ${entry.viewsCount} (Unique: ${entry.uniqueViewsCount}) | Favorites: ${city.favoritesCount} |
+              Views: ${entry.viewsCount} (Unique: ${entry.uniqueViewsCount}) | Favorites: ${entry.favoritesCount} |
               <a href="/city/${entry.id}?groupStatus=off" target="_blank">
                 Details (opens in new tab)
               </a>
