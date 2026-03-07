@@ -83,9 +83,19 @@ const RandomCity = () => {
   });
 
   async function fetchRandomCity() {
-    const options: string[][] = Object.entries(randomAlgoSettings)
+    const options = {
+      random: randomAlgoSettings.random,
+      popular: randomAlgoSettings.popular,
+      trending: randomAlgoSettings.trending,
+      recent: randomAlgoSettings.recent,
+      archeologist: randomAlgoSettings.archeologist,
+      supporter: randomAlgoSettings.supporter,
+      viewMaxAge: randomAlgoSettings.viewMaxAge,
+    };
+
+    const convertedOptions: string[][] = Object.entries(options)
       .map(([key, value]) => [key, value.toString()]);
-    const query = new URLSearchParams(options).toString();
+    const query = new URLSearchParams(convertedOptions).toString();
     const res = await fetch(`${import.meta.env.VITE_HOF_SERVER}/screenshots/weighted?${query}`);
     const data = await res.json();
 
