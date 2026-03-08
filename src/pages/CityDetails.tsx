@@ -1,7 +1,7 @@
-import {Button} from "react-bootstrap";
+import {Button, OverlayTrigger, Tooltip} from "react-bootstrap";
 import {NavLink, useOutletContext, useParams, useSearchParams} from "react-router";
 import type {ContextType} from "../App.tsx";
-import {ChevronDown} from "react-bootstrap-icons";
+import {ChevronDown, Share} from "react-bootstrap-icons";
 import {lazy, Suspense, useEffect, useState} from "react";
 import {DEFAULT_IMAGES_PER_PAGE} from "../components/details/CityGallery/CityGallery.tsx";
 
@@ -17,6 +17,16 @@ import {groupCities} from "../utils/GroupCities.ts";
 
 import {AdaptiveHeader} from "../components/details/AdaptiveHeader/AdaptiveHeader.tsx";
 import {Details} from "../components/details/Details/Details.tsx";
+import {BackButton} from "../components/misc/BackButton/BackButton.tsx";
+import {CreatorPreviewTrigger} from "../components/misc/CreatorPreview/CreatorPreviewTrigger.tsx";
+import {AdaptiveHeaderProvider} from "../providers/AdaptiveHeaderProvider.tsx";
+import {PlaceholderDetailsHeader} from "../components/details/Details/PlaceholderDetailsHeader.tsx";
+import {shareContent} from "../utils/ShareContent.ts";
+import {useScrollToTop} from "../hooks/useScrollToTop.ts";
+import {Helmet} from "@dr.pogodin/react-helmet";
+
+import '../css/components/CityGallery.scss';
+import {PlaceholderGallery} from "../components/details/CityGallery/PlaceholderGallery.tsx";
 
 const CityGallery = lazy(() => import("../components/details/CityGallery/CityGallery.tsx"));
 
@@ -32,6 +42,10 @@ const CityDetails = () => {
   const [searchParams] = useSearchParams();
   const cityParam = useParams().city;
 
+  // Checking for prerender environment is guesswork atp
+  const isInPrerenderEnv = window.navigator.userAgent.includes("Prerender")
+    || window.navigator.userAgent.includes("HeadlessChrome");
+
   const isCitiesGrouped = searchParams.get("groupStatus") === "on";
   const cityCreator = searchParams.get("creator");
   const {
@@ -41,19 +55,15 @@ const CityDetails = () => {
   } = useCreatorCities(cityCreator);
 
   // Scrolls to top whenever the city details page is loaded
-  useEffect(() => {
-    window.scroll({
-      top: 0,
-      left: 0,
-      behavior: "instant",
-    });
-  }, []);
+  useScrollToTop();
 
   const {error, data, isFetching} = useQuery<City>({
     queryKey: ["city", {id: cityParam}],
     queryFn: async () => {
-      // maybe FIXME?
-      const res = await fetch(`${import.meta.env.VITE_HOF_SERVER}/screenshots/${cityParam}?favorites=true&views=true`);
+      const link = isInPrerenderEnv ?
+        `${import.meta.env.VITE_HOF_SERVER}/screenshots/${cityParam}`
+        : `${import.meta.env.VITE_HOF_SERVER}/screenshots/${cityParam}?favorites=true&views=true`
+      const res = await fetch(link);
       const data = await res.json();
 
       if (!res.ok) {
@@ -96,7 +106,10 @@ const CityDetails = () => {
       )
     } else if (isFetching || isCreatorCitiesFetching) {
       return (
-        <PlaceholderDetails/>
+        <div className="main-wrapper flex-grow-1 ms-sm-5 me-sm-5">
+          <PlaceholderDetailsHeader/>
+          <PlaceholderDetails isGroupedCities={isCitiesGrouped} />
+        </div>
       );
     } else {
       // TODO: There has to be a better solution to this
@@ -118,17 +131,97 @@ const CityDetails = () => {
 
   const imageUrlFHD = !Array.isArray(cityDetails.imageUrlFHD) ? [cityDetails.imageUrlFHD] : cityDetails.imageUrlFHD;
   const isLastPage = (Math.ceil(imageUrlFHD.length / DEFAULT_IMAGES_PER_PAGE) - page) === 0;
+  // Used for embeds via OpenGraph meta tags
+  const bestImageUrls = ("cities" in cityDetails) ?
+    cityDetails.cities
+      .sort((a, b) => b.favoritesCount - a.favoritesCount)
+      .toSpliced(4)
+      .map(entry => entry.imageUrlFHD)
+    : imageUrlFHD;
 
   return (
     <div className="flex-grow-1">
-      <AdaptiveHeader cityDetails={cityDetails}/>
+      {cityDetails && (
+        <Helmet>
+          <title>{`${cityDetails.cityName} - Hall of Fame Viewer`}</title>
+          <meta name="twitter:card" content="summary_large_image"/>
+          <meta
+            property="twitter:description"
+            content={`by ${cityDetails.creator.creatorName}\n\n👤 ${cityDetails.cityPopulation.toLocaleString()} ♥️ ${cityDetails.favoritesCount.toLocaleString()} 👁️ ${cityDetails.uniqueViewsCount.toLocaleString()}`}
+          />
+          <meta property="og:title" content={`${cityDetails.cityName} on Hall of Fame`}/>
+          <meta property="og:type" content="article"/>
+          <meta
+            property="og:description"
+            content={`by ${cityDetails.creator.creatorName}\n\n👤 ${cityDetails.cityPopulation.toLocaleString()} ♥️ ${cityDetails.favoritesCount.toLocaleString()} 👁️ ${cityDetails.uniqueViewsCount.toLocaleString()}`}
+          />
+          {bestImageUrls.map(url => (
+            <>
+              <meta property="og:image" content={url}/>
+              <meta property="twitter:image" content={url}/>
+            </>
+          ))}
+          <meta property="article:published_time" content={cityDetails.createdAt}/>
+          <meta property="profile:username" content={cityDetails.creator.creatorName}/>
+          <meta property="og:url" content={window.location.href}/>
+
+          <script>window.prerenderReady = true;</script>
+        </Helmet>
+      )}
+      <AdaptiveHeaderProvider>
+        <AdaptiveHeader className="d-flex justify-content-between align-items-center">
+          <div className="header-collapsed-body gap-0 d-flex flex-wrap">
+            <div className="me-2 h2-container d-flex align-items-center">
+              <BackButton/>
+              <h2 className="mb-0">
+                {cityDetails.cityName}{cityDetails.cityNameTranslated && `(${cityDetails.cityNameTranslated})`}
+              </h2>
+            </div>
+            <CreatorPreviewTrigger
+              creator={cityDetails.creator}
+              creatorName={cityDetails.creator.creatorName}
+              showLinks={true}
+            >
+              <h3 className="text-muted d-inline">by {cityDetails.creator.creatorName}</h3>
+            </CreatorPreviewTrigger>
+          </div>
+          {cityDetails && (
+            <OverlayTrigger overlay={
+              <Tooltip>Share</Tooltip>
+            }>
+              <Button
+                variant="outline"
+                className="d-inline"
+                onClick={() => shareContent({
+                  title: cityDetails.cityName,
+                  url: ("cities" in cityDetails) ?
+                    `${window.location.origin}/city/${cityDetails.cityName}?groupStatus=on&creator=${cityDetails.creator.creatorName}`
+                    : `${window.location.origin}/city/${cityDetails.id}?groupStatus=off`
+                })}
+              >
+                <span className="visually-hidden">Share</span>
+                <Share/>
+              </Button>
+            </OverlayTrigger>
+          )}
+        </AdaptiveHeader>
+      </AdaptiveHeaderProvider>
       <div className="main-wrapper m-auto">
         <section id="gallery" className="mt-3 position-relative">
-          <Suspense fallback={<img
-            src={PlaceholderImg}
-            alt=""
-            className="w-100"
-            style={{aspectRatio: "16/9"}}/>}>
+          <Suspense fallback={
+            <>
+              {("cities" in cityDetails) ? (
+                <PlaceholderGallery />
+              ) : (
+                <img
+                  src={PlaceholderImg}
+                  alt=""
+                  className="w-100"
+                  style={{aspectRatio: "16/9"}}
+                />
+              )}
+            </>
+          }>
             <CityGallery page={page} city={cityDetails}/>
           </Suspense>
           {/* TODO: Move this button to the CityGallery component. Research React's useContext hook */}
@@ -139,6 +232,8 @@ const CityDetails = () => {
               className="p-0 d-flex justify-content-center position-relative m-auto mt-3"
               id="loadMoreBtn"
               onClick={() => setPage(page + 1)}
+              onFocus={() => setIsLoadMoreHovered(true)}
+              onBlur={() => setIsLoadMoreHovered(false)}
               onMouseEnter={() => setIsLoadMoreHovered(true)}
               onMouseLeave={() => setIsLoadMoreHovered(false)}
             >
@@ -153,12 +248,15 @@ const CityDetails = () => {
         >
           <Details cityDetails={cityDetails} error={error} isFetching={isFetching}/>
         </section>
-        <section
-          id="trends"
-          className={`mt-3 position-relative ${(isLoadMoreHovered && !isLastPage) && "load-more-hovered"}`}
-        >
-          <CityTrends city={cityDetails} isLoading={isFetching} fetchError={error}/>
-        </section>
+        {/* Don't render trends on prerender env to save computational costs */}
+        {!isInPrerenderEnv && (
+          <section
+            id="trends"
+            className={`mt-3 position-relative ${(isLoadMoreHovered && !isLastPage) && "load-more-hovered"}`}
+          >
+            <CityTrends city={cityDetails} isLoading={isFetching} fetchError={error}/>
+          </section>
+        )}
         {/* City insights only available for grouped screenshots */}
         {("cities" in cityDetails) && (
           <section

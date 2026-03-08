@@ -1,4 +1,4 @@
-import {Moon, PersonCircle, Search} from "react-bootstrap-icons";
+import {Dice3, Moon, PersonCircle, Search} from "react-bootstrap-icons";
 import {CloseButton, Offcanvas} from "react-bootstrap";
 import {NavLink} from "react-router";
 import Form from "react-bootstrap/Form";
@@ -41,21 +41,26 @@ export const Sidebar = ({isOpened, setIsOpened, setIsDarkMode}: SidebarProps) =>
           <li className="nav-item">
             <NavLink
               to="/"
-              className="nav-link d-flex align-items-center"
+              className="nav-link link-body-emphasis d-flex align-items-center"
               onClick={() => setIsOpened(false)}
             >
               <Search height="18" width="18" className="me-2"/>
               Browse by Creator ID
             </NavLink>
           </li>
-          {/*<li><a href="#" className="nav-link link-body-emphasis d-flex align-items-center">*/}
-          {/*  <PencilSquare height="18" width="18" className="me-2" />*/}
-          {/*  Manage Screenshots*/}
-          {/*</a></li>*/}
+          <li>
+            <NavLink
+              to="/random"
+              className="nav-link link-body-emphasis d-flex align-items-center"
+              onClick={() => setIsOpened(false)}
+            >
+            <Dice3 height="18" width="18" className="me-2" />
+            Random
+          </NavLink></li>
           <li className="nav-item">
             <NavLink
               to="/creators"
-              className="nav-link d-flex align-items-center"
+              className="nav-link link-body-emphasis d-flex align-items-center"
               onClick={() => setIsOpened(false)}
             >
               <PersonCircle height="18" width="18" className="me-2"/>

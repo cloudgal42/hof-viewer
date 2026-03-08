@@ -9,7 +9,7 @@ interface ErrorScreenProps {
 export const ErrorScreen = ({errorSummary, errorDetails}: ErrorScreenProps) => {
   return (
     <div className="d-flex flex-column align-items-center text-center">
-      <img src={SadChirper} width="148" height="148" alt=""/>
+      <img src={SadChirper} width="148" height="148" alt="Pensive chirper"/>
       <p className="text-muted mb-1">{errorSummary}</p>
       <div className="text-muted mb-1">{errorDetails}</div>
     </div>

@@ -28,45 +28,130 @@ html, body, #root {
   min-height: 100vh;
 }
 
+#mainContentLink {
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+
+  &:focus {
+    width: unset;
+    height: unset;
+    padding: unset;
+    margin: unset;
+    overflow: unset;
+    clip: unset;
+    white-space: unset;
+    border: unset;
+  }
+}
+
+.btn-outline:disabled {
+  border: none;
+}
+
+.btn-outline:focus {
+  @extend .btn-outline, :active;
+}
+
 .btn-outline-primary {
   border-color: $input-border-color;
+}
+
+.nav-link.link-body-emphasis.active {
+  color: #fff !important;
+}
+
+input[type="range"] {
+  &::-webkit-slider-thumb {
+    border: 1.5px solid $gray-500;
+    background-color: #fff;
+  }
+
+  &::-moz-range-thumb {
+    border: 1.5px solid $gray-500;
+    background-color: #fff;
+  }
+}
+
+.btn-link:hover, .btn-link:focus {
+  @extend .link-body-emphasis, :hover;
 }
 
 [data-bs-theme="dark"] {
   $primary: #fff;
   --bs-primary: #fff;
 
-  a:not(.btn, .alert-link) {
+  .nav-link:focus-visible {
+    box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
+  }
+
+  a:not(.btn, .alert-link, .dropdown-item), .btn-link {
     color: var(--bs-primary);
 
     &:hover {
       color: var(--bs-primary);
     }
   }
+
+  .nav-link.link-body-emphasis.active {
+    color: #000 !important;
+  }
+
   .btn-primary {
     @extend .btn-light;
   }
+
   .btn-outline-primary {
     @extend .btn-outline-light;
     border-color: $input-border-color;
   }
+
+  input[type="range"] {
+    &::-webkit-slider-thumb {
+      border: 1.5px solid #fff;
+      background-color: #fff;
+    }
+
+    &::-moz-range-thumb {
+      border: 1.5px solid #fff;
+      background-color: #fff;
+    }
+
+    &:focus::-webkit-slider-thumb {
+      box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
+    }
+
+    &:focus::-moz-range-thumb {
+      box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
+    }
+  }
+
   input:focus,
   select:focus,
   .accordion-button:focus {
     box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
   }
+
   .accordion-button:not(.collapsed) {
     background-color: var(--bs-primary);
     color: black;
   }
-  .nav-link.active {
+
+  .nav-link.active, .dropdown-item:active {
     background-color: var(--bs-primary);
     color: black;
   }
+
   .form-check-input {
     &:focus {
       box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.25);
     }
+
     &:checked {
       filter: invert(1);
     }

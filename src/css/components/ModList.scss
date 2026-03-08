@@ -5,6 +5,23 @@
   .card {
     flex-basis: calc(25% - 0.4rem);
   }
+
+  .card h4 {
+    .card-title {
+      overflow: hidden;
+      line-clamp: 2;
+      line-height: 1.25;
+
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+    &:hover .card-title {
+      overflow: unset;
+      line-clamp: unset;
+      -webkit-line-clamp: unset;
+    }
+  }
 }
 
 @container mod-list (width < 913px) {

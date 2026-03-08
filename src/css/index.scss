@@ -7,45 +7,6 @@
   container-name: city-feed;
 }
 
-.img-gallery-container-multiple {
-  container-type: inline-size;
-  container-name: img-gallery;
-}
-
-.img-gallery-container-multiple div {
-  max-width: calc(24.7% - 0.05rem);
-}
-
-.img-gallery-container-multiple span img,
-.img-gallery-container span img {
-  cursor: pointer;
-  min-width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-}
-
-#loadMoreBtn {
-  p {
-    transition: opacity 0.25s;
-    opacity: 0;
-  }
-  svg {
-    transition: top 0.25s;
-    position: absolute;
-    top: 0px;
-  }
-  &:hover {
-    p {
-      transition: opacity 0.25s;
-      opacity: 1;
-    }
-    svg {
-      transition: top 0.25s;
-      top: 24px;
-    }
-  }
-}
-
 #details, #trends {
   transition: top 0.25s;
   top: 0px;
@@ -63,24 +24,6 @@
 
 #city-feed > div > div > .card, .placeholder-feed > .card {
   flex-basis: calc(33% - 0.5rem);
-}
-
-@container img-gallery (width < 800px) {
-  .img-gallery-container-multiple div {
-    max-width: calc(33% - 0.05rem);
-  }
-}
-
-@container img-gallery (width < 557px) {
-  .img-gallery-container-multiple div {
-    max-width: calc(50% - 0.15rem);
-  }
-}
-
-@container img-gallery (width < 280px) {
-  .img-gallery-container-multiple div {
-    max-width: 100%;
-  }
 }
 
 @container city-feed (width < 800px) {

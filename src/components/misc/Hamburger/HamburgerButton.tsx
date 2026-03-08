@@ -13,6 +13,7 @@ export const HamburgerButton = ({isOpened, setIsOpened}: HamburgerButtonProps) =
       variant="outline"
       className="d-block d-lg-none"
     >
+      <span className="visually-hidden">Open menu</span>
       <List width="24" height="24" />
     </Button>
   )

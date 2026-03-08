@@ -192,7 +192,7 @@ export const ModList = ({city}: ModListProps) => {
             <InputGroup className="mb-3">
               <div className="w-100 mb-2">
                 <Form.Control
-                  type="text"
+                  type="search"
                   name="modSearch"
                   aria-label="Search by name, tags or author"
                   placeholder="Search by name, tags or author..."
@@ -202,7 +202,7 @@ export const ModList = ({city}: ModListProps) => {
                   }}
                 />
               </div>
-              <div className="d-flex flex-column flex-md-row">
+              <div className="d-flex w-100 flex-column flex-md-row flex-wrap">
                 <OverlayTrigger overlay={
                   <Tooltip>Hides mod thumbnail for a more compact view.</Tooltip>
                 }>
@@ -217,7 +217,7 @@ export const ModList = ({city}: ModListProps) => {
                   </div>
                 </OverlayTrigger>
                 <div className="d-none d-md-block" style={{borderRight: "1px solid gray"}}></div>
-                <div className="ps-md-2 d-flex flex-column flex-md-row gap-1 gap-md-3">
+                <div className="ps-md-2 me-2 flex-grow-1 d-flex flex-column flex-md-row gap-1 gap-md-3">
                   <p className="mb-0">Category: </p>
                   <Form.Check
                     type="checkbox"
@@ -244,6 +244,9 @@ export const ModList = ({city}: ModListProps) => {
                     onChange={handleSetCategory}
                   />
                 </div>
+                {data && (
+                  <div className="ms-xl-auto text-muted">Showing {searchedModList.length} out of {data.length} packages</div>
+                )}
               </div>
             </InputGroup>
             {accordionBody}

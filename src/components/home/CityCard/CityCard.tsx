@@ -1,11 +1,10 @@
 import {Badge, Card, OverlayTrigger, Tooltip} from "react-bootstrap";
 import {Eye, Heart, Images, Person} from "react-bootstrap-icons";
-import {LazyLoadImage} from "react-lazy-load-image-component";
-import PlaceholderImg from "../../../assets/placeholder.svg"
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 import {NavLink} from "react-router";
 import type {City, GroupedCities} from "../../../interfaces/City.ts";
 import {CreatorPreviewTrigger} from "../../misc/CreatorPreview/CreatorPreviewTrigger.tsx";
+import {CardImg} from "../../misc/CardImg/CardImg.tsx";
 
 interface CityCardProps {
   city: City | GroupedCities;
@@ -24,21 +23,19 @@ export const CityCard = ({city, setCity, isCitiesGrouped}: CityCardProps) => {
 
   return (
     <Card>
-      <div className="position-relative" style={{backgroundColor: "#868e96"}}>
+      <div className="position-relative">
         <NavLink
+          className="text-decoration-none"
           to={isCitiesGrouped ? `/city/${city.cityName}?groupStatus=on&creator=${city.creator.creatorName}` : `/city/${city.id}?groupStatus=off`}
           onClick={() => setCity(city)}
         >
-          <LazyLoadImage
+          <CardImg
             wrapperClassName="d-inline"
             className="card-img-top"
             effect="black-and-white"
             alt=""
             height="170"
             style={{minWidth: "100%", aspectRatio: "16/9", objectFit: "cover"}}
-            placeholderSrc={
-              PlaceholderImg
-            }
             src={thumbnailImgUrl}
           />
         </NavLink>
@@ -61,7 +58,8 @@ export const CityCard = ({city, setCity, isCitiesGrouped}: CityCardProps) => {
         <Card.Subtitle className="mb-1">{city.cityNameTranslated}</Card.Subtitle>
         <div style={{fontSize: "0.9rem"}} className="text-muted">
           <CreatorPreviewTrigger
-            creator={city.creator.creatorName}
+            creator={city.creator}
+            creatorName={city.creator.creatorName}
             showLinks={false}
           >
             <Card.Text className="d-inline-block mb-1">by {city.creator.creatorName}</Card.Text>

@@ -1,12 +1,10 @@
 import {Card, CloseButton} from "react-bootstrap";
-import type {City} from "../../../interfaces/City.ts";
-import {LazyLoadImage} from "react-lazy-load-image-component";
-import PlaceholderImg from "../../../assets/placeholder.svg";
 
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
-import {BoxArrowUpRight, Eye, Heart, Person, SquareFill} from "react-bootstrap-icons";
+import {ArrowUpRight, Eye, Heart, Person, SquareFill} from "react-bootstrap-icons";
 import {useState} from "react";
 import type {PercentageStat} from "../../../interfaces/PercentageStat.ts";
+import {CardImg} from "../../misc/CardImg/CardImg.tsx";
 
 interface ClickedCityCardProps {
   data: PercentageStat;
@@ -18,16 +16,13 @@ export const ClickedCityCard = ({data}: ClickedCityCardProps) => {
   if (visibility) {
     return (
       <Card className="mb-3 row flex-md-row gx-0 position-relative">
-        <LazyLoadImage
+        <CardImg
           wrapperClassName="col-12 col-md-4 w-100 w-md-25"
           className="h-100 w-100 object-fit-cover"
           src={data.details.imageUrlFHD}
           style={{aspectRatio: "1/1"}}
           alt=""
           effect="black-and-white"
-          placeholder={
-            <img src={PlaceholderImg} alt=""/>
-          }
         />
         <Card.Body className="mb-2 col-auto">
           <h4>
@@ -63,7 +58,7 @@ export const ClickedCityCard = ({data}: ClickedCityCardProps) => {
             className="d-inline-flex gap-2 align-items-center"
             target="_blank"
           >
-            View details <BoxArrowUpRight />
+            View details <ArrowUpRight />
           </a>
         </Card.Body>
         <CloseButton
