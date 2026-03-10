@@ -175,7 +175,7 @@ const RandomCity = () => {
                 creatorName={creatorName}
                 showLinks={true}
               >
-                <h3 className="text-muted text-center text-sm-start d-inline">by {creatorName}</h3>
+                <h3 className="text-muted text-center text-sm-start mb-0 d-inline">by {creatorName}</h3>
               </CreatorPreviewTrigger>
             </div>
             <div className="text-nowrap">

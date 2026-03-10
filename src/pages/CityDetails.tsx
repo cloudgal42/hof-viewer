@@ -182,7 +182,7 @@ const CityDetails = () => {
               creatorName={cityDetails.creator.creatorName}
               showLinks={true}
             >
-              <h3 className="text-muted d-inline">by {cityDetails.creator.creatorName}</h3>
+              <h3 className="mb-0 text-muted d-inline">by {cityDetails.creator.creatorName}</h3>
             </CreatorPreviewTrigger>
           </div>
           {cityDetails && (

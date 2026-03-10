@@ -48,6 +48,7 @@ export const CreatorPreviewTrigger = (
       show={show}
     >
       <span
+        className="d-flex align-items-center"
         onClick={handleShowClick}
         onMouseEnter={() => handleShowHover(true)}
         onMouseLeave={() => handleShowHover(false)}
