@@ -97,9 +97,9 @@ const CityGallery = ({city, page}: GalleryProps) => {
         {currImageUrls.map((url, i) => (
           <GalleryImg
             url={url}
-            currImageUrls={currImageUrls}
-            setIsImageLoaded={setIsImageLoaded}
+            height={currImageUrls.length > 4 ? "150" : ""}
             key={i}
+            onLoad={() => setIsImageLoaded(true)}
             onClick={() => handleOpenGallery(i)}
           />
         ))}

@@ -4,13 +4,13 @@ import {type Dispatch, type MouseEventHandler, type SetStateAction, useState} fr
 
 interface GalleryItemProps {
   url: string;
-  currImageUrls: string[];
-  setIsImageLoaded: Dispatch<SetStateAction<boolean>>;
+  height: string | number;
+  onLoad?: () => void;
   onClick: MouseEventHandler<HTMLButtonElement>;
 }
 
 export const GalleryImg = (
-  {url, currImageUrls, setIsImageLoaded, onClick}: GalleryItemProps
+  {url, height, onLoad, onClick}: GalleryItemProps
 ) => {
   const [isError, setIsError] = useState<boolean>(false);
 
@@ -32,8 +32,8 @@ export const GalleryImg = (
         src={url}
         effect="black-and-white"
         alt=""
-        height={currImageUrls.length > 4 ? "150" : ""}
-        onLoad={() => setIsImageLoaded(true)}
+        height={height}
+        onLoad={onLoad}
         onError={() => setIsError(true)}
         placeholder={
           <img
