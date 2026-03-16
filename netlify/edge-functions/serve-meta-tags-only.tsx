@@ -53,17 +53,16 @@ export default async function serveSkeletonPage(
   let data;
   let head;
 
-  // FIXME: Use prod server link
   try {
     if (isGroupedCities) {
       console.log(`User-Agent: ${userAgent}, IP: ${context.ip} requesting for city name of ${cityId} by creator ${creator}`);
       data = await fetchCity(
-        `https://test.halloffame.cs2.mtq.io/api/v1/screenshots?creatorId=${creator}`,
+        `https://halloffame.cs2.mtq.io/api/v1/screenshots?creatorId=${creator}`,
       ) as City[];
     } else {
       console.log(`User-Agent: ${userAgent}, IP: ${context.ip} requesting for screenshot of ID ${cityId}`);
       data = await fetchCity(
-        `https://test.halloffame.cs2.mtq.io/api/v1/screenshots/${cityId}`,
+        `https://halloffame.cs2.mtq.io/api/v1/screenshots/${cityId}`,
       ) as City;
     }
 
