@@ -13,8 +13,9 @@ const EMBED_CRAWLER_LIST = [
 ];
 
 async function fetchCity(url: string) {
+  console.time("Fetching data from HoF took");
   const fetchRes = await fetch(url);
-
+  console.timeEnd("Fetching data from HoF took");
   if (!fetchRes.ok) {
     const data = await fetchRes.json() as HofErrorRes;
     throw new FetchError(data.message, fetchRes.status);
@@ -36,12 +37,16 @@ export default async function serveSkeletonPage(
   });
 
   // If request is not from the specified crawler list, send it the regular page
-  if (!isCrawler) return context.next();
+  if (!isCrawler) {
+    console.log(`Request from ${userAgent} is not in the social media crawler list, skipping...`);
+    return context.next();
+  }
 
   const searchParams = new URLSearchParams(
     new URL(req.url).search,
   );
   const isGroupedCities = searchParams.get("groupStatus") === "on";
+  const creator = searchParams.get("creator");
   const { cityId } = context.params;
 
   let status;
@@ -51,17 +56,16 @@ export default async function serveSkeletonPage(
   // FIXME: Use prod server link
   try {
     if (isGroupedCities) {
-      const creator = searchParams.get("creator");
+      console.log(`User-Agent: ${userAgent}, IP: ${context.ip} requesting for city name of ${cityId} by creator ${creator}`);
       data = await fetchCity(
         `https://test.halloffame.cs2.mtq.io/api/v1/screenshots?creatorId=${creator}`,
       ) as City[];
     } else {
+      console.log(`User-Agent: ${userAgent}, IP: ${context.ip} requesting for screenshot of ID ${cityId}`);
       data = await fetchCity(
         `https://test.halloffame.cs2.mtq.io/api/v1/screenshots/${cityId}`,
       ) as City;
     }
-
-    status = 200;
 
     const city = (Array.isArray(data))
       ? groupCities(data).find((entry) =>
@@ -70,6 +74,8 @@ export default async function serveSkeletonPage(
       : data;
 
     if (city) {
+      console.log(`SUCCESS: Found ${city.cityName} by creator ${city.creator.creatorName}`);
+      status = 200;
       const bestImageUrls = ("cities" in city)
         ? city.cities
           .sort((a, b) => b.favoritesCount - a.favoritesCount)
@@ -109,9 +115,29 @@ export default async function serveSkeletonPage(
           <meta property="og:url" content={req.url} />
         </>
       );
+    } else {
+      console.error(`Cannot find ${cityId} by ${creator}`);
+      status = 404;
+      head = (
+        <>
+          <title>Hall of Fame Viewer</title>
+          <meta property="og:title" content="Hall of Fame Viewer" />
+          <meta
+            property="og:description"
+            content={`Failed to get city info due to Could not find ${cityId} by ${creator} :(`}
+          />
+          <meta
+            property="twitter:description"
+            content={`Failed to get city info due to Could not find ${cityId} by ${creator} :(`}
+          />
+
+          <meta property="og:url" content={req.url} />
+        </>
+      );
     }
   } catch (e) {
     if (e instanceof FetchError) {
+      console.error("Failed to fetch data from HoF due to", e.message);
       status = e.status;
       head = (
         <>
@@ -124,6 +150,25 @@ export default async function serveSkeletonPage(
           <meta
             property="twitter:description"
             content={`Failed to get city info due to ${e.message} :(`}
+          />
+
+          <meta property="og:url" content={req.url} />
+        </>
+      );
+    } else {
+      console.error("Something else went wrong while running this function", e);
+      status = 500;
+      head = (
+        <>
+          <title>Hall of Fame Viewer</title>
+          <meta property="og:title" content="Hall of Fame Viewer" />
+          <meta
+            property="og:description"
+            content="An unexpected error happened :("
+          />
+          <meta
+            property="twitter:description"
+            content="An unexpected error happened :("
           />
 
           <meta property="og:url" content={req.url} />
