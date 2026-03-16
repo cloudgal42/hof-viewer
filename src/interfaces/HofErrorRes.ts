@@ -1,4 +1,4 @@
-export interface HofError {
+export interface HofErrorRes {
   statusCode: number;
   message: string;
 }

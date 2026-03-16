@@ -1,7 +1,7 @@
 import type { Context } from "@netlify/edge-functions";
 import React from "https://esm.sh/react";
 import { renderToReadableStream } from "https://esm.sh/react-dom/server";
-import { HofError } from "../../src/interfaces/HofError.ts";
+import { HofErrorRes } from "../../src/interfaces/HofErrorRes.ts";
 import { City } from "../../src/interfaces/City.ts";
 import { groupCities } from "../../src/utils/GroupCities.ts";
 
@@ -15,7 +15,7 @@ async function fetchCity(url: string) {
   const fetchRes = await fetch(url);
 
   if (!fetchRes.ok) {
-    const data = await fetchRes.json() as HofError;
+    const data = await fetchRes.json() as HofErrorRes;
     throw new Error(`${fetchRes.status}: ${data.message}`);
   } else {
     return await fetchRes.json();
