@@ -188,8 +188,9 @@ export default async function serveSkeletonPage(
     </html>,
   );
 
+  // (Temp?) Fixes repeated function calls due to Netlify's way of handling 404
   return new Response(stream, {
-    status: status,
+    status: status === 404 ? 200 : status,
     headers: {
       "Content-Type": "text/html",
     },
