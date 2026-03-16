@@ -4,6 +4,7 @@ import { renderToReadableStream } from "https://esm.sh/react-dom/server";
 import { HofErrorRes } from "../../src/interfaces/HofErrorRes.ts";
 import { City } from "../../src/interfaces/City.ts";
 import { groupCities } from "../../src/utils/GroupCities.ts";
+import {FetchError} from "../../src/interfaces/FetchError.ts";
 
 const EMBED_CRAWLER_LIST = [
   "Discordbot/",
@@ -16,7 +17,7 @@ async function fetchCity(url: string) {
 
   if (!fetchRes.ok) {
     const data = await fetchRes.json() as HofErrorRes;
-    throw new Error(`${fetchRes.status}: ${data.message}`);
+    throw new FetchError(data.message, fetchRes.status);
   } else {
     return await fetchRes.json();
   }
@@ -43,6 +44,7 @@ export default async function serveSkeletonPage(
   const isGroupedCities = searchParams.get("groupStatus") === "on";
   const { cityId } = context.params;
 
+  let status;
   let data;
   let head;
 
@@ -58,6 +60,8 @@ export default async function serveSkeletonPage(
         `https://test.halloffame.cs2.mtq.io/api/v1/screenshots/${cityId}`,
       ) as City;
     }
+
+    status = 200;
 
     const city = (Array.isArray(data))
       ? groupCities(data).find((entry) =>
@@ -107,7 +111,8 @@ export default async function serveSkeletonPage(
       );
     }
   } catch (e) {
-    if (e instanceof Error) {
+    if (e instanceof FetchError) {
+      status = e.status;
       head = (
         <>
           <title>Hall of Fame Viewer</title>
@@ -139,7 +144,7 @@ export default async function serveSkeletonPage(
   );
 
   return new Response(stream, {
-    status: 200,
+    status: status,
     headers: {
       "Content-Type": "text/html",
     },
