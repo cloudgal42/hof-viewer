@@ -30,6 +30,7 @@ export const DEFAULT_IMAGES_PER_PAGE = 12;
 
 const CityGallery = ({city, page}: GalleryProps) => {
   const galleryRef = useRef<ILightGallery>(null);
+  const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
 
   const imageUrls = ("cities" in city) ?
     [...city.cities]
@@ -90,7 +91,7 @@ const CityGallery = ({city, page}: GalleryProps) => {
   return (
     <>
       <div
-        style={{aspectRatio: "16/9"}}
+        style={imageUrls.length < 4 && !isImageLoaded ? {aspectRatio: "16/9"} : {}}
         className={`w-100 d-flex gap-1 flex-row flex-wrap ${currImageUrls.length > 4 ? "img-gallery-container-multiple" : "img-gallery-container"}`}
       >
         {currImageUrls.map((url, i) => (
@@ -98,6 +99,7 @@ const CityGallery = ({city, page}: GalleryProps) => {
             url={url}
             height={currImageUrls.length > 4 ? "150" : ""}
             key={i}
+            onLoad={() => setIsImageLoaded(true)}
             onClick={() => handleOpenGallery(i)}
           />
         ))}
