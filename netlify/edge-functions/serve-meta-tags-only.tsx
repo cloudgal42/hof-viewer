@@ -182,7 +182,7 @@ export default async function serveSkeletonPage(
         {head}
       </head>
       <body>
-        <h1>Test</h1>
+        <h1>Hall of Fame Viewer</h1>
       </body>
     </html>,
   );
