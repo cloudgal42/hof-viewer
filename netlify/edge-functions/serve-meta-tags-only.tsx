@@ -1,10 +1,10 @@
-import type { Context } from "@netlify/edge-functions";
+import type { Config, Context } from "@netlify/edge-functions";
 import React from "https://esm.sh/react";
 import { renderToReadableStream } from "https://esm.sh/react-dom/server";
 import { HofErrorRes } from "../../src/interfaces/HofErrorRes.ts";
 import { City } from "../../src/interfaces/City.ts";
 import { groupCities } from "../../src/utils/GroupCities.ts";
-import {FetchError} from "../../src/interfaces/FetchError.ts";
+import { FetchError } from "../../src/interfaces/FetchError.ts";
 
 const EMBED_CRAWLER_LIST = [
   "Discordbot/",
@@ -38,7 +38,9 @@ export default async function serveSkeletonPage(
 
   // If request is not from the specified crawler list, send it the regular page
   if (!isCrawler) {
-    console.log(`Request from ${userAgent} is not in the social media crawler list, skipping...`);
+    console.log(
+      `Request from ${userAgent} is not in the social media crawler list, skipping...`,
+    );
     return context.next();
   }
 
@@ -55,12 +57,16 @@ export default async function serveSkeletonPage(
 
   try {
     if (isGroupedCities) {
-      console.log(`User-Agent: ${userAgent}, IP: ${context.ip} requesting for city name of ${cityId} by creator ${creator}`);
+      console.log(
+        `User-Agent: ${userAgent}, IP: ${context.ip} requesting for city name of ${cityId} by creator ${creator}`,
+      );
       data = await fetchCity(
         `https://halloffame.cs2.mtq.io/api/v1/screenshots?creatorId=${creator}`,
       ) as City[];
     } else {
-      console.log(`User-Agent: ${userAgent}, IP: ${context.ip} requesting for screenshot of ID ${cityId}`);
+      console.log(
+        `User-Agent: ${userAgent}, IP: ${context.ip} requesting for screenshot of ID ${cityId}`,
+      );
       data = await fetchCity(
         `https://halloffame.cs2.mtq.io/api/v1/screenshots/${cityId}`,
       ) as City;
@@ -73,7 +79,9 @@ export default async function serveSkeletonPage(
       : data;
 
     if (city) {
-      console.log(`SUCCESS: Found ${city.cityName} by creator ${city.creator.creatorName}`);
+      console.log(
+        `SUCCESS: Found ${city.cityName} by creator ${city.creator.creatorName}`,
+      );
       status = 200;
       const bestImageUrls = ("cities" in city)
         ? city.cities
@@ -196,6 +204,6 @@ export default async function serveSkeletonPage(
   });
 }
 
-export const config = {
+export const config: Config = {
   path: "/city/:cityId",
 };
