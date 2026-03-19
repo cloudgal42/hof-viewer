@@ -1,0 +1,17 @@
+{
+  "importMap": ".netlify/edge-functions-import-map.json",
+  "lint": {
+    "files": {
+      "include": [
+        "netlify/edge-functions/"
+      ]
+    }
+  },
+  "fmt": {
+    "files": {
+      "include": [
+        "netlify/edge-functions/"
+      ]
+    }
+  }
+}
