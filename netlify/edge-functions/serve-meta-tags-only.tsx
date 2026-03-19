@@ -52,7 +52,7 @@ interface TotalScreenshotStats {
 }
 
 // Group all stats of each unique city name into one.
-export function groupCities(citiesToGroup: City[]) {
+function groupCities(citiesToGroup: City[]) {
   const groupedScreenshots: City[][] = [];
   const groupedCities: GroupedCities[] = [];
 
