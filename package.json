@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@dr.pogodin/react-helmet": "^3.0.6",
+    "@netlify/edge-functions": "^3.0.4",
     "@netlify/vite-plugin": "^2.7.20",
     "@popperjs/core": "^2.11.8",
     "@tanstack/react-query": "^5.90.20",
