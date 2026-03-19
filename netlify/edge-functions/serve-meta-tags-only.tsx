@@ -376,6 +376,7 @@ export default async function serveSkeletonPage(
   const stream = await renderToReadableStream(
     <html lang="en">
       <head>
+        <meta property="og:site_name" content="Hall of Fame Viewer" />
         {head}
       </head>
       <body>
