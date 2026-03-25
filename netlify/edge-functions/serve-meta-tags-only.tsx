@@ -12,12 +12,12 @@ const EMBED_CRAWLER_LIST = [
   "facebookexternalhit/",
 ];
 
-async function fetchCity(url: string) {
+async function fetchCity<T>(url: string): Promise<T> {
   console.time("Fetching data from HoF took");
   const fetchRes = await fetch(url);
   console.timeEnd("Fetching data from HoF took");
   if (!fetchRes.ok) {
-    const data = await fetchRes.json() as HofErrorRes;
+    const data: HofErrorRes = await fetchRes.json();
     throw new FetchError(data.message, fetchRes.status);
   } else {
     return await fetchRes.json();
@@ -60,16 +60,16 @@ export default async function serveSkeletonPage(
       console.log(
         `User-Agent: ${userAgent}, IP: ${context.ip} requesting for city name of ${cityId} by creator ${creator}`,
       );
-      data = await fetchCity(
+      data = await fetchCity<City[]>(
         `https://halloffame.cs2.mtq.io/api/v1/screenshots?creatorId=${creator}`,
-      ) as City[];
+      );
     } else {
       console.log(
         `User-Agent: ${userAgent}, IP: ${context.ip} requesting for screenshot of ID ${cityId}`,
       );
-      data = await fetchCity(
+      data = await fetchCity<City>(
         `https://halloffame.cs2.mtq.io/api/v1/screenshots/${cityId}`,
-      ) as City;
+      );
     }
 
     const city = (Array.isArray(data))
