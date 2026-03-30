@@ -8,6 +8,11 @@
   visibility: hidden;
   opacity: 0;
 
+  svg path {
+    stroke-width: 0.5;
+    stroke: currentColor;
+  }
+
   &.visible {
     visibility: visible;
     opacity: 1;
