@@ -82,6 +82,14 @@ export const Details = (
             </li>
           </ul>
         </section>
+        {(!("cities" in cityDetails) && cityDetails.description) && (
+          <section className="mb-3">
+            <h3>
+              <Card.Title>Description</Card.Title>
+            </h3>
+            <p>{cityDetails.description}</p>
+          </section>
+        )}
         <section className="mb-3">
           <h3>
             <Card.Title>Map Used</Card.Title>
