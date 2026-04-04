@@ -52,7 +52,7 @@ const CityDetails = () => {
     data: creatorCities,
     error: creatorCitiesError,
     isFetching: isCreatorCitiesFetching
-  } = useCreatorCities(cityCreator);
+  } = useCreatorCities({creator: cityCreator});
 
   // Scrolls to top whenever the city details page is loaded
   useScrollToTop();
