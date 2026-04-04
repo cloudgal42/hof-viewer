@@ -16,9 +16,9 @@ import lgAutoplay from 'lightgallery/plugins/autoplay';
 
 import {useCallback, useRef, useState} from "react";
 import type {InitDetail} from "lightgallery/lg-events";
-import type {GalleryItem} from "lightgallery/lg-utils";
 import type {City, GroupedCities} from "../../../interfaces/City.ts";
 import {GalleryImg} from "./GalleryImg.tsx";
+import {Eye, Heart} from "react-bootstrap-icons";
 
 interface GalleryProps {
   city: City | GroupedCities;
@@ -44,6 +44,7 @@ const CityGallery = ({city, page}: GalleryProps) => {
           src: entry.imageUrl4K,
           alt: "",
           thumb: entry.imageUrlThumbnail,
+          cityRef: entry,
           subHtml: city.imageUrlFHD.length > 1 ? `
             <span>
               Posted on ${new Date(entry.createdAt).toLocaleString()} (${entry.createdAtFormattedDistance}).<br /> 
@@ -57,7 +58,8 @@ const CityGallery = ({city, page}: GalleryProps) => {
       })
     : [{
       src: city.imageUrl4K,
-      alt: ""
+      alt: "",
+      cityRef: city,
     }]
   const currImageUrls = lightboxItems.toSpliced(page * DEFAULT_IMAGES_PER_PAGE);
 
@@ -90,6 +92,16 @@ const CityGallery = ({city, page}: GalleryProps) => {
             key={i}
             onLoad={() => setIsImageLoaded(true)}
             onClick={() => handleOpenGallery(i)}
+            hoverCaptions={("cities" in city && city.imageUrlFHD.length > 1) &&
+              <>
+                <span className="d-flex align-items-center gap-1">
+                  <Heart /> {entry.cityRef.favoritesCount.toLocaleString()}
+                </span>
+                <span className="d-flex align-items-center gap-1">
+                  <Eye /> {entry.cityRef.viewsCount.toLocaleString()}
+                </span>
+              </>
+            }
           />
         ))}
       </div>

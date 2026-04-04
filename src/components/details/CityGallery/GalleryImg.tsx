@@ -1,16 +1,19 @@
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import PlaceholderImg from "../../../assets/placeholder.svg";
-import {type Dispatch, type MouseEventHandler, type SetStateAction, useState} from "react";
+import {type MouseEventHandler, type ReactNode, useState} from "react";
+
+import "../../../css/components/GalleryImg.css";
 
 interface GalleryItemProps {
   url: string;
+  hoverCaptions?: ReactNode;
   height: string | number;
   onLoad?: () => void;
   onClick: MouseEventHandler<HTMLButtonElement>;
 }
 
 export const GalleryImg = (
-  {url, height, onLoad, onClick}: GalleryItemProps
+  {url, hoverCaptions, height, onLoad, onClick}: GalleryItemProps
 ) => {
   const [isError, setIsError] = useState<boolean>(false);
 
@@ -22,7 +25,7 @@ export const GalleryImg = (
 
   return (
     <button
-      className="p-0 border-0 w-100"
+      className="city-gallery-item p-0 border-0 w-100 position-relative"
       style={{backgroundColor: "#868e96"}}
       onClick={onClick}
       aria-label="Open image on lightbox"
@@ -45,6 +48,11 @@ export const GalleryImg = (
           />
         }
       />
+      {hoverCaptions && (
+        <div className="captions text-truncate text-white p-1 position-absolute w-100 bg-opacity-50 d-flex justify-content-center bg-black gap-2">
+          {hoverCaptions}
+        </div>
+      )}
     </button>
   )
 }
