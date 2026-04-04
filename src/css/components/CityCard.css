@@ -13,4 +13,7 @@
       opacity .3s !important;
     transform: scale(1.07);
   }
+  h3, .card-subtitle {
+    text-decoration: underline;
+  }
 }
