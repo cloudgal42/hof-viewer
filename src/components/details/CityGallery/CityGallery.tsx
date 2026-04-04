@@ -43,7 +43,7 @@ const CityGallery = ({city, page}: GalleryProps) => {
         return {
           src: entry.imageUrl4K,
           alt: "",
-          thumb: city.imageUrlFHD.length < 4 ? entry.imageUrlFHD : entry.imageUrlThumbnail,
+          thumb: city.imageUrlFHD.length <= 6 ? entry.imageUrlFHD : entry.imageUrlThumbnail,
           cityRef: entry,
           subHtml: city.imageUrlFHD.length > 1 ? `
             <span>
@@ -80,16 +80,22 @@ const CityGallery = ({city, page}: GalleryProps) => {
     }
   }
 
+  const galleryClassName = currImageUrls.length > 2
+    ? currImageUrls.length > 6
+      ? "img-gallery-container-4-grid"
+      : "img-gallery-container-2-grid"
+    : "img-gallery-container";
+
   return (
     <>
       <div
-        style={lightboxItems.length < 4 && !isImageLoaded ? {aspectRatio: "16/9"} : {}}
-        className={`w-100 d-flex gap-1 flex-row flex-wrap ${currImageUrls.length > 4 ? "img-gallery-container-multiple" : "img-gallery-container"}`}
+        style={lightboxItems.length <= 6 && !isImageLoaded ? {aspectRatio: "16/9"} : {}}
+        className={`w-100 d-flex gap-1 flex-row flex-wrap ${galleryClassName}`}
       >
         {currImageUrls.map((entry, i) => (
           <GalleryImg
             url={entry.thumb}
-            height={currImageUrls.length > 4 ? "150" : ""}
+            height={currImageUrls.length > 6 ? "150" : ""}
             key={i}
             onLoad={() => setIsImageLoaded(true)}
             onClick={() => handleOpenGallery(i)}
