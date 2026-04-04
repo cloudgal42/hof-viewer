@@ -58,6 +58,7 @@ const CityGallery = ({city, page}: GalleryProps) => {
       })
     : [{
       src: city.imageUrl4K,
+      thumb: city.imageUrlFHD,
       alt: "",
       cityRef: city,
     }]
@@ -87,7 +88,7 @@ const CityGallery = ({city, page}: GalleryProps) => {
       >
         {currImageUrls.map((entry, i) => (
           <GalleryImg
-            url={entry.src}
+            url={entry.thumb}
             height={currImageUrls.length > 4 ? "150" : ""}
             key={i}
             onLoad={() => setIsImageLoaded(true)}
