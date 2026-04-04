@@ -43,7 +43,7 @@ const CityGallery = ({city, page}: GalleryProps) => {
         return {
           src: entry.imageUrl4K,
           alt: "",
-          thumb: entry.imageUrlThumbnail,
+          thumb: city.imageUrlFHD.length < 4 ? entry.imageUrlFHD : entry.imageUrlThumbnail,
           cityRef: entry,
           subHtml: city.imageUrlFHD.length > 1 ? `
             <span>

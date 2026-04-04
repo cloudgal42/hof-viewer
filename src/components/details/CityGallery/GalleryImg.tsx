@@ -31,6 +31,7 @@ export const GalleryImg = (
       aria-label="Open image on lightbox"
     >
       <LazyLoadImage
+        wrapperClassName="w-100"
         className="w-100"
         src={url}
         effect="black-and-white"
