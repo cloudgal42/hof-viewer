@@ -32,19 +32,7 @@ const CityGallery = ({city, page}: GalleryProps) => {
   const galleryRef = useRef<ILightGallery>(null);
   const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
 
-  const imageUrls = ("cities" in city) ?
-    [...city.cities]
-      .sort((a, b) => {
-        const cityADate = new Date(a.createdAt).getTime();
-        const cityBDate = new Date(b.createdAt).getTime();
-        return cityBDate - cityADate;
-      })
-      .map(entry =>
-        (city.imageUrlFHD.length > 4) ? entry.imageUrlThumbnail : entry.imageUrlFHD
-      )
-    : [city.imageUrlFHD];
-  const currImageUrls = imageUrls.toSpliced(page * DEFAULT_IMAGES_PER_PAGE);
-  const lightboxItems: GalleryItem[] = ("cities" in city) ?
+  const lightboxItems = ("cities" in city) ?
     [...city.cities]
       .sort((a, b) => {
         const cityADate = new Date(a.createdAt).getTime();
@@ -56,7 +44,7 @@ const CityGallery = ({city, page}: GalleryProps) => {
           src: entry.imageUrl4K,
           alt: "",
           thumb: entry.imageUrlThumbnail,
-          subHtml: imageUrls.length > 1 ? `
+          subHtml: city.imageUrlFHD.length > 1 ? `
             <span>
               Posted on ${new Date(entry.createdAt).toLocaleString()} (${entry.createdAtFormattedDistance}).<br /> 
               Views: ${entry.viewsCount} (Unique: ${entry.uniqueViewsCount}) | Favorites: ${entry.favoritesCount} |
@@ -71,6 +59,7 @@ const CityGallery = ({city, page}: GalleryProps) => {
       src: city.imageUrl4K,
       alt: ""
     }]
+  const currImageUrls = lightboxItems.toSpliced(page * DEFAULT_IMAGES_PER_PAGE);
 
   const onInit = useCallback((detail: InitDetail) => {
     if (detail) {
@@ -91,12 +80,12 @@ const CityGallery = ({city, page}: GalleryProps) => {
   return (
     <>
       <div
-        style={imageUrls.length < 4 && !isImageLoaded ? {aspectRatio: "16/9"} : {}}
+        style={lightboxItems.length < 4 && !isImageLoaded ? {aspectRatio: "16/9"} : {}}
         className={`w-100 d-flex gap-1 flex-row flex-wrap ${currImageUrls.length > 4 ? "img-gallery-container-multiple" : "img-gallery-container"}`}
       >
-        {currImageUrls.map((url, i) => (
+        {currImageUrls.map((entry, i) => (
           <GalleryImg
-            url={url}
+            url={entry.src}
             height={currImageUrls.length > 4 ? "150" : ""}
             key={i}
             onLoad={() => setIsImageLoaded(true)}
@@ -108,7 +97,7 @@ const CityGallery = ({city, page}: GalleryProps) => {
         <LightGallery
           mobileSettings={{showCloseIcon: true}}
           allowMediaOverlap={true}
-          toggleThumb={imageUrls.length > 1}
+          toggleThumb={lightboxItems.length > 1}
           mousewheel={true}
           onInit={onInit}
           speed={500}
