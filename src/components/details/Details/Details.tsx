@@ -5,6 +5,7 @@ import {FeatModCard} from "../FeatModCard/FeatModCard.tsx";
 import {BoxArrowUpRight, Eye, Heart, Person, Trophy} from "react-bootstrap-icons";
 import {ModList} from "../Playset/ModList.tsx";
 import {RenderSettings} from "../RenderSettings/RenderSettings.tsx";
+import Markdown from "react-markdown";
 
 const cityMilestones = [
   "Tiny Village",
@@ -87,7 +88,9 @@ export const Details = (
             <h3>
               <Card.Title>Description</Card.Title>
             </h3>
-            <p>{cityDetails.description}</p>
+            <Markdown>
+              {cityDetails.description}
+            </Markdown>
           </section>
         )}
         <section className="mb-3">
