@@ -47,10 +47,7 @@ const Home = () => {
 
   const {error, data, isFetching} = useCreatorCities({creator});
 
-  const cities =
-    queryClient.getQueryData<City[]>(["detailedCities", data && data[0]?.creatorId])
-    || queryClient.getQueryData<City[]>(["detailedCities", creator])
-    || data;
+  const cities = data;
   const sortedCities = useMemo(() => {
     if (!creator || isFetching || error || !cities) return [];
 

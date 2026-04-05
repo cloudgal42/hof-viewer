@@ -6,7 +6,7 @@ export const useCreatorCities = ({
   getViewsAndFavData,
   enabled,
 } : {
-  creator: string | null,
+  creator: string | undefined | null,
   getViewsAndFavData?: boolean,
   enabled?: boolean,
 }) => {

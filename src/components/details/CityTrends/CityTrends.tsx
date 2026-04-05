@@ -5,6 +5,7 @@ import {ErrorScreen} from "../../misc/ErrorScreen/ErrorScreen.tsx";
 import {useQuery} from "@tanstack/react-query";
 import {groupCities} from "../../../utils/GroupCities.ts";
 import {ThemeContext} from "../../../context/ThemeContext.ts";
+import {useCreatorCities} from "../../../hooks/useCreatorCities.ts";
 
 const TrendsChart = lazy(() => import("./TrendsChart.tsx"));
 
@@ -32,23 +33,10 @@ export const CityTrends = ({city, isLoading, fetchError}: CityTrendsProps) => {
   // Fetches all screenshots of the current creator, with a list of favorites and views entries if:
   // 1. User clicks on the "load trends" button
   // 2. If the creator ID is defined
-  const {error, data, isFetching, refetch} = useQuery<City[]>({
-    queryKey: ["detailedCities", city?.creatorId],
-    queryFn: async () => {
-      if (!city?.creatorId) return [];
-
-      const res = await fetch(`${import.meta.env.VITE_HOF_SERVER}/screenshots?creatorId=${city.creatorId}&favorites=true&views=true`);
-      const data = await res.json();
-
-      if (!res.ok) {
-        return Promise.reject(new Error(`${data.statusCode}: ${data.message}`));
-      }
-
-      return data;
-    },
-    refetchOnWindowFocus: false,
+  const {error, data, isFetching, refetch} = useCreatorCities({
+    creator: city?.creator.creatorName,
+    getViewsAndFavData: true,
     enabled: false,
-    retry: false,
   });
 
   const cityDetails = Array.isArray(city?.imageUrlFHD) ?
@@ -56,7 +44,12 @@ export const CityTrends = ({city, isLoading, fetchError}: CityTrendsProps) => {
     : city;
   let trendsBody;
 
-  if (city && Array.isArray(city.imageUrlFHD) && !data) {
+  const trendsNeedToBeFetched = cityDetails &&
+    cityDetails.favoritesCount > 0 && cityDetails.viewsCount > 0 &&
+    cityDetails.favorites && cityDetails.favorites.length === 0 &&
+    cityDetails.views && cityDetails.views.length === 0;
+
+  if (city && Array.isArray(city.imageUrlFHD) && trendsNeedToBeFetched) {
     trendsBody = (
       <Alert variant="warning" className="my-3">
         <p className="mb-2">
@@ -68,7 +61,7 @@ export const CityTrends = ({city, isLoading, fetchError}: CityTrendsProps) => {
         <Button
           variant="outline-warning"
           className={theme === "light" ? "text-reset" : ""}
-          onClick={() => !data && refetch()}
+          onClick={() => trendsNeedToBeFetched && refetch()}
           disabled={isFetching}
         >
           {isFetching ? (
