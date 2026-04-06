@@ -1,0 +1,13 @@
+@media all and (min-width: 992px) {
+  .section-nav {
+    position: sticky;
+    margin-right: 2rem;
+  }
+}
+
+@media all and (min-width: 1401px) {
+  .section-nav {
+    position: fixed;
+    right: calc(100% - 250px - 171px - 5%);
+  }
+}
