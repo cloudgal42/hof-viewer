@@ -1,7 +1,7 @@
-import { ToggleSetting } from "../components/settings/SettingSection/ToggleSetting.tsx";
+import { ToggleSetting } from "../components/settings/SettingsComponents/ToggleSetting.tsx";
 import { SectionNav } from "../components/settings/SectionNav/SectionNav.tsx";
-import { DropdownSetting } from "../components/settings/SettingSection/DropdownSetting.tsx";
-import { RangeSetting } from "../components/settings/SettingSection/RangeSetting.tsx";
+import { DropdownSetting } from "../components/settings/SettingsComponents/DropdownSetting.tsx";
+import { RangeSetting } from "../components/settings/SettingsComponents/RangeSetting.tsx";
 
 const Settings = () => {
   return (
