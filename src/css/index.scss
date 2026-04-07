@@ -2,6 +2,10 @@
   max-width: 90%;
 }
 
+.settings-wrapper {
+  max-width: 100%;
+}
+
 #city-feed {
   container-type: inline-size;
   container-name: city-feed;
@@ -39,7 +43,7 @@
 }
 
 @media all and (min-width: 1401px) {
-  .main-wrapper {
+  .main-wrapper, .settings-wrapper {
     max-width: 65%;
   }
 }

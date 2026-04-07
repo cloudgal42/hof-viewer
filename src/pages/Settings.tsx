@@ -5,9 +5,9 @@ import { RangeSetting } from "../components/settings/SettingSection/RangeSetting
 
 const Settings = () => {
   return (
-    <div className="ms-4 ms-xxl-5 me-4 me-sm-5 flex-grow-1 d-flex flex-column flex-lg-row justify-content-center">
+    <div className="ms-4 ms-xxl-5 me-4 me-xxl-5 flex-grow-1 d-flex flex-column flex-lg-row justify-content-center">
       <SectionNav />
-      <div className="main-wrapper flex-grow-1">
+      <div className="settings-wrapper flex-grow-1">
         <section id="appearance">
           <h3 className="fs-4 mb-3">Appearance</h3>
           <ToggleSetting
