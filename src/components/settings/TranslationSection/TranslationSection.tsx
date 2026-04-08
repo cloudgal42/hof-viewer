@@ -2,7 +2,7 @@ import { DropdownSetting } from "../SettingsComponents/DropdownSetting.tsx";
 
 export const TranslationSection = () => {
   return (
-    <section id="translation" style={{scrollMarginTop: "10px"}}>
+    <section id="translation">
       <h3 className="fs-4 mb-3">Name Translation</h3>
       <DropdownSetting
         label="Display City Names"

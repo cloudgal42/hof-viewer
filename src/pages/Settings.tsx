@@ -20,7 +20,7 @@ const Settings = () => {
           />
         </section>
         <hr />
-        <section id="groupedCities" style={{scrollMarginTop: "10px"}}>
+        <section id="groupedCities">
           <h3 className="fs-4 mb-3">Grouped Cities</h3>
           <p className="text-muted">TBD</p>
         </section>

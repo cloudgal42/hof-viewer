@@ -22,6 +22,14 @@
   top: 24px;
 }
 
+#translation {
+  scroll-margin-top: 70px;
+}
+
+#groupedCities {
+  scroll-margin-top: 100px;
+}
+
 .sidebar {
   height: 100vh;
 }
@@ -52,5 +60,8 @@
   .sidebar {
     position: sticky;
     top: 0px;
+  }
+  #translation, #groupedCities {
+    scroll-margin-top: 10px;
   }
 }
