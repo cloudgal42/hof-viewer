@@ -26,21 +26,33 @@ export const RangeSetting = ({
             {label}
           </label>
           {helpBlock && (
-            <Form.Text className="d-inline-block mt-0 lh-2" id={id + "HelpBlock"}>
+            <Form.Text
+              className="d-inline-block mt-0 lh-2"
+              id={id + "HelpBlock"}
+            >
               {helpBlock}
             </Form.Text>
           )}
         </div>
-        <div className="col-12 col-sm-6">
+        <div className="col-12 col-sm-6 d-flex gap-3 flex-nowrap align-items-center">
           <Form.Range
             id={id}
             name={name}
             min={min}
             max={max}
           />
+          <Form.Control
+            style={{maxWidth: "50px"}}
+            size="sm"
+            type="number"
+            id={id + "Control"}
+            name={name + "Control"}
+            min={min}
+            max={max}
+            aria-label={label}
+          />
         </div>
       </div>
-
     </div>
   );
 };
