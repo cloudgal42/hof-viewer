@@ -22,6 +22,7 @@ export const CityInsights = ({ city }: CityInsightsProps) => {
         data: [100 * (entry.favoritesCount / city.favoritesCount)],
         backgroundColor: entry.backgroundColor,
         details: entry,
+        link: `/city/${entry.id}?groupStatus=off`
       };
     });
 
@@ -34,6 +35,7 @@ export const CityInsights = ({ city }: CityInsightsProps) => {
         data: [100 * (entry.viewsCount / city.viewsCount)],
         backgroundColor: entry.backgroundColor,
         details: entry,
+        link: `/city/${entry.id}?groupStatus=off`
       }
     })
 

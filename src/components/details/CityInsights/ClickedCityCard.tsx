@@ -55,7 +55,7 @@ export const ClickedCityCard = ({data, visibility, setVisibility}: ClickedCityCa
             </li>
           </ul>
           <a
-            href={`/city/${data.id}?groupStatus=off`}
+            href={`${data.link}`}
             className="d-inline-flex gap-2 align-items-center"
             target="_blank"
           >

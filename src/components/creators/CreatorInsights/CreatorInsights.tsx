@@ -30,6 +30,7 @@ export const CreatorInsights = ({ cities }: { cities: GroupedCities[] }) => {
         data: [100 * (entry.favoritesCount / totalFavorites)],
         backgroundColor: entry.backgroundColor,
         details: entry,
+        link: `/city/${entry.cityName}?groupStatus=on&creator=${entry.creator.creatorName}`
       };
     });
 
@@ -44,6 +45,7 @@ export const CreatorInsights = ({ cities }: { cities: GroupedCities[] }) => {
         data: [100 * (entry.viewsCount / totalViews)],
         backgroundColor: entry.backgroundColor,
         details: entry,
+        link: `/city/${entry.cityName}?groupStatus=on&creator=${entry.creator.creatorName}`
       };
     });
 
