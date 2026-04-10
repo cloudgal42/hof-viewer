@@ -85,7 +85,7 @@ const Creators = () => {
         errorDetails={cityFetchErr.message}
       />
     )
-  } else {
+  } else if (creatorCities.length > 0) {
     insightsContent = <CreatorInsights cities={groupCities(creatorCities)} />
   }
 

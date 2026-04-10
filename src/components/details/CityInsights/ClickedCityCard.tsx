@@ -17,6 +17,7 @@ export const ClickedCityCard = ({data, visibility, setVisibility}: ClickedCityCa
     return (
       <Card className="mb-3 row flex-md-row gx-0 position-relative">
         <CardImg
+          key={data.details.imageUrlFHD}
           wrapperClassName="col-12 col-md-4 w-100 w-md-25"
           className="h-100 w-100 object-fit-cover"
           src={data.details.imageUrlFHD}
