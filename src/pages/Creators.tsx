@@ -10,6 +10,11 @@ import {useCreator} from "../hooks/useCreator.ts";
 import {Helmet} from "@dr.pogodin/react-helmet";
 import {DefaultHelmet} from "../components/misc/DefaultHelmet/DefaultHelmet.tsx";
 import Chirper from "../assets/Chirper.svg";
+import {CityInsights} from "../components/details/CityInsights/CityInsights.tsx";
+import {useCreatorCities} from "../hooks/useCreatorCities.ts";
+import {CreatorInsights} from "../components/creators/CreatorInsights/CreatorInsights.tsx";
+import {groupCities} from "../utils/GroupCities.ts";
+import {PlaceholderInsights} from "../components/creators/CreatorInsights/PlaceholderInsights.tsx";
 
 const Creators = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -20,45 +25,13 @@ const Creators = () => {
   const creator = searchParams.get("creator") || "";
 
   const {error, data, isFetching} = useCreator(creator);
+  const {
+    error: cityFetchErr,
+    data: creatorCities,
+    isFetching: isFetchingCities
+  } = useCreatorCities(creator);
 
   const creatorDetails = data;
-
-  // useEffect(() => {
-  //   let ignore = false;
-  //   if (!creator) return;
-  //
-  //   async function getCreatorDetails() {
-  //     setIsCreatorLoading(true);
-  //     const creatorRes = await fetch(`${import.meta.env.VITE_HOF_SERVER}/creators/${creator}`);
-  //     const creatorStatsRes = await fetch(`${import.meta.env.VITE_HOF_SERVER}/creators/${creator}/stats`);
-  //
-  //     const creatorInfo = await creatorRes.json();
-  //     const creatorStats = await creatorStatsRes.json();
-  //
-  //     setFetchStatus(creatorStatsRes.status);
-  //
-  //     if (creatorRes.ok && creatorStatsRes.ok && !ignore) {
-  //       setCreatorDetails({
-  //         ...creatorInfo,
-  //         ...creatorStats,
-  //       });
-  //       setIsCreatorLoading(false);
-  //     } else {
-  //       setIsCreatorLoading(false);
-  //       setCreatorDetails(null);
-  //     }
-  //   }
-  //
-  //   getCreatorDetails();
-  //
-  //   return () => {
-  //     ignore = true
-  //   };
-  // }, [creator]);
-
-  // function validateAndSetCreator(creator: string) {
-  //   setSearchParams(handleSetSearchParams(searchParams, "creator", creator));
-  // }
 
   function setCreator(formData: FormData) {
     const query = formData.get("creatorId");
@@ -100,6 +73,22 @@ const Creators = () => {
     );
   }
 
+  let insightsContent;
+
+  if (isFetchingCities || !creatorCities) {
+    // TODO: Placeholder state for this
+    insightsContent = <PlaceholderInsights />;
+  } else if (cityFetchErr) {
+    insightsContent = (
+      <ErrorScreen
+        errorSummary="Failed to get screenshots for this creator :("
+        errorDetails={cityFetchErr.message}
+      />
+    )
+  } else {
+    insightsContent = <CreatorInsights cities={groupCities(creatorCities)} />
+  }
+
   return (
     <div className="main-wrapper flex-grow-1 ms-sm-5 me-sm-5">
       <DefaultHelmet />
@@ -127,7 +116,12 @@ const Creators = () => {
           <h2 className="mb-0">Creator</h2>
         </div>
         <div id="creator">
-          {content}
+          <section id="creatorInfo" className="mb-3">
+            {content}
+          </section>
+          <section id="creatorInsights">
+            {insightsContent}
+          </section>
         </div>
       </section>
     </div>
