@@ -34,9 +34,10 @@ export const CityTrends = (
 
   const [trendType, setTrendType] = useState<string>("views");
   const [groupPeriod, setGroupPeriod] = useState<number>(() => {
-    if (currEpoch >= createdAtEpoch + (DAYS_IN_MILLISECONDS * 6 * 30)) return 7;
-    else if (currEpoch >= createdAtEpoch + (DAYS_IN_MILLISECONDS * 365 * 2)) {
+    if (currEpoch >= createdAtEpoch + (DAYS_IN_MILLISECONDS * 365 * 2)) {
       return 30;
+    } else if (currEpoch >= createdAtEpoch + (DAYS_IN_MILLISECONDS * 6 * 30)) {
+      return 7;
     }
 
     return 1;
