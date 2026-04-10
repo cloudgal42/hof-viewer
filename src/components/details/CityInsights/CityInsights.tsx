@@ -15,7 +15,10 @@ function getRandomColor() {
 }
 
 export const CityInsights = ({ city }: CityInsightsProps) => {
-  const cities = [...city.cities];
+  const cities = city.cities.map(entry => ({
+    ...entry,
+    backgroundColor: getRandomColor(),
+  }));
 
   const favoritesData = cities
     .sort((a, b) => b.favoritesCount - a.favoritesCount)
@@ -24,7 +27,7 @@ export const CityInsights = ({ city }: CityInsightsProps) => {
         id: entry.id,
         label: `Screenshot ${new Date(entry.createdAt).toLocaleString()})`,
         data: [100 * (entry.favoritesCount / city.favoritesCount)],
-        backgroundColor: getRandomColor(),
+        backgroundColor: entry.backgroundColor,
         details: entry,
       };
     });
@@ -36,7 +39,7 @@ export const CityInsights = ({ city }: CityInsightsProps) => {
         id: entry.id,
         label: `Screenshot ${new Date(entry.createdAt).toLocaleString()})`,
         data: [100 * (entry.viewsCount / city.viewsCount)],
-        backgroundColor: getRandomColor(),
+        backgroundColor: entry.backgroundColor,
         details: entry,
       }
     })
