@@ -45,7 +45,7 @@ const Home = () => {
     setCity,
   } = useOutletContext<ContextType>();
 
-  const {error, data, isFetching} = useCreatorCities({creator});
+  const {error, data, isFetching} = useCreatorCities(creator);
 
   const cities =
     queryClient.getQueryData<City[]>(["detailedCities", data && data[0]?.creatorId])
