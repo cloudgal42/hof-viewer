@@ -73,6 +73,7 @@ const CityDetails = () => {
       return data;
     },
     refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 10, // 10 minutes
     enabled: Boolean(!city?.favorites && !city?.views && !isCitiesGrouped ||
       city?.showcasedModId && !isCitiesGrouped || !isCitiesGrouped),
     retry: false,
