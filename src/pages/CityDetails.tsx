@@ -74,9 +74,7 @@ const CityDetails = () => {
     },
     refetchOnWindowFocus: false,
     enabled: Boolean(!city?.favorites && !city?.views && !isCitiesGrouped ||
-      city?.showcasedModId && !isCitiesGrouped),
-    // 5 minutes
-    staleTime: 1000 * 60 * 5,
+      city?.showcasedModId && !isCitiesGrouped || !isCitiesGrouped),
     retry: false,
   });
 
