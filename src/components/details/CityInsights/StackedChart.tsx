@@ -36,6 +36,8 @@ export const StackedChart = ({stats} : {stats: PercentageStat[]}) => {
   const chartRef = useRef<ChartJS<"bar">>(null);
   const [clickedBar, setClickedBar] = useState<PercentageStat>();
 
+  const [visibility, setVisibility] = useState(true);
+
   // options is memonized to prevent zoom level being reset whenever user clicks on the graph
   const options = useMemo(() => ({
     plugins: {
@@ -80,6 +82,7 @@ export const StackedChart = ({stats} : {stats: PercentageStat[]}) => {
       // @ts-expect-error because Mismatched event types, FIXME
       const points = chart.getElementsAtEventForMode(e, "nearest", {intersect: true}, true);
       setClickedBar(stats[points[0].datasetIndex]);
+      setVisibility(true);
     },
   }), [stats])
 
@@ -135,7 +138,11 @@ export const StackedChart = ({stats} : {stats: PercentageStat[]}) => {
       </section>
       <section>
         {clickedBar && (
-          <ClickedCityCard key={clickedBar.id} data={clickedBar}/>
+          <ClickedCityCard
+            visibility={visibility}
+            setVisibility={setVisibility}
+            data={clickedBar}
+          />
         )}
       </section>
     </>

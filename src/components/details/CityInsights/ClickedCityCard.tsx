@@ -8,11 +8,11 @@ import {CardImg} from "../../misc/CardImg/CardImg.tsx";
 
 interface ClickedCityCardProps {
   data: PercentageStat;
+  visibility: boolean;
+  setVisibility: (visibility: boolean) => void;
 }
 
-export const ClickedCityCard = ({data}: ClickedCityCardProps) => {
-  const [visibility, setVisibility] = useState(true);
-
+export const ClickedCityCard = ({data, visibility, setVisibility}: ClickedCityCardProps) => {
   if (visibility) {
     return (
       <Card className="mb-3 row flex-md-row gx-0 position-relative">
