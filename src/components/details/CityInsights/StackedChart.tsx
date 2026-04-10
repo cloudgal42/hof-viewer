@@ -28,57 +28,13 @@ ChartJS.register(
   zoomPlugin,
 );
 
-interface StackedChartProps {
-  city: GroupedCities;
-  type: "views" | "favorites";
-}
-
-function getRandomColor() {
-  const r = Math.floor(Math.random() * 255);
-  const g = Math.floor(Math.random() * 255);
-  const b = Math.floor(Math.random() * 255);
-
-  return `rgb(${r}, ${g}, ${b})`;
-}
-
 defaults.font.family = "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\"," +
   " \"Noto Sans\", \"Liberation Sans\", Arial, sans-serif, \"Apple Color Emoji\", " +
   "\"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\""
 
-export const StackedChart = ({city, type}: StackedChartProps) => {
+export const StackedChart = ({stats} : {stats: PercentageStat[]}) => {
   const chartRef = useRef<ChartJS<"bar">>(null);
   const [clickedBar, setClickedBar] = useState<PercentageStat>();
-
-  const totalStats = (type === "favorites") ? city.favoritesCount : city.viewsCount
-  const stats: PercentageStat[] = useMemo(() => {
-    const cities = [...city.cities];
-
-    if (type === "favorites") {
-      return cities
-        .sort((a, b) => b.favoritesCount - a.favoritesCount)
-        .map((entry) => {
-        return {
-          id: entry.id,
-          label: `Screenshot ${new Date(entry.createdAt).toLocaleString()})`,
-          data: [100 * (entry.favoritesCount / totalStats)],
-          backgroundColor: getRandomColor(),
-          details: entry,
-        }
-      })
-    } else {
-      return cities
-        .sort((a, b) => b.viewsCount - a.viewsCount)
-        .map((entry) => {
-        return {
-          id: entry.id,
-          label: `Screenshot ${new Date(entry.createdAt).toLocaleString()})`,
-          data: [100 * (entry.viewsCount / totalStats)],
-          backgroundColor: getRandomColor(),
-          details: entry,
-        }
-      })
-    }
-  }, [city.cities, totalStats, type]);
 
   // options is memonized to prevent zoom level being reset whenever user clicks on the graph
   const options = useMemo(() => ({
