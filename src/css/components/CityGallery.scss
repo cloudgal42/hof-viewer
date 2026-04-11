@@ -1,12 +1,3 @@
-.img-gallery-container-multiple {
-  container-type: inline-size;
-  container-name: img-gallery;
-}
-
-.img-gallery-container-multiple button {
-  max-width: calc(24.7% - 0.05rem);
-}
-
 .lg-toolbar {
   button, a, .lg-counter {
     background: rgba(0, 0, 0, 0.5) !important;
@@ -67,7 +58,27 @@
   }
 }
 
-.img-gallery-container-multiple span img,
+.img-gallery-container-4-grid {
+  container-type: inline-size;
+  container-name: img-4-grid-gallery;
+}
+
+.img-gallery-container-4-grid button {
+  max-width: calc(24.7% - 0.05rem);
+}
+
+.img-gallery-container-2-grid {
+  container-type: inline-size;
+  container-name: img-2-grid-gallery;
+}
+
+.img-gallery-container-2-grid button {
+  max-width: calc(49.85% - 0.05rem);
+  aspect-ratio: 16 / 9;
+}
+
+.img-gallery-container-4-grid span img,
+.img-gallery-container-2-grid span img,
 .img-gallery-container span img {
   cursor: pointer;
   min-width: 100%;
@@ -78,28 +89,42 @@
   filter: brightness(1);
 }
 
-.img-gallery-container-multiple span img:hover,
+.img-gallery-container-4-grid span img:hover,
+.img-gallery-container-2-grid span img:hover,
 .img-gallery-container span img:hover,
-.img-gallery-container-multiple span img:focus ,
-.img-gallery-container span img:focus {
+.img-gallery-container-4-grid span img:focus,
+.img-gallery-container-2-grid span img:focus,
+.img-gallery-container span img:focus, {
   transition: opacity 0.3s, filter 0.25s !important;
   filter: brightness(0.85);
 }
 
-@container img-gallery (width < 800px) {
-  .img-gallery-container-multiple button {
+@container img-4-grid-gallery (width < 800px) {
+  .img-gallery-container-4-grid button {
     max-width: calc(33% - 0.05rem);
   }
 }
 
-@container img-gallery (width < 557px) {
-  .img-gallery-container-multiple button {
+@container img-4-grid-gallery (width < 557px) {
+  .img-gallery-container-4-grid button {
     max-width: calc(50% - 0.15rem);
   }
 }
 
-@container img-gallery (width < 280px) {
-  .img-gallery-container-multiple button {
+@container img-4-grid-gallery (width < 280px) {
+  .img-gallery-container-4-grid button {
+    max-width: 100%;
+  }
+}
+
+@container img-2-grid-gallery (width < 794px) {
+  .img-gallery-container-2-grid button {
+    max-width: calc(49.7% - 0.05rem);
+  }
+}
+
+@container img-2-grid-gallery (width < 397px) {
+  .img-gallery-container-2-grid button {
     max-width: 100%;
   }
 }

@@ -18,10 +18,11 @@ export const SortDropdown = ({searchParams, setSearchParams}: SortDropdownProps)
       defaultValue={searchParams.get("sortBy") || "date"}
     >
       <option value="date">Date Posted</option>
-      <option value="name">Name (Latinized)</option>
-      <option value="population">Population</option>
       <option value="views">Views</option>
       <option value="favorites">Favorites</option>
+      <option value="favoritesRatio">Favorites / Views</option>
+      <option value="name">Name (Latinized)</option>
+      <option value="population">Population</option>
     </Form.Select>
   )
 }

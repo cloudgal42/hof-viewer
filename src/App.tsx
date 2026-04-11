@@ -93,7 +93,7 @@ const App = () => {
               setIsDarkMode={setIsDarkMode}
             />
             <main id="mainContent" className="mt-3 mt-lg-5 mb-3 d-flex flex-grow-1 justify-content-center">
-              <Suspense key={location.key} fallback={
+              <Suspense key={location.pathname} fallback={
                 <div className="d-flex align-items-center justify-content-center h-100">
                   <Spinner animation="border" role="status">
                     <span className="visually-hidden">Loading...</span>

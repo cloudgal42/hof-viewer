@@ -16,9 +16,9 @@ import lgAutoplay from 'lightgallery/plugins/autoplay';
 
 import {useCallback, useRef, useState} from "react";
 import type {InitDetail} from "lightgallery/lg-events";
-import type {GalleryItem} from "lightgallery/lg-utils";
 import type {City, GroupedCities} from "../../../interfaces/City.ts";
 import {GalleryImg} from "./GalleryImg.tsx";
+import {Eye, Heart} from "react-bootstrap-icons";
 
 interface GalleryProps {
   city: City | GroupedCities;
@@ -32,19 +32,7 @@ const CityGallery = ({city, page}: GalleryProps) => {
   const galleryRef = useRef<ILightGallery>(null);
   const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
 
-  const imageUrls = ("cities" in city) ?
-    [...city.cities]
-      .sort((a, b) => {
-        const cityADate = new Date(a.createdAt).getTime();
-        const cityBDate = new Date(b.createdAt).getTime();
-        return cityBDate - cityADate;
-      })
-      .map(entry =>
-        (city.imageUrlFHD.length > 4) ? entry.imageUrlThumbnail : entry.imageUrlFHD
-      )
-    : [city.imageUrlFHD];
-  const currImageUrls = imageUrls.toSpliced(page * DEFAULT_IMAGES_PER_PAGE);
-  const lightboxItems: GalleryItem[] = ("cities" in city) ?
+  const lightboxItems = ("cities" in city) ?
     [...city.cities]
       .sort((a, b) => {
         const cityADate = new Date(a.createdAt).getTime();
@@ -55,8 +43,9 @@ const CityGallery = ({city, page}: GalleryProps) => {
         return {
           src: entry.imageUrl4K,
           alt: "",
-          thumb: entry.imageUrlThumbnail,
-          subHtml: imageUrls.length > 1 ? `
+          thumb: city.imageUrlFHD.length <= 6 ? entry.imageUrlFHD : entry.imageUrlThumbnail,
+          cityRef: entry,
+          subHtml: city.imageUrlFHD.length > 1 ? `
             <span>
               Posted on ${new Date(entry.createdAt).toLocaleString()} (${entry.createdAtFormattedDistance}).<br /> 
               Views: ${entry.viewsCount} (Unique: ${entry.uniqueViewsCount}) | Favorites: ${entry.favoritesCount} |
@@ -69,8 +58,11 @@ const CityGallery = ({city, page}: GalleryProps) => {
       })
     : [{
       src: city.imageUrl4K,
-      alt: ""
+      thumb: city.imageUrlFHD,
+      alt: "",
+      cityRef: city,
     }]
+  const currImageUrls = lightboxItems.toSpliced(page * DEFAULT_IMAGES_PER_PAGE);
 
   const onInit = useCallback((detail: InitDetail) => {
     if (detail) {
@@ -88,19 +80,35 @@ const CityGallery = ({city, page}: GalleryProps) => {
     }
   }
 
+  const galleryClassName = currImageUrls.length > 2
+    ? currImageUrls.length > 6
+      ? "img-gallery-container-4-grid"
+      : "img-gallery-container-2-grid"
+    : "img-gallery-container";
+
   return (
     <>
       <div
-        style={imageUrls.length < 4 && !isImageLoaded ? {aspectRatio: "16/9"} : {}}
-        className={`w-100 d-flex gap-1 flex-row flex-wrap ${currImageUrls.length > 4 ? "img-gallery-container-multiple" : "img-gallery-container"}`}
+        style={lightboxItems.length <= 6 && !isImageLoaded ? {aspectRatio: "16/9"} : {}}
+        className={`w-100 d-flex gap-1 flex-row flex-wrap ${galleryClassName}`}
       >
-        {currImageUrls.map((url, i) => (
+        {currImageUrls.map((entry, i) => (
           <GalleryImg
-            url={url}
-            currImageUrls={currImageUrls}
-            setIsImageLoaded={setIsImageLoaded}
+            url={entry.thumb}
+            height={currImageUrls.length > 6 ? "150" : ""}
             key={i}
+            onLoad={() => setIsImageLoaded(true)}
             onClick={() => handleOpenGallery(i)}
+            hoverCaptions={("cities" in city && city.imageUrlFHD.length > 1) &&
+              <>
+                <span className="d-flex align-items-center gap-1">
+                  <Heart /> {entry.cityRef.favoritesCount.toLocaleString()}
+                </span>
+                <span className="d-flex align-items-center gap-1">
+                  <Eye /> {entry.cityRef.viewsCount.toLocaleString()}
+                </span>
+              </>
+            }
           />
         ))}
       </div>
@@ -108,7 +116,7 @@ const CityGallery = ({city, page}: GalleryProps) => {
         <LightGallery
           mobileSettings={{showCloseIcon: true}}
           allowMediaOverlap={true}
-          toggleThumb={imageUrls.length > 1}
+          toggleThumb={lightboxItems.length > 1}
           mousewheel={true}
           onInit={onInit}
           speed={500}

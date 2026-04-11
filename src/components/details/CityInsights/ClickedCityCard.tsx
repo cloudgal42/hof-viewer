@@ -8,15 +8,16 @@ import {CardImg} from "../../misc/CardImg/CardImg.tsx";
 
 interface ClickedCityCardProps {
   data: PercentageStat;
+  visibility: boolean;
+  setVisibility: (visibility: boolean) => void;
 }
 
-export const ClickedCityCard = ({data}: ClickedCityCardProps) => {
-  const [visibility, setVisibility] = useState(true);
-
+export const ClickedCityCard = ({data, visibility, setVisibility}: ClickedCityCardProps) => {
   if (visibility) {
     return (
       <Card className="mb-3 row flex-md-row gx-0 position-relative">
         <CardImg
+          key={data.details.imageUrlFHD}
           wrapperClassName="col-12 col-md-4 w-100 w-md-25"
           className="h-100 w-100 object-fit-cover"
           src={data.details.imageUrlFHD}
@@ -54,7 +55,7 @@ export const ClickedCityCard = ({data}: ClickedCityCardProps) => {
             </li>
           </ul>
           <a
-            href={`/city/${data.id}?groupStatus=off`}
+            href={`${data.link}`}
             className="d-inline-flex gap-2 align-items-center"
             target="_blank"
           >

@@ -84,6 +84,14 @@ const Home = () => {
       case "favorites":
         copiedCities.sort((a, b) => b.favoritesCount - a.favoritesCount);
         break;
+      case "favoritesRatio":
+        copiedCities.sort((a, b) => {
+          const cityAFavRatio = a.favoritesCount / a.uniqueViewsCount;
+          const cityBFavRatio = b.favoritesCount / b.uniqueViewsCount;
+
+          return cityBFavRatio - cityAFavRatio;
+        });
+        break;
     }
 
     if (sortOrder === "Ascending") copiedCities.reverse();

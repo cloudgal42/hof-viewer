@@ -1,0 +1,19 @@
+.city-card {
+  .card-img-top {
+    transition:
+      transform .2s ease-in-out,
+      opacity .3s !important;
+  }
+}
+
+.city-card:hover {
+  .card-img-top {
+    transition:
+      transform .2s ease-in-out,
+      opacity .3s !important;
+    transform: scale(1.07);
+  }
+  h3, .card-subtitle {
+    text-decoration: underline;
+  }
+}

@@ -6,4 +6,5 @@ export interface PercentageStat {
   data: number[];
   backgroundColor: string;
   details: City
+  link: string;
 }

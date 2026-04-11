@@ -1,5 +1,5 @@
 import {Button, OverlayTrigger, Tooltip} from "react-bootstrap";
-import {ArrowUp} from "react-bootstrap-icons";
+import {ChevronUp} from "react-bootstrap-icons";
 import {useEffect, useState} from "react";
 
 import "../../../css/components/ToTopBtn.scss"
@@ -34,11 +34,11 @@ export const ToTopBtn = () => {
     <OverlayTrigger overlay={<Tooltip>Back to Top</Tooltip>}>
       <Button
         variant="primary"
-        className={`${isVisible ? "visible" : ""} to-top-btn position-fixed p-0`}
+        className={`${isVisible ? "visible" : ""} to-top-btn d-flex align-items-center position-fixed p-0`}
         onClick={goToTop}
       >
         <span className="visually-hidden">Back to Top</span>
-        <ArrowUp />
+        <ChevronUp className="w-100" />
       </Button>
     </OverlayTrigger>
   )

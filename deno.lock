@@ -1,18 +1,32 @@
 {
   "version": "5",
+  "redirects": {
+    "https://esm.sh/@types/react-dom@~19.2.3/server.d.ts": "https://esm.sh/@types/react-dom@19.2.3/server.d.ts",
+    "https://esm.sh/@types/react@~19.2.9/index.d.ts": "https://esm.sh/@types/react@19.2.14/index.d.ts",
+    "https://esm.sh/react": "https://esm.sh/react@19.2.4",
+    "https://esm.sh/react-dom/server": "https://esm.sh/react-dom@19.2.4/server"
+  },
   "remote": {
     "https://edge.netlify.com/": "fd941d61d88673d5f28aab283fb86fcc50f08a3bc80ee5470498fcfa88c65cfb",
     "https://edge.netlify.com/bootstrap/config.ts": "6a2ce0e544e15e8f8883a5c18da5948e37fd0f2619f68cb31f3af53c51817025",
     "https://edge.netlify.com/bootstrap/context.ts": "e97240232121e2f369f6546ce961490f34d961ea1ea54be3ff09633e3f08373f",
     "https://edge.netlify.com/bootstrap/cookie.ts": "8b0baae708989ca183c6f3b4ab3d029e6abcbc2e43f93edeb0ff447b3bbc3a05",
     "https://edge.netlify.com/bootstrap/edge_function.ts": "b8253e86aa83c67341f5cfedeba5049d77fbf84dcab7eceff7566b7728ae9b39",
-    "https://edge.netlify.com/bootstrap/globals/types.ts": "eaa6148ded3121d8dee62dd91c86e7fe76601df0f3ca8d7962243a30f4c8935f"
+    "https://edge.netlify.com/bootstrap/globals/types.ts": "eaa6148ded3121d8dee62dd91c86e7fe76601df0f3ca8d7962243a30f4c8935f",
+    "https://esm.sh/react-dom@19.2.4/denonext/cjs/react-dom-server-legacy.browser.production.mjs": "6e90cbe7a87417f484ff67023d0eebe5d8bb6e046a785ed150c92ba9b07c9f61",
+    "https://esm.sh/react-dom@19.2.4/denonext/cjs/react-dom-server.browser.production.mjs": "e738e679b174ee82671437c09e14db84ae495ee1bebc808bc7b546f5cb1632c3",
+    "https://esm.sh/react-dom@19.2.4/denonext/react-dom.mjs": "977d512e020d3902d07a2d195cb8e636e40a035112fe7bf2e95e0c5d36524020",
+    "https://esm.sh/react-dom@19.2.4/denonext/server.mjs": "70300e8f845adfc1c9098f6f3610b651639a664dde4d7f812acb89f2eacff063",
+    "https://esm.sh/react-dom@19.2.4/server": "2f21c11712df340d423749ad4f8b7c8746e43c90c5082a414f494b138a55b2a9",
+    "https://esm.sh/react@19.2.4": "7d859784a5b32ed39680309600da183f46df137ffde775567b32b6d19fbcd473",
+    "https://esm.sh/react@19.2.4/denonext/react.mjs": "d54e9e11590e98b359498daf1553ba42ebe842e9d5042fa7020013dae07ae548"
   },
   "workspace": {
     "packageJson": {
       "dependencies": [
         "npm:@dr.pogodin/react-helmet@^3.0.6",
         "npm:@eslint/js@^9.39.1",
+        "npm:@netlify/edge-functions@^3.0.4",
         "npm:@netlify/vite-plugin@^2.7.20",
         "npm:@popperjs/core@^2.11.8",
         "npm:@tanstack/react-query@^5.90.20",
@@ -38,6 +52,7 @@
         "npm:react-error-boundary@^6.1.0",
         "npm:react-infinite-scroll-component@^6.1.1",
         "npm:react-lazy-load-image-component@^1.6.3",
+        "npm:react-markdown@^10.1.0",
         "npm:react-router@^7.12.0",
         "npm:react@^19.2.0",
         "npm:sass@^1.97.2",

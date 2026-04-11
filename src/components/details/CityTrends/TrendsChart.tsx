@@ -101,6 +101,23 @@ const TrendsChart = React.memo(({city, trendType, groupPeriod}: TrendsChartProps
         text: chartName,
         color: fontColor,
       },
+      zoom: {
+        zoom: {
+          wheel: {
+            enabled: true,
+            modifierKey: "ctrl" as const
+          },
+          pinch: {enabled: true},
+          limits: {
+            y: {min: "original", max: "original"},
+          },
+          mode: 'x' as const,
+        },
+        pan: {
+          enabled: true,
+          mode: 'x' as const,
+        },
+      },
     },
     scales: {
       x: {

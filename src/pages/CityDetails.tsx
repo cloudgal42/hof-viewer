@@ -2,7 +2,7 @@ import {Button, OverlayTrigger, Tooltip} from "react-bootstrap";
 import {NavLink, useOutletContext, useParams, useSearchParams} from "react-router";
 import type {ContextType} from "../App.tsx";
 import {ChevronDown, Share} from "react-bootstrap-icons";
-import {lazy, Suspense, useEffect, useState} from "react";
+import {lazy, Suspense, useState} from "react";
 import {DEFAULT_IMAGES_PER_PAGE} from "../components/details/CityGallery/CityGallery.tsx";
 
 import PlaceholderImg from "../assets/placeholder.svg"
@@ -43,8 +43,8 @@ const CityDetails = () => {
   const cityParam = useParams().city;
 
   // Checking for prerender environment is guesswork atp
-  const isInPrerenderEnv = window.navigator.userAgent.includes("Prerender")
-    || window.navigator.userAgent.includes("HeadlessChrome");
+  // const isInPrerenderEnv = window.navigator.userAgent.includes("Prerender")
+  //   || window.navigator.userAgent.includes("HeadlessChrome");
 
   const isCitiesGrouped = searchParams.get("groupStatus") === "on";
   const cityCreator = searchParams.get("creator");
@@ -60,10 +60,10 @@ const CityDetails = () => {
   const {error, data, isFetching} = useQuery<City>({
     queryKey: ["city", {id: cityParam}],
     queryFn: async () => {
-      const link = isInPrerenderEnv ?
-        `${import.meta.env.VITE_HOF_SERVER}/screenshots/${cityParam}`
-        : `${import.meta.env.VITE_HOF_SERVER}/screenshots/${cityParam}?favorites=true&views=true`
-      const res = await fetch(link);
+      // const link = isInPrerenderEnv ?
+      //   `${import.meta.env.VITE_HOF_SERVER}/screenshots/${cityParam}`
+      //   : `${import.meta.env.VITE_HOF_SERVER}/screenshots/${cityParam}?favorites=true&views=true`
+      const res = await fetch(`${import.meta.env.VITE_HOF_SERVER}/screenshots/${cityParam}?favorites=true&views=true`);
       const data = await res.json();
 
       if (!res.ok) {
@@ -73,6 +73,7 @@ const CityDetails = () => {
       return data;
     },
     refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 10, // 10 minutes
     enabled: Boolean(!city?.favorites && !city?.views && !isCitiesGrouped ||
       city?.showcasedModId && !isCitiesGrouped || !isCitiesGrouped),
     retry: false,
@@ -182,7 +183,7 @@ const CityDetails = () => {
               creatorName={cityDetails.creator.creatorName}
               showLinks={true}
             >
-              <h3 className="text-muted d-inline">by {cityDetails.creator.creatorName}</h3>
+              <h3 className="mb-0 text-muted d-inline">by {cityDetails.creator.creatorName}</h3>
             </CreatorPreviewTrigger>
           </div>
           {cityDetails && (
@@ -248,15 +249,12 @@ const CityDetails = () => {
         >
           <Details cityDetails={cityDetails} error={error} isFetching={isFetching}/>
         </section>
-        {/* Don't render trends on prerender env to save computational costs */}
-        {!isInPrerenderEnv && (
-          <section
-            id="trends"
-            className={`mt-3 position-relative ${(isLoadMoreHovered && !isLastPage) && "load-more-hovered"}`}
-          >
-            <CityTrends city={cityDetails} isLoading={isFetching} fetchError={error}/>
-          </section>
-        )}
+        <section
+          id="trends"
+          className={`mt-3 position-relative ${(isLoadMoreHovered && !isLastPage) && "load-more-hovered"}`}
+        >
+          <CityTrends city={cityDetails} isLoading={isFetching} fetchError={error}/>
+        </section>
         {/* City insights only available for grouped screenshots */}
         {("cities" in cityDetails) && (
           <section
