@@ -182,7 +182,11 @@ const Home = () => {
         dataLength={paginatedCities.length}
       >
         {paginatedCities.map(city =>
-          <CityCard key={city.id} city={city} setCity={setCity} isCitiesGrouped={groupStatus === "on"}/>
+          <CityCard
+            key={city.id}
+            city={city}
+            setCity={setCity}
+          />
         )}
       </InfiniteScroll>
     );
