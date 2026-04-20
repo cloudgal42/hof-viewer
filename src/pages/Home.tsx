@@ -149,6 +149,13 @@ const Home = () => {
         errorDetails="Double check your search query and try again."
       />
     )
+  } else if (paginatedCities.length === 0) {
+    content = (
+      <ErrorScreen
+        errorSummary="This creator has not yet posted any screenshots :("
+        errorDetails="Maybe try looking for another creator?"
+      />
+    )
   } else if (!navigator.onLine) {
     content = (
       <ErrorScreen
@@ -256,7 +263,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-        {creator && (
+        {(creator && paginatedCities.length > 0) && (
           <Form.Control
             className="mb-2"
             type="search"
