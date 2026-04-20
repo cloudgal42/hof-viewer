@@ -77,12 +77,16 @@ const App = () => {
           className="bg-body-tertiary d-lg-none"
           style={{position: "sticky", top: "0px", zIndex: "4"}}
         >
-          <Container fluid className="justify-content-start align-items-center ps-2 ps-sm-3 ms-sm-3 ms-lg-0">
+          <div className="m-auto main-wrapper flex-grow-1 d-flex align-items-center">
             <HamburgerButton isOpened={isAsideOpened} setIsOpened={setIsAsideOpened}/>
-            <Navbar.Brand className="py-1" href="/">
+            <Navbar.Brand
+              className="position-relative py-1"
+              style={{left: "-0.75rem + 1px"}}
+              href="/"
+            >
               <span className="mb-0 fs-3 fw-semibold">HoF</span>
             </Navbar.Brand>
-          </Container>
+          </div>
         </Navbar>
         <ToTopBtn/>
         <div className="d-flex flex-grow-1 flex-column flex-nowrap">
