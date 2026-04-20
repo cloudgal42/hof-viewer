@@ -81,7 +81,7 @@ const App = () => {
             <HamburgerButton isOpened={isAsideOpened} setIsOpened={setIsAsideOpened}/>
             <Navbar.Brand
               className="position-relative py-1"
-              style={{left: "-0.75rem + 1px"}}
+              style={{left: "calc(-0.75rem + 1px)"}}
               href="/"
             >
               <span className="mb-0 fs-3 fw-semibold">HoF</span>
