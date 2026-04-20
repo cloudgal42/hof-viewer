@@ -149,7 +149,7 @@ const Home = () => {
         errorDetails="Double check your search query and try again."
       />
     )
-  } else if (paginatedCities.length === 0) {
+  } else if (paginatedCities.length === 0 && creator) {
     content = (
       <ErrorScreen
         errorSummary="This creator has not yet posted any screenshots :("
