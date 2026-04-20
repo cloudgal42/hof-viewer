@@ -11,11 +11,11 @@ import "../../../css/components/CityCard.css";
 interface CityCardProps {
   city: City | GroupedCities;
   setCity: (value: City | GroupedCities) => void;
-  isCitiesGrouped: boolean;
 }
 
-export const CityCard = ({ city, setCity, isCitiesGrouped }: CityCardProps) => {
+export const CityCard = ({ city, setCity }: CityCardProps) => {
   let thumbnailImgUrl;
+  const isCitiesGrouped = "cities" in city;
 
   if (Array.isArray(city.imageUrlThumbnail)) {
     thumbnailImgUrl = city.imageUrlThumbnail[city.imageUrlThumbnail.length - 1];

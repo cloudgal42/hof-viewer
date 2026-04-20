@@ -45,9 +45,12 @@ const Home = () => {
     setCity,
   } = useOutletContext<ContextType>();
 
-  const {error, data, isFetching} = useCreatorCities({creator});
+  const {error, data, isFetching} = useCreatorCities(creator);
 
-  const cities = data;
+  const cities =
+    queryClient.getQueryData<City[]>(["detailedCities", data && data[0]?.creatorId])
+    || queryClient.getQueryData<City[]>(["detailedCities", creator])
+    || data;
   const sortedCities = useMemo(() => {
     if (!creator || isFetching || error || !cities) return [];
 
@@ -146,6 +149,13 @@ const Home = () => {
         errorDetails="Double check your search query and try again."
       />
     )
+  } else if (sortedCities.length === 0 && creator) {
+    content = (
+      <ErrorScreen
+        errorSummary="This creator has not yet posted any screenshots :("
+        errorDetails="Maybe try looking for another creator?"
+      />
+    )
   } else if (!navigator.onLine) {
     content = (
       <ErrorScreen
@@ -172,7 +182,11 @@ const Home = () => {
         dataLength={paginatedCities.length}
       >
         {paginatedCities.map(city =>
-          <CityCard key={city.id} city={city} setCity={setCity} isCitiesGrouped={groupStatus === "on"}/>
+          <CityCard
+            key={city.id}
+            city={city}
+            setCity={setCity}
+          />
         )}
       </InfiniteScroll>
     );
@@ -253,7 +267,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-        {creator && (
+        {(creator && sortedCities.length > 0) && (
           <Form.Control
             className="mb-2"
             type="search"

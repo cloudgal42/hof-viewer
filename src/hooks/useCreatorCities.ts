@@ -1,25 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
-import type { City } from "../interfaces/City.ts";
+import {useQuery} from "@tanstack/react-query";
+import type {City} from "../interfaces/City.ts";
 
-export const useCreatorCities = ({
-  creator,
-  getViewsAndFavData,
-  enabled,
-} : {
-  creator: string | undefined | null,
-  getViewsAndFavData?: boolean,
-  enabled?: boolean,
-}) => {
+export const useCreatorCities = (creator: string | null) => {
   return useQuery<City[]>({
     queryKey: ["cities", creator],
     queryFn: async () => {
       if (!creator) return [];
 
-      const fetchLink = getViewsAndFavData
-        ? `${import.meta.env.VITE_HOF_SERVER}/screenshots?creatorId=${creator}&favorites=true&views=true`
-        : `${import.meta.env.VITE_HOF_SERVER}/screenshots?creatorId=${creator}`
-
-      const res = await fetch(fetchLink);
+      const res = await fetch(`${import.meta.env.VITE_HOF_SERVER}/screenshots?creatorId=${creator}`);
       const data = await res.json();
 
       if (!res.ok) {
@@ -30,7 +18,6 @@ export const useCreatorCities = ({
     },
     staleTime: 30 * 60 * 1000,
     refetchOnWindowFocus: false,
-    enabled: (typeof enabled === "undefined") ? true : enabled,
     retry: false,
   });
-};
+}

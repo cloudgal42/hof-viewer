@@ -50,6 +50,7 @@ export default async function serveSkeletonPage(
   const isGroupedCities = searchParams.get("groupStatus") === "on";
   const creator = searchParams.get("creator");
   const { cityId } = context.params;
+  const decodedCityId = decodeURIComponent(cityId);
 
   let status;
   let data;
@@ -58,23 +59,23 @@ export default async function serveSkeletonPage(
   try {
     if (isGroupedCities) {
       console.log(
-        `User-Agent: ${userAgent}, IP: ${context.ip} requesting for city name of ${cityId} by creator ${creator}`,
+        `User-Agent: ${userAgent}, IP: ${context.ip} requesting for city name of ${decodedCityId} by creator ${creator}`,
       );
       data = await fetchCity<City[]>(
         `https://halloffame.cs2.mtq.io/api/v1/screenshots?creatorId=${creator}`,
       );
     } else {
       console.log(
-        `User-Agent: ${userAgent}, IP: ${context.ip} requesting for screenshot of ID ${cityId}`,
+        `User-Agent: ${userAgent}, IP: ${context.ip} requesting for screenshot of ID ${decodedCityId}`,
       );
       data = await fetchCity<City>(
-        `https://halloffame.cs2.mtq.io/api/v1/screenshots/${cityId}`,
+        `https://halloffame.cs2.mtq.io/api/v1/screenshots/${decodedCityId}`,
       );
     }
 
     const city = (Array.isArray(data))
       ? groupCities(data).find((entry) =>
-        entry.cityName.toLowerCase() === cityId.toLowerCase()
+        entry.cityName.toLowerCase() === decodedCityId.toLowerCase()
       )
       : data;
 
@@ -123,7 +124,7 @@ export default async function serveSkeletonPage(
         </>
       );
     } else {
-      console.error(`Cannot find ${cityId} by ${creator}`);
+      console.error(`Cannot find ${decodedCityId} by ${creator}`);
       status = 404;
       head = (
         <>
@@ -131,11 +132,11 @@ export default async function serveSkeletonPage(
           <meta property="og:title" content="Hall of Fame Viewer" />
           <meta
             property="og:description"
-            content={`Failed to get city info due to Could not find ${cityId} by ${creator} :(`}
+            content={`Failed to get city info due to Could not find ${decodedCityId} by ${creator} :(`}
           />
           <meta
             property="twitter:description"
-            content={`Failed to get city info due to Could not find ${cityId} by ${creator} :(`}
+            content={`Failed to get city info due to Could not find ${decodedCityId} by ${creator} :(`}
           />
 
           <meta property="og:url" content={req.url} />

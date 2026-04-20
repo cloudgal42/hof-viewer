@@ -1,12 +1,44 @@
-import {Card} from "react-bootstrap";
-import type {City, GroupedCities} from "../../../interfaces/City.ts";
-import {StackedChart} from "./StackedChart.tsx";
+import { Card } from "react-bootstrap";
+import type { City, GroupedCities } from "../../../interfaces/City.ts";
+import { StackedChart } from "./StackedChart.tsx";
+import {getRandomColor} from "../../../utils/RandomColor.ts";
 
 interface CityInsightsProps {
   city: GroupedCities;
 }
 
-export const CityInsights = ({city}: CityInsightsProps) => {
+export const CityInsights = ({ city }: CityInsightsProps) => {
+  const cities = city.cities.map(entry => ({
+    ...entry,
+    backgroundColor: getRandomColor(),
+  }));
+
+  const favoritesData = cities
+    .sort((a, b) => b.favoritesCount - a.favoritesCount)
+    .map((entry) => {
+      return {
+        id: entry.id,
+        label: `Screenshot ${new Date(entry.createdAt).toLocaleString()})`,
+        data: [100 * (entry.favoritesCount / city.favoritesCount)],
+        backgroundColor: entry.backgroundColor,
+        details: entry,
+        link: `/city/${entry.id}?groupStatus=off`
+      };
+    });
+
+  const viewsData = cities
+    .sort((a, b) => b.viewsCount - a.viewsCount)
+    .map((entry) => {
+      return {
+        id: entry.id,
+        label: `Screenshot ${new Date(entry.createdAt).toLocaleString()})`,
+        data: [100 * (entry.viewsCount / city.viewsCount)],
+        backgroundColor: entry.backgroundColor,
+        details: entry,
+        link: `/city/${entry.id}?groupStatus=off`
+      }
+    })
+
   return (
     <Card>
       <Card.Body>
@@ -14,15 +46,15 @@ export const CityInsights = ({city}: CityInsightsProps) => {
           <h3>
             <Card.Title>Share of total Views</Card.Title>
           </h3>
-          <StackedChart city={city} type="views" />
+          <StackedChart stats={viewsData} />
         </section>
         <section>
           <h3>
             <Card.Title>Share of total Favorites</Card.Title>
           </h3>
-          <StackedChart city={city} type="favorites" />
+          <StackedChart stats={favoritesData} />
         </section>
       </Card.Body>
     </Card>
-  )
-}
+  );
+};

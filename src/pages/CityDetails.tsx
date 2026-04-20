@@ -52,7 +52,7 @@ const CityDetails = () => {
     data: creatorCities,
     error: creatorCitiesError,
     isFetching: isCreatorCitiesFetching
-  } = useCreatorCities({creator: cityCreator});
+  } = useCreatorCities(cityCreator);
 
   // Scrolls to top whenever the city details page is loaded
   useScrollToTop();
@@ -73,10 +73,9 @@ const CityDetails = () => {
       return data;
     },
     refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 10, // 10 minutes
     enabled: Boolean(!city?.favorites && !city?.views && !isCitiesGrouped ||
-      city?.showcasedModId && !isCitiesGrouped),
-    // 5 minutes
-    staleTime: 1000 * 60 * 5,
+      city?.showcasedModId && !isCitiesGrouped || !isCitiesGrouped),
     retry: false,
   });
 

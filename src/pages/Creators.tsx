@@ -1,15 +1,16 @@
-import {Button, Form} from "react-bootstrap";
-import {CreatorCard} from "../components/creators/CreatorCard/CreatorCard.tsx";
-import {PlaceholderCreatorCard} from "../components/creators/CreatorCard/PlaceholderCreatorCard.tsx";
-import {NavLink, useSearchParams} from "react-router";
-import {handleSetSearchParams} from "../utils/SearchParamHandlers.ts";
-import type {CreatorDetails} from "../interfaces/Creator.ts";
-import {useQuery} from "@tanstack/react-query";
-import {ErrorScreen} from "../components/misc/ErrorScreen/ErrorScreen.tsx";
-import {useCreator} from "../hooks/useCreator.ts";
-import {Helmet} from "@dr.pogodin/react-helmet";
-import {DefaultHelmet} from "../components/misc/DefaultHelmet/DefaultHelmet.tsx";
+import { Button, Form } from "react-bootstrap";
+import { CreatorCard } from "../components/creators/CreatorCard/CreatorCard.tsx";
+import { PlaceholderCreatorCard } from "../components/creators/CreatorCard/PlaceholderCreatorCard.tsx";
+import { NavLink, useSearchParams } from "react-router";
+import { handleSetSearchParams } from "../utils/SearchParamHandlers.ts";
+import { ErrorScreen } from "../components/misc/ErrorScreen/ErrorScreen.tsx";
+import { useCreator } from "../hooks/useCreator.ts";
+import { DefaultHelmet } from "../components/misc/DefaultHelmet/DefaultHelmet.tsx";
 import Chirper from "../assets/Chirper.svg";
+import { useCreatorCities } from "../hooks/useCreatorCities.ts";
+import { CreatorInsights } from "../components/creators/CreatorInsights/CreatorInsights.tsx";
+import { groupCities } from "../utils/GroupCities.ts";
+import { PlaceholderInsights } from "../components/creators/CreatorInsights/PlaceholderInsights.tsx";
 
 const Creators = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -19,85 +20,73 @@ const Creators = () => {
   // const [isCreatorLoading, setIsCreatorLoading] = useState<boolean>(false);
   const creator = searchParams.get("creator") || "";
 
-  const {error, data, isFetching} = useCreator(creator);
+  const { error, data, isFetching } = useCreator(creator);
+  const {
+    error: cityFetchErr,
+    data: creatorCities,
+    isFetching: isFetchingCities,
+  } = useCreatorCities(creator);
 
   const creatorDetails = data;
-
-  // useEffect(() => {
-  //   let ignore = false;
-  //   if (!creator) return;
-  //
-  //   async function getCreatorDetails() {
-  //     setIsCreatorLoading(true);
-  //     const creatorRes = await fetch(`${import.meta.env.VITE_HOF_SERVER}/creators/${creator}`);
-  //     const creatorStatsRes = await fetch(`${import.meta.env.VITE_HOF_SERVER}/creators/${creator}/stats`);
-  //
-  //     const creatorInfo = await creatorRes.json();
-  //     const creatorStats = await creatorStatsRes.json();
-  //
-  //     setFetchStatus(creatorStatsRes.status);
-  //
-  //     if (creatorRes.ok && creatorStatsRes.ok && !ignore) {
-  //       setCreatorDetails({
-  //         ...creatorInfo,
-  //         ...creatorStats,
-  //       });
-  //       setIsCreatorLoading(false);
-  //     } else {
-  //       setIsCreatorLoading(false);
-  //       setCreatorDetails(null);
-  //     }
-  //   }
-  //
-  //   getCreatorDetails();
-  //
-  //   return () => {
-  //     ignore = true
-  //   };
-  // }, [creator]);
-
-  // function validateAndSetCreator(creator: string) {
-  //   setSearchParams(handleSetSearchParams(searchParams, "creator", creator));
-  // }
 
   function setCreator(formData: FormData) {
     const query = formData.get("creatorId");
     const queryString = query?.toString() || "";
     if (queryString === creator) return;
-    setSearchParams(handleSetSearchParams(searchParams, "creator", queryString));
+    setSearchParams(
+      handleSetSearchParams(searchParams, "creator", queryString),
+    );
   }
 
   let content;
 
   if (isFetching) {
-    content = <PlaceholderCreatorCard/>;
+    content = <PlaceholderCreatorCard />;
   } else if (creatorDetails) {
-    content = <CreatorCard creator={creatorDetails}/>;
-  } else if (error) {
-    content = (
-      <ErrorScreen
-        errorSummary="Failed to get screenshots for this creator :("
-        errorDetails={error.message}
-      />
-    )
+    content = <CreatorCard creator={creatorDetails} />;
   } else if (!navigator.onLine) {
     content = (
       <ErrorScreen
         errorSummary="You are offline :("
         errorDetails="Double check your Internet connection and try again."
       />
-    )
+    );
+  } else if (error) {
+    content = (
+      <ErrorScreen
+        errorSummary="Failed to get screenshots for this creator :("
+        errorDetails={error.message}
+      />
+    );
   } else {
     content = (
       <div className="d-flex text-muted flex-column align-items-center text-center">
         <img src={Chirper} width="162" height="162" alt="Chirper" />
         <p className="mb-1">Search by the creator name/ID to get started.</p>
         <p className="mb-1">
-          Don't know who to search for? Browse screenshots from great HoF creators <NavLink to={`/random`}>
-          here</NavLink>
+          Don't know who to search for? Browse screenshots from great HoF
+          creators{" "}
+          <NavLink to={`/random`}>
+            here
+          </NavLink>
         </p>
       </div>
     );
+  }
+
+  let insightsContent;
+
+  if (isFetchingCities || !creatorCities && !error) {
+    insightsContent = <PlaceholderInsights />;
+  } else if (cityFetchErr) {
+    insightsContent = (
+      <ErrorScreen
+        errorSummary="Failed to get screenshots for this creator :("
+        errorDetails={cityFetchErr.message}
+      />
+    );
+  } else if (creatorCities && creatorCities.length > 0) {
+    insightsContent = <CreatorInsights cities={groupCities(creatorCities)} />;
   }
 
   return (
@@ -119,7 +108,9 @@ const Creators = () => {
             />
             <Button type="submit" variant="primary">Search</Button>
           </div>
-          <Form.Text id="creatorIdHelpBlock">Can either be the username or the public Creator ID.</Form.Text>
+          <Form.Text id="creatorIdHelpBlock">
+            Can either be the username or the public Creator ID.
+          </Form.Text>
         </form>
       </section>
       <section>
@@ -127,10 +118,15 @@ const Creators = () => {
           <h2 className="mb-0">Creator</h2>
         </div>
         <div id="creator">
-          {content}
+          <section id="creatorInfo" className="mb-3">
+            {content}
+          </section>
+          <section id="creatorInsights">
+            {insightsContent}
+          </section>
         </div>
       </section>
     </div>
-  )
-}
-export default Creators
+  );
+};
+export default Creators;
