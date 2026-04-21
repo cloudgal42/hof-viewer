@@ -1,6 +1,7 @@
 import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Plus } from "react-bootstrap-icons";
 import { useState } from "react";
+import {useDroppable} from "@dnd-kit/react";
 
 export const AddGroup = ({
   onAdd,
@@ -8,9 +9,12 @@ export const AddGroup = ({
   onAdd: () => void;
 }) => {
   const [addButtonHovered, setAddButtonHovered] = useState(false);
+  const { ref, isDropTarget } = useDroppable({
+    id: "addGroup",
+  });
 
   return (
-    <div className="mt-2 d-flex align-items-center">
+    <div className="mt-2 d-flex align-items-center" ref={ref}>
       <OverlayTrigger overlay={<Tooltip>Add new grouped city entry</Tooltip>}>
         <Button
           className="p-1 rounded-4"
@@ -26,7 +30,7 @@ export const AddGroup = ({
       </OverlayTrigger>
       <div
         className={`${
-          addButtonHovered
+          addButtonHovered || isDropTarget
             ? "border-3 border-primary-subtle"
             : "border-light-subtle"
         } border-top w-100`}

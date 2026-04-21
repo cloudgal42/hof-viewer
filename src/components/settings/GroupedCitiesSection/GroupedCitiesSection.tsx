@@ -3,6 +3,7 @@ import {GroupedCityRow} from "./GroupedCityRow.tsx";
 import {AddGroup} from "./AddGroup.tsx";
 import {Fragment, useState} from "react";
 import type {GroupedCityRowSetting} from "../../../interfaces/GroupedCityRowSetting.ts";
+import {DragDropProvider, type DragEndEvent} from "@dnd-kit/react";
 
 export const GroupedCitiesSection = () => {
   const [groupedCitiesRows, setGroupedCitiesRows] =
@@ -47,7 +48,7 @@ export const GroupedCitiesSection = () => {
     if (objToModify) {
       objToModify.ungroupedCityNames = [
         ...objToModify.ungroupedCityNames,
-        {name: `City${objToModify.ungroupedCityNames.length + 1}`, isEditable: true}
+        {name: `${objToModify.groupedCityName}-${objToModify.ungroupedCityNames.length + 1}`, isEditable: true}
       ];
     }
 
@@ -73,6 +74,68 @@ export const GroupedCitiesSection = () => {
     setGroupedCitiesRows(groupedCitiesRows.filter(entry => entry.groupedCityName !== groupedCityName));
   }
 
+  function changeUngroupedEntryName(
+    groupedCityName: string,
+    ungroupedCityName: string,
+    newValue: string,
+  ) {
+    const copy = [...groupedCitiesRows];
+    const objToModify = copy
+      .find(city => city.groupedCityName === groupedCityName)
+      ?.ungroupedCityNames.find(city => city.name === ungroupedCityName)
+
+    if (objToModify) {
+      objToModify.name = newValue;
+    }
+
+    setGroupedCitiesRows(copy);
+  }
+
+  function handleDragEnd(e: DragEndEvent) {
+    if (e.canceled) return;
+
+    const sourceName = e.operation.source?.id;
+    const targetRowName = e.operation.target?.id;
+
+    const copy = [...groupedCitiesRows];
+
+    const origin = copy.find(entry => {
+      return entry.ungroupedCityNames.some(cityName =>
+        cityName.name === sourceName
+      );
+    });
+    const target = copy.find(entry =>
+      entry.groupedCityName === targetRowName
+    );
+
+    if (origin && target && sourceName && targetRowName) {
+      const objToMove = origin.ungroupedCityNames.find(entry => entry.name === sourceName);
+
+      if (objToMove) {
+        origin.ungroupedCityNames = origin.ungroupedCityNames.filter(entry =>
+          entry.name !== sourceName
+        );
+        target.ungroupedCityNames = [...target.ungroupedCityNames, objToMove];
+      }
+    } else if (origin && targetRowName === "addGroup") {
+      const objToMove = origin.ungroupedCityNames.find(entry => entry.name === sourceName);
+
+      if (objToMove) {
+        origin.ungroupedCityNames = origin.ungroupedCityNames.filter(entry =>
+          entry.name !== sourceName
+        );
+        // Initiate a new row with that value
+        copy.push({
+          ungroupedCityNames: [objToMove],
+          groupedCityName: objToMove.name,
+          isUserCreated: true,
+        });
+      }
+    }
+
+    setGroupedCitiesRows(copy);
+  }
+
   return (
     <section id="groupedCities">
       <h3 className="fs-4 mb-2">Grouped Cities</h3>
@@ -87,20 +150,25 @@ export const GroupedCitiesSection = () => {
       </section>
 
       <section id="groupedCitiesSettingsEntries">
-        {groupedCitiesRows.map((groupedCitiesRow, i) => (
-          <Fragment key={groupedCitiesRow.groupedCityName}>
-            <GroupedCityRow
-              onAdd={addUngroupedCityName}
-              onRemoveUngroupedName={removeUngroupedCityName}
-              onRemoveGroupedName={removeGroupedEntry}
-              {...groupedCitiesRow}
-            />
-            {i < groupedCitiesRows.length - 1 && (
-              <hr/>
-            )}
-          </Fragment>
-        ))}
-        <AddGroup onAdd={addGroupedCityEntry} />
+        <DragDropProvider
+          onDragEnd={handleDragEnd}
+        >
+          {groupedCitiesRows.map((groupedCitiesRow, i) => (
+            <Fragment key={groupedCitiesRow.groupedCityName}>
+              <GroupedCityRow
+                onAdd={addUngroupedCityName}
+                onRemoveUngroupedName={removeUngroupedCityName}
+                onRemoveGroupedName={removeGroupedEntry}
+                onChangeUngroupedName={changeUngroupedEntryName}
+                {...groupedCitiesRow}
+              />
+              {i < groupedCitiesRows.length - 1 && (
+                <hr/>
+              )}
+            </Fragment>
+          ))}
+          <AddGroup onAdd={addGroupedCityEntry} />
+        </DragDropProvider>
       </section>
     </section>
   );
