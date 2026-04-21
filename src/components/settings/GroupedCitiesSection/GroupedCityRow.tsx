@@ -32,7 +32,7 @@ export const GroupedCityRow = ({
   return (
     <div className="row mb-3">
       <div className="col-6 pe-0 d-flex gap-2 align-items-center">
-        <div className="flex-grow-1" ref={ref}>
+        <div className="flex-grow-1 overflow-hidden" ref={ref}>
           {ungroupedCityNames.map((cityName) => (
             <DraggableEntry
               key={groupedCityName + cityName.name}
