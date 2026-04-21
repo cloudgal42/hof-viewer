@@ -13,6 +13,7 @@ export const GroupedCityRow = ({
   onRemoveUngroupedName,
   onRemoveGroupedName,
   onChangeUngroupedName,
+  onChangeGroupedName,
 }: {
   ungroupedCityNames: UngroupedCityName[];
   groupedCityName: string;
@@ -22,6 +23,7 @@ export const GroupedCityRow = ({
   onRemoveUngroupedName: (owner: string, name: string) => void;
   onRemoveGroupedName: (name: string) => void;
   onChangeUngroupedName: (owner: string, name: string, newVal: string) => void;
+  onChangeGroupedName: (name: string, newVal: string) => void;
 }) => {
   const { ref } = useDroppable({
     id: groupedCityName,
@@ -62,7 +64,12 @@ export const GroupedCityRow = ({
         {isUserCreated
           ? (
             <>
-              <Form.Control defaultValue={groupedCityName} />
+              <Form.Control
+                defaultValue={groupedCityName}
+                onBlur={(e) =>
+                  onChangeGroupedName(groupedCityName, e.target.value)
+                }
+              />
               {/*<Button*/}
               {/*  className="ms-2"*/}
               {/*  variant="outline-danger"*/}

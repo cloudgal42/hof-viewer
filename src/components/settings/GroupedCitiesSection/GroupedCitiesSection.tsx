@@ -91,6 +91,17 @@ export const GroupedCitiesSection = () => {
     setGroupedCitiesRows(copy);
   }
 
+  function changeGroupedEntryName(groupedCityName: string, newValue: string) {
+    const copy = [...groupedCitiesRows];
+    const objToModify = copy.find(city => city.groupedCityName === groupedCityName);
+
+    if (objToModify) {
+      objToModify.groupedCityName = newValue;
+    }
+
+    setGroupedCitiesRows(copy);
+  }
+
   function handleDragEnd(e: DragEndEvent) {
     if (e.canceled) return;
 
@@ -160,6 +171,7 @@ export const GroupedCitiesSection = () => {
                 onRemoveUngroupedName={removeUngroupedCityName}
                 onRemoveGroupedName={removeGroupedEntry}
                 onChangeUngroupedName={changeUngroupedEntryName}
+                onChangeGroupedName={changeGroupedEntryName}
                 {...groupedCitiesRow}
               />
               {i < groupedCitiesRows.length - 1 && (
