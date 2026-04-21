@@ -231,8 +231,7 @@ export const GroupedCitiesSection = () => {
   }
 
   function handleSetCreator(formData: FormData) {
-    const submittedCreator = formData.get("creator")?.toString();
-    if (!submittedCreator) return;
+    const submittedCreator = formData.get("creator")?.toString() || "";
 
     setCreator(submittedCreator);
   }
@@ -259,7 +258,13 @@ export const GroupedCitiesSection = () => {
               name="creator"
               defaultValue={creator}
               aria-describedby="creatorInputHelpBlock"
+              list="creatorsWithPresets"
             />
+            <datalist id="creatorsWithPresets">
+              {groupedCitiesRows && [...groupedCitiesRows.keys()].map(creator => (
+                <option key={creator} value={creator} />
+              ))}
+            </datalist>
             <Form.Text id="creatorInputHelpBlock">
               Each creator is associated with a specific configuration preset.
             </Form.Text>
