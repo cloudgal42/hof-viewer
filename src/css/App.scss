@@ -16,7 +16,20 @@ $utilities: (
       100: 100%,
       auto: auto,
     ),
-  )
+  ),
+  "border-opacity": (
+    property: --bs-border,
+    css-var: true,
+    class: border-opacity,
+    values: (
+      0: 0,
+      10: .1,
+      25: .25,
+      50: .5,
+      75: .75,
+      100: 1
+    )
+  ),
 );
 
 $primary: #000;
@@ -66,6 +79,10 @@ html, body, #root {
   color: #fff !important;
 }
 
+.border-primary {
+  border-color: rgba(0, 0, 0, var(--bs-border-opacity)) !important;
+}
+
 input[type="range"] {
   &::-webkit-slider-thumb {
     border: 1.5px solid $gray-500;
@@ -99,7 +116,7 @@ input[type="range"] {
   }
 
   .border-primary {
-    border-color: var(--bs-primary) !important;
+    border-color: rgba(255, 255, 255, var(--bs-border-opacity)) !important;
   }
 
   .border-primary-subtle {

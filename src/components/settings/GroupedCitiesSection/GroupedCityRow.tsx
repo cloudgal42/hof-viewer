@@ -25,14 +25,17 @@ export const GroupedCityRow = ({
   onChangeUngroupedName: (owner: string, name: string, newVal: string) => void;
   onChangeGroupedName: (name: string, newVal: string) => void;
 }) => {
-  const { ref } = useDroppable({
+  const { ref, isDropTarget } = useDroppable({
     id: groupedCityName,
   });
 
   return (
     <div className="row mb-3">
       <div className="col-6 pe-0 d-flex gap-2 align-items-center">
-        <div className="flex-grow-1 overflow-hidden" ref={ref}>
+        <div
+          className={`flex-grow-1 border border-primary border-2 rounded-2 overflow-hidden ${isDropTarget ? "border-opacity-50" : "border-opacity-0"}`}
+          ref={ref}
+        >
           {ungroupedCityNames.map((cityName) => (
             <DraggableEntry
               key={groupedCityName + cityName.name}
