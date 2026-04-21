@@ -1,4 +1,4 @@
-import {Button, Form, Spinner} from "react-bootstrap";
+import {Accordion, Button, Form, Spinner} from "react-bootstrap";
 import { GroupedCityRow } from "./GroupedCityRow.tsx";
 import { AddGroup } from "./AddGroup.tsx";
 import { Fragment, useState } from "react";
@@ -6,7 +6,7 @@ import type { GroupedCityRowSetting } from "../../../interfaces/GroupedCityRowSe
 import { DragDropProvider, type DragEndEvent } from "@dnd-kit/react";
 import type { City } from "../../../interfaces/City.ts";
 import { useQuery } from "@tanstack/react-query";
-import {ErrorScreen} from "../../misc/ErrorScreen/ErrorScreen.tsx";
+import { ErrorScreen } from "../../misc/ErrorScreen/ErrorScreen.tsx";
 
 function getSettingsFromQuery(data: City[]) {
   const cityNames = data.map(({ cityName }) => cityName);
@@ -71,7 +71,7 @@ export const GroupedCitiesSection = () => {
     new Map<string, GroupedCityRowSetting[]>(),
   );
 
-  const {isFetching, error} = useCreatorCitiesGroupedSettings(
+  const { isFetching, error } = useCreatorCitiesGroupedSettings(
     creator,
     (newVal: GroupedCityRowSetting[]) => {
       const copy = structuredClone(groupedCitiesRows);
@@ -89,7 +89,10 @@ export const GroupedCitiesSection = () => {
 
       if (creatorSettings) {
         creatorSettings.push({
-          ungroupedCityNames: [],
+          ungroupedCityNames: [{
+            name: `GroupedCity${creatorSettings.length + 1}-1`,
+            isEditable: true,
+          }],
           groupedCityName: `GroupedCity${creatorSettings.length + 1}`,
           isUserCreated: true,
         });
@@ -247,7 +250,15 @@ export const GroupedCitiesSection = () => {
     setCreator(submittedCreator);
   }
 
-  const creatorEntries = groupedCitiesRows && groupedCitiesRows.get(creator);
+  const creatorEntries = groupedCitiesRows && groupedCitiesRows
+    .get(creator)
+    ?.sort((a, b) => b.ungroupedCityNames.length - a.ungroupedCityNames.length);
+
+  const creatorEntriesWithUngroupedNames = creatorEntries &&
+    creatorEntries.filter((entry) => entry.ungroupedCityNames.length > 0);
+  const creatorEntriesWithoutUngroupedNames = creatorEntries &&
+    creatorEntries.filter((entry) => entry.ungroupedCityNames.length === 0);
+
   let content;
 
   if (isFetching) {
@@ -257,20 +268,22 @@ export const GroupedCitiesSection = () => {
           <span className="visually-hidden">Loading...</span>
         </Spinner>
       </div>
-    )
+    );
   } else if (error) {
     content = (
       <ErrorScreen
         errorSummary="Failed to get this creator's cities :("
         errorDetails={error.message}
       />
-    )
-  } else if (creatorEntries) {
+    );
+  } else if (
+    creatorEntriesWithUngroupedNames && creatorEntriesWithoutUngroupedNames
+  ) {
     content = (
       <DragDropProvider
         onDragEnd={handleDragEnd}
       >
-        {creatorEntries.map((groupedCitiesRow, i) => (
+        {creatorEntriesWithUngroupedNames.map((groupedCitiesRow, i) => (
           <Fragment key={groupedCitiesRow.groupedCityName}>
             <GroupedCityRow
               onAdd={addUngroupedCityName}
@@ -280,9 +293,34 @@ export const GroupedCitiesSection = () => {
               onChangeGroupedName={changeGroupedEntryName}
               {...groupedCitiesRow}
             />
-            {i < creatorEntries.length - 1 && <hr />}
+            {i < creatorEntriesWithUngroupedNames.length - 1 && <hr />}
           </Fragment>
         ))}
+        {creatorEntriesWithoutUngroupedNames.length > 0 && (
+          <Accordion>
+            <Accordion.Item eventKey="0">
+              <Accordion.Header>
+                Grouped city names with 0 group candidates
+                ({creatorEntriesWithoutUngroupedNames.length} result(s))
+              </Accordion.Header>
+              <Accordion.Body>
+                {creatorEntriesWithoutUngroupedNames.map((groupedCitiesRow, i) => (
+                  <Fragment key={groupedCitiesRow.groupedCityName}>
+                    <GroupedCityRow
+                      onAdd={addUngroupedCityName}
+                      onRemoveUngroupedName={removeUngroupedCityName}
+                      onRemoveGroupedName={removeGroupedEntry}
+                      onChangeUngroupedName={changeUngroupedEntryName}
+                      onChangeGroupedName={changeGroupedEntryName}
+                      {...groupedCitiesRow}
+                    />
+                    {i < creatorEntriesWithoutUngroupedNames.length - 1 && <hr />}
+                  </Fragment>
+                ))}
+              </Accordion.Body>
+            </Accordion.Item>
+          </Accordion>
+        )}
         <AddGroup onAdd={addGroupedCityEntry} />
       </DragDropProvider>
     );
