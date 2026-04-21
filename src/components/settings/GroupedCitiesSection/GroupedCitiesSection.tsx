@@ -1,4 +1,4 @@
-import {Accordion, Button, Form, Spinner} from "react-bootstrap";
+import { Accordion, Button, Form, Spinner } from "react-bootstrap";
 import { GroupedCityRow } from "./GroupedCityRow.tsx";
 import { AddGroup } from "./AddGroup.tsx";
 import { Fragment, useState } from "react";
@@ -7,6 +7,7 @@ import { DragDropProvider, type DragEndEvent } from "@dnd-kit/react";
 import type { City } from "../../../interfaces/City.ts";
 import { useQuery } from "@tanstack/react-query";
 import { ErrorScreen } from "../../misc/ErrorScreen/ErrorScreen.tsx";
+import { useLocalStorage } from "usehooks-ts";
 
 function getSettingsFromQuery(data: City[]) {
   const cityNames = data.map(({ cityName }) => cityName);
@@ -65,21 +66,59 @@ const useCreatorCitiesGroupedSettings = (
 export const GroupedCitiesSection = () => {
   const [creator, setCreator] = useState<string>("");
 
+  const [groupedCitiesSettings, setGroupedCitiesSettings] = useLocalStorage<
+    [string, GroupedCityRowSetting[]][]
+  >(
+    "groupedCitiesSettings",
+    [],
+  );
   const [groupedCitiesRows, setGroupedCitiesRows] = useState<
     Map<string, GroupedCityRowSetting[]>
   >(
-    new Map<string, GroupedCityRowSetting[]>(),
+    new Map<string, GroupedCityRowSetting[]>(groupedCitiesSettings),
   );
 
   const { isFetching, error } = useCreatorCitiesGroupedSettings(
     creator,
     (newVal: GroupedCityRowSetting[]) => {
       const copy = structuredClone(groupedCitiesRows);
-      copy.set(creator, newVal);
+      // We don't want to reset to default if there is already data in local storage
+      if (groupedCitiesRows.has(creator)) {
+        // 1. Get the current list of city names
+        const existingData = groupedCitiesRows.get(creator);
+        const existingCityNames = existingData?.map(cityName =>
+          cityName.groupedCityName
+        );
+
+        // 2. Filter for new city names
+        const newEntries = newVal.filter(cityName => {
+          if (!existingCityNames) return false;
+          return !existingCityNames.includes(cityName.groupedCityName);
+        });
+
+        // 2.2. Filter for deleted groups
+        // const deletedGroups = existingData?.filter(cityName =>
+        //   !newVal.includes(cityName)
+        // );
+
+        // 2.3. Filter for deleted ungrouped city names
+
+        // 3. If there are new city names, Update with new city names
+        if (newEntries.length > 0 && existingData) {
+          copy.set(creator, [...existingData, ...newEntries])
+        }
+      } else {
+        copy.set(creator, newVal);
+      }
 
       setGroupedCitiesRows(copy);
     },
   );
+
+  function handleChangeSettings(newMap: Map<string, GroupedCityRowSetting[]>) {
+    setGroupedCitiesRows(newMap);
+    setGroupedCitiesSettings(Array.from(newMap.entries()));
+  }
 
   function addGroupedCityEntry() {
     const copy = structuredClone(groupedCitiesRows);
@@ -99,7 +138,7 @@ export const GroupedCitiesSection = () => {
       }
     }
 
-    setGroupedCitiesRows(copy);
+    handleChangeSettings(copy);
   }
 
   function addUngroupedCityName(groupedCityName: string) {
@@ -121,7 +160,7 @@ export const GroupedCitiesSection = () => {
       ];
     }
 
-    setGroupedCitiesRows(copy);
+    handleChangeSettings(copy);
   }
 
   function removeUngroupedCityName(
@@ -142,7 +181,7 @@ export const GroupedCitiesSection = () => {
       );
     }
 
-    setGroupedCitiesRows(copy);
+    handleChangeSettings(copy);
   }
 
   function removeGroupedEntry(groupedCityName: string) {
@@ -157,7 +196,7 @@ export const GroupedCitiesSection = () => {
       copy.set(creator, arrToModify);
     }
 
-    setGroupedCitiesRows(copy);
+    handleChangeSettings(copy);
   }
 
   function changeUngroupedEntryName(
@@ -176,7 +215,7 @@ export const GroupedCitiesSection = () => {
       objToModify.name = newValue;
     }
 
-    setGroupedCitiesRows(copy);
+    handleChangeSettings(copy);
   }
 
   function changeGroupedEntryName(groupedCityName: string, newValue: string) {
@@ -190,7 +229,7 @@ export const GroupedCitiesSection = () => {
       objToModify.groupedCityName = newValue;
     }
 
-    setGroupedCitiesRows(copy);
+    handleChangeSettings(copy);
   }
 
   function handleDragEnd(e: DragEndEvent) {
@@ -242,7 +281,7 @@ export const GroupedCitiesSection = () => {
       }
     }
 
-    setGroupedCitiesRows(copy);
+    handleChangeSettings(copy);
   }
 
   function handleSetCreator(formData: FormData) {
@@ -304,7 +343,10 @@ export const GroupedCitiesSection = () => {
                 ({creatorEntriesWithoutUngroupedNames.length} result(s))
               </Accordion.Header>
               <Accordion.Body>
-                {creatorEntriesWithoutUngroupedNames.map((groupedCitiesRow, i) => (
+                {creatorEntriesWithoutUngroupedNames.map((
+                  groupedCitiesRow,
+                  i,
+                ) => (
                   <Fragment key={groupedCitiesRow.groupedCityName}>
                     <GroupedCityRow
                       onAdd={addUngroupedCityName}
@@ -314,7 +356,9 @@ export const GroupedCitiesSection = () => {
                       onChangeGroupedName={changeGroupedEntryName}
                       {...groupedCitiesRow}
                     />
-                    {i < creatorEntriesWithoutUngroupedNames.length - 1 && <hr />}
+                    {i < creatorEntriesWithoutUngroupedNames.length - 1 && (
+                      <hr />
+                    )}
                   </Fragment>
                 ))}
               </Accordion.Body>
