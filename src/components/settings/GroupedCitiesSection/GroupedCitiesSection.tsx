@@ -1,73 +1,88 @@
-import { Button, Form } from "react-bootstrap";
+import {Button, Form, Spinner} from "react-bootstrap";
 import { GroupedCityRow } from "./GroupedCityRow.tsx";
 import { AddGroup } from "./AddGroup.tsx";
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useState } from "react";
 import type { GroupedCityRowSetting } from "../../../interfaces/GroupedCityRowSetting.ts";
 import { DragDropProvider, type DragEndEvent } from "@dnd-kit/react";
-import {useCreatorCities} from "../../../hooks/useCreatorCities.ts";
+import type { City } from "../../../interfaces/City.ts";
+import { useQuery } from "@tanstack/react-query";
+import {ErrorScreen} from "../../misc/ErrorScreen/ErrorScreen.tsx";
+
+function getSettingsFromQuery(data: City[]) {
+  const cityNames = data.map(({ cityName }) => cityName);
+  const uniqueCityNames = [...new Set(cityNames)];
+
+  const cityNamesNoCase = cityNames.map((cityName) => cityName.toLowerCase());
+  const uniqueCityNamesIgnoreCase = [...new Set(cityNamesNoCase)];
+
+  const list: GroupedCityRowSetting[] = uniqueCityNamesIgnoreCase.map(
+    (cityName, i) => {
+      const matchingNames = uniqueCityNames.filter((name) =>
+        name.toLowerCase() === cityName.toLowerCase()
+      );
+      return {
+        ungroupedCityNames: matchingNames.map((name) => ({
+          name: name,
+          isEditable: false,
+        })),
+        groupedCityName: uniqueCityNames[i],
+        isUserCreated: false,
+      };
+    },
+  );
+
+  return list;
+}
+
+const useCreatorCitiesGroupedSettings = (
+  creator: string,
+  setter: (newVal: GroupedCityRowSetting[]) => void,
+) => {
+  return useQuery<GroupedCityRowSetting[]>({
+    queryKey: ["cities", creator],
+    queryFn: async () => {
+      if (!creator) return [];
+
+      const res = await fetch(
+        `${import.meta.env.VITE_HOF_SERVER}/screenshots?creatorId=${creator}`,
+      );
+      const data = await res.json();
+
+      if (!res.ok) {
+        return Promise.reject(new Error(`${data.statusCode}: ${data.message}`));
+      }
+
+      const creatorSettings = getSettingsFromQuery(data);
+      setter(creatorSettings);
+      return creatorSettings;
+    },
+    staleTime: 30 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
+};
 
 export const GroupedCitiesSection = () => {
   const [creator, setCreator] = useState<string>("");
-  // const {data, isFetching, error} = useCreatorCities(creator);
-
-  // () => {
-  //   if (!data || !creator) return null;
-  //
-  //   const cityNames = data.map(({cityName}) => cityName);
-  //   const uniqueCityNames = [...new Set(cityNames)];
-  //
-  //   const cityNamesNoCase = cityNames.map((cityName) => cityName.toLowerCase());
-  //   const uniqueCityNamesIgnoreCase = [...new Set(cityNames)];
-  //
-  //   const list: GroupedCityRowSetting[] = uniqueCityNamesIgnoreCase.map(cityName => {
-  //     const matchingNames = uniqueCityNames.filter(name => name.toLowerCase() === cityName);
-  //     return {
-  //       ungroupedCityNames: matchingNames.map(name => ({
-  //         name: name,
-  //         isEditable: false,
-  //       })),
-  //       groupedCityName: cityName,
-  //       isUserCreated: false,
-  //     }
-  //   });
-  //
-  //   const map = new Map<string, GroupedCityRowSetting[]>();
-  //   map.set(creator, list);
-  //
-  //   return map;
-  // }
-
-  const sampleMap = new Map<string, GroupedCityRowSetting[]>();
-
-  sampleMap.set("foxxy", [{
-    ungroupedCityNames: [
-      {name: "靜安市", isEditable: false},
-      {name: "Hsingang, Jing'an", isEditable: false},
-      {name: "三谷市", isEditable: false},
-      {name: "Linden City", isEditable: true},
-    ],
-    groupedCityName: "靜安市",
-    translatedGroupedCityName: "Jing'an City",
-    isUserCreated: false,
-  }]);
-
-  sampleMap.set("maetzger", [{
-    ungroupedCityNames: [
-      {name: "Germania", isEditable: false},
-      {name: "Germania,New Ferryport", isEditable: false},
-      {name: "Germania,old Shipyard", isEditable: false},
-    ],
-    groupedCityName: "Germania",
-    isUserCreated: false,
-  }]);
 
   const [groupedCitiesRows, setGroupedCitiesRows] = useState<
-    Map<string, GroupedCityRowSetting[]> | null
-  >(sampleMap);
+    Map<string, GroupedCityRowSetting[]>
+  >(
+    new Map<string, GroupedCityRowSetting[]>(),
+  );
+
+  const {isFetching, error} = useCreatorCitiesGroupedSettings(
+    creator,
+    (newVal: GroupedCityRowSetting[]) => {
+      const copy = structuredClone(groupedCitiesRows);
+      copy.set(creator, newVal);
+
+      setGroupedCitiesRows(copy);
+    },
+  );
 
   function addGroupedCityEntry() {
     const copy = structuredClone(groupedCitiesRows);
-    if (!copy) return;
 
     if (copy && creator) {
       const creatorSettings = copy.get(creator);
@@ -86,7 +101,7 @@ export const GroupedCitiesSection = () => {
 
   function addUngroupedCityName(groupedCityName: string) {
     const copy = structuredClone(groupedCitiesRows);
-    if (!copy) return;
+
     const objToModify = copy.get(creator)?.find((city) =>
       city.groupedCityName === groupedCityName
     );
@@ -111,7 +126,7 @@ export const GroupedCitiesSection = () => {
     ungroupedCityName: string,
   ) {
     const copy = structuredClone(groupedCitiesRows);
-    if (!copy) return;
+
     const objToModify = copy.get(creator)?.find((city) =>
       city.groupedCityName === groupedCityName
     );
@@ -129,14 +144,13 @@ export const GroupedCitiesSection = () => {
 
   function removeGroupedEntry(groupedCityName: string) {
     const copy = structuredClone(groupedCitiesRows);
-    if (!copy) return;
 
     let arrToModify = copy.get(creator);
 
     if (arrToModify) {
       arrToModify = arrToModify.filter((entry) =>
         entry.groupedCityName !== groupedCityName
-      )
+      );
       copy.set(creator, arrToModify);
     }
 
@@ -149,7 +163,6 @@ export const GroupedCitiesSection = () => {
     newValue: string,
   ) {
     const copy = structuredClone(groupedCitiesRows);
-    if (!copy) return;
 
     const objToModify = copy
       .get(creator)
@@ -165,7 +178,7 @@ export const GroupedCitiesSection = () => {
 
   function changeGroupedEntryName(groupedCityName: string, newValue: string) {
     const copy = structuredClone(groupedCitiesRows);
-    if (!copy) return;
+
     const objToModify = copy.get(creator)?.find((city) =>
       city.groupedCityName === groupedCityName
     );
@@ -184,7 +197,6 @@ export const GroupedCitiesSection = () => {
     const targetRowName = e.operation.target?.id;
 
     const copy = structuredClone(groupedCitiesRows);
-    if (!copy) return;
 
     const origin = copy.get(creator)?.find((entry) => {
       return entry.ungroupedCityNames.some((cityName) =>
@@ -232,11 +244,49 @@ export const GroupedCitiesSection = () => {
 
   function handleSetCreator(formData: FormData) {
     const submittedCreator = formData.get("creator")?.toString() || "";
-
     setCreator(submittedCreator);
   }
 
   const creatorEntries = groupedCitiesRows && groupedCitiesRows.get(creator);
+  let content;
+
+  if (isFetching) {
+    content = (
+      <div className="w-100 py-5 my-5 d-flex align-items-center justify-content-center">
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      </div>
+    )
+  } else if (error) {
+    content = (
+      <ErrorScreen
+        errorSummary="Failed to get this creator's cities :("
+        errorDetails={error.message}
+      />
+    )
+  } else if (creatorEntries) {
+    content = (
+      <DragDropProvider
+        onDragEnd={handleDragEnd}
+      >
+        {creatorEntries.map((groupedCitiesRow, i) => (
+          <Fragment key={groupedCitiesRow.groupedCityName}>
+            <GroupedCityRow
+              onAdd={addUngroupedCityName}
+              onRemoveUngroupedName={removeUngroupedCityName}
+              onRemoveGroupedName={removeGroupedEntry}
+              onChangeUngroupedName={changeUngroupedEntryName}
+              onChangeGroupedName={changeGroupedEntryName}
+              {...groupedCitiesRow}
+            />
+            {i < creatorEntries.length - 1 && <hr />}
+          </Fragment>
+        ))}
+        <AddGroup onAdd={addGroupedCityEntry} />
+      </DragDropProvider>
+    );
+  }
 
   return (
     <section id="groupedCities">
@@ -252,8 +302,8 @@ export const GroupedCitiesSection = () => {
           <div className="w-100">
             <Form.Control
               type="text"
-              placeholder="Enter creator name/ID..."
-              aria-label="Enter creator name/ID..."
+              placeholder="Enter new or creator name/ID with existing settings..."
+              aria-label="Enter new or creator name/ID with existing settings..."
               id="creatorInput"
               name="creator"
               defaultValue={creator}
@@ -261,9 +311,10 @@ export const GroupedCitiesSection = () => {
               list="creatorsWithPresets"
             />
             <datalist id="creatorsWithPresets">
-              {groupedCitiesRows && [...groupedCitiesRows.keys()].map(creator => (
-                <option key={creator} value={creator} />
-              ))}
+              {groupedCitiesRows &&
+                [...groupedCitiesRows.keys()].map((creator) => (
+                  <option key={creator} value={creator} />
+                ))}
             </datalist>
             <Form.Text id="creatorInputHelpBlock">
               Each creator is associated with a specific configuration preset.
@@ -276,24 +327,7 @@ export const GroupedCitiesSection = () => {
       </section>
 
       <section id="groupedCitiesSettingsEntries">
-        <DragDropProvider
-          onDragEnd={handleDragEnd}
-        >
-          {creatorEntries && creatorEntries.map((groupedCitiesRow, i) => (
-            <Fragment key={groupedCitiesRow.groupedCityName}>
-              <GroupedCityRow
-                onAdd={addUngroupedCityName}
-                onRemoveUngroupedName={removeUngroupedCityName}
-                onRemoveGroupedName={removeGroupedEntry}
-                onChangeUngroupedName={changeUngroupedEntryName}
-                onChangeGroupedName={changeGroupedEntryName}
-                {...groupedCitiesRow}
-              />
-              {i < creatorEntries.length - 1 && <hr />}
-            </Fragment>
-          ))}
-          <AddGroup onAdd={addGroupedCityEntry} />
-        </DragDropProvider>
+        {content}
       </section>
     </section>
   );
