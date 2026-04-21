@@ -4,6 +4,9 @@ import { DropdownSetting } from "../components/settings/SettingsComponents/Dropd
 import { RangeSetting } from "../components/settings/SettingsComponents/RangeSetting.tsx";
 import {TranslationSection} from "../components/settings/TranslationSection/TranslationSection.tsx";
 import {RandomAlgoSection} from "../components/settings/RandomAlgoSection/RandomAlgoSection.tsx";
+import {Button, Form} from "react-bootstrap";
+import {ArrowRight, GripVertical, Plus, X} from "react-bootstrap-icons";
+import {GroupedCitiesSection} from "../components/settings/GroupedCitiesSection/GroupedCitiesSection.tsx";
 
 const Settings = () => {
   return (
@@ -20,10 +23,7 @@ const Settings = () => {
           />
         </section>
         <hr />
-        <section id="groupedCities">
-          <h3 className="fs-4 mb-3">Grouped Cities</h3>
-          <p className="text-muted">TBD</p>
-        </section>
+        <GroupedCitiesSection />
         <hr />
         <TranslationSection />
         <hr />

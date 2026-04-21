@@ -98,6 +98,14 @@ input[type="range"] {
     }
   }
 
+  .border-primary {
+    border-color: var(--bs-primary) !important;
+  }
+
+  .border-primary-subtle {
+    border-color: rgba(255, 255, 255, 0.5) !important;
+  }
+
   .nav-link.link-body-emphasis.active {
     color: #000 !important;
   }
