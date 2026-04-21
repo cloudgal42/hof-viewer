@@ -11,6 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@dnd-kit/react": "^0.4.0",
     "@dr.pogodin/react-helmet": "^3.0.6",
     "@netlify/edge-functions": "^3.0.4",
     "@netlify/vite-plugin": "^2.7.20",
