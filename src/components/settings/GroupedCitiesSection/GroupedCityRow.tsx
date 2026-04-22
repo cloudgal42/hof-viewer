@@ -1,33 +1,30 @@
-import { ArrowRight, GripVertical, Plus, Trash } from "react-bootstrap-icons";
+import { ArrowRight, Plus, Trash } from "react-bootstrap-icons";
 import { Button, Form } from "react-bootstrap";
 import type { UngroupedCityName } from "../../../interfaces/UngroupedCityName.ts";
 import { DraggableEntry } from "./DraggableEntry.tsx";
 import { useDroppable } from "@dnd-kit/react";
+import {GroupedSettingsContext} from "../../../context/GroupedSettingsContext.ts";
+import {useContext} from "react";
 
 export const GroupedCityRow = ({
   ungroupedCityNames,
   groupedCityName,
   translatedGroupedCityName,
   isUserCreated,
-  onAdd,
-  onRemoveUngroupedName,
-  onRemoveGroupedName,
-  onChangeUngroupedName,
-  onChangeGroupedName,
 }: {
   ungroupedCityNames: UngroupedCityName[];
   groupedCityName: string;
   translatedGroupedCityName?: string;
   isUserCreated: boolean;
-  onAdd: (name: string) => void;
-  onRemoveUngroupedName: (owner: string, name: string) => void;
-  onRemoveGroupedName: (name: string) => void;
-  onChangeUngroupedName: (owner: string, name: string, newVal: string) => void;
-  onChangeGroupedName: (name: string, newVal: string) => void;
 }) => {
   const { ref, isDropTarget } = useDroppable({
     id: groupedCityName,
   });
+  const {
+    onAdd,
+    onRemoveGroupedName,
+    onChangeGroupedName,
+  } = useContext(GroupedSettingsContext);
 
   return (
     <div className="row mb-3">
@@ -41,8 +38,6 @@ export const GroupedCityRow = ({
               key={groupedCityName + cityName.name}
               cityName={cityName}
               groupedCityName={groupedCityName}
-              onRemoveUngroupedName={onRemoveUngroupedName}
-              onChangeUngroupedName={onChangeUngroupedName}
             />
           ))}
           <Button

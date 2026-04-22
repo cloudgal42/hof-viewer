@@ -1,23 +1,24 @@
 import { GripVertical, Trash } from "react-bootstrap-icons";
 import { Button, Form } from "react-bootstrap";
 import type { UngroupedCityName } from "../../../interfaces/UngroupedCityName.ts";
-import {useDraggable} from '@dnd-kit/react';
-import {useRef} from "react";
+import { useDraggable } from "@dnd-kit/react";
+import {useContext, useRef} from "react";
+import { GroupedSettingsContext } from "../../../context/GroupedSettingsContext.ts";
 
 export const DraggableEntry = ({
   cityName,
   groupedCityName,
-  onRemoveUngroupedName,
-  onChangeUngroupedName,
 }: {
   cityName: UngroupedCityName;
   groupedCityName: string;
-  onRemoveUngroupedName: (owner: string, name: string) => void;
-  onChangeUngroupedName: (owner: string, name: string, newVal: string) => void;
 }) => {
-  const {handleRef, ref} = useDraggable({
-    id: cityName.name
+  const { handleRef, ref } = useDraggable({
+    id: cityName.name,
   });
+
+  const { onRemoveUngroupedName, onChangeUngroupedName } = useContext(
+    GroupedSettingsContext,
+  );
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -31,11 +32,13 @@ export const DraggableEntry = ({
         variant="outline"
         ref={handleRef}
         onMouseEnter={() => {
-          if (inputRef.current) onChangeUngroupedName(
-            groupedCityName,
-            cityName.name,
-            inputRef.current.value,
-          )
+          if (inputRef.current) {
+            onChangeUngroupedName(
+              groupedCityName,
+              cityName.name,
+              inputRef.current.value,
+            );
+          }
         }}
       >
         <GripVertical />
@@ -45,11 +48,12 @@ export const DraggableEntry = ({
           <div className="w-100 d-flex gap-2 align-items-center">
             <Form.Control
               ref={inputRef}
-              onBlur={(e) => onChangeUngroupedName(
-                groupedCityName,
-                cityName.name,
-                e.target.value,
-              )}
+              onBlur={(e) =>
+                onChangeUngroupedName(
+                  groupedCityName,
+                  cityName.name,
+                  e.target.value,
+                )}
               defaultValue={cityName.name}
             />
             <Button
