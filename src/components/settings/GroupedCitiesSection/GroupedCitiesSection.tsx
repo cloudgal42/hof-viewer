@@ -8,6 +8,7 @@ import type { City } from "../../../interfaces/City.ts";
 import { useQuery } from "@tanstack/react-query";
 import { ErrorScreen } from "../../misc/ErrorScreen/ErrorScreen.tsx";
 import { useLocalStorage } from "usehooks-ts";
+import { ErrorNotification } from "../../misc/LeftNotification/ErrorNotification.tsx";
 
 function getSettingsFromQuery(data: City[]) {
   const cityNames = data.map(({ cityName }) => cityName);
@@ -65,6 +66,9 @@ const useCreatorCitiesGroupedSettings = (
 
 export const GroupedCitiesSection = () => {
   const [creator, setCreator] = useState<string>("");
+  const [settingsError, setSettingsError] = useState<
+    "ROW_ALREADY_EXISTS" | "NAME_ALREADY_EXISTS" | ""
+  >("");
 
   const [groupedCitiesSettings, setGroupedCitiesSettings] = useLocalStorage<
     [string, GroupedCityRowSetting[]][]
@@ -86,12 +90,12 @@ export const GroupedCitiesSection = () => {
       if (groupedCitiesRows.has(creator)) {
         // 1. Get the current list of city names
         const existingData = groupedCitiesRows.get(creator);
-        const existingCityNames = existingData?.map(cityName =>
+        const existingCityNames = existingData?.map((cityName) =>
           cityName.groupedCityName
         );
 
         // 2. Filter for new city names
-        const newEntries = newVal.filter(cityName => {
+        const newEntries = newVal.filter((cityName) => {
           if (!existingCityNames) return false;
           return !existingCityNames.includes(cityName.groupedCityName);
         });
@@ -105,7 +109,7 @@ export const GroupedCitiesSection = () => {
 
         // 3. If there are new city names, Update with new city names
         if (newEntries.length > 0 && existingData) {
-          copy.set(creator, [...existingData, ...newEntries])
+          copy.set(creator, [...existingData, ...newEntries]);
         }
       } else {
         copy.set(creator, newVal);
@@ -205,7 +209,6 @@ export const GroupedCitiesSection = () => {
     newValue: string,
   ) {
     const copy = structuredClone(groupedCitiesRows);
-
     const objToModify = copy
       .get(creator)
       ?.find((city) => city.groupedCityName === groupedCityName)
@@ -239,7 +242,6 @@ export const GroupedCitiesSection = () => {
     const targetRowName = e.operation.target?.id;
 
     const copy = structuredClone(groupedCitiesRows);
-
     const origin = copy.get(creator)?.find((entry) => {
       return entry.ungroupedCityNames.some((cityName) =>
         cityName.name === sourceName
@@ -249,6 +251,7 @@ export const GroupedCitiesSection = () => {
       entry.groupedCityName === targetRowName
     );
 
+    // Check if the name is moved to another section
     if (origin && target && sourceName && targetRowName) {
       const objToMove = origin.ungroupedCityNames.find((entry) =>
         entry.name === sourceName
@@ -264,8 +267,16 @@ export const GroupedCitiesSection = () => {
       const objToMove = origin.ungroupedCityNames.find((entry) =>
         entry.name === sourceName
       );
+      const isRowAlreadyExists = copy.get(creator)?.some((entry) =>
+        entry.groupedCityName === sourceName
+      );
 
-      if (objToMove) {
+      if (isRowAlreadyExists) {
+        setSettingsError("ROW_ALREADY_EXISTS");
+        return;
+      }
+
+      if (objToMove && !isRowAlreadyExists) {
         origin.ungroupedCityNames = origin.ungroupedCityNames.filter((entry) =>
           entry.name !== sourceName
         );
@@ -282,6 +293,7 @@ export const GroupedCitiesSection = () => {
     }
 
     handleChangeSettings(copy);
+    setSettingsError("");
   }
 
   function handleSetCreator(formData: FormData) {
@@ -320,6 +332,7 @@ export const GroupedCitiesSection = () => {
   ) {
     content = (
       <DragDropProvider
+        onDragStart={() => setSettingsError("")}
         onDragEnd={handleDragEnd}
       >
         {creatorEntriesWithUngroupedNames.map((groupedCitiesRow, i) => (
@@ -372,6 +385,15 @@ export const GroupedCitiesSection = () => {
 
   return (
     <section id="groupedCities">
+      {settingsError === "ROW_ALREADY_EXISTS" ? (
+        <ErrorNotification>
+          Cannot add this Grouped City entry as it already exists.
+        </ErrorNotification>
+      ) : settingsError === "NAME_ALREADY_EXISTS" && (
+        <ErrorNotification>
+          This city name already exists. Please specify a different name.
+        </ErrorNotification>
+      )}
       <h3 className="fs-4 mb-2">Grouped Cities</h3>
       <p className="text-muted">
         Adjust or override the behavior of the screenshot grouping algorithm
