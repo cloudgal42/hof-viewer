@@ -4,68 +4,11 @@ import {AddGroup} from "./AddGroup.tsx";
 import {Fragment, useState} from "react";
 import type {GroupedCityRowSetting} from "../../../interfaces/GroupedCityRowSetting.ts";
 import {DragDropProvider, type DragEndEvent} from "@dnd-kit/react";
-import type {City} from "../../../interfaces/City.ts";
-import {useQuery} from "@tanstack/react-query";
 import {ErrorScreen} from "../../misc/ErrorScreen/ErrorScreen.tsx";
 import {useLocalStorage} from "usehooks-ts";
 import {ErrorNotification} from "../../misc/LeftNotification/ErrorNotification.tsx";
 import {GroupedSettingsContext} from "../../../context/GroupedSettingsContext.ts";
-
-function getSettingsFromQuery(data: City[]) {
-  const cityNames = data.map(({ cityName }) => cityName);
-  const uniqueCityNames = [...new Set(cityNames)];
-
-  const cityNamesNoCase = cityNames.map((cityName) => cityName.toLowerCase());
-  const uniqueCityNamesIgnoreCase = [...new Set(cityNamesNoCase)];
-
-  const list: GroupedCityRowSetting[] = uniqueCityNamesIgnoreCase.map(
-    (cityName, i) => {
-      const matchingNames = uniqueCityNames.filter((name) =>
-        name.toLowerCase() === cityName.toLowerCase()
-      );
-      return {
-        ungroupedCityNames: matchingNames.map((name) => ({
-          name: name,
-          isEditable: false,
-          id: crypto.randomUUID(),
-        })),
-        groupedCityName: uniqueCityNames[i],
-        isUserCreated: false,
-        id: crypto.randomUUID(),
-      };
-    },
-  );
-
-  return list;
-}
-
-const useCreatorCitiesGroupedSettings = (
-  creator: string,
-  setter: (newVal: GroupedCityRowSetting[]) => void,
-) => {
-  return useQuery<GroupedCityRowSetting[]>({
-    queryKey: ["cities", creator],
-    queryFn: async () => {
-      if (!creator) return [];
-
-      const res = await fetch(
-        `${import.meta.env.VITE_HOF_SERVER}/screenshots?creatorId=${creator}`,
-      );
-      const data = await res.json();
-
-      if (!res.ok) {
-        return Promise.reject(new Error(`${data.statusCode}: ${data.message}`));
-      }
-
-      const creatorSettings = getSettingsFromQuery(data);
-      setter(creatorSettings);
-      return creatorSettings;
-    },
-    staleTime: 30 * 60 * 1000,
-    refetchOnWindowFocus: false,
-    retry: false,
-  });
-};
+import {useCreatorInitialGroupedSettings} from "../../../hooks/useCreatorInitialGroupedSettings.ts";
 
 export const GroupedCitiesSection = () => {
   const [creator, setCreator] = useState<string>("");
@@ -87,7 +30,7 @@ export const GroupedCitiesSection = () => {
 
   // Fetches data than check if data needs to be created or updated.
   // Than updates the state via a cb
-  const { isFetching, error } = useCreatorCitiesGroupedSettings(
+  const { isFetching, error } = useCreatorInitialGroupedSettings(
     creator,
     (newVal: GroupedCityRowSetting[]) => {
       const copy = structuredClone(groupedCitiesRows);
