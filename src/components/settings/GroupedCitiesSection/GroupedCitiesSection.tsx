@@ -1,14 +1,14 @@
-import { Accordion, Button, Form, Spinner } from "react-bootstrap";
-import { GroupedCityRow } from "./GroupedCityRow.tsx";
-import { AddGroup } from "./AddGroup.tsx";
-import { Fragment, useState } from "react";
-import type { GroupedCityRowSetting } from "../../../interfaces/GroupedCityRowSetting.ts";
-import { DragDropProvider, type DragEndEvent } from "@dnd-kit/react";
-import type { City } from "../../../interfaces/City.ts";
-import { useQuery } from "@tanstack/react-query";
-import { ErrorScreen } from "../../misc/ErrorScreen/ErrorScreen.tsx";
-import { useLocalStorage } from "usehooks-ts";
-import { ErrorNotification } from "../../misc/LeftNotification/ErrorNotification.tsx";
+import {Accordion, Button, Form, Spinner} from "react-bootstrap";
+import {GroupedCityRow} from "./GroupedCityRow.tsx";
+import {AddGroup} from "./AddGroup.tsx";
+import {Fragment, useState} from "react";
+import type {GroupedCityRowSetting} from "../../../interfaces/GroupedCityRowSetting.ts";
+import {DragDropProvider, type DragEndEvent} from "@dnd-kit/react";
+import type {City} from "../../../interfaces/City.ts";
+import {useQuery} from "@tanstack/react-query";
+import {ErrorScreen} from "../../misc/ErrorScreen/ErrorScreen.tsx";
+import {useLocalStorage} from "usehooks-ts";
+import {ErrorNotification} from "../../misc/LeftNotification/ErrorNotification.tsx";
 import {GroupedSettingsContext} from "../../../context/GroupedSettingsContext.ts";
 
 function getSettingsFromQuery(data: City[]) {
@@ -85,6 +85,8 @@ export const GroupedCitiesSection = () => {
     new Map<string, GroupedCityRowSetting[]>(groupedCitiesSettings),
   );
 
+  // Fetches data than check if data needs to be created or updated.
+  // Than updates the state via a cb
   const { isFetching, error } = useCreatorCitiesGroupedSettings(
     creator,
     (newVal: GroupedCityRowSetting[]) => {
@@ -181,9 +183,7 @@ export const GroupedCitiesSection = () => {
   ) {
     const copy = structuredClone(groupedCitiesRows);
 
-    const objToModify = copy.get(creator)?.find((city) =>
-      city.id === ownerId
-    );
+    const objToModify = copy.get(creator)?.find((city) => city.id === ownerId);
 
     if (objToModify) {
       objToModify.ungroupedCityNames = objToModify.ungroupedCityNames.filter(
@@ -202,9 +202,7 @@ export const GroupedCitiesSection = () => {
     let arrToModify = copy.get(creator);
 
     if (arrToModify) {
-      arrToModify = arrToModify.filter((entry) =>
-        entry.id !== id
-      );
+      arrToModify = arrToModify.filter((entry) => entry.id !== id);
       copy.set(creator, arrToModify);
     }
 
@@ -232,9 +230,7 @@ export const GroupedCitiesSection = () => {
   function changeGroupedEntryName(id: string, newValue: string) {
     const copy = structuredClone(groupedCitiesRows);
 
-    const objToModify = copy.get(creator)?.find((city) =>
-      city.id === id
-    );
+    const objToModify = copy.get(creator)?.find((city) => city.id === id);
 
     if (objToModify) {
       objToModify.groupedCityName = newValue;
@@ -255,9 +251,7 @@ export const GroupedCitiesSection = () => {
         cityName.id === sourceId
       );
     });
-    const target = copy.get(creator)?.find((entry) =>
-      entry.id === targetRowId
-    );
+    const target = copy.get(creator)?.find((entry) => entry.id === targetRowId);
 
     // Check if the name is moved to another section
     if (origin && target && sourceId && targetRowId) {
@@ -310,6 +304,19 @@ export const GroupedCitiesSection = () => {
     setCreator(submittedCreator);
   }
 
+  function isUngroupedNameAlreadyExists(parentId: string, id: string, name: string) {
+    const creatorEntry = groupedCitiesRows
+      .get(creator)
+      ?.find(entry => entry.id === parentId);
+
+    if (!creatorEntry) return false;
+
+    return creatorEntry.ungroupedCityNames
+      .some((cityName) =>
+        cityName.name === name && cityName.id !== id
+      );
+  }
+
   const creatorEntries = groupedCitiesRows && groupedCitiesRows
     .get(creator)
     ?.sort((a, b) => b.ungroupedCityNames.length - a.ungroupedCityNames.length);
@@ -340,13 +347,16 @@ export const GroupedCitiesSection = () => {
     creatorEntriesWithUngroupedNames && creatorEntriesWithoutUngroupedNames
   ) {
     content = (
-      <GroupedSettingsContext value={{
-        onAdd: addUngroupedCityName,
-        onRemoveUngroupedName: removeUngroupedCityName,
-        onRemoveGroupedName: removeGroupedEntry,
-        onChangeGroupedName: changeGroupedEntryName,
-        onChangeUngroupedName: changeUngroupedEntryName,
-      }}>
+      <GroupedSettingsContext
+        value={{
+          onAdd: addUngroupedCityName,
+          onRemoveUngroupedName: removeUngroupedCityName,
+          onRemoveGroupedName: removeGroupedEntry,
+          onChangeGroupedName: changeGroupedEntryName,
+          onChangeUngroupedName: changeUngroupedEntryName,
+          isUngroupedNameAlreadyExists,
+        }}
+      >
         <DragDropProvider
           onDragStart={() => setSettingsError("")}
           onDragEnd={handleDragEnd}
@@ -388,15 +398,17 @@ export const GroupedCitiesSection = () => {
 
   return (
     <section id="groupedCities">
-      {settingsError === "ROW_ALREADY_EXISTS" ? (
-        <ErrorNotification>
-          Cannot add this Grouped City entry as it already exists.
-        </ErrorNotification>
-      ) : settingsError === "NAME_ALREADY_EXISTS" && (
-        <ErrorNotification>
-          This city name already exists. Please specify a different name.
-        </ErrorNotification>
-      )}
+      {settingsError === "ROW_ALREADY_EXISTS"
+        ? (
+          <ErrorNotification>
+            Cannot add this Grouped City entry as it already exists.
+          </ErrorNotification>
+        )
+        : settingsError === "NAME_ALREADY_EXISTS" && (
+          <ErrorNotification>
+            This city name already exists. Please specify a different name.
+          </ErrorNotification>
+        )}
       <h3 className="fs-4 mb-2">Grouped Cities</h3>
       <p className="text-muted">
         Adjust or override the behavior of the screenshot grouping algorithm

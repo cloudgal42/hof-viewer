@@ -6,6 +6,7 @@ export interface GroupedSettingsFns {
   onRemoveGroupedName: (id: string) => void;
   onChangeUngroupedName: (ownerId: string, id: string, newVal: string) => void;
   onChangeGroupedName: (id: string, newVal: string) => void;
+  isUngroupedNameAlreadyExists: (parentId: string, id: string, name: string) => boolean;
 }
 
 export const GroupedSettingsContext = createContext<GroupedSettingsFns>({
@@ -18,4 +19,5 @@ export const GroupedSettingsContext = createContext<GroupedSettingsFns>({
   },
   onChangeGroupedName: (id: string, newVal: string) => {
   },
+  isUngroupedNameAlreadyExists: (parentId: string, id: string, name: string) => false,
 });
