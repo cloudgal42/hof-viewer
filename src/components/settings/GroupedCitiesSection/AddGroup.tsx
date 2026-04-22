@@ -14,7 +14,11 @@ export const AddGroup = ({
   });
 
   return (
-    <div className="mt-2 d-flex align-items-center" ref={ref}>
+    <div
+      className="mt-2 d-flex align-items-center"
+      style={{minWidth: "500px"}}
+      ref={ref}
+    >
       <OverlayTrigger overlay={<Tooltip>Add new grouped city entry</Tooltip>}>
         <Button
           className="p-1 rounded-4"

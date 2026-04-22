@@ -1,0 +1,22 @@
+.grouped-settings-form {
+  width: 100%;
+}
+
+@media all and (width > 993px) and (width < 1068px) {
+  .grouped-settings-form {
+    width: calc(100vw - 6rem - 250px - 172px - 25px);
+  }
+}
+
+@media all and (width < 635px) {
+  .grouped-settings-form {
+    width: calc(100vw - 6rem - 15px);
+  }
+}
+
+@media all and (width < 576px) {
+  .grouped-settings-form {
+    width: calc(100vw - 3rem - 15px);
+  }
+}
+

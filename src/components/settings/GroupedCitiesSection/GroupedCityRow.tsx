@@ -4,7 +4,7 @@ import type { UngroupedCityName } from "../../../interfaces/UngroupedCityName.ts
 import { DraggableEntry } from "./DraggableEntry.tsx";
 import { useDroppable } from "@dnd-kit/react";
 import {GroupedSettingsContext} from "../../../context/GroupedSettingsContext.ts";
-import {useContext} from "react";
+import {type CSSProperties, useContext} from "react";
 
 export const GroupedCityRow = ({
   ungroupedCityNames,
@@ -12,12 +12,14 @@ export const GroupedCityRow = ({
   translatedGroupedCityName,
   isUserCreated,
   id,
+  style,
 }: {
   ungroupedCityNames: UngroupedCityName[];
   groupedCityName: string;
   translatedGroupedCityName?: string;
   isUserCreated: boolean;
   id: string;
+  style?: CSSProperties;
 }) => {
   const { ref, isDropTarget } = useDroppable({
     id,
@@ -29,8 +31,8 @@ export const GroupedCityRow = ({
   } = useContext(GroupedSettingsContext);
 
   return (
-    <div className="row mb-3">
-      <div className="col-6 pe-0 d-flex gap-2 align-items-center">
+    <div className="row mb-3" style={style}>
+      <div className="col-7 col-sm-6 pe-0 d-flex gap-2 align-items-center">
         <div
           className={`flex-grow-1 border border-primary border-2 rounded-2 overflow-hidden ${isDropTarget ? "border-opacity-50" : "border-opacity-0"}`}
           ref={ref}
@@ -49,7 +51,7 @@ export const GroupedCityRow = ({
             variant="outline-primary"
             onClick={() => onAdd(groupedCityName)}
           >
-            <Plus /> Add custom city name
+            <Plus /> Add custom group candidate
           </Button>
         </div>
         <div className="position-relative mx-3">
@@ -62,7 +64,7 @@ export const GroupedCityRow = ({
           <ArrowRight width="24" height="24" />
         </div>
       </div>
-      <div className="col-6 d-flex align-items-center">
+      <div className="col-5 col-sm-6 d-flex align-items-center">
         {isUserCreated
           ? (
             <Form.Control

@@ -10,6 +10,8 @@ import { ErrorNotification } from "../../misc/LeftNotification/ErrorNotification
 import { GroupedSettingsContext } from "../../../context/GroupedSettingsContext.ts";
 import { useCreatorInitialGroupedSettings } from "../../../hooks/useCreatorInitialGroupedSettings.ts";
 
+import "../../../css/components/GroupedCitiesSection.css";
+
 export const GroupedCitiesSection = () => {
   const [creator, setCreator] = useState<string>("");
   const [settingsError, setSettingsError] = useState<
@@ -331,36 +333,38 @@ export const GroupedCitiesSection = () => {
           onDragStart={() => setSettingsError("")}
           onDragEnd={handleDragEnd}
         >
-          {creatorEntriesWithUngroupedNames.map((groupedCitiesRow, i) => (
-            <Fragment key={groupedCitiesRow.id}>
-              <GroupedCityRow {...groupedCitiesRow} />
-              {i < creatorEntriesWithUngroupedNames.length - 1 && <hr />}
-            </Fragment>
-          ))}
-          {creatorEntriesWithoutUngroupedNames.length > 0 && (
-            <Accordion>
-              <Accordion.Item eventKey="0">
-                <Accordion.Header>
-                  Grouped city names with 0 group candidates
-                  ({creatorEntriesWithoutUngroupedNames.length} result(s))
-                </Accordion.Header>
-                <Accordion.Body>
-                  {creatorEntriesWithoutUngroupedNames.map((
-                    groupedCitiesRow,
-                    i,
-                  ) => (
-                    <Fragment key={groupedCitiesRow.id}>
-                      <GroupedCityRow {...groupedCitiesRow} />
-                      {i < creatorEntriesWithoutUngroupedNames.length - 1 && (
-                        <hr />
-                      )}
-                    </Fragment>
-                  ))}
-                </Accordion.Body>
-              </Accordion.Item>
-            </Accordion>
-          )}
-          <AddGroup onAdd={addGroupedCityEntry} />
+          <div className="overflow-auto grouped-settings-form" style={{scrollbarGutter: "stable"}}>
+            {creatorEntriesWithUngroupedNames.map((groupedCitiesRow, i) => (
+              <Fragment key={groupedCitiesRow.id}>
+                <GroupedCityRow {...groupedCitiesRow} style={{minWidth: "500px"}} />
+                {i < creatorEntriesWithUngroupedNames.length - 1 && <hr style={{minWidth: "500px"}} />}
+              </Fragment>
+            ))}
+            {creatorEntriesWithoutUngroupedNames.length > 0 && (
+              <Accordion style={{minWidth: "500px"}}>
+                <Accordion.Item eventKey="0">
+                  <Accordion.Header>
+                    Grouped city names with 0 group candidates
+                    ({creatorEntriesWithoutUngroupedNames.length} result(s))
+                  </Accordion.Header>
+                  <Accordion.Body>
+                    {creatorEntriesWithoutUngroupedNames.map((
+                      groupedCitiesRow,
+                      i,
+                    ) => (
+                      <Fragment key={groupedCitiesRow.id}>
+                        <GroupedCityRow {...groupedCitiesRow} />
+                        {i < creatorEntriesWithoutUngroupedNames.length - 1 && (
+                          <hr />
+                        )}
+                      </Fragment>
+                    ))}
+                  </Accordion.Body>
+                </Accordion.Item>
+              </Accordion>
+            )}
+            <AddGroup onAdd={addGroupedCityEntry} />
+          </div>
         </DragDropProvider>
       </GroupedSettingsContext>
     );

@@ -5,6 +5,8 @@ import { useDraggable } from "@dnd-kit/react";
 import { useContext, useRef, useState } from "react";
 import { GroupedSettingsContext } from "../../../context/GroupedSettingsContext.ts";
 
+import "../../../css/components/DraggableEntry.css";
+
 export const DraggableEntry = ({
   cityName,
   groupedCityName,
@@ -49,7 +51,7 @@ export const DraggableEntry = ({
 
   return (
     <div
-      className="mb-2 d-flex gap-2 align-items-center"
+      className="input-actions mb-2 d-flex gap-2 align-items-center"
       ref={ref}
     >
       <Button
@@ -72,7 +74,7 @@ export const DraggableEntry = ({
       {cityName.isEditable
         ? (
           <div className="w-100">
-            <div className="d-flex gap-2 align-items-center">
+            <div className="draggable-entry-field d-flex gap-2 align-items-center">
               <Form.Control
                 className={isInvalid ? "is-invalid" : ""}
                 ref={inputRef}
@@ -89,12 +91,12 @@ export const DraggableEntry = ({
                 onClick={() => onRemoveUngroupedName(ownerId, cityName.id)}
               >
                 <Trash />
-                <span className="visually-hidden">Delete this entry</span>
+                <span className="ms-2">Delete</span>
               </Button>
             </div>
             {isInvalid && (
               <Form.Control.Feedback type="invalid" className="w-100 d-block">
-                Each of these grouped candidates must be globally unique.
+                Each of these grouped candidates must be unique per creator.
               </Form.Control.Feedback>
             )}
           </div>
