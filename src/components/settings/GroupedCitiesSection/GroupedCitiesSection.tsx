@@ -40,6 +40,7 @@ export const GroupedCitiesSection = () => {
     creator,
     (newVal: GroupedCityRowSetting[]) => {
       const copy = structuredClone(groupedCitiesRows);
+      let valToSet: GroupedCityRowSetting[] | null = null;
       // We don't want to reset to default if there is already data in local storage
       if (groupedCitiesRows.has(creator)) {
         // 1. Get the current list of city names
@@ -63,12 +64,19 @@ export const GroupedCitiesSection = () => {
 
         // 3. If there are new city names, Update with new city names
         if (newEntries.length > 0 && existingData) {
-          copy.set(creator, [...existingData, ...newEntries]);
+          valToSet = [...existingData, ...newEntries];
+        } else if (existingData) {
+          valToSet = [...existingData];
         }
       } else {
-        copy.set(creator, newVal);
+        valToSet = [...newVal];
       }
 
+      if (valToSet) {
+        console.log("Sorting");
+        valToSet = valToSet.sort((a, b) => b.ungroupedCityNames.length - a.ungroupedCityNames.length);
+        copy.set(creator, valToSet);
+      }
       setGroupedCitiesRows(copy);
     },
   );
@@ -316,9 +324,7 @@ export const GroupedCitiesSection = () => {
       );
   }
 
-  const creatorEntries = groupedCitiesRows && groupedCitiesRows
-    .get(creator)
-    ?.sort((a, b) => b.ungroupedCityNames.length - a.ungroupedCityNames.length);
+  const creatorEntries = groupedCitiesRows && groupedCitiesRows.get(creator);
 
   const creatorEntriesWithUngroupedNames = creatorEntries &&
     creatorEntries.filter((entry) => entry.ungroupedCityNames.length > 0);
