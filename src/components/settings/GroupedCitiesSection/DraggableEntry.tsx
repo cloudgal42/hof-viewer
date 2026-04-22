@@ -96,7 +96,7 @@ export const DraggableEntry = ({
             </div>
             {isInvalid && (
               <Form.Control.Feedback type="invalid" className="w-100 d-block">
-                Each of these grouped candidates must be unique per creator.
+                Each grouped candidates must have a unique name per creator preset.
               </Form.Control.Feedback>
             )}
           </div>

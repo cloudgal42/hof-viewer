@@ -16,8 +16,8 @@ export const ErrorNotification = ({
     createPortal(
       <Alert
         variant="danger"
-        className="position-sticky d-flex align-items-center gap-2"
-        style={{bottom: "20px", left: "20px", width: "fit-content"}}
+        className="position-fixed d-flex align-items-center gap-2"
+        style={{bottom: "5px", left: "10px", width: "fit-content"}}
         dismissible
       >
         <ExclamationCircle />

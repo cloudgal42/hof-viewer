@@ -1,16 +1,17 @@
-import { Accordion, Button, Form, Spinner } from "react-bootstrap";
+import {Accordion, Button, Form, Spinner} from "react-bootstrap";
 import { GroupedCityRow } from "./GroupedCityRow.tsx";
 import { AddGroup } from "./AddGroup.tsx";
 import { Fragment, useState } from "react";
 import type { GroupedCityRowSetting } from "../../../interfaces/GroupedCityRowSetting.ts";
-import { DragDropProvider, type DragEndEvent } from "@dnd-kit/react";
+import {DragDropProvider, type DragEndEvent, type DragStartEvent} from "@dnd-kit/react";
 import { ErrorScreen } from "../../misc/ErrorScreen/ErrorScreen.tsx";
 import { useLocalStorage } from "usehooks-ts";
-import { ErrorNotification } from "../../misc/LeftNotification/ErrorNotification.tsx";
 import { GroupedSettingsContext } from "../../../context/GroupedSettingsContext.ts";
 import { useCreatorInitialGroupedSettings } from "../../../hooks/useCreatorInitialGroupedSettings.ts";
 
 import "../../../css/components/GroupedCitiesSection.css";
+import type {UngroupedCityName} from "../../../interfaces/UngroupedCityName.ts";
+import {ErrorNotification} from "../../misc/LeftNotification/ErrorNotification.tsx";
 
 export const GroupedCitiesSection = () => {
   const [creator, setCreator] = useState<string>("");
@@ -29,6 +30,9 @@ export const GroupedCitiesSection = () => {
   >(
     new Map<string, GroupedCityRowSetting[]>(groupedCitiesSettings),
   );
+
+  const [currDraggedGroupedCandidate, setCurrDraggedGroupedCandidate] =
+    useState<UngroupedCityName | null>(null);
 
   // Fetches data than check if data needs to be created or updated.
   // Than updates the state via a cb
@@ -182,18 +186,40 @@ export const GroupedCitiesSection = () => {
     handleChangeSettings(copy);
   }
 
+  function getOriginFromUngroupedNameId(
+    copy: Map<string, GroupedCityRowSetting[]>,
+    id: string
+  ) {
+    return copy.get(creator)?.find((entry) => {
+      return entry.ungroupedCityNames.some((cityName) =>
+        cityName.id === id
+      );
+    });
+  }
+
+  function handleDragStart(e: DragStartEvent) {
+    const sourceId = e.operation.source?.id;
+    const origin = sourceId && getOriginFromUngroupedNameId(
+      groupedCitiesRows, sourceId?.toString()
+    );
+
+    if (origin) {
+      const obj = origin.ungroupedCityNames.find((entry) =>
+        entry.id === sourceId
+      );
+      if (obj) setCurrDraggedGroupedCandidate(obj);
+    }
+    setSettingsError("");
+  }
+
   function handleDragEnd(e: DragEndEvent) {
-    if (e.canceled) return;
+    if (e.canceled || !e.operation.source?.id) return;
 
     const sourceId = e.operation.source?.id;
     const targetRowId = e.operation.target?.id;
 
     const copy = structuredClone(groupedCitiesRows);
-    const origin = copy.get(creator)?.find((entry) => {
-      return entry.ungroupedCityNames.some((cityName) =>
-        cityName.id === sourceId
-      );
-    });
+    const origin = getOriginFromUngroupedNameId(copy, sourceId?.toString());
     const target = copy.get(creator)?.find((entry) => entry.id === targetRowId);
 
     // Check if the name is moved to another section
@@ -240,6 +266,7 @@ export const GroupedCitiesSection = () => {
 
     handleChangeSettings(copy);
     setSettingsError("");
+    setCurrDraggedGroupedCandidate(null);
   }
 
   function handleSetCreator(formData: FormData) {
@@ -330,7 +357,7 @@ export const GroupedCitiesSection = () => {
         }}
       >
         <DragDropProvider
-          onDragStart={() => setSettingsError("")}
+          onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
         >
           <div className="overflow-auto grouped-settings-form" style={{scrollbarGutter: "stable"}}>
@@ -375,7 +402,7 @@ export const GroupedCitiesSection = () => {
       {settingsError === "ROW_ALREADY_EXISTS"
         ? (
           <ErrorNotification>
-            Cannot add this Grouped City entry as it already exists.
+            Cannot add "{currDraggedGroupedCandidate?.name}" because such group already exists.
           </ErrorNotification>
         )
         : settingsError === "NAME_ALREADY_EXISTS" && (
