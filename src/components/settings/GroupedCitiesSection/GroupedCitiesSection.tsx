@@ -1,14 +1,14 @@
-import {Accordion, Button, Form, Spinner} from "react-bootstrap";
-import {GroupedCityRow} from "./GroupedCityRow.tsx";
-import {AddGroup} from "./AddGroup.tsx";
-import {Fragment, useState} from "react";
-import type {GroupedCityRowSetting} from "../../../interfaces/GroupedCityRowSetting.ts";
-import {DragDropProvider, type DragEndEvent} from "@dnd-kit/react";
-import {ErrorScreen} from "../../misc/ErrorScreen/ErrorScreen.tsx";
-import {useLocalStorage} from "usehooks-ts";
-import {ErrorNotification} from "../../misc/LeftNotification/ErrorNotification.tsx";
-import {GroupedSettingsContext} from "../../../context/GroupedSettingsContext.ts";
-import {useCreatorInitialGroupedSettings} from "../../../hooks/useCreatorInitialGroupedSettings.ts";
+import { Accordion, Button, Form, Spinner } from "react-bootstrap";
+import { GroupedCityRow } from "./GroupedCityRow.tsx";
+import { AddGroup } from "./AddGroup.tsx";
+import { Fragment, useState } from "react";
+import type { GroupedCityRowSetting } from "../../../interfaces/GroupedCityRowSetting.ts";
+import { DragDropProvider, type DragEndEvent } from "@dnd-kit/react";
+import { ErrorScreen } from "../../misc/ErrorScreen/ErrorScreen.tsx";
+import { useLocalStorage } from "usehooks-ts";
+import { ErrorNotification } from "../../misc/LeftNotification/ErrorNotification.tsx";
+import { GroupedSettingsContext } from "../../../context/GroupedSettingsContext.ts";
+import { useCreatorInitialGroupedSettings } from "../../../hooks/useCreatorInitialGroupedSettings.ts";
 
 export const GroupedCitiesSection = () => {
   const [creator, setCreator] = useState<string>("");
@@ -245,16 +245,45 @@ export const GroupedCitiesSection = () => {
     setCreator(submittedCreator);
   }
 
-  function isUngroupedNameAlreadyExists(parentId: string, id: string, name: string) {
-    const creatorEntry = groupedCitiesRows
-      .get(creator)
-      ?.find(entry => entry.id === parentId);
+  function isUngroupedNameAlreadyExists(
+    parentId: string,
+    id: string,
+    name: string,
+  ) {
+    // 1. Get all creator entries
+    const creatorEntries = groupedCitiesRows.get(creator);
 
-    if (!creatorEntry) return false;
+    if (!creatorEntries) return false;
 
-    return creatorEntry.ungroupedCityNames
-      .some((cityName) =>
-        cityName.name === name && cityName.id !== id
+    // 2. Map all of them to the following data struct:
+    // {
+    //   ungroupedName: string
+    //   parentId: string
+    //   id: string
+    // }
+    const processed = creatorEntries.flatMap((entry) => {
+      return entry.ungroupedCityNames.map((groupedCandidates) => ({
+        ungroupedName: groupedCandidates.name,
+        parentId: entry.id,
+        id: groupedCandidates.id,
+      }));
+    });
+
+    console.log(processed);
+
+    // 3. Check if:
+    // ungroupedName exists in whole list. If yes, return entries that match this
+    // AND if those returned results have different ID compared to id
+    // OR if those returned results have a diff parent ID
+    const duplicatedNameEntries = processed
+      .filter((nameEntries) => nameEntries.ungroupedName === name);
+
+    if (duplicatedNameEntries.length < 1) return false;
+
+    return duplicatedNameEntries
+      .some((nameEntries) =>
+        nameEntries.id !== id ||
+        nameEntries.parentId !== parentId
       );
   }
 
