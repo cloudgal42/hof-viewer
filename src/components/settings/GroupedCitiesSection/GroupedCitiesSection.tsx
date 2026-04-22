@@ -270,7 +270,7 @@ export const GroupedCitiesSection = () => {
         entry.id === sourceId
       );
       const isRowAlreadyExists = copy.get(creator)?.some((entry) =>
-        entry.groupedCityName === origin.groupedCityName
+        entry.groupedCityName === objToMove?.name
       );
 
       if (isRowAlreadyExists) {
