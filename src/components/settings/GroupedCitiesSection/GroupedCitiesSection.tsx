@@ -115,8 +115,6 @@ export const GroupedCitiesSection = () => {
       ];
     }
 
-    console.log(objToModify);
-
     handleChangeSettings(copy);
   }
 
