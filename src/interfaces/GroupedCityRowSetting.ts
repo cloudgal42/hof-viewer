@@ -5,4 +5,5 @@ export interface GroupedCityRowSetting {
   groupedCityName: string;
   translatedGroupedCityName?: string;
   isUserCreated: boolean;
+  id: string;
 }

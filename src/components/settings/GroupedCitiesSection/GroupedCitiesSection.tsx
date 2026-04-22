@@ -27,9 +27,11 @@ function getSettingsFromQuery(data: City[]) {
         ungroupedCityNames: matchingNames.map((name) => ({
           name: name,
           isEditable: false,
+          id: crypto.randomUUID(),
         })),
         groupedCityName: uniqueCityNames[i],
         isUserCreated: false,
+        id: crypto.randomUUID(),
       };
     },
   );
@@ -136,9 +138,11 @@ export const GroupedCitiesSection = () => {
           ungroupedCityNames: [{
             name: `GroupedCity${creatorSettings.length + 1}-1`,
             isEditable: true,
+            id: crypto.randomUUID(),
           }],
           groupedCityName: `GroupedCity${creatorSettings.length + 1}`,
           isUserCreated: true,
+          id: crypto.randomUUID(),
         });
       }
     }
@@ -161,27 +165,30 @@ export const GroupedCitiesSection = () => {
             objToModify.ungroupedCityNames.length + 1
           }`,
           isEditable: true,
+          id: crypto.randomUUID(),
         },
       ];
     }
+
+    console.log(objToModify);
 
     handleChangeSettings(copy);
   }
 
   function removeUngroupedCityName(
-    groupedCityName: string,
-    ungroupedCityName: string,
+    ownerId: string,
+    id: string,
   ) {
     const copy = structuredClone(groupedCitiesRows);
 
     const objToModify = copy.get(creator)?.find((city) =>
-      city.groupedCityName === groupedCityName
+      city.id === ownerId
     );
 
     if (objToModify) {
       objToModify.ungroupedCityNames = objToModify.ungroupedCityNames.filter(
         (entry) => {
-          return entry.name !== ungroupedCityName;
+          return entry.id !== id;
         },
       );
     }
@@ -189,14 +196,14 @@ export const GroupedCitiesSection = () => {
     handleChangeSettings(copy);
   }
 
-  function removeGroupedEntry(groupedCityName: string) {
+  function removeGroupedEntry(id: string) {
     const copy = structuredClone(groupedCitiesRows);
 
     let arrToModify = copy.get(creator);
 
     if (arrToModify) {
       arrToModify = arrToModify.filter((entry) =>
-        entry.groupedCityName !== groupedCityName
+        entry.id !== id
       );
       copy.set(creator, arrToModify);
     }
@@ -205,15 +212,15 @@ export const GroupedCitiesSection = () => {
   }
 
   function changeUngroupedEntryName(
-    groupedCityName: string,
-    ungroupedCityName: string,
+    ownerId: string,
+    ungroupedCityId: string,
     newValue: string,
   ) {
     const copy = structuredClone(groupedCitiesRows);
     const objToModify = copy
       .get(creator)
-      ?.find((city) => city.groupedCityName === groupedCityName)
-      ?.ungroupedCityNames.find((city) => city.name === ungroupedCityName);
+      ?.find((city) => city.id === ownerId)
+      ?.ungroupedCityNames.find((city) => city.id === ungroupedCityId);
 
     if (objToModify) {
       objToModify.name = newValue;
@@ -222,11 +229,11 @@ export const GroupedCitiesSection = () => {
     handleChangeSettings(copy);
   }
 
-  function changeGroupedEntryName(groupedCityName: string, newValue: string) {
+  function changeGroupedEntryName(id: string, newValue: string) {
     const copy = structuredClone(groupedCitiesRows);
 
     const objToModify = copy.get(creator)?.find((city) =>
-      city.groupedCityName === groupedCityName
+      city.id === id
     );
 
     if (objToModify) {
@@ -239,37 +246,37 @@ export const GroupedCitiesSection = () => {
   function handleDragEnd(e: DragEndEvent) {
     if (e.canceled) return;
 
-    const sourceName = e.operation.source?.id;
-    const targetRowName = e.operation.target?.id;
+    const sourceId = e.operation.source?.id;
+    const targetRowId = e.operation.target?.id;
 
     const copy = structuredClone(groupedCitiesRows);
     const origin = copy.get(creator)?.find((entry) => {
       return entry.ungroupedCityNames.some((cityName) =>
-        cityName.name === sourceName
+        cityName.id === sourceId
       );
     });
     const target = copy.get(creator)?.find((entry) =>
-      entry.groupedCityName === targetRowName
+      entry.id === targetRowId
     );
 
     // Check if the name is moved to another section
-    if (origin && target && sourceName && targetRowName) {
+    if (origin && target && sourceId && targetRowId) {
       const objToMove = origin.ungroupedCityNames.find((entry) =>
-        entry.name === sourceName
+        entry.id === sourceId
       );
 
       if (objToMove) {
         origin.ungroupedCityNames = origin.ungroupedCityNames.filter((entry) =>
-          entry.name !== sourceName
+          entry.id !== sourceId
         );
         target.ungroupedCityNames = [...target.ungroupedCityNames, objToMove];
       }
-    } else if (origin && targetRowName === "addGroup") {
+    } else if (origin && targetRowId === "addGroup") {
       const objToMove = origin.ungroupedCityNames.find((entry) =>
-        entry.name === sourceName
+        entry.id === sourceId
       );
       const isRowAlreadyExists = copy.get(creator)?.some((entry) =>
-        entry.groupedCityName === sourceName
+        entry.groupedCityName === origin.groupedCityName
       );
 
       if (isRowAlreadyExists) {
@@ -279,7 +286,7 @@ export const GroupedCitiesSection = () => {
 
       if (objToMove && !isRowAlreadyExists) {
         origin.ungroupedCityNames = origin.ungroupedCityNames.filter((entry) =>
-          entry.name !== sourceName
+          entry.id !== sourceId
         );
         // Initiate a new row with that value
         const creatorEntries = copy.get(creator);
@@ -289,6 +296,7 @@ export const GroupedCitiesSection = () => {
           ungroupedCityNames: [objToMove],
           groupedCityName: objToMove.name,
           isUserCreated: true,
+          id: crypto.randomUUID(),
         });
       }
     }
@@ -344,10 +352,8 @@ export const GroupedCitiesSection = () => {
           onDragEnd={handleDragEnd}
         >
           {creatorEntriesWithUngroupedNames.map((groupedCitiesRow, i) => (
-            <Fragment key={groupedCitiesRow.groupedCityName}>
-              <GroupedCityRow
-                {...groupedCitiesRow}
-              />
+            <Fragment key={groupedCitiesRow.id}>
+              <GroupedCityRow {...groupedCitiesRow} />
               {i < creatorEntriesWithUngroupedNames.length - 1 && <hr />}
             </Fragment>
           ))}
@@ -363,10 +369,8 @@ export const GroupedCitiesSection = () => {
                     groupedCitiesRow,
                     i,
                   ) => (
-                    <Fragment key={groupedCitiesRow.groupedCityName}>
-                      <GroupedCityRow
-                        {...groupedCitiesRow}
-                      />
+                    <Fragment key={groupedCitiesRow.id}>
+                      <GroupedCityRow {...groupedCitiesRow} />
                       {i < creatorEntriesWithoutUngroupedNames.length - 1 && (
                         <hr />
                       )}

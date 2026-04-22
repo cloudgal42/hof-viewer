@@ -8,12 +8,16 @@ import { GroupedSettingsContext } from "../../../context/GroupedSettingsContext.
 export const DraggableEntry = ({
   cityName,
   groupedCityName,
+  id,
+  ownerId,
 }: {
   cityName: UngroupedCityName;
   groupedCityName: string;
+  id: string;
+  ownerId: string;
 }) => {
   const { handleRef, ref } = useDraggable({
-    id: cityName.name,
+    id,
   });
 
   const { onRemoveUngroupedName, onChangeUngroupedName } = useContext(
@@ -34,8 +38,8 @@ export const DraggableEntry = ({
         onMouseEnter={() => {
           if (inputRef.current) {
             onChangeUngroupedName(
-              groupedCityName,
-              cityName.name,
+              ownerId,
+              cityName.id,
               inputRef.current.value,
             );
           }
@@ -50,8 +54,8 @@ export const DraggableEntry = ({
               ref={inputRef}
               onBlur={(e) =>
                 onChangeUngroupedName(
-                  groupedCityName,
-                  cityName.name,
+                  ownerId,
+                  cityName.id,
                   e.target.value,
                 )}
               defaultValue={cityName.name}
@@ -59,7 +63,7 @@ export const DraggableEntry = ({
             <Button
               variant="outline-danger"
               onClick={() =>
-                onRemoveUngroupedName(groupedCityName, cityName.name)}
+                onRemoveUngroupedName(ownerId, cityName.id)}
             >
               <Trash />
               <span className="visually-hidden">Delete this entry</span>

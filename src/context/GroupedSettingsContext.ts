@@ -2,20 +2,20 @@ import { createContext } from "react";
 
 export interface GroupedSettingsFns {
   onAdd: (name: string) => void;
-  onRemoveUngroupedName: (owner: string, name: string) => void;
-  onRemoveGroupedName: (name: string) => void;
-  onChangeUngroupedName: (owner: string, name: string, newVal: string) => void;
-  onChangeGroupedName: (name: string, newVal: string) => void;
+  onRemoveUngroupedName: (ownerId: string, id: string) => void;
+  onRemoveGroupedName: (id: string) => void;
+  onChangeUngroupedName: (ownerId: string, id: string, newVal: string) => void;
+  onChangeGroupedName: (id: string, newVal: string) => void;
 }
 
 export const GroupedSettingsContext = createContext<GroupedSettingsFns>({
   onAdd: (name: string) => {},
-  onRemoveUngroupedName: (owner: string, name: string) => {
+  onRemoveUngroupedName: (ownerId: string, id: string) => {
   },
-  onRemoveGroupedName: (name: string) => {
+  onRemoveGroupedName: (id: string) => {
   },
-  onChangeUngroupedName: (owner: string, name: string, newVal: string) => {
+  onChangeUngroupedName: (ownerId: string, id: string, newVal: string) => {
   },
-  onChangeGroupedName: (name: string, newVal: string) => {
+  onChangeGroupedName: (id: string, newVal: string) => {
   },
 });

@@ -11,14 +11,16 @@ export const GroupedCityRow = ({
   groupedCityName,
   translatedGroupedCityName,
   isUserCreated,
+  id,
 }: {
   ungroupedCityNames: UngroupedCityName[];
   groupedCityName: string;
   translatedGroupedCityName?: string;
   isUserCreated: boolean;
+  id: string;
 }) => {
   const { ref, isDropTarget } = useDroppable({
-    id: groupedCityName,
+    id,
   });
   const {
     onAdd,
@@ -35,9 +37,11 @@ export const GroupedCityRow = ({
         >
           {ungroupedCityNames.map((cityName) => (
             <DraggableEntry
-              key={groupedCityName + cityName.name}
+              key={cityName.id}
+              id={cityName.id}
               cityName={cityName}
               groupedCityName={groupedCityName}
+              ownerId={id}
             />
           ))}
           <Button
@@ -61,22 +65,12 @@ export const GroupedCityRow = ({
       <div className="col-6 d-flex align-items-center">
         {isUserCreated
           ? (
-            <>
-              <Form.Control
-                defaultValue={groupedCityName}
-                onBlur={(e) =>
-                  onChangeGroupedName(groupedCityName, e.target.value)
-                }
-              />
-              {/*<Button*/}
-              {/*  className="ms-2"*/}
-              {/*  variant="outline-danger"*/}
-              {/*  onClick={() => onRemoveGroupedName(groupedCityName)}*/}
-              {/*>*/}
-              {/*  <Trash />*/}
-              {/*  <span className="visually-hidden">Delete this entry</span>*/}
-              {/*</Button>*/}
-            </>
+            <Form.Control
+              defaultValue={groupedCityName}
+              onBlur={(e) =>
+                onChangeGroupedName(id, e.target.value)
+              }
+            />
           )
           : (
             <p className="mb-0 fs-5">
@@ -94,7 +88,7 @@ export const GroupedCityRow = ({
           <Button
             className="w-100"
             variant="outline-danger"
-            onClick={() => onRemoveGroupedName(groupedCityName)}
+            onClick={() => onRemoveGroupedName(id)}
           >
             <Trash className="me-2" />
             Delete this row
