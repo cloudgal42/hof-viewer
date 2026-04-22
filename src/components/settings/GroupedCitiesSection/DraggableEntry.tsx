@@ -65,6 +65,7 @@ export const DraggableEntry = ({
             );
           }
         }}
+        disabled={isInvalid}
       >
         <GripVertical />
       </Button>

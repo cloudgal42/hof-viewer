@@ -30,7 +30,7 @@ function getSettingsFromQuery(data: City[]) {
   return list;
 }
 
-export const useCreatorInitialGroupedSettings = (
+export const useCreatorCitiesGroupedSettings = (
   creator: string,
   setter: (newVal: GroupedCityRowSetting[]) => void,
 ) => {
