@@ -1,4 +1,4 @@
-import "../../../css/components/SectionNav.css";
+import "../../../css/components/SectionNav.scss";
 import ScrollSpy from "react-scrollspy-navigation";
 
 export const SectionNav = () => {

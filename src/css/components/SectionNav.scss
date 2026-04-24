@@ -1,6 +1,9 @@
 @media all and (min-width: 992px) {
   .section-nav {
-    position: sticky;
+    section {
+      position: sticky;
+      top: 3rem;
+    }
     margin-right: 2rem;
   }
 }
