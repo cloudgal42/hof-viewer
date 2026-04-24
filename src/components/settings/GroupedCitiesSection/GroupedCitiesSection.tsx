@@ -1,17 +1,24 @@
-import {Accordion, Button, Form, Spinner} from "react-bootstrap";
+import { Accordion, Alert, Button, Form, Spinner } from "react-bootstrap";
 import { GroupedCityRow } from "./GroupedCityRow.tsx";
 import { AddGroup } from "./AddGroup.tsx";
 import { Fragment, useState } from "react";
 import type { GroupedCityRowSetting } from "../../../interfaces/GroupedCityRowSetting.ts";
-import {DragDropProvider, type DragEndEvent, type DragStartEvent} from "@dnd-kit/react";
+import {
+  DragDropProvider,
+  type DragEndEvent,
+  type DragStartEvent,
+} from "@dnd-kit/react";
 import { ErrorScreen } from "../../misc/ErrorScreen/ErrorScreen.tsx";
 import { useLocalStorage } from "usehooks-ts";
 import { GroupedSettingsContext } from "../../../context/GroupedSettingsContext.ts";
 import { useCreatorInitialGroupedSettings } from "../../../hooks/useCreatorInitialGroupedSettings.ts";
 
 import "../../../css/components/GroupedCitiesSection.css";
-import type {UngroupedCityName} from "../../../interfaces/UngroupedCityName.ts";
-import {ErrorNotification} from "../../misc/LeftNotification/ErrorNotification.tsx";
+import type { UngroupedCityName } from "../../../interfaces/UngroupedCityName.ts";
+import { ErrorNotification } from "../../misc/LeftNotification/ErrorNotification.tsx";
+import { ToggleSetting } from "../SettingsComponents/ToggleSetting.tsx";
+import { ExclamationTriangle, Info, InfoCircle } from "react-bootstrap-icons";
+import type { GroupedCityGenSettings } from "../../../interfaces/GroupedCityGenSettings.ts";
 
 export const GroupedCitiesSection = () => {
   const [creator, setCreator] = useState<string>("");
@@ -19,16 +26,26 @@ export const GroupedCitiesSection = () => {
     "ROW_ALREADY_EXISTS" | "NAME_ALREADY_EXISTS" | ""
   >("");
 
-  const [groupedCitiesSettings, setGroupedCitiesSettings] = useLocalStorage<
+  const [groupedCitiesOverride, setGroupedCitiesOverride] = useLocalStorage<
     [string, GroupedCityRowSetting[]][]
   >(
-    "groupedCitiesSettings",
+    "groupedCitiesOverride",
     [],
   );
+
+  const [groupedCitiesGenSettings, setGroupedCitiesGenSettings] =
+    useLocalStorage<GroupedCityGenSettings>(
+      "groupedCitiesGenSettings",
+      {
+        useDefault: true,
+        shareSettings: true,
+      },
+    );
+
   const [groupedCitiesRows, setGroupedCitiesRows] = useState<
     Map<string, GroupedCityRowSetting[]>
   >(
-    new Map<string, GroupedCityRowSetting[]>(groupedCitiesSettings),
+    new Map<string, GroupedCityRowSetting[]>(groupedCitiesOverride),
   );
 
   const [currDraggedGroupedCandidate, setCurrDraggedGroupedCandidate] =
@@ -74,7 +91,9 @@ export const GroupedCitiesSection = () => {
 
       if (valToSet) {
         console.log("Sorting");
-        valToSet = valToSet.sort((a, b) => b.ungroupedCityNames.length - a.ungroupedCityNames.length);
+        valToSet = valToSet.sort((a, b) =>
+          b.ungroupedCityNames.length - a.ungroupedCityNames.length
+        );
         copy.set(creator, valToSet);
       }
       setGroupedCitiesRows(copy);
@@ -83,7 +102,7 @@ export const GroupedCitiesSection = () => {
 
   function handleChangeSettings(newMap: Map<string, GroupedCityRowSetting[]>) {
     setGroupedCitiesRows(newMap);
-    setGroupedCitiesSettings(Array.from(newMap.entries()));
+    setGroupedCitiesOverride(Array.from(newMap.entries()));
   }
 
   function addGroupedCityEntry() {
@@ -196,19 +215,18 @@ export const GroupedCitiesSection = () => {
 
   function getOriginFromUngroupedNameId(
     copy: Map<string, GroupedCityRowSetting[]>,
-    id: string
+    id: string,
   ) {
     return copy.get(creator)?.find((entry) => {
-      return entry.ungroupedCityNames.some((cityName) =>
-        cityName.id === id
-      );
+      return entry.ungroupedCityNames.some((cityName) => cityName.id === id);
     });
   }
 
   function handleDragStart(e: DragStartEvent) {
     const sourceId = e.operation.source?.id;
     const origin = sourceId && getOriginFromUngroupedNameId(
-      groupedCitiesRows, sourceId?.toString()
+      groupedCitiesRows,
+      sourceId?.toString(),
     );
 
     if (origin) {
@@ -277,11 +295,6 @@ export const GroupedCitiesSection = () => {
     setCurrDraggedGroupedCandidate(null);
   }
 
-  function handleSetCreator(formData: FormData) {
-    const submittedCreator = formData.get("creator")?.toString() || "";
-    setCreator(submittedCreator);
-  }
-
   function isUngroupedNameAlreadyExists(
     parentId: string,
     id: string,
@@ -324,6 +337,11 @@ export const GroupedCitiesSection = () => {
       );
   }
 
+  function handleSetCreator(formData: FormData) {
+    const submittedCreator = formData.get("creator")?.toString() || "";
+    setCreator(submittedCreator);
+  }
+
   const creatorEntries = groupedCitiesRows && groupedCitiesRows.get(creator);
 
   const creatorEntriesWithUngroupedNames = creatorEntries &&
@@ -349,7 +367,8 @@ export const GroupedCitiesSection = () => {
       />
     );
   } else if (
-    creatorEntriesWithUngroupedNames && creatorEntriesWithoutUngroupedNames
+    creatorEntriesWithUngroupedNames && creatorEntriesWithoutUngroupedNames &&
+    !groupedCitiesGenSettings.useDefault
   ) {
     content = (
       <GroupedSettingsContext
@@ -366,15 +385,23 @@ export const GroupedCitiesSection = () => {
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
         >
-          <div className="overflow-auto grouped-settings-form" style={{scrollbarGutter: "stable"}}>
+          <div
+            className="overflow-auto grouped-settings-form"
+            style={{ scrollbarGutter: "stable" }}
+          >
             {creatorEntriesWithUngroupedNames.map((groupedCitiesRow, i) => (
               <Fragment key={groupedCitiesRow.id}>
-                <GroupedCityRow {...groupedCitiesRow} style={{minWidth: "500px"}} />
-                {i < creatorEntriesWithUngroupedNames.length - 1 && <hr style={{minWidth: "500px"}} />}
+                <GroupedCityRow
+                  {...groupedCitiesRow}
+                  style={{ minWidth: "500px" }}
+                />
+                {i < creatorEntriesWithUngroupedNames.length - 1 && (
+                  <hr style={{ minWidth: "500px" }} />
+                )}
               </Fragment>
             ))}
             {creatorEntriesWithoutUngroupedNames.length > 0 && (
-              <Accordion style={{minWidth: "500px"}}>
+              <Accordion style={{ minWidth: "500px" }}>
                 <Accordion.Item eventKey="0">
                   <Accordion.Header>
                     Grouped city names with 0 group candidates
@@ -408,7 +435,8 @@ export const GroupedCitiesSection = () => {
       {settingsError === "ROW_ALREADY_EXISTS"
         ? (
           <ErrorNotification>
-            Cannot add "{currDraggedGroupedCandidate?.name}" because such group already exists.
+            Cannot add "{currDraggedGroupedCandidate?.name}" because such group
+            already exists.
           </ErrorNotification>
         )
         : settingsError === "NAME_ALREADY_EXISTS" && (
@@ -421,34 +449,79 @@ export const GroupedCitiesSection = () => {
         Adjust or override the behavior of the screenshot grouping algorithm
       </p>
       <section className="mb-3">
+        <ToggleSetting
+          label="Use default grouping behavior"
+          id="defaultGroup"
+          name="defaultGroup"
+          helpBlock="Groups city names by full name, ignoring case. If this is disabled, default settings would still be used unless an override preset is created for a creator."
+          onChange={(e) =>
+            setGroupedCitiesGenSettings({
+              useDefault: e.currentTarget.checked,
+              shareSettings: groupedCitiesGenSettings.shareSettings,
+            })}
+          checked={groupedCitiesGenSettings.useDefault}
+        />
+        <ToggleSetting
+          label="Share grouped cities override"
+          id="shareGroupedSettings"
+          name="shareGroupedSettings"
+          helpBlock="Appends the custom grouped cities settings to the URL when sharing a grouped city. May result in very long URLs."
+          onChange={(e) =>
+            setGroupedCitiesGenSettings({
+              useDefault: groupedCitiesGenSettings.useDefault,
+              shareSettings: e.currentTarget.checked,
+            })}
+          checked={groupedCitiesGenSettings.shareSettings}
+          disabled={groupedCitiesGenSettings.useDefault}
+        />
+        <Alert
+          variant="warning"
+          show={!groupedCitiesGenSettings.shareSettings &&
+            !groupedCitiesGenSettings.useDefault}
+        >
+          <ExclamationTriangle className="me-2" />
+          If there are grouped city override(s), other users and embed{" "}
+          <strong>will not be able to</strong>{" "}
+          see the same screenshots in a grouped city as you. If that is
+          undesirable, enable <i>Share grouped cities override</i>.
+        </Alert>
+      </section>
+      <section className="mb-3">
         <form
-          className="d-flex gap-2 align-items-start"
+          className={groupedCitiesGenSettings.useDefault ? "opacity-50" : ""}
           action={handleSetCreator}
         >
-          <div className="w-100">
-            <Form.Control
-              type="text"
-              placeholder="Enter new or creator name/ID with existing settings..."
-              aria-label="Enter new or creator name/ID with existing settings..."
-              id="creatorInput"
-              name="creator"
-              defaultValue={creator}
-              aria-describedby="creatorInputHelpBlock"
-              list="creatorsWithPresets"
-            />
-            <datalist id="creatorsWithPresets">
-              {groupedCitiesRows &&
-                [...groupedCitiesRows.keys()].map((creator) => (
-                  <option key={creator} value={creator} />
-                ))}
-            </datalist>
-            <Form.Text id="creatorInputHelpBlock">
-              Each creator is associated with a specific configuration preset.
-            </Form.Text>
-          </div>
-          <Button type="submit">
-            Submit
-          </Button>
+          <fieldset disabled={groupedCitiesGenSettings.useDefault}>
+            <div className="w-100 mb-2">
+              <legend className="fs-6 mb-0 fw-bold">
+                Manual override settings
+              </legend>
+              <Form.Text className="d-inline-block mt-0 lh-2">
+                Override the grouped cities behavior. Each creator is associated
+                with a different override preset.
+              </Form.Text>
+            </div>
+            <div className="w-100 d-flex align-items-center gap-2">
+              <Form.Control
+                type="text"
+                placeholder="Enter new or creator name/ID with existing settings..."
+                aria-label="Enter new or creator name/ID with existing settings..."
+                id="creatorInput"
+                name="creator"
+                defaultValue={creator}
+                list="creatorsWithPresets"
+              />
+              <datalist id="creatorsWithPresets">
+                {groupedCitiesRows &&
+                  [...groupedCitiesRows.keys()].map((creator) => (
+                    <option key={creator} value={creator} />
+                  ))}
+              </datalist>
+              <Button type="submit">
+                Submit
+              </Button>
+            </div>
+          </fieldset>
         </form>
       </section>
 
