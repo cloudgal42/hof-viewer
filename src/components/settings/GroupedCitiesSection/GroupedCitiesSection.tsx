@@ -106,13 +106,24 @@ export const GroupedCitiesSection = () => {
     setGroupedCitiesOverride(Array.from(newMap.entries()));
   }
 
-  function addGroupedCityEntry() {
+  function addGroupedCityEntry(newPosition: "top" | "bottom") {
     const copy = structuredClone(groupedCitiesRows);
 
     if (copy && creator) {
       const creatorSettings = copy.get(creator);
 
-      if (creatorSettings) {
+      if (creatorSettings && newPosition === "top") {
+        creatorSettings.unshift({
+          ungroupedCityNames: [{
+            name: `GroupedCity${creatorSettings.length + 1}-1`,
+            isEditable: true,
+            id: crypto.randomUUID(),
+          }],
+          groupedCityName: `GroupedCity${creatorSettings.length + 1}`,
+          isUserCreated: true,
+          id: crypto.randomUUID(),
+        });
+      } else if (creatorSettings) {
         creatorSettings.push({
           ungroupedCityNames: [{
             name: `GroupedCity${creatorSettings.length + 1}-1`,
@@ -261,7 +272,10 @@ export const GroupedCitiesSection = () => {
         );
         target.ungroupedCityNames = [...target.ungroupedCityNames, objToMove];
       }
-    } else if (origin && targetRowId === "addGroup") {
+    } else if (
+      origin && targetRowId &&
+      ["addGroupbottom", "addGrouptop"].includes(targetRowId.toString())
+    ) {
       const objToMove = origin.ungroupedCityNames.find((entry) =>
         entry.id === sourceId
       );
@@ -282,12 +296,21 @@ export const GroupedCitiesSection = () => {
         const creatorEntries = copy.get(creator);
         if (!creatorEntries) return;
 
-        creatorEntries.push({
-          ungroupedCityNames: [objToMove],
-          groupedCityName: objToMove.name,
-          isUserCreated: true,
-          id: crypto.randomUUID(),
-        });
+        if (targetRowId === "addGrouptop") {
+          creatorEntries.unshift({
+            ungroupedCityNames: [objToMove],
+            groupedCityName: objToMove.name,
+            isUserCreated: true,
+            id: crypto.randomUUID(),
+          });
+        } else {
+          creatorEntries.push({
+            ungroupedCityNames: [objToMove],
+            groupedCityName: objToMove.name,
+            isUserCreated: true,
+            id: crypto.randomUUID(),
+          });
+        }
       }
     }
 
@@ -381,8 +404,9 @@ export const GroupedCitiesSection = () => {
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
         >
+          <AddGroup position="top" onAdd={addGroupedCityEntry} />
           <div
-            className="overflow-auto grouped-settings-form"
+            className="overflow-auto mt-2 grouped-settings-form"
             style={{ scrollbarGutter: "stable" }}
           >
             {creatorEntriesWithUngroupedNames.map((groupedCitiesRow, i) => (
@@ -419,8 +443,8 @@ export const GroupedCitiesSection = () => {
                 </Accordion.Item>
               </Accordion>
             )}
-            <AddGroup onAdd={addGroupedCityEntry} />
           </div>
+          <AddGroup position="bottom" onAdd={addGroupedCityEntry} />
         </DragDropProvider>
       </GroupedSettingsContext>
     );
@@ -506,7 +530,7 @@ export const GroupedCitiesSection = () => {
               optionsList={groupedCitiesRows && [...groupedCitiesRows.keys()]}
               onValueSubmit={setCreator}
               newValueHint="Create override preset for"
-              tipHint="A new preset can be created by typing the creator ID."
+              tipHint="A new preset can be created by typing a new creator ID."
             >
             </DatalistControl>
           </div>

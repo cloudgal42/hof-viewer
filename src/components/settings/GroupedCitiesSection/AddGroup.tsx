@@ -5,40 +5,29 @@ import {useDroppable} from "@dnd-kit/react";
 
 export const AddGroup = ({
   onAdd,
+  position,
 } : {
-  onAdd: () => void;
+  onAdd: (pos: "top" | "bottom") => void;
+  position: "top" | "bottom";
 }) => {
-  const [addButtonHovered, setAddButtonHovered] = useState(false);
   const { ref, isDropTarget } = useDroppable({
-    id: "addGroup",
+    id: "addGroup" + position,
   });
 
   return (
     <div
-      className="mt-2 d-flex align-items-center"
+      className="mt-3 d-flex align-items-center"
       style={{minWidth: "500px"}}
       ref={ref}
     >
-      <OverlayTrigger overlay={<Tooltip>Add new grouped city entry</Tooltip>}>
-        <Button
-          className="p-1 rounded-4"
-          variant="outline-primary"
-          size="sm"
-          onMouseEnter={() => setAddButtonHovered(true)}
-          onMouseLeave={() => setAddButtonHovered(false)}
-          onClick={onAdd}
-        >
-          <Plus size="24" />
-          <span className="visually-hidden">Add new grouped city entry</span>
-        </Button>
-      </OverlayTrigger>
-      <div
-        className={`${
-          addButtonHovered || isDropTarget
-            ? "border-3 border-primary-subtle"
-            : "border-light-subtle"
-        } border-top w-100`}
-      />
+      <Button
+        className={`w-100 ${(isDropTarget) ? "border-primary" : ""}`}
+        variant="outline-primary"
+        onClick={() => onAdd(position)}
+      >
+        <Plus />
+        {isDropTarget ? "Drop here to create a new group with this name" : "Add new grouped city entry"}
+      </Button>
     </div>
   );
 };
