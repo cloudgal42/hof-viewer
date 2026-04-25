@@ -19,7 +19,7 @@ import {
 } from "react-bootstrap";
 import { type MouseEvent } from "react";
 import Fuse from "fuse.js";
-import { ChevronDown } from "react-bootstrap-icons";
+import {ChevronDown, Lightbulb} from "react-bootstrap-icons";
 
 interface DatalistControlProps {
   defaultValue?: string;
@@ -29,6 +29,8 @@ interface DatalistControlProps {
   placeholder?: string;
   optionsList: string[];
   onValueSubmit: (value: string) => void;
+  newValueHint?: string;
+  tipHint?: string;
 }
 
 interface DatalistToggleProps extends DatalistControlProps {
@@ -106,12 +108,16 @@ const CustomMenu = forwardRef(({
   style,
   className,
   currValue,
+  tipHint,
+  newValueHint,
 }: {
   children: ReactElement<DropdownItemProps>;
   style: CSSProperties;
   className: string;
   currValue: string | undefined;
   setIsMenuOpen: (visible: boolean) => void;
+  tipHint?: string;
+  newValueHint?: string;
 }, ref: ForwardedRef<HTMLDivElement>) => {
   const childrenAsArray = Children.toArray(menuChildren);
   const valueExists = childrenAsArray.some((child) =>
@@ -164,7 +170,7 @@ const CustomMenu = forwardRef(({
               No preset available. Type a creator name or ID to get started
             </Dropdown.Header>
           )}
-        {!valueExists && currValue
+        {!valueExists && currValue && newValueHint
           ? (
             <Dropdown.Item
               className={searchedItems.length === 0
@@ -172,12 +178,12 @@ const CustomMenu = forwardRef(({
                 : "" + "text-truncate"}
               eventKey="createNew"
             >
-              Create a new preset for "{currValue}"...
+              {newValueHint} "{currValue}"...
             </Dropdown.Item>
           )
-          : (
-            <Dropdown.Header className="fs-6 text-body py-1 text-truncate">
-              ...or create a new preset by typing a new creator ID
+          : tipHint && (
+            <Dropdown.Header className="fs-6 text-body-secondary py-1 text-truncate">
+              <Lightbulb /> {tipHint}
             </Dropdown.Header>
           )}
       </ul>
@@ -231,6 +237,8 @@ export const DatalistControl = (props: DatalistControlProps) => {
         as={CustomMenu}
         currValue={currValue}
         setIsMenuOpen={setIsMenuOpen}
+        tipHint={props.tipHint}
+        newValueHint={props.newValueHint}
       >
         {props.optionsList.map((option) => (
           <Dropdown.Item

@@ -505,6 +505,8 @@ export const GroupedCitiesSection = () => {
               defaultValue={creator}
               optionsList={groupedCitiesRows && [...groupedCitiesRows.keys()]}
               onValueSubmit={setCreator}
+              newValueHint="Create override preset for"
+              tipHint="A new preset can be created by typing the creator ID."
             >
             </DatalistControl>
           </div>
