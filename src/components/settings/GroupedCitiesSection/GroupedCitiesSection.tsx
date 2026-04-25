@@ -19,6 +19,7 @@ import { ErrorNotification } from "../../misc/LeftNotification/ErrorNotification
 import { ToggleSetting } from "../SettingsComponents/ToggleSetting.tsx";
 import { ExclamationTriangle, Info, InfoCircle } from "react-bootstrap-icons";
 import type { GroupedCityGenSettings } from "../../../interfaces/GroupedCityGenSettings.ts";
+import { DatalistControl } from "./DatalistControl.tsx";
 
 export const GroupedCitiesSection = () => {
   const [creator, setCreator] = useState<string>("");
@@ -337,11 +338,6 @@ export const GroupedCitiesSection = () => {
       );
   }
 
-  function handleSetCreator(formData: FormData) {
-    const submittedCreator = formData.get("creator")?.toString() || "";
-    setCreator(submittedCreator);
-  }
-
   const creatorEntries = groupedCitiesRows && groupedCitiesRows.get(creator);
 
   const creatorEntriesWithUngroupedNames = creatorEntries &&
@@ -487,42 +483,32 @@ export const GroupedCitiesSection = () => {
         </Alert>
       </section>
       <section className="mb-3">
-        <form
+        <fieldset
           className={groupedCitiesGenSettings.useDefault ? "opacity-50" : ""}
-          action={handleSetCreator}
+          disabled={groupedCitiesGenSettings.useDefault}
         >
-          <fieldset disabled={groupedCitiesGenSettings.useDefault}>
-            <div className="w-100 mb-2">
-              <legend className="fs-6 mb-0 fw-bold">
-                Manual override settings
-              </legend>
-              <Form.Text className="d-inline-block mt-0 lh-2">
-                Override the grouped cities behavior. Each creator is associated
-                with a different override preset.
-              </Form.Text>
-            </div>
-            <div className="w-100 d-flex align-items-center gap-2">
-              <Form.Control
-                type="text"
-                placeholder="Enter new or creator name/ID with existing settings..."
-                aria-label="Enter new or creator name/ID with existing settings..."
-                id="creatorInput"
-                name="creator"
-                defaultValue={creator}
-                list="creatorsWithPresets"
-              />
-              <datalist id="creatorsWithPresets">
-                {groupedCitiesRows &&
-                  [...groupedCitiesRows.keys()].map((creator) => (
-                    <option key={creator} value={creator} />
-                  ))}
-              </datalist>
-              <Button type="submit">
-                Submit
-              </Button>
-            </div>
-          </fieldset>
-        </form>
+          <div className="w-100 mb-2">
+            <legend className="fs-6 mb-0 fw-bold">
+              Manual override settings
+            </legend>
+            <Form.Text className="d-inline-block mt-0 lh-2">
+              Override the grouped cities behavior. Each creator is associated
+              with a different override preset.
+            </Form.Text>
+          </div>
+          <div className="w-100 d-flex align-items-center gap-2">
+            <DatalistControl
+              placeholder="Enter or select creator ID..."
+              label="Enter or select creator ID..."
+              id="creatorInput"
+              name="creator"
+              defaultValue={creator}
+              optionsList={groupedCitiesRows && [...groupedCitiesRows.keys()]}
+              onValueSubmit={setCreator}
+            >
+            </DatalistControl>
+          </div>
+        </fieldset>
       </section>
 
       <section id="groupedCitiesSettingsEntries">
