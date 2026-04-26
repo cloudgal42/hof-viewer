@@ -52,6 +52,16 @@ export const GroupedCitiesSection = () => {
   const [currDraggedGroupedCandidate, setCurrDraggedGroupedCandidate] =
     useState<UngroupedCityName | null>(null);
 
+  function isRowAlreadyExists(name: string) {
+    const creatorEntries = groupedCitiesRows.get(creator);
+
+    if (!creatorEntries) return false;
+
+    return creatorEntries.some((entry) =>
+      entry.groupedCityName === name
+    )
+  }
+
   // Fetches data than check if data needs to be created or updated.
   // Than updates the state via a cb
   const { isFetching, error } = useCreatorInitialGroupedSettings(
@@ -279,16 +289,15 @@ export const GroupedCitiesSection = () => {
       const objToMove = origin.ungroupedCityNames.find((entry) =>
         entry.id === sourceId
       );
-      const isRowAlreadyExists = copy.get(creator)?.some((entry) =>
-        entry.groupedCityName === objToMove?.name
-      );
 
-      if (isRowAlreadyExists) {
+      const isInvalid = isRowAlreadyExists(objToMove?.name || "");
+
+      if (isInvalid) {
         setSettingsError("ROW_ALREADY_EXISTS");
         return;
       }
 
-      if (objToMove && !isRowAlreadyExists) {
+      if (objToMove && !isInvalid) {
         origin.ungroupedCityNames = origin.ungroupedCityNames.filter((entry) =>
           entry.id !== sourceId
         );
@@ -398,13 +407,18 @@ export const GroupedCitiesSection = () => {
           onChangeGroupedName: changeGroupedEntryName,
           onChangeUngroupedName: changeUngroupedEntryName,
           isUngroupedNameAlreadyExists,
+          isRowAlreadyExists,
         }}
       >
         <DragDropProvider
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
         >
-          <AddGroup position="top" onAdd={addGroupedCityEntry} />
+          <AddGroup
+            onAdd={addGroupedCityEntry}
+            currCandidate={currDraggedGroupedCandidate}
+            position="top"
+          />
           <div
             className="overflow-auto mt-2 grouped-settings-form"
             style={{ scrollbarGutter: "stable" }}
@@ -444,7 +458,11 @@ export const GroupedCitiesSection = () => {
               </Accordion>
             )}
           </div>
-          <AddGroup position="bottom" onAdd={addGroupedCityEntry} />
+          <AddGroup
+            onAdd={addGroupedCityEntry}
+            currCandidate={currDraggedGroupedCandidate}
+            position="bottom"
+          />
         </DragDropProvider>
       </GroupedSettingsContext>
     );
