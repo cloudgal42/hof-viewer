@@ -54,7 +54,7 @@ export const DraggableEntry = ({
           <div className="input-actions" ref={ref}>
             <InputGroup className={`draggable-entry-field`}>
               <Button
-                className="p-1 bg-body-secondary text-secondary"
+                className="p-1 bg-body-secondary text-body-secondary"
                 variant="outline"
                 ref={handleRef}
                 onMouseEnter={() => {
@@ -107,14 +107,11 @@ export const DraggableEntry = ({
             ref={ref}
           >
             <Button
-              className="p-1 bg-body-secondary text-body-secondary"
+              className="p-1 bg-body-secondary text-body-secondary border-start-0 border-top-0 border-bottom-0"
               variant="outline"
               ref={handleRef}
               style={{
                 height: "38px",
-                borderTop: "0",
-                borderBottom: "0",
-                borderLeft: "0",
                 borderBottomLeftRadius: "0.375rem",
                 borderTopLeftRadius: "0.375rem",
                 borderBottomRightRadius: "0",

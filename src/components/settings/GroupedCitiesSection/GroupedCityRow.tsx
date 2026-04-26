@@ -1,4 +1,4 @@
-import { ArrowRight, Plus, Trash } from "react-bootstrap-icons";
+import { Plus, Trash } from "react-bootstrap-icons";
 import { Button, Card, Form } from "react-bootstrap";
 import type { UngroupedCityName } from "../../../interfaces/UngroupedCityName.ts";
 import { DraggableEntry } from "./DraggableEntry.tsx";
@@ -9,14 +9,12 @@ import { type CSSProperties, useContext } from "react";
 export const GroupedCityRow = ({
   ungroupedCityNames,
   groupedCityName,
-  translatedGroupedCityName,
   isUserCreated,
   id,
   style,
 }: {
   ungroupedCityNames: UngroupedCityName[];
   groupedCityName: string;
-  translatedGroupedCityName?: string;
   isUserCreated: boolean;
   id: string;
   style?: CSSProperties;
@@ -70,7 +68,7 @@ export const GroupedCityRow = ({
           </Card.Title>
           <div
             ref={ref}
-            className={`flex-grow-1 d-flex gap-2 flex-wrap border border-1 border-primary rounded-2 overflow-hidden ${
+            className={`flex-grow-1 d-flex gap-2 flex-wrap align-items-start border border-1 border-primary rounded-2 overflow-hidden ${
               isDropTarget
                 ? "border-opacity-100"
                 : ungroupedCityNames.length === 0
@@ -91,7 +89,7 @@ export const GroupedCityRow = ({
                 />
               ))
               : (
-                <div className="text-muted w-100 text-center py-2">
+                <div className={`${!isDropTarget && "text-muted"} w-100 text-center py-2`}>
                   Drag group candidates here
                 </div>
               )}
