@@ -54,8 +54,8 @@ export const DraggableEntry = ({
           <div className="input-actions" ref={ref}>
             <InputGroup className={`draggable-entry-field`}>
               <Button
-                className="p-1"
-                variant="outline-primary"
+                className="p-1 bg-body-secondary text-secondary"
+                variant="outline"
                 ref={handleRef}
                 onMouseEnter={() => {
                   if (inputRef.current) {
@@ -73,6 +73,7 @@ export const DraggableEntry = ({
               <Form.Control
                 className={`${isInvalid && "is-invalid"}`}
                 ref={inputRef}
+                name="groupCandidateName"
                 onBlur={(e) =>
                   handleUpdate(
                     ownerId,
@@ -106,8 +107,8 @@ export const DraggableEntry = ({
             ref={ref}
           >
             <Button
-              className="p-1"
-              variant="outline-primary"
+              className="p-1 bg-body-secondary text-body-secondary"
+              variant="outline"
               ref={handleRef}
               style={{
                 height: "38px",
