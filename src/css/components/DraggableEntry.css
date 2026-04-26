@@ -1,32 +1,10 @@
 .input-actions {
-  container-type: inline-size;
-  container-name: input-actions-container;
-
-  .btn-outline-danger span {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    clip: rect(0, 0, 0, 0);
-    border: 0;
-  }
+  width: 100%;
 }
 
-@container input-actions-container (width < 285px) {
+@media all and (width >= 768px) {
   .input-actions {
-    .draggable-entry-field {
-      flex-flow: column nowrap;
-    }
-    .btn-outline-danger {
-      width: 100%;
-    }
-    .btn-outline-danger span {
-      position: static;
-      width: unset;
-      height: unset;
-      clip: unset;
-      border: unset;
-    }
+    width: calc((100% / 2) - 4px);
   }
 }
+

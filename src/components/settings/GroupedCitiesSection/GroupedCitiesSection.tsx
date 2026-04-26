@@ -13,7 +13,6 @@ import { useLocalStorage } from "usehooks-ts";
 import { GroupedSettingsContext } from "../../../context/GroupedSettingsContext.ts";
 import { useCreatorInitialGroupedSettings } from "../../../hooks/useCreatorInitialGroupedSettings.ts";
 
-import "../../../css/components/GroupedCitiesSection.css";
 import type { UngroupedCityName } from "../../../interfaces/UngroupedCityName.ts";
 import { ErrorNotification } from "../../misc/LeftNotification/ErrorNotification.tsx";
 import { ToggleSetting } from "../SettingsComponents/ToggleSetting.tsx";
@@ -57,9 +56,7 @@ export const GroupedCitiesSection = () => {
 
     if (!creatorEntries) return false;
 
-    return creatorEntries.some((entry) =>
-      entry.groupedCityName === name
-    )
+    return creatorEntries.some((entry) => entry.groupedCityName === name);
   }
 
   // Fetches data than check if data needs to be created or updated.
@@ -419,23 +416,12 @@ export const GroupedCitiesSection = () => {
             currCandidate={currDraggedGroupedCandidate}
             position="top"
           />
-          <div
-            className="overflow-auto mt-2 grouped-settings-form"
-            style={{ scrollbarGutter: "stable" }}
-          >
+          <div className="mt-3">
             {creatorEntriesWithUngroupedNames.map((groupedCitiesRow, i) => (
-              <Fragment key={groupedCitiesRow.id}>
-                <GroupedCityRow
-                  {...groupedCitiesRow}
-                  style={{ minWidth: "500px" }}
-                />
-                {i < creatorEntriesWithUngroupedNames.length - 1 && (
-                  <hr style={{ minWidth: "500px" }} />
-                )}
-              </Fragment>
+              <GroupedCityRow key={groupedCitiesRow.id} {...groupedCitiesRow} />
             ))}
             {creatorEntriesWithoutUngroupedNames.length > 0 && (
-              <Accordion style={{ minWidth: "500px" }}>
+              <Accordion>
                 <Accordion.Item eventKey="0">
                   <Accordion.Header>
                     Grouped city names with 0 group candidates
@@ -448,9 +434,6 @@ export const GroupedCitiesSection = () => {
                     ) => (
                       <Fragment key={groupedCitiesRow.id}>
                         <GroupedCityRow {...groupedCitiesRow} />
-                        {i < creatorEntriesWithoutUngroupedNames.length - 1 && (
-                          <hr />
-                        )}
                       </Fragment>
                     ))}
                   </Accordion.Body>

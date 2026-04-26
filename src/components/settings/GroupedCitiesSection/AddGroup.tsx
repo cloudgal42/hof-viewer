@@ -25,7 +25,6 @@ export const AddGroup = ({
   return (
     <div
       className="mt-3 d-flex align-items-center"
-      style={{ minWidth: "500px" }}
       ref={ref}
     >
       <Button
