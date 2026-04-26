@@ -5,6 +5,8 @@ import { useDraggable } from "@dnd-kit/react";
 import { useContext, useRef, useState } from "react";
 import { GroupedSettingsContext } from "../../../context/GroupedSettingsContext.ts";
 
+import "../../../css/components/DraggableEntry.css";
+
 export const DraggableEntry = ({
   cityName,
   id,
@@ -52,8 +54,8 @@ export const DraggableEntry = ({
           <div className="input-actions" ref={ref}>
             <InputGroup className={`draggable-entry-field`}>
               <Button
-                className="p-1 bg-body-secondary text-secondary"
-                variant="outline"
+                className="p-1"
+                variant="outline-primary"
                 ref={handleRef}
                 onMouseEnter={() => {
                   if (inputRef.current) {
@@ -104,8 +106,8 @@ export const DraggableEntry = ({
             ref={ref}
           >
             <Button
-              className="p-1 bg-body-secondary text-body-secondary"
-              variant="outline"
+              className="p-1"
+              variant="outline-primary"
               ref={handleRef}
               style={{
                 height: "38px",
