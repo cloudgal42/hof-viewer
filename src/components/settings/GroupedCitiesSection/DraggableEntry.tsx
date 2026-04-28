@@ -37,6 +37,8 @@ export const DraggableEntry = ({
     if (isUngroupedNameAlreadyExists(ownerId, id, newVal)) {
       setIsInvalid(true);
       return;
+    } else if (newVal === cityName.name) {
+      return;
     }
 
     onChangeUngroupedName(
@@ -54,7 +56,7 @@ export const DraggableEntry = ({
           <div className="input-actions" ref={ref}>
             <InputGroup className={`draggable-entry-field`}>
               <Button
-                className="p-1 bg-body-secondary text-body-secondary"
+                className="p-1 border-start border-top border-bottom border-1 bg-body-secondary text-body-secondary"
                 variant="outline"
                 ref={handleRef}
                 onMouseEnter={() => {

@@ -156,7 +156,6 @@ export const GroupedCitiesSection = () => {
 
     if (objToModify) {
       objToModify.ungroupedCityNames = [
-        ...objToModify.ungroupedCityNames,
         {
           name: `${objToModify.groupedCityName}-${
             objToModify.ungroupedCityNames.length + 1
@@ -164,6 +163,7 @@ export const GroupedCitiesSection = () => {
           isEditable: true,
           id: crypto.randomUUID(),
         },
+        ...objToModify.ungroupedCityNames,
       ];
     }
 
