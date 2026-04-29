@@ -42,10 +42,8 @@ export const GroupedCitiesSection = () => {
       },
     );
 
-  const [groupedCitiesRows, setGroupedCitiesRows] = useState<
-    Map<string, GroupedCityRowSetting[]>
-  >(
-    new Map<string, GroupedCityRowSetting[]>(groupedCitiesOverride),
+  const groupedCitiesRows = new Map<string, GroupedCityRowSetting[]>(
+    groupedCitiesOverride,
   );
 
   const [currDraggedGroupedCandidate, setCurrDraggedGroupedCandidate] =
@@ -104,12 +102,11 @@ export const GroupedCitiesSection = () => {
         );
         copy.set(creator, valToSet);
       }
-      setGroupedCitiesRows(copy);
+      setGroupedCitiesOverride(Array.from(copy.entries()));
     },
   );
 
   function handleChangeSettings(newMap: Map<string, GroupedCityRowSetting[]>) {
-    setGroupedCitiesRows(newMap);
     setGroupedCitiesOverride(Array.from(newMap.entries()));
   }
 
