@@ -3,7 +3,7 @@ import {Ban, Plus} from "react-bootstrap-icons";
 import { useContext, useState } from "react";
 import { useDroppable } from "@dnd-kit/react";
 import { GroupedSettingsContext } from "../../../context/GroupedSettingsContext.ts";
-import type { UngroupedCityName } from "../../../interfaces/UngroupedCityName.ts";
+import type { GroupCandidate } from "../../../interfaces/GroupCandidate.ts";
 
 export const AddGroup = ({
   onAdd,
@@ -12,7 +12,7 @@ export const AddGroup = ({
 }: {
   onAdd: (position: "top" | "bottom") => void;
   position: "top" | "bottom";
-  currCandidate: UngroupedCityName | null;
+  currCandidate: GroupCandidate | null;
 }) => {
   const { ref, isDropTarget } = useDroppable({
     id: "addGroup" + position,

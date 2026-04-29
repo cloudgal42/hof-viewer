@@ -1,4 +1,4 @@
-export interface UngroupedCityName {
+export interface GroupCandidate {
   name: string;
   isEditable: boolean;
   id: string;

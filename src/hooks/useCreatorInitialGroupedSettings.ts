@@ -15,7 +15,7 @@ function getSettingsFromQuery(data: City[]) {
         name.toLowerCase() === cityName.toLowerCase()
       );
       return {
-        ungroupedCityNames: matchingNames.map((name) => ({
+        groupCandidates: matchingNames.map((name) => ({
           name: name,
           isEditable: false,
           id: crypto.randomUUID(),

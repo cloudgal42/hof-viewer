@@ -1,4 +1,4 @@
-import { Accordion, Alert, Button, Form, Spinner } from "react-bootstrap";
+import { Accordion, Alert, Form, Spinner } from "react-bootstrap";
 import { GroupedCityRow } from "./GroupedCityRow.tsx";
 import { AddGroup } from "./AddGroup.tsx";
 import { Fragment, useState } from "react";
@@ -13,10 +13,10 @@ import { useLocalStorage } from "usehooks-ts";
 import { GroupedSettingsContext } from "../../../context/GroupedSettingsContext.ts";
 import { useCreatorInitialGroupedSettings } from "../../../hooks/useCreatorInitialGroupedSettings.ts";
 
-import type { UngroupedCityName } from "../../../interfaces/UngroupedCityName.ts";
+import type { GroupCandidate } from "../../../interfaces/GroupCandidate.ts";
 import { ErrorNotification } from "../../misc/LeftNotification/ErrorNotification.tsx";
 import { ToggleSetting } from "../SettingsComponents/ToggleSetting.tsx";
-import { ExclamationTriangle, Info, InfoCircle } from "react-bootstrap-icons";
+import { ExclamationTriangle } from "react-bootstrap-icons";
 import type { GroupedCityGenSettings } from "../../../interfaces/GroupedCityGenSettings.ts";
 import { DatalistControl } from "./DatalistControl.tsx";
 
@@ -47,7 +47,7 @@ export const GroupedCitiesSection = () => {
   );
 
   const [currDraggedGroupedCandidate, setCurrDraggedGroupedCandidate] =
-    useState<UngroupedCityName | null>(null);
+    useState<GroupCandidate | null>(null);
 
   function isRowAlreadyExists(name: string) {
     const creatorEntries = groupedCitiesRows.get(creator);
@@ -83,7 +83,7 @@ export const GroupedCitiesSection = () => {
         //   !newVal.includes(cityName)
         // );
 
-        // 2.3. Filter for deleted ungrouped city names
+        // 2.3. Filter for deleted group candidates
 
         // 3. If there are new city names, Update with new city names
         if (newEntries.length > 0 && existingData) {
@@ -98,7 +98,7 @@ export const GroupedCitiesSection = () => {
       if (valToSet) {
         console.log("Sorting");
         valToSet = valToSet.sort((a, b) =>
-          b.ungroupedCityNames.length - a.ungroupedCityNames.length
+          b.groupCandidates.length - a.groupCandidates.length
         );
         copy.set(creator, valToSet);
       }
@@ -118,7 +118,7 @@ export const GroupedCitiesSection = () => {
 
       if (creatorSettings && newPosition === "top") {
         creatorSettings.unshift({
-          ungroupedCityNames: [{
+          groupCandidates: [{
             name: `GroupedCity${creatorSettings.length + 1}-1`,
             isEditable: true,
             id: crypto.randomUUID(),
@@ -129,7 +129,7 @@ export const GroupedCitiesSection = () => {
         });
       } else if (creatorSettings) {
         creatorSettings.push({
-          ungroupedCityNames: [{
+          groupCandidates: [{
             name: `GroupedCity${creatorSettings.length + 1}-1`,
             isEditable: true,
             id: crypto.randomUUID(),
@@ -144,7 +144,7 @@ export const GroupedCitiesSection = () => {
     handleChangeSettings(copy);
   }
 
-  function addUngroupedCityName(groupedCityName: string) {
+  function addGroupCandidate(groupedCityName: string) {
     const copy = structuredClone(groupedCitiesRows);
 
     const objToModify = copy.get(creator)?.find((city) =>
@@ -152,22 +152,22 @@ export const GroupedCitiesSection = () => {
     );
 
     if (objToModify) {
-      objToModify.ungroupedCityNames = [
+      objToModify.groupCandidates = [
         {
           name: `${objToModify.groupedCityName}-${
-            objToModify.ungroupedCityNames.length + 1
+            objToModify.groupCandidates.length + 1
           }`,
           isEditable: true,
           id: crypto.randomUUID(),
         },
-        ...objToModify.ungroupedCityNames,
+        ...objToModify.groupCandidates,
       ];
     }
 
     handleChangeSettings(copy);
   }
 
-  function removeUngroupedCityName(
+  function removeGroupCandidate(
     ownerId: string,
     id: string,
   ) {
@@ -176,7 +176,7 @@ export const GroupedCitiesSection = () => {
     const objToModify = copy.get(creator)?.find((city) => city.id === ownerId);
 
     if (objToModify) {
-      objToModify.ungroupedCityNames = objToModify.ungroupedCityNames.filter(
+      objToModify.groupCandidates = objToModify.groupCandidates.filter(
         (entry) => {
           return entry.id !== id;
         },
@@ -199,16 +199,16 @@ export const GroupedCitiesSection = () => {
     handleChangeSettings(copy);
   }
 
-  function changeUngroupedEntryName(
+  function changeGroupCandidateName(
     ownerId: string,
-    ungroupedCityId: string,
+    groupCandidateId: string,
     newValue: string,
   ) {
     const copy = structuredClone(groupedCitiesRows);
     const objToModify = copy
       .get(creator)
       ?.find((city) => city.id === ownerId)
-      ?.ungroupedCityNames.find((city) => city.id === ungroupedCityId);
+      ?.groupCandidates.find((city) => city.id === groupCandidateId);
 
     if (objToModify) {
       objToModify.name = newValue;
@@ -229,24 +229,24 @@ export const GroupedCitiesSection = () => {
     handleChangeSettings(copy);
   }
 
-  function getOriginFromUngroupedNameId(
+  function getOriginFromGroupCandidateId(
     copy: Map<string, GroupedCityRowSetting[]>,
     id: string,
   ) {
     return copy.get(creator)?.find((entry) => {
-      return entry.ungroupedCityNames.some((cityName) => cityName.id === id);
+      return entry.groupCandidates.some((cityName) => cityName.id === id);
     });
   }
 
   function handleDragStart(e: DragStartEvent) {
     const sourceId = e.operation.source?.id;
-    const origin = sourceId && getOriginFromUngroupedNameId(
+    const origin = sourceId && getOriginFromGroupCandidateId(
       groupedCitiesRows,
       sourceId?.toString(),
     );
 
     if (origin) {
-      const obj = origin.ungroupedCityNames.find((entry) =>
+      const obj = origin.groupCandidates.find((entry) =>
         entry.id === sourceId
       );
       if (obj) setCurrDraggedGroupedCandidate(obj);
@@ -261,26 +261,26 @@ export const GroupedCitiesSection = () => {
     const targetRowId = e.operation.target?.id;
 
     const copy = structuredClone(groupedCitiesRows);
-    const origin = getOriginFromUngroupedNameId(copy, sourceId?.toString());
+    const origin = getOriginFromGroupCandidateId(copy, sourceId?.toString());
     const target = copy.get(creator)?.find((entry) => entry.id === targetRowId);
 
     // Check if the name is moved to another section
     if (origin && target && sourceId && targetRowId) {
-      const objToMove = origin.ungroupedCityNames.find((entry) =>
+      const objToMove = origin.groupCandidates.find((entry) =>
         entry.id === sourceId
       );
 
       if (objToMove) {
-        origin.ungroupedCityNames = origin.ungroupedCityNames.filter((entry) =>
+        origin.groupCandidates = origin.groupCandidates.filter((entry) =>
           entry.id !== sourceId
         );
-        target.ungroupedCityNames = [...target.ungroupedCityNames, objToMove];
+        target.groupCandidates = [...target.groupCandidates, objToMove];
       }
     } else if (
       origin && targetRowId &&
       ["addGroupbottom", "addGrouptop"].includes(targetRowId.toString())
     ) {
-      const objToMove = origin.ungroupedCityNames.find((entry) =>
+      const objToMove = origin.groupCandidates.find((entry) =>
         entry.id === sourceId
       );
 
@@ -292,7 +292,7 @@ export const GroupedCitiesSection = () => {
       }
 
       if (objToMove && !isInvalid) {
-        origin.ungroupedCityNames = origin.ungroupedCityNames.filter((entry) =>
+        origin.groupCandidates = origin.groupCandidates.filter((entry) =>
           entry.id !== sourceId
         );
         // Initiate a new row with that value
@@ -301,14 +301,14 @@ export const GroupedCitiesSection = () => {
 
         if (targetRowId === "addGrouptop") {
           creatorEntries.unshift({
-            ungroupedCityNames: [objToMove],
+            groupCandidates: [objToMove],
             groupedCityName: objToMove.name,
             isUserCreated: true,
             id: crypto.randomUUID(),
           });
         } else {
           creatorEntries.push({
-            ungroupedCityNames: [objToMove],
+            groupCandidates: [objToMove],
             groupedCityName: objToMove.name,
             isUserCreated: true,
             id: crypto.randomUUID(),
@@ -322,7 +322,7 @@ export const GroupedCitiesSection = () => {
     setCurrDraggedGroupedCandidate(null);
   }
 
-  function isUngroupedNameAlreadyExists(
+  function isGroupCandidateAlreadyExists(
     parentId: string,
     id: string,
     name: string,
@@ -334,13 +334,13 @@ export const GroupedCitiesSection = () => {
 
     // 2. Map all of them to the following data struct:
     // {
-    //   ungroupedName: string
+    //   groupCandidate: string
     //   parentId: string
     //   id: string
     // }
     const processed = creatorEntries.flatMap((entry) => {
-      return entry.ungroupedCityNames.map((groupedCandidates) => ({
-        ungroupedName: groupedCandidates.name,
+      return entry.groupCandidates.map((groupedCandidates) => ({
+        groupCandidate: groupedCandidates.name,
         parentId: entry.id,
         id: groupedCandidates.id,
       }));
@@ -349,11 +349,11 @@ export const GroupedCitiesSection = () => {
     console.log(processed);
 
     // 3. Check if:
-    // ungroupedName exists in whole list. If yes, return entries that match this
+    // groupCandidate exists in whole list. If yes, return entries that match this
     // AND if those returned results have different ID compared to id
     // OR if those returned results have a diff parent ID
     const duplicatedNameEntries = processed
-      .filter((nameEntries) => nameEntries.ungroupedName === name);
+      .filter((nameEntries) => nameEntries.groupCandidate === name);
 
     if (duplicatedNameEntries.length < 1) return false;
 
@@ -366,10 +366,10 @@ export const GroupedCitiesSection = () => {
 
   const creatorEntries = groupedCitiesRows && groupedCitiesRows.get(creator);
 
-  const creatorEntriesWithUngroupedNames = creatorEntries &&
-    creatorEntries.filter((entry) => entry.ungroupedCityNames.length > 0);
-  const creatorEntriesWithoutUngroupedNames = creatorEntries &&
-    creatorEntries.filter((entry) => entry.ungroupedCityNames.length === 0);
+  const creatorEntriesWithGroupCandidates = creatorEntries &&
+    creatorEntries.filter((entry) => entry.groupCandidates.length > 0);
+  const creatorEntriesWithoutGroupCandidates = creatorEntries &&
+    creatorEntries.filter((entry) => entry.groupCandidates.length === 0);
 
   let content;
 
@@ -389,18 +389,18 @@ export const GroupedCitiesSection = () => {
       />
     );
   } else if (
-    creatorEntriesWithUngroupedNames && creatorEntriesWithoutUngroupedNames &&
+    creatorEntriesWithGroupCandidates && creatorEntriesWithoutGroupCandidates &&
     !groupedCitiesGenSettings.useDefault
   ) {
     content = (
       <GroupedSettingsContext
         value={{
-          onAdd: addUngroupedCityName,
-          onRemoveUngroupedName: removeUngroupedCityName,
+          onAdd: addGroupCandidate,
+          onRemoveGroupCandidate: removeGroupCandidate,
           onRemoveGroupedName: removeGroupedEntry,
           onChangeGroupedName: changeGroupedEntryName,
-          onChangeUngroupedName: changeUngroupedEntryName,
-          isUngroupedNameAlreadyExists,
+          onChangeGroupCandidate: changeGroupCandidateName,
+          isGroupCandidateAlreadyExists,
           isRowAlreadyExists,
         }}
       >
@@ -414,18 +414,18 @@ export const GroupedCitiesSection = () => {
             position="top"
           />
           <div className="mt-3">
-            {creatorEntriesWithUngroupedNames.map((groupedCitiesRow, i) => (
+            {creatorEntriesWithGroupCandidates.map((groupedCitiesRow, i) => (
               <GroupedCityRow key={groupedCitiesRow.id} {...groupedCitiesRow} />
             ))}
-            {creatorEntriesWithoutUngroupedNames.length > 0 && (
+            {creatorEntriesWithoutGroupCandidates.length > 0 && (
               <Accordion>
                 <Accordion.Item eventKey="0">
                   <Accordion.Header>
                     Grouped city names with 0 group candidates
-                    ({creatorEntriesWithoutUngroupedNames.length} result(s))
+                    ({creatorEntriesWithoutGroupCandidates.length} result(s))
                   </Accordion.Header>
                   <Accordion.Body>
-                    {creatorEntriesWithoutUngroupedNames.map((
+                    {creatorEntriesWithoutGroupCandidates.map((
                       groupedCitiesRow,
                       i,
                     ) => (

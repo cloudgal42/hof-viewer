@@ -1,19 +1,19 @@
 import { Plus, Trash } from "react-bootstrap-icons";
 import { Button, Card, Form } from "react-bootstrap";
-import type { UngroupedCityName } from "../../../interfaces/UngroupedCityName.ts";
+import type { GroupCandidate } from "../../../interfaces/GroupCandidate.ts";
 import { DraggableEntry } from "./DraggableEntry.tsx";
 import { useDroppable } from "@dnd-kit/react";
 import { GroupedSettingsContext } from "../../../context/GroupedSettingsContext.ts";
 import { type CSSProperties, useContext } from "react";
 
 export const GroupedCityRow = ({
-  ungroupedCityNames,
+  groupCandidates,
   groupedCityName,
   isUserCreated,
   id,
   style,
 }: {
-  ungroupedCityNames: UngroupedCityName[];
+  groupCandidates: GroupCandidate[];
   groupedCityName: string;
   isUserCreated: boolean;
   id: string;
@@ -71,20 +71,20 @@ export const GroupedCityRow = ({
             className={`flex-grow-1 d-flex gap-2 flex-wrap align-items-start border border-1 border-primary rounded-2 overflow-hidden ${
               isDropTarget
                 ? "border-opacity-100"
-                : ungroupedCityNames.length === 0
+                : groupCandidates.length === 0
                 ? "border-opacity-50"
                 : " border-opacity-0"
             }`}
-            style={ungroupedCityNames.length === 0
+            style={groupCandidates.length === 0
               ? { "--bs-border-style": "dashed" } as CSSProperties
               : {}}
           >
-            {ungroupedCityNames.length > 0
-              ? ungroupedCityNames.map((cityName) => (
+            {groupCandidates.length > 0
+              ? groupCandidates.map((cityName) => (
                 <DraggableEntry
                   key={cityName.id}
                   id={cityName.id}
-                  cityName={cityName}
+                  groupCandidate={cityName}
                   ownerId={id}
                 />
               ))

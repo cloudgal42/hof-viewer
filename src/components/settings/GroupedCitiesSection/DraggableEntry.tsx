@@ -1,6 +1,6 @@
 import { GripVertical, Trash } from "react-bootstrap-icons";
 import { Button, Form, InputGroup } from "react-bootstrap";
-import type { UngroupedCityName } from "../../../interfaces/UngroupedCityName.ts";
+import type { GroupCandidate } from "../../../interfaces/GroupCandidate.ts";
 import { useDraggable } from "@dnd-kit/react";
 import { useContext, useRef, useState } from "react";
 import { GroupedSettingsContext } from "../../../context/GroupedSettingsContext.ts";
@@ -8,11 +8,11 @@ import { GroupedSettingsContext } from "../../../context/GroupedSettingsContext.
 import "../../../css/components/DraggableEntry.css";
 
 export const DraggableEntry = ({
-  cityName,
+  groupCandidate,
   id,
   ownerId,
 }: {
-  cityName: UngroupedCityName;
+  groupCandidate: GroupCandidate;
   id: string;
   ownerId: string;
 }) => {
@@ -21,9 +21,9 @@ export const DraggableEntry = ({
   });
 
   const {
-    onRemoveUngroupedName,
-    onChangeUngroupedName,
-    isUngroupedNameAlreadyExists,
+    onRemoveGroupCandidate,
+    onChangeGroupCandidate,
+    isGroupCandidateAlreadyExists,
   } = useContext(GroupedSettingsContext);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -34,14 +34,14 @@ export const DraggableEntry = ({
     targetId: string,
     newVal: string,
   ) {
-    if (isUngroupedNameAlreadyExists(ownerId, id, newVal)) {
+    if (isGroupCandidateAlreadyExists(ownerId, id, newVal)) {
       setIsInvalid(true);
       return;
-    } else if (newVal === cityName.name) {
+    } else if (newVal === groupCandidate.name) {
       return;
     }
 
-    onChangeUngroupedName(
+    onChangeGroupCandidate(
       ownerId,
       targetId,
       newVal,
@@ -51,7 +51,7 @@ export const DraggableEntry = ({
 
   return (
     <>
-      {cityName.isEditable
+      {groupCandidate.isEditable
         ? (
           <div className="input-actions" ref={ref}>
             <InputGroup className={`draggable-entry-field`}>
@@ -63,7 +63,7 @@ export const DraggableEntry = ({
                   if (inputRef.current) {
                     handleUpdate(
                       ownerId,
-                      cityName.id,
+                      groupCandidate.id,
                       inputRef.current.value,
                     );
                   }
@@ -79,14 +79,14 @@ export const DraggableEntry = ({
                 onBlur={(e) =>
                   handleUpdate(
                     ownerId,
-                    cityName.id,
+                    groupCandidate.id,
                     e.target.value,
                   )}
-                defaultValue={cityName.name}
+                defaultValue={groupCandidate.name}
               />
               <Button
                 variant="outline-danger"
-                onClick={() => onRemoveUngroupedName(ownerId, cityName.id)}
+                onClick={() => onRemoveGroupCandidate(ownerId, groupCandidate.id)}
               >
                 <Trash />
                 <span className="visually-hidden">Delete</span>
@@ -126,7 +126,7 @@ export const DraggableEntry = ({
               className="mb-0 ms-1 d-flex align-items-center text-truncate"
               style={{ minHeight: "38px" }}
             >
-              {cityName.name}
+              {groupCandidate.name}
             </p>
           </div>
         )}

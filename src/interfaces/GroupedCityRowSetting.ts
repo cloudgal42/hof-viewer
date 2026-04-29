@@ -1,7 +1,7 @@
-import type {UngroupedCityName} from "./UngroupedCityName.ts";
+import type {GroupCandidate} from "./GroupCandidate.ts";
 
 export interface GroupedCityRowSetting {
-  ungroupedCityNames: UngroupedCityName[];
+  groupCandidates: GroupCandidate[];
   groupedCityName: string;
   translatedGroupedCityName?: string;
   isUserCreated: boolean;
