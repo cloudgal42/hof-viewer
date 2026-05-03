@@ -112,35 +112,6 @@ const App = () => {
               </Suspense>
             </main>
           </div>
-          <footer className="text-center p-3 bg-body-tertiary">
-            <span className="d-inline-block">&copy; {new Date().getFullYear()} foxxy (cloudgal42)</span>
-            <ul className="ms-2 mb-0 list-unstyled d-inline-flex flex-row gap-2">
-              <li>
-                <a
-                  href="https://github.com/cloudgal42/hof-viewer"
-                  target="_blank"
-                >
-                  Source
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://github.com/cloudgal42/hof-viewer/blob/master/LICENSE"
-                  target="_blank"
-                >
-                  LICENSE
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://mods.paradoxplaza.com/mods/90641/Windows"
-                  target="_blank"
-                >
-                  Hall of Fame
-                </a>
-              </li>
-            </ul>
-          </footer>
         </div>
       </ThemeContext>
     </ErrorBoundary>
