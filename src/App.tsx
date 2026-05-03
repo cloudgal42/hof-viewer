@@ -18,6 +18,7 @@ import {useRandomCityGc} from "./hooks/useRandomCityGc.ts";
 export type ContextType = {
   city?: City | GroupedCities;
   setCity: (newCity: City | GroupedCities) => void;
+  setIsDarkMode: (isDarkMode: boolean) => void;
   startGc: () => void;
   gcCount: number;
 }
@@ -55,7 +56,7 @@ const App = () => {
   }, [isDarkMode]);
 
   const contextParams = {
-    city, setCity, startGc, gcCount
+    city, setCity, startGc, gcCount, setIsDarkMode
   }
 
   return (
@@ -94,7 +95,6 @@ const App = () => {
             <Sidebar
               isOpened={isAsideOpened}
               setIsOpened={setIsAsideOpened}
-              setIsDarkMode={setIsDarkMode}
             />
             <main id="mainContent" className="mt-3 mt-lg-5 mb-3 d-flex flex-grow-1 justify-content-center">
               <Suspense key={location.pathname} fallback={
