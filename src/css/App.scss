@@ -41,6 +41,10 @@ html, body, #root {
   min-height: 100vh;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 #mainContentLink {
   width: 1px;
   height: 1px;
