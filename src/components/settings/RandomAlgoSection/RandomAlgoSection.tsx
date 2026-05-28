@@ -1,18 +1,8 @@
 import { RangeSetting } from "../SettingsComponents/RangeSetting.tsx";
-import {useLocalStorage} from "usehooks-ts";
-import type {RandomAlgoSettings} from "../../../interfaces/RandomAlgoSettings.ts";
+import {useRandomAlgoSettings} from "../../../hooks/useRandomAlgoSettings.ts";
 
 export const RandomAlgoSection = () => {
-  const [randomAlgoSettings, setRandomAlgoSettings]
-    = useLocalStorage<RandomAlgoSettings>("randomAlgoSettings", {
-    random: 5,
-    popular: 10,
-    trending: 10,
-    recent: 10,
-    archeologist: 0,
-    supporter: 1,
-    viewMaxAge: 60,
-  });
+  const [randomAlgoSettings, setRandomAlgoSettings] = useRandomAlgoSettings();
 
   return (
     <section id="algoSettings">

@@ -1,16 +1,9 @@
 import { DropdownSetting } from "../SettingsComponents/DropdownSetting.tsx";
-import {useLocalStorage} from "usehooks-ts";
-import type {DisplayModes, TranslateOptions, TranslationSettings} from "../../../interfaces/TranslationSettings.ts";
+import type {DisplayModes, TranslateOptions} from "../../../interfaces/TranslationSettings.ts";
+import {useTranslationSettings} from "../../../hooks/useTranslationSettings.ts";
 
 export const TranslationSection = () => {
-  const [translationSettings, setTranslationSettings] = useLocalStorage<TranslationSettings>(
-    "translationSettings",
-    {
-      displayCityNames: "both",
-      translateCityType: "transliterate",
-      translateCreatorType: "transliterate",
-    }
-  );
+  const [translationSettings, setTranslationSettings] = useTranslationSettings();
 
   return (
     <section id="translation">

@@ -25,38 +25,18 @@ import {
   PlaceholderHeaderWithControls,
 } from "../components/randomcity/PlaceholderHeaderWithControls/PlaceholderHeaderWithControls.tsx";
 import { shareContent } from "../utils/ShareContent.ts";
-import { useLocalStorage } from "usehooks-ts";
-import type { RandomAlgoSettings } from "../interfaces/RandomAlgoSettings.ts";
 import { useScrollToTop } from "../hooks/useScrollToTop.ts";
 import { DefaultHelmet } from "../components/misc/DefaultHelmet/DefaultHelmet.tsx";
 import { NavLink, useOutletContext } from "react-router";
 import type { ContextType } from "../App.tsx";
-import type {TranslationSettings} from "../interfaces/TranslationSettings.ts";
+import {useRandomAlgoSettings} from "../hooks/useRandomAlgoSettings.ts";
+import {useTranslationSettings} from "../hooks/useTranslationSettings.ts";
 
 const RandomCity = () => {
   const headerCollapsed = useContext(AdaptiveHeaderContext);
   const [page, setPage] = useState<number>(0);
-  const [randomAlgoSettings] = useLocalStorage<RandomAlgoSettings>(
-    "randomAlgoSettings",
-    {
-      random: 5,
-      popular: 10,
-      trending: 10,
-      recent: 10,
-      archeologist: 0,
-      supporter: 1,
-      viewMaxAge: 60,
-    },
-  );
-
-  const [translationSettings] = useLocalStorage<TranslationSettings>(
-    "translationSettings",
-    {
-      displayCityNames: "both",
-      translateCityType: "transliterate",
-      translateCreatorType: "transliterate",
-    }
-  );
+  const [randomAlgoSettings] = useRandomAlgoSettings();
+  const [translationSettings] = useTranslationSettings();
 
   const { startGc, gcCount } = useOutletContext<ContextType>();
   const queryClient = useQueryClient();
