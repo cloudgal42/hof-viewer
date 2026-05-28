@@ -175,14 +175,14 @@ const CustomMenu = forwardRef(({
             <Dropdown.Item
               className={searchedItems.length === 0
                 ? "dropdown-item-hover"
-                : "" + "text-truncate"}
+                : "" + "text-wrap"}
               eventKey="createNew"
             >
               {newValueHint} "{currValue}"...
             </Dropdown.Item>
           )
           : tipHint && (
-            <Dropdown.Header className="fs-6 text-body-secondary py-1 text-truncate">
+            <Dropdown.Header className="fs-6 text-body-secondary py-1 text-wrap">
               <Lightbulb /> {tipHint}
             </Dropdown.Header>
           )}
