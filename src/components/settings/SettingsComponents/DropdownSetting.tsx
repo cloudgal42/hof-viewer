@@ -1,5 +1,5 @@
 import Form from "react-bootstrap/Form";
-import type {ReactNode} from "react";
+import type {ChangeEventHandler, ReactNode} from "react";
 
 export const DropdownSetting = ({
   label,
@@ -7,12 +7,16 @@ export const DropdownSetting = ({
   id,
   helpBlock,
   children,
+  value,
+  onChange,
 }: {
   label: string;
   id: string;
   name: string;
   helpBlock?: string;
   children: ReactNode;
+  value?: string;
+  onChange?: ChangeEventHandler<HTMLSelectElement>;
 }) => {
   return (
     <div className="mb-3">
@@ -34,6 +38,8 @@ export const DropdownSetting = ({
           <Form.Select
             id={id}
             name={name}
+            value={value}
+            onChange={onChange}
           >
             {children}
           </Form.Select>
