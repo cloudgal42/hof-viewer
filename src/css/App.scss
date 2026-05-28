@@ -41,8 +41,10 @@ html, body, #root {
   min-height: 100vh;
 }
 
-html {
-  scrollbar-gutter: stable;
+@media all and (width < 992px) {
+  html, body, #root {
+    min-height: 100.1vh;
+  }
 }
 
 #mainContentLink {
