@@ -1,11 +1,15 @@
 import "../../../css/components/SectionNav.scss";
 import ScrollSpy from "react-scrollspy-navigation";
+import {BackButton} from "../../misc/BackButton/BackButton.tsx";
 
 export const SectionNav = () => {
   return (
     <div className="section-nav mb-2 md-lg-0">
       <section className="col-auto text-nowrap">
-        <h2 className="fs-3 mb-lg-3">Settings</h2>
+        <div className="mb-2 mb-lg-3 d-flex align-items-center">
+          <BackButton />
+          <h2 className="fs-3 mb-0">Settings</h2>
+        </div>
         <ScrollSpy activeClass="active" threshold={1} onClickEach={(e, next, container) => {
           if (e.currentTarget) {
             const element = document.querySelector(`${e.currentTarget.getAttribute("href")}`);

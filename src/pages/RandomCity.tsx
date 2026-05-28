@@ -25,7 +25,7 @@ import type {RandomAlgoSettings} from "../interfaces/RandomAlgoSettings.ts";
 import {useScrollToTop} from "../hooks/useScrollToTop.ts";
 import {Helmet} from "@dr.pogodin/react-helmet";
 import {DefaultHelmet} from "../components/misc/DefaultHelmet/DefaultHelmet.tsx";
-import {useOutletContext} from "react-router";
+import {NavLink, useOutletContext} from "react-router";
 import type {ContextType} from "../App.tsx";
 
 const RandomCity = () => {
@@ -180,14 +180,13 @@ const RandomCity = () => {
             </div>
             <div className="text-nowrap">
               <OverlayTrigger overlay={<Tooltip>Settings</Tooltip>}>
-                <Button
-                  className="d-none d-sm-inline"
-                  variant="outline"
-                  onClick={openSettings}
+                <NavLink
+                  to="/settings#algoSettings"
+                  className="d-none d-sm-inline btn btn-outline"
                 >
                   <span className="visually-hidden">Algorithm Settings</span>
                   <Gear/>
-                </Button>
+                </NavLink>
               </OverlayTrigger>
               <OverlayTrigger overlay={<Tooltip>More options...</Tooltip>}>
                 <Dropdown className="d-inline">

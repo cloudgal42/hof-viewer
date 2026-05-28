@@ -1,4 +1,5 @@
 import Form from "react-bootstrap/Form";
+import type {ChangeEventHandler} from "react";
 
 export const RangeSetting = ({
   label,
@@ -7,6 +8,8 @@ export const RangeSetting = ({
   helpBlock,
   min,
   max,
+  value,
+  onChange,
 }: {
   label: string;
   id: string;
@@ -14,6 +17,8 @@ export const RangeSetting = ({
   helpBlock?: string;
   min: string | number;
   max: string | number;
+  value?: string | number;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
 }) => {
   return (
     <div className="mb-3">
@@ -40,6 +45,8 @@ export const RangeSetting = ({
             name={name}
             min={min}
             max={max}
+            value={value}
+            onChange={onChange}
           />
           <Form.Control
             style={{maxWidth: "50px"}}
@@ -50,6 +57,8 @@ export const RangeSetting = ({
             min={min}
             max={max}
             aria-label={label}
+            value={value}
+            onChange={onChange}
           />
         </div>
       </div>
