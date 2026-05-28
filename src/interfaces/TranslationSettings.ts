@@ -1,5 +1,4 @@
-import type {TranslateOptions} from "./RandomAlgoSettings.ts";
-
+export type TranslateOptions = "none" | "transliterate" | "translate";
 export type DisplayModes = "both" | "original" | "translated";
 
 export interface TranslationSettings {

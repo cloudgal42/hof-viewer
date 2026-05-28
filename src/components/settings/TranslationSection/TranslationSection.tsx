@@ -1,8 +1,6 @@
 import { DropdownSetting } from "../SettingsComponents/DropdownSetting.tsx";
-import {useState} from "react";
 import {useLocalStorage} from "usehooks-ts";
-import type {DisplayModes, TranslationSettings} from "../../../interfaces/TranslationSettings.ts";
-import type {TranslateOptions} from "../../../interfaces/RandomAlgoSettings.ts";
+import type {DisplayModes, TranslateOptions, TranslationSettings} from "../../../interfaces/TranslationSettings.ts";
 
 export const TranslationSection = () => {
   const [translationSettings, setTranslationSettings] = useLocalStorage<TranslationSettings>(

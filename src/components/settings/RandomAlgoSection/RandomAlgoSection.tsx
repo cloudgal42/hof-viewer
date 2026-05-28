@@ -5,8 +5,6 @@ import type {RandomAlgoSettings} from "../../../interfaces/RandomAlgoSettings.ts
 export const RandomAlgoSection = () => {
   const [randomAlgoSettings, setRandomAlgoSettings]
     = useLocalStorage<RandomAlgoSettings>("randomAlgoSettings", {
-    translateCityType: "transliterate",
-    translateCreatorType: "transliterate",
     random: 5,
     popular: 10,
     trending: 10,
