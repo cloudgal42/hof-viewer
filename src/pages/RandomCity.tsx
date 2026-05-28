@@ -1,6 +1,6 @@
 import { AdaptiveHeader } from "../components/details/AdaptiveHeader/AdaptiveHeader.tsx";
 import { AdaptiveHeaderProvider } from "../providers/AdaptiveHeaderProvider.tsx";
-import { Suspense, useContext, useEffect, useState } from "react";
+import {Suspense, useCallback, useContext, useEffect, useState} from "react";
 import { AdaptiveHeaderContext } from "../context/AdaptiveHeaderContext.ts";
 import { Button, Dropdown, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { MoreActionsBtn } from "../components/misc/MoreActionsBtn/MoreActionsBtn.tsx";
@@ -27,19 +27,28 @@ import {
 import { shareContent } from "../utils/ShareContent.ts";
 import { useScrollToTop } from "../hooks/useScrollToTop.ts";
 import { DefaultHelmet } from "../components/misc/DefaultHelmet/DefaultHelmet.tsx";
-import { NavLink, useOutletContext } from "react-router";
+import {NavLink, useOutletContext, useSearchParams} from "react-router";
 import type { ContextType } from "../App.tsx";
 import {useRandomAlgoSettings} from "../hooks/useRandomAlgoSettings.ts";
 import {useTranslationSettings} from "../hooks/useTranslationSettings.ts";
+import {handleSetSearchParams} from "../utils/SearchParamHandlers.ts";
 
 const RandomCity = () => {
   const headerCollapsed = useContext(AdaptiveHeaderContext);
-  const [page, setPage] = useState<number>(0);
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const pageAsString = searchParams.get("page");
+  const page = pageAsString ? parseInt(pageAsString) : 0;
+
   const [randomAlgoSettings] = useRandomAlgoSettings();
   const [translationSettings] = useTranslationSettings();
 
   const { startGc, gcCount } = useOutletContext<ContextType>();
   const queryClient = useQueryClient();
+
+  const setPage = useCallback((newPage: number) => {
+    setSearchParams(handleSetSearchParams(searchParams, "page", newPage.toString()));
+  }, [searchParams, setSearchParams]);
 
   // Restart garbage collector countdown when
   // - User enters this page
@@ -50,7 +59,6 @@ const RandomCity = () => {
 
   useEffect(() => {
     // Since page is not a derived value from gcCount, this is fine?
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (gcCount > 0) setPage(0);
   }, [gcCount, setPage]);
 
@@ -145,7 +153,7 @@ const RandomCity = () => {
         <AdaptiveHeader className="header-collapsed-body w-100 d-flex flex-row align-items-center justify-content-between">
           <Button
             variant="outline"
-            onClick={() => setPage((a) => a - 1)}
+            onClick={() => setPage(page - 1)}
             disabled={page === 0}
           >
             <span className="visually-hidden">To previous city</span>
@@ -225,7 +233,7 @@ const RandomCity = () => {
           </div>
           <Button
             variant="outline"
-            onClick={() => setPage((a) => a + 1)}
+            onClick={() => setPage(page + 1)}
           >
             <span className="visually-hidden">To next city</span>
             <OverlayTrigger overlay={<Tooltip>To next city</Tooltip>}>
