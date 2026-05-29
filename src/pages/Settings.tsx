@@ -14,6 +14,8 @@ const Settings = () => {
 
   useEffect(() => {
     const hash = window.location.hash;
+    if (!hash) return;
+
     const element = document.querySelector(hash);
     if (element) {
       element.scrollIntoView({behavior: "smooth"});

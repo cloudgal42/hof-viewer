@@ -2,9 +2,7 @@ import type {City} from "../interfaces/City.ts";
 import type {GroupedCityRowSetting} from "../interfaces/GroupedCityRowSetting.ts";
 import {useQuery} from "@tanstack/react-query";
 import {useLocalStorage} from "usehooks-ts";
-import type {GroupedCityGenSettings} from "../interfaces/GroupedCityGenSettings.ts";
-import {useState} from "react";
-import type {GroupCandidate} from "../interfaces/GroupCandidate.ts";
+import {useRef} from "react";
 
 function getSettingsFromQuery(data: City[]) {
   const cityNames = data.map(({ cityName }) => cityName);
@@ -46,6 +44,75 @@ export const useGroupedCitiesSettings = (
   const groupedCitiesRows = new Map<string, GroupedCityRowSetting[]>(
     groupedCitiesOverride,
   );
+
+  const defaultSettingsRef = useRef<GroupedCityRowSetting[]>([]);
+
+  const queryObjs = useQuery<GroupedCityRowSetting[]>({
+    queryKey: ["cities", creator],
+    queryFn: async () => {
+      if (!creator) return [];
+
+      const res = await fetch(
+        `${import.meta.env.VITE_HOF_SERVER}/screenshots?creatorId=${creator}`,
+      );
+      const data = await res.json();
+
+      if (!res.ok) {
+        return Promise.reject(new Error(`${data.statusCode}: ${data.message}`));
+      }
+
+      const defaultSettings = getSettingsFromQuery(data);
+      console.log(defaultSettings);
+      defaultSettingsRef.current = defaultSettings;
+
+      const copy = structuredClone(groupedCitiesRows);
+      let valToSet: GroupedCityRowSetting[] | null = null;
+      // We don't want to reset to default if there is already data in local storage
+      if (groupedCitiesRows.has(creator)) {
+        // 1. Get the current list of city names
+        const existingData = groupedCitiesRows.get(creator);
+        const existingCityNames = existingData?.map((cityName) =>
+          cityName.groupedCityName
+        );
+
+        // 2. Filter for new city names
+        const newEntries = defaultSettings.filter((cityName) => {
+          if (!existingCityNames) return false;
+          return !existingCityNames.includes(cityName.groupedCityName);
+        });
+
+        // TODO
+        // 2.2. Filter for deleted groups
+        // const deletedGroups = existingData?.filter(cityName =>
+        //   !newVal.includes(cityName)
+        // );
+
+        // 2.3. Filter for deleted group candidates
+
+        // 3. If there are new city names, Update with new city names
+        if (newEntries.length > 0 && existingData) {
+          valToSet = [...existingData, ...newEntries];
+        } else if (existingData) {
+          valToSet = [...existingData];
+        }
+      } else {
+        valToSet = [...defaultSettings];
+      }
+
+      if (valToSet) {
+        console.log("Sorting");
+        valToSet = valToSet.sort((a, b) =>
+          b.groupCandidates.length - a.groupCandidates.length
+        );
+        copy.set(creator, valToSet);
+      }
+      setGroupedCitiesOverride(Array.from(copy.entries()));
+      return defaultSettings;
+    },
+    staleTime: 30 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
 
   function isRowAlreadyExists(name: string) {
     const creatorEntries = groupedCitiesRows.get(creator);
@@ -229,69 +296,12 @@ export const useGroupedCitiesSettings = (
       );
   }
 
-  const queryObjs = useQuery<GroupedCityRowSetting[]>({
-    queryKey: ["cities", creator],
-    queryFn: async () => {
-      if (!creator) return [];
+  function resetToDefault() {
+    const copy = structuredClone(groupedCitiesRows);
 
-      const res = await fetch(
-        `${import.meta.env.VITE_HOF_SERVER}/screenshots?creatorId=${creator}`,
-      );
-      const data = await res.json();
-
-      if (!res.ok) {
-        return Promise.reject(new Error(`${data.statusCode}: ${data.message}`));
-      }
-
-      const defaultSettings = getSettingsFromQuery(data);
-
-      const copy = structuredClone(groupedCitiesRows);
-      let valToSet: GroupedCityRowSetting[] | null = null;
-      // We don't want to reset to default if there is already data in local storage
-      if (groupedCitiesRows.has(creator)) {
-        // 1. Get the current list of city names
-        const existingData = groupedCitiesRows.get(creator);
-        const existingCityNames = existingData?.map((cityName) =>
-          cityName.groupedCityName
-        );
-
-        // 2. Filter for new city names
-        const newEntries = defaultSettings.filter((cityName) => {
-          if (!existingCityNames) return false;
-          return !existingCityNames.includes(cityName.groupedCityName);
-        });
-
-        // 2.2. Filter for deleted groups
-        // const deletedGroups = existingData?.filter(cityName =>
-        //   !newVal.includes(cityName)
-        // );
-
-        // 2.3. Filter for deleted group candidates
-
-        // 3. If there are new city names, Update with new city names
-        if (newEntries.length > 0 && existingData) {
-          valToSet = [...existingData, ...newEntries];
-        } else if (existingData) {
-          valToSet = [...existingData];
-        }
-      } else {
-        valToSet = [...defaultSettings];
-      }
-
-      if (valToSet) {
-        console.log("Sorting");
-        valToSet = valToSet.sort((a, b) =>
-          b.groupCandidates.length - a.groupCandidates.length
-        );
-        copy.set(creator, valToSet);
-      }
-      setGroupedCitiesOverride(Array.from(copy.entries()));
-      return defaultSettings;
-    },
-    staleTime: 30 * 60 * 1000,
-    refetchOnWindowFocus: false,
-    retry: false,
-  });
+    copy.set(creator, defaultSettingsRef.current);
+    handleChangeSettings(copy);
+  }
 
   return {
     isRowAlreadyExists,
@@ -304,6 +314,7 @@ export const useGroupedCitiesSettings = (
     getOriginFromGroupCandidateId,
     isGroupCandidateAlreadyExists,
     handleChangeSettings,
+    resetToDefault,
     ...queryObjs,
     groupedCitiesRows,
   };

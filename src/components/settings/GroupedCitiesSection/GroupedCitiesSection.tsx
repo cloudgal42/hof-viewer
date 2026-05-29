@@ -1,4 +1,4 @@
-import { Accordion, Alert, Form, Spinner } from "react-bootstrap";
+import {Accordion, Alert, Button, Form, Spinner} from "react-bootstrap";
 import { GroupedCityRow } from "./GroupedCityRow.tsx";
 import { AddGroup } from "./AddGroup.tsx";
 import { Fragment, useState } from "react";
@@ -15,7 +15,7 @@ import { useGroupedCitiesSettings } from "../../../hooks/useGroupedCitiesSetting
 import type { GroupCandidate } from "../../../interfaces/GroupCandidate.ts";
 import { ErrorNotification } from "../../misc/LeftNotification/ErrorNotification.tsx";
 import { ToggleSetting } from "../SettingsComponents/ToggleSetting.tsx";
-import { ExclamationTriangle } from "react-bootstrap-icons";
+import {ArrowClockwise, ExclamationTriangle} from "react-bootstrap-icons";
 import type { GroupedCityGenSettings } from "../../../interfaces/GroupedCityGenSettings.ts";
 import { DatalistControl } from "./DatalistControl.tsx";
 
@@ -48,6 +48,7 @@ export const GroupedCitiesSection = () => {
     isRowAlreadyExists,
     handleChangeSettings,
     isGroupCandidateAlreadyExists,
+    resetToDefault
   } = useGroupedCitiesSettings(creator);
 
   const [currDraggedGroupedCandidate, setCurrDraggedGroupedCandidate] =
@@ -211,6 +212,14 @@ export const GroupedCitiesSection = () => {
             currCandidate={currDraggedGroupedCandidate}
             position="bottom"
           />
+          <Button
+            className="w-100 mt-2 d-flex gap-2 align-items-center justify-content-center"
+            variant="outline-danger"
+            onClick={resetToDefault}
+          >
+            <ArrowClockwise/>
+            Reset overrides to default
+          </Button>
         </DragDropProvider>
       </GroupedSettingsContext>
     );
