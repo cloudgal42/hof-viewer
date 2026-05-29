@@ -53,7 +53,9 @@ export const DraggableEntry = ({
     <>
       {groupCandidate.isEditable
         ? (
-          <div className="input-actions" ref={ref}>
+          <div
+            className="input-actions"
+            ref={ref}>
             <InputGroup className={`draggable-entry-field`}>
               <Button
                 className="p-1 border-start border-top border-bottom border-1 bg-body-secondary text-body-secondary"
@@ -76,6 +78,7 @@ export const DraggableEntry = ({
                 className={`${isInvalid && "is-invalid"}`}
                 ref={inputRef}
                 name="groupCandidateName"
+                style={{height: "40px"}}
                 onBlur={(e) =>
                   handleUpdate(
                     ownerId,
@@ -101,7 +104,8 @@ export const DraggableEntry = ({
                 preset.
               </Form.Control.Feedback>
             )}
-          </div>
+          </div
+          >
         )
         : (
           <div
