@@ -1,4 +1,4 @@
-import {Accordion, Alert, Button, Form, Spinner} from "react-bootstrap";
+import {Accordion, Alert, Button, Form, Modal, Spinner} from "react-bootstrap";
 import { GroupedCityRow } from "./GroupedCityRow.tsx";
 import { AddGroup } from "./AddGroup.tsx";
 import { Fragment, useState } from "react";
@@ -53,6 +53,8 @@ export const GroupedCitiesSection = () => {
 
   const [currDraggedGroupedCandidate, setCurrDraggedGroupedCandidate] =
     useState<GroupCandidate | null>(null);
+
+  const [isModalVisible, setModalVisible] = useState(false);
 
   function handleDragStart(e: DragStartEvent) {
     const sourceId = e.operation.source?.id;
@@ -215,7 +217,7 @@ export const GroupedCitiesSection = () => {
           <Button
             className="w-100 mt-2 d-flex gap-2 align-items-center justify-content-center"
             variant="outline-danger"
-            onClick={resetToDefault}
+            onClick={() => setModalVisible(true)}
           >
             <ArrowClockwise/>
             Reset overrides to default
@@ -239,6 +241,31 @@ export const GroupedCitiesSection = () => {
             This city name already exists. Please specify a different name.
           </ErrorNotification>
         )}
+      <Modal show={isModalVisible} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Reset</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are you sure you want to reset this preset to defaults? This action is <strong>not</strong> reversible.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="outline-primary"
+            onClick={() => setModalVisible(false)}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="danger"
+            onClick={() => {
+              setModalVisible(false);
+              resetToDefault();
+            }}
+          >
+            Reset to default
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <h3 className="fs-4 mb-2">Grouped Cities</h3>
       <p className="text-muted">
         Adjust or override the behavior of the screenshot grouping algorithm
