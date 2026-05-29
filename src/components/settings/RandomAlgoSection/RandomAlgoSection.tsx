@@ -1,8 +1,8 @@
-import { RangeSetting } from "../SettingsComponents/RangeSetting.tsx";
+import {RangeSetting} from "../SettingsComponents/RangeSetting.tsx";
 import {useRandomAlgoSettings} from "../../../hooks/useRandomAlgoSettings.ts";
 
 export const RandomAlgoSection = () => {
-  const [randomAlgoSettings, setRandomAlgoSettings] = useRandomAlgoSettings();
+  const [randomAlgoSettings, setRandomAlgoSettings, defaultSettings] = useRandomAlgoSettings();
 
   return (
     <section id="algoSettings">
@@ -20,7 +20,11 @@ export const RandomAlgoSection = () => {
         name="randomVal"
         helpBlock="Screenshot completely chosen by random"
         value={randomAlgoSettings.random}
-        onChange={e => setRandomAlgoSettings({...randomAlgoSettings, random: parseInt(e.currentTarget.value)})}
+        ogValue={defaultSettings.random}
+        onClickReset={() => setRandomAlgoSettings({...randomAlgoSettings, random: defaultSettings.random})}
+        onChange={e => setRandomAlgoSettings({
+          ...randomAlgoSettings, random: parseInt(e.currentTarget.value)
+        })}
       />
       <RangeSetting
         label="Popular"
@@ -30,7 +34,11 @@ export const RandomAlgoSection = () => {
         name="popularVal"
         helpBlock="Screenshots that have an above average likes/views ratio"
         value={randomAlgoSettings.popular}
-        onChange={e => setRandomAlgoSettings({...randomAlgoSettings, popular: parseInt(e.currentTarget.value)})}
+        ogValue={defaultSettings.popular}
+        onClickReset={() => setRandomAlgoSettings({...randomAlgoSettings, popular: defaultSettings.popular})}
+        onChange={e => setRandomAlgoSettings({
+          ...randomAlgoSettings, popular: parseInt(e.currentTarget.value)
+        })}
       />
       <RangeSetting
         label="Trending"
@@ -40,7 +48,11 @@ export const RandomAlgoSection = () => {
         name="trendingVal"
         helpBlock="Popular screenshots that have the highest likes/views ratio, regardless of age."
         value={randomAlgoSettings.trending}
-        onChange={e => setRandomAlgoSettings({...randomAlgoSettings, trending: parseInt(e.currentTarget.value)})}
+        ogValue={defaultSettings.trending}
+        onClickReset={() => setRandomAlgoSettings({...randomAlgoSettings, trending: defaultSettings.trending})}
+        onChange={e => setRandomAlgoSettings({
+          ...randomAlgoSettings, trending: parseInt(e.currentTarget.value)
+        })}
       />
       <RangeSetting
         label="Recent"
@@ -50,7 +62,14 @@ export const RandomAlgoSection = () => {
         name="recentVal"
         helpBlock="Recently posted screenshots (up to a few days old)"
         value={randomAlgoSettings.recent}
-        onChange={e => setRandomAlgoSettings({...randomAlgoSettings, recent: parseInt(e.currentTarget.value)})}
+        ogValue={defaultSettings.recent}
+        onClickReset={() => setRandomAlgoSettings({
+          ...randomAlgoSettings,
+          recent: defaultSettings.recent
+        })}
+        onChange={e => setRandomAlgoSettings({
+          ...randomAlgoSettings, recent: parseInt(e.currentTarget.value)
+        })}
       />
       <RangeSetting
         label="Forgotten Ones"
@@ -60,7 +79,15 @@ export const RandomAlgoSection = () => {
         name="archeologistVal"
         helpBlock="Screenshots that have not seen any activity for some time."
         value={randomAlgoSettings.archeologist}
-        onChange={e => setRandomAlgoSettings({...randomAlgoSettings, archeologist: parseInt(e.currentTarget.value)})}
+        ogValue={defaultSettings.archeologist}
+        onClickReset={() => setRandomAlgoSettings({
+          ...randomAlgoSettings,
+          archeologist: defaultSettings.archeologist
+        })}
+        onChange={e => setRandomAlgoSettings({
+          ...randomAlgoSettings,
+          archeologist: parseInt(e.currentTarget.value)
+        })}
       />
       <RangeSetting
         label="Supporter"
@@ -71,7 +98,17 @@ export const RandomAlgoSection = () => {
         helpBlock="Screenshots from Hall of Fame's members that assist the platform's development (e.g.
                     donations, being a positive contributor to the platform)."
         value={randomAlgoSettings.supporter}
-        onChange={e => setRandomAlgoSettings({...randomAlgoSettings, supporter: parseInt(e.currentTarget.value)})}
+        ogValue={defaultSettings.supporter}
+        onClickReset={() => setRandomAlgoSettings({
+          ...randomAlgoSettings,
+          supporter: defaultSettings.supporter
+        })
+        }
+        onChange={e => setRandomAlgoSettings({
+          ...randomAlgoSettings,
+          supporter: parseInt(e.currentTarget.value)
+        })
+        }
       />
     </section>
   );

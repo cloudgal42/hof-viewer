@@ -4,12 +4,12 @@ import type {Dispatch, SetStateAction} from "react";
 
 type useRandomAlgoSettingsReturnType = [
   RandomAlgoSettings,
-  Dispatch<SetStateAction<RandomAlgoSettings>>
+  Dispatch<SetStateAction<RandomAlgoSettings>>,
+  RandomAlgoSettings,
 ];
 
 export const useRandomAlgoSettings = (): useRandomAlgoSettingsReturnType => {
-  const [randomAlgoSettings, setRandomAlgoSettings]
-    = useLocalStorage<RandomAlgoSettings>("randomAlgoSettings", {
+  const defaultSettings = {
     random: 5,
     popular: 10,
     trending: 10,
@@ -17,7 +17,10 @@ export const useRandomAlgoSettings = (): useRandomAlgoSettingsReturnType => {
     archeologist: 0,
     supporter: 1,
     viewMaxAge: 60,
-  });
+  };
 
-  return [randomAlgoSettings, setRandomAlgoSettings];
+  const [randomAlgoSettings, setRandomAlgoSettings]
+    = useLocalStorage<RandomAlgoSettings>("randomAlgoSettings", defaultSettings);
+
+  return [randomAlgoSettings, setRandomAlgoSettings, defaultSettings];
 }
