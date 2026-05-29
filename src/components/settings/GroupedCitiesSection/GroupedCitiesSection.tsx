@@ -241,7 +241,11 @@ export const GroupedCitiesSection = () => {
             This city name already exists. Please specify a different name.
           </ErrorNotification>
         )}
-      <Modal show={isModalVisible} centered>
+      <Modal
+        show={isModalVisible}
+        onHide={() => setModalVisible(false)}
+        centered
+      >
         <Modal.Header closeButton>
           <Modal.Title>Confirm Reset</Modal.Title>
         </Modal.Header>
