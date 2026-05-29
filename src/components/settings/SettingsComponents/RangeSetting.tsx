@@ -1,20 +1,20 @@
 import Form from "react-bootstrap/Form";
-import type {ChangeEventHandler} from "react";
-import {OverlayTrigger, Tooltip} from "react-bootstrap";
-import {ArrowClockwise} from "react-bootstrap-icons";
+import type { ChangeEventHandler } from "react";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { ArrowClockwise } from "react-bootstrap-icons";
 
 export const RangeSetting = ({
-                               label,
-                               name,
-                               id,
-                               helpBlock,
-                               min,
-                               max,
-                               value,
-                               onChange,
-                               ogValue,
-                               onClickReset,
-                             }: {
+  label,
+  name,
+  id,
+  helpBlock,
+  min,
+  max,
+  value,
+  onChange,
+  ogValue,
+  onClickReset,
+}: {
   label: string;
   id: string;
   name: string;
@@ -35,19 +35,21 @@ export const RangeSetting = ({
             className="fw-semibold flex-grow-1 d-flex gap-2 align-items-center"
           >
             {label}
-            {(typeof ogValue !== "undefined" && ogValue !== null)
-            && ogValue !== value ? (
-              <OverlayTrigger overlay={<Tooltip>Reset to default</Tooltip>}>
-                <button
-                  type="button"
-                  onClick={onClickReset}
-                  className="ms-2 p-0 border-0 bg-transparent d-flex align-items-center"
-                >
-                  <span className="visually-hidden">Reset to default</span>
-                  <ArrowClockwise/>
-                </button>
-              </OverlayTrigger>
-            ) : ""}
+            {(typeof ogValue !== "undefined" && ogValue !== null) &&
+                ogValue !== value
+              ? (
+                <OverlayTrigger overlay={<Tooltip>Reset to default</Tooltip>}>
+                  <button
+                    type="button"
+                    onClick={onClickReset}
+                    className="ms-2 p-0 border-0 bg-transparent d-flex align-items-center"
+                  >
+                    <span className="visually-hidden">Reset to default</span>
+                    <ArrowClockwise />
+                  </button>
+                </OverlayTrigger>
+              )
+              : ""}
           </label>
           {helpBlock && (
             <Form.Text
@@ -68,7 +70,7 @@ export const RangeSetting = ({
             onChange={onChange}
           />
           <Form.Control
-            style={{maxWidth: "50px"}}
+            style={{ maxWidth: "50px" }}
             size="sm"
             type="number"
             id={id + "Control"}

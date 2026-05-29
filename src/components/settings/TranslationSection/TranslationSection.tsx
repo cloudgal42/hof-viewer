@@ -3,7 +3,7 @@ import type {DisplayModes, TranslateOptions} from "../../../interfaces/Translati
 import {useTranslationSettings} from "../../../hooks/useTranslationSettings.ts";
 
 export const TranslationSection = () => {
-  const [translationSettings, setTranslationSettings] = useTranslationSettings();
+  const [translationSettings, setTranslationSettings, defaultSettings] = useTranslationSettings();
 
   return (
     <section id="translation">
@@ -13,6 +13,11 @@ export const TranslationSection = () => {
         id="displayCityNames"
         name="displayCityNames"
         value={translationSettings.displayCityNames}
+        ogValue={defaultSettings.displayCityNames}
+        onClickReset={() => setTranslationSettings({
+          ...translationSettings,
+          displayCityNames: defaultSettings.displayCityNames
+        })}
         onChange={e => {
           if (["both", "original", "translated"].includes(e.currentTarget.value)) {
             setTranslationSettings({
@@ -34,6 +39,11 @@ export const TranslationSection = () => {
         id="translateCityType"
         name="translateCityType"
         value={translationSettings.translateCityType}
+        ogValue={defaultSettings.translateCityType}
+        onClickReset={() => setTranslationSettings({
+          ...translationSettings,
+          translateCityType: defaultSettings.translateCityType
+        })}
         onChange={e => {
           if (["none", "transliterate", "translate"].includes(e.currentTarget.value)) {
             setTranslationSettings({
@@ -53,6 +63,11 @@ export const TranslationSection = () => {
         id="translateCreatorType"
         name="translateCreatorType"
         value={translationSettings.translateCreatorType}
+        ogValue={defaultSettings.translateCreatorType}
+        onClickReset={() => setTranslationSettings({
+          ...translationSettings,
+          translateCreatorType: defaultSettings.translateCreatorType
+        })}
         onChange={e => {
           if (["none", "transliterate", "translate"].includes(e.currentTarget.value)) {
             setTranslationSettings({

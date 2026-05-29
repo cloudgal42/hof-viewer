@@ -4,18 +4,19 @@ import type {Dispatch, SetStateAction} from "react";
 
 type useTranslationSettingsReturnType = [
   TranslationSettings,
-  Dispatch<SetStateAction<TranslationSettings>>
+  Dispatch<SetStateAction<TranslationSettings>>,
+  TranslationSettings
 ];
 
 export const useTranslationSettings = (): useTranslationSettingsReturnType => {
-  const [translationSettings, setTranslationSettings] = useLocalStorage<TranslationSettings>(
-    "translationSettings",
-    {
-      displayCityNames: "both",
-      translateCityType: "transliterate",
-      translateCreatorType: "transliterate",
-    }
-  );
+  const defaultSettings: TranslationSettings = {
+    displayCityNames: "both",
+    translateCityType: "transliterate",
+    translateCreatorType: "transliterate",
+  };
 
-  return [translationSettings, setTranslationSettings];
+  const [translationSettings, setTranslationSettings] = useLocalStorage<TranslationSettings>(
+    "translationSettings", defaultSettings);
+
+  return [translationSettings, setTranslationSettings, defaultSettings];
 }
