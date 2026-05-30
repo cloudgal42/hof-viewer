@@ -1,6 +1,7 @@
 import "../../../css/components/SectionNav.scss";
 import ScrollSpy from "react-scrollspy-navigation";
 import {BackButton} from "../../misc/BackButton/BackButton.tsx";
+import {Brush, Buildings, Dice3, InfoCircle, Translate} from "react-bootstrap-icons";
 
 export const SectionNav = () => {
   return (
@@ -22,26 +23,31 @@ export const SectionNav = () => {
             <ul className="nav nav-pills flex-lg-column">
               <li className="nav-item">
                 <a className="nav-link link-body-emphasis" href="#appearance">
+                  <Brush className="me-2" />
                   Appearance
                 </a>
               </li>
               <li className="nav-item">
                 <a className="nav-link link-body-emphasis" href="#groupedCities">
+                  <Buildings className="me-2" />
                   Grouped Cities
                 </a>
               </li>
               <li className="nav-item">
                 <a className="nav-link link-body-emphasis" href="#translation">
+                  <Translate className="me-2" />
                   Translation
                 </a>
               </li>
               <li className="nav-item">
                 <a className="nav-link link-body-emphasis" href="#algoSettings">
+                  <Dice3 className="me-2" />
                   Random Algorithm
                 </a>
               </li>
               <li>
                 <a className="nav-link link-body-emphasis" href="#about">
+                  <InfoCircle className="me-2" />
                   About
                 </a>
               </li>

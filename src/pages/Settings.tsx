@@ -23,7 +23,9 @@ const Settings = () => {
   }, [])
 
   return (
-    <div className="ms-4 ms-sm-5 ms-lg-4 ms-xl-5 me-4 me-sm-5 flex-grow-1 d-flex flex-column flex-lg-row justify-content-center">
+    <div
+      className="position-relative w-xl-70px ms-4 ms-sm-5 ms-lg-4 ms-xl-5 me-4 me-sm-5 flex-grow-1 d-flex flex-column flex-lg-row justify-content-center"
+    >
       <SectionNav />
       <div className="settings-wrapper flex-grow-1">
         <section id="appearance">
