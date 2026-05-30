@@ -169,11 +169,7 @@ export const GroupedCitiesSection = () => {
         errorDetails={error.message}
       />
     );
-  } else if (
-    creatorEntriesWithGroupCandidates && creatorEntriesWithoutGroupCandidates &&
-    (creatorEntriesWithGroupCandidates.length === 0 ||
-      creatorEntriesWithoutGroupCandidates.length === 0)
-  ) {
+  } else if (creatorEntries?.length === 0) {
     content = (
       <ErrorScreen
         errorSummary="This creator has not yet posted any screenshots :("
