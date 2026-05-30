@@ -1,4 +1,11 @@
-import {Accordion, Alert, Button, Form, Modal, Spinner} from "react-bootstrap";
+import {
+  Accordion,
+  Alert,
+  Button,
+  Form,
+  Modal,
+  Spinner,
+} from "react-bootstrap";
 import { GroupedCityRow } from "./GroupedCityRow.tsx";
 import { AddGroup } from "./AddGroup.tsx";
 import { Fragment, useState } from "react";
@@ -15,7 +22,7 @@ import { useGroupedCitiesSettings } from "../../../hooks/useGroupedCitiesSetting
 import type { GroupCandidate } from "../../../interfaces/GroupCandidate.ts";
 import { ErrorNotification } from "../../misc/LeftNotification/ErrorNotification.tsx";
 import { ToggleSetting } from "../SettingsComponents/ToggleSetting.tsx";
-import {ArrowClockwise, ExclamationTriangle} from "react-bootstrap-icons";
+import { ArrowClockwise, ExclamationTriangle } from "react-bootstrap-icons";
 import type { GroupedCityGenSettings } from "../../../interfaces/GroupedCityGenSettings.ts";
 import { DatalistControl } from "./DatalistControl.tsx";
 
@@ -48,7 +55,7 @@ export const GroupedCitiesSection = () => {
     isRowAlreadyExists,
     handleChangeSettings,
     isGroupCandidateAlreadyExists,
-    resetToDefault
+    resetToDefault,
   } = useGroupedCitiesSettings(creator);
 
   const [currDraggedGroupedCandidate, setCurrDraggedGroupedCandidate] =
@@ -164,6 +171,19 @@ export const GroupedCitiesSection = () => {
     );
   } else if (
     creatorEntriesWithGroupCandidates && creatorEntriesWithoutGroupCandidates &&
+    (creatorEntriesWithGroupCandidates.length === 0 ||
+      creatorEntriesWithoutGroupCandidates.length === 0)
+  ) {
+    content = (
+      <ErrorScreen
+        errorSummary="This creator has not yet posted any screenshots :("
+        errorDetails="Maybe try looking for another creator?"
+      />
+    );
+  } else if (
+    creatorEntriesWithGroupCandidates && creatorEntriesWithoutGroupCandidates &&
+    (creatorEntriesWithGroupCandidates.length > 0 ||
+      creatorEntriesWithoutGroupCandidates.length > 0) &&
     !groupedCitiesGenSettings.useDefault
   ) {
     content = (
@@ -199,7 +219,9 @@ export const GroupedCitiesSection = () => {
                     ({creatorEntriesWithoutGroupCandidates.length} result(s))
                   </Accordion.Header>
                   <Accordion.Body>
-                    {creatorEntriesWithoutGroupCandidates.map((groupedCitiesRow) => (
+                    {creatorEntriesWithoutGroupCandidates.map((
+                      groupedCitiesRow,
+                    ) => (
                       <Fragment key={groupedCitiesRow.id}>
                         <GroupedCityRow {...groupedCitiesRow} />
                       </Fragment>
@@ -219,7 +241,7 @@ export const GroupedCitiesSection = () => {
             variant="outline-danger"
             onClick={() => setModalVisible(true)}
           >
-            <ArrowClockwise/>
+            <ArrowClockwise />
             Reset overrides to default
           </Button>
         </DragDropProvider>
@@ -250,7 +272,9 @@ export const GroupedCitiesSection = () => {
           <Modal.Title>Confirm Reset</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Are you sure you want to reset this preset to defaults? This action is <strong>not</strong> reversible.
+          Are you sure you want to reset this preset to defaults? This action is
+          {" "}
+          <strong>not</strong> reversible.
         </Modal.Body>
         <Modal.Footer>
           <Button
