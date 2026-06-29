@@ -3,8 +3,8 @@ import {
   Alert,
   Button,
   Form,
-  Modal,
-  Spinner,
+  Modal, OverlayTrigger,
+  Spinner, Tooltip,
 } from "react-bootstrap";
 import { GroupedCityRow } from "./GroupedCityRow.tsx";
 import { AddGroup } from "./AddGroup.tsx";
@@ -22,7 +22,7 @@ import { useGroupedCitiesSettings } from "../../../hooks/useGroupedCitiesSetting
 import type { GroupCandidate } from "../../../interfaces/GroupCandidate.ts";
 import { ErrorNotification } from "../../misc/LeftNotification/ErrorNotification.tsx";
 import { ToggleSetting } from "../SettingsComponents/ToggleSetting.tsx";
-import { ArrowClockwise, ExclamationTriangle } from "react-bootstrap-icons";
+import {ArrowClockwise, ExclamationTriangle, Flask} from "react-bootstrap-icons";
 import type { GroupedCityGenSettings } from "../../../interfaces/GroupedCityGenSettings.ts";
 import { DatalistControl } from "./DatalistControl.tsx";
 
@@ -290,7 +290,12 @@ export const GroupedCitiesSection = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-      <h3 className="fs-4 mb-2">Grouped Cities</h3>
+      <h3 className="fs-4 mb-2">
+        Grouped Cities
+        <OverlayTrigger overlay={<Tooltip>Experimental</Tooltip>}>
+          <Flask title="Experimental" className="ms-2"  />
+        </OverlayTrigger>
+      </h3>
       <p className="text-muted">
         Adjust or override the behavior of the screenshot grouping algorithm
       </p>
