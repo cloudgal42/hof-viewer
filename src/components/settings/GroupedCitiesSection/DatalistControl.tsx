@@ -1,25 +1,19 @@
 import {
-  Children,
-  cloneElement,
-  type CSSProperties,
   type Dispatch,
   type ForwardedRef,
   forwardRef,
-  type ReactElement,
   type ReactNode,
   type SetStateAction,
   useRef,
   useState,
 } from "react";
 import {
-  Button,
   Dropdown,
-  type DropdownItemProps,
   Form,
 } from "react-bootstrap";
 import { type MouseEvent } from "react";
 import Fuse from "fuse.js";
-import {ChevronDown, Lightbulb} from "react-bootstrap-icons";
+import { ChevronDown, Lightbulb } from "react-bootstrap-icons";
 
 interface DatalistControlProps {
   defaultValue?: string;
@@ -94,100 +88,17 @@ const CustomToggle = forwardRef(({
             return !curr;
           })}
         className="position-absolute bg-transparent border-0"
-        style={{ height: "38px", width: "38px", top: "0px", left: "calc(100% - 38px)" }}
+        style={{
+          height: "38px",
+          width: "38px",
+          top: "0px",
+          left: "calc(100% - 38px)",
+        }}
       >
         <span className="visually-hidden">Manually trigger dropdown</span>
         <ChevronDown size="16" />
       </button>
     </>
-  );
-});
-
-const CustomMenu = forwardRef(({
-  children: menuChildren,
-  style,
-  className,
-  currValue,
-  tipHint,
-  newValueHint,
-}: {
-  children: ReactElement<DropdownItemProps>;
-  style: CSSProperties;
-  className: string;
-  currValue: string | undefined;
-  setIsMenuOpen: (visible: boolean) => void;
-  tipHint?: string;
-  newValueHint?: string;
-}, ref: ForwardedRef<HTMLDivElement>) => {
-  const childrenAsArray = Children.toArray(menuChildren);
-  const valueExists = childrenAsArray.some((child) =>
-    (typeof child === "object" && "props" in child) &&
-    (typeof child.props === "object" && child.props &&
-      "eventKey" in child.props) &&
-    child.props?.eventKey === currValue
-  );
-
-  const fuse = new Fuse(childrenAsArray, {
-    threshold: 0.4,
-    includeScore: true,
-    keys: ["props.eventKey"],
-  });
-
-  const searchedItems = currValue ? fuse.search(currValue) : childrenAsArray
-    .map((child) => {
-      return { item: child, score: 0 };
-    });
-
-  return (
-    <div
-      ref={ref}
-      style={style}
-      className={className}
-    >
-      <ul className="list-unstyled mb-0">
-        {searchedItems.length > 0
-          ? (
-            <>
-              {searchedItems.map((entry, i) => {
-                return cloneElement(
-                  entry.item as ReactElement<DropdownItemProps>,
-                  {
-                    className: (
-                        i === 0 &&
-                          entry.score &&
-                          entry.score <= 0.001 ||
-                        searchedItems.length === 1
-                      )
-                      ? "dropdown-item-hover"
-                      : "",
-                  },
-                );
-              })}
-            </>
-          )
-          : !currValue && (
-            <Dropdown.Header className="fs-6 text-body py-1">
-              No preset available. Type a creator name or ID to get started
-            </Dropdown.Header>
-          )}
-        {!valueExists && currValue && newValueHint
-          ? (
-            <Dropdown.Item
-              className={searchedItems.length === 0
-                ? "dropdown-item-hover"
-                : "" + "text-wrap"}
-              eventKey="createNew"
-            >
-              {newValueHint} "{currValue}"...
-            </Dropdown.Item>
-          )
-          : tipHint && (
-            <Dropdown.Header className="fs-6 text-body-secondary py-1 text-wrap">
-              <Lightbulb /> {tipHint}
-            </Dropdown.Header>
-          )}
-      </ul>
-    </div>
   );
 });
 
@@ -197,11 +108,23 @@ export const DatalistControl = (props: DatalistControlProps) => {
   );
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const valueExists = props.optionsList.some((child) => child === currValue);
+
   function handleSetValue(value: string) {
     setCurrValue(value);
     props.onValueSubmit(value);
     setIsMenuOpen(false);
   }
+
+  const fuse = new Fuse(props.optionsList, {
+    threshold: 0.4,
+    includeScore: true,
+  });
+
+  const searchedItems = currValue ? fuse.search(currValue) : props.optionsList
+    .map((child) => {
+      return { item: child, score: 0 };
+    });
 
   return (
     <Dropdown
@@ -232,23 +155,38 @@ export const DatalistControl = (props: DatalistControlProps) => {
         setIsMenuOpen={setIsMenuOpen}
         {...props}
       />
-      <Dropdown.Menu
-        className="w-100"
-        as={CustomMenu}
-        currValue={currValue}
-        setIsMenuOpen={setIsMenuOpen}
-        tipHint={props.tipHint}
-        newValueHint={props.newValueHint}
-      >
-        {props.optionsList.map((option) => (
+      <Dropdown.Menu className="w-100">
+        {searchedItems.map((option, i) => (
           <Dropdown.Item
-            key={option}
-            eventKey={option}
-            active={option === props.defaultValue}
+            key={option.item}
+            eventKey={option.item}
+            active={option.item === props.defaultValue}
+            className={(i === 0 &&
+                  option.score &&
+                  option.score <= 0.001 ||
+                searchedItems.length === 1)
+              ? "dropdown-item-hover"
+              : ""}
           >
-            {option}
+            {option.item}
           </Dropdown.Item>
         ))}
+        {!valueExists && currValue && props.newValueHint
+          ? (
+            <Dropdown.Item
+              className={searchedItems.length === 0
+                ? "dropdown-item-hover"
+                : "" + "text-wrap"}
+              eventKey="createNew"
+            >
+              {props.newValueHint} "{currValue}"...
+            </Dropdown.Item>
+          )
+          : props.tipHint && (
+            <Dropdown.Header className="fs-6 text-body-secondary py-1 text-wrap">
+              <Lightbulb /> {props.tipHint}
+            </Dropdown.Header>
+          )}
       </Dropdown.Menu>
     </Dropdown>
   );
