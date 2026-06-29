@@ -11,14 +11,14 @@ export const SectionNav = () => {
           <BackButton />
           <h2 className="fs-3 mb-0">Settings</h2>
         </div>
-        <ScrollSpy activeClass="active" threshold={1} onClickEach={(e, next, container) => {
-          if (e.currentTarget) {
-            const element = document.querySelector(`${e.currentTarget.getAttribute("href")}`);
-            if (element) {
-              element.scrollIntoView({behavior: "smooth"});
-            }
-          }
-        }}>
+        {/*<ScrollSpy activeClass="active" threshold={1} onClickEach={(e, next, container) => {*/}
+        {/*  if (e.currentTarget) {*/}
+        {/*    const element = document.querySelector(`${e.currentTarget.getAttribute("href")}`);*/}
+        {/*    if (element) {*/}
+        {/*      element.scrollIntoView({behavior: "smooth"});*/}
+        {/*    }*/}
+        {/*  }*/}
+        {/*}}>*/}
           <nav>
             <ul className="nav nav-pills flex-lg-column">
               <li className="nav-item">
@@ -53,7 +53,7 @@ export const SectionNav = () => {
               </li>
             </ul>
           </nav>
-        </ScrollSpy>
+        {/*</ScrollSpy>*/}
       </section>
     </div>
   )
