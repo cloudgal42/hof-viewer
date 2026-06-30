@@ -1,19 +1,13 @@
-import {Dice3, Moon, PersonCircle, Search} from "react-bootstrap-icons";
+import {BoxArrowUpRight, Dice3, Gear, PersonCircle, Search} from "react-bootstrap-icons";
 import {CloseButton, Offcanvas} from "react-bootstrap";
 import {NavLink} from "react-router";
-import Form from "react-bootstrap/Form";
-import {ThemeContext} from "../../../context/ThemeContext.ts";
-import {useContext} from "react";
 
 interface SidebarProps {
   isOpened: boolean;
   setIsOpened: (isOpened: boolean) => void;
-  setIsDarkMode: (isDarkMode: boolean) => void;
 }
 
-export const Sidebar = ({isOpened, setIsOpened, setIsDarkMode}: SidebarProps) => {
-  const theme = useContext(ThemeContext);
-
+export const Sidebar = ({isOpened, setIsOpened}: SidebarProps) => {
   return (
     <aside className="d-none d-lg-block flex-shrink-0">
       <Offcanvas
@@ -67,22 +61,32 @@ export const Sidebar = ({isOpened, setIsOpened, setIsDarkMode}: SidebarProps) =>
               Creators
             </NavLink>
           </li>
+          <hr/>
+          <li className="nav-item">
+            <NavLink
+              to="/settings"
+              className="nav-link link-body-emphasis d-flex align-items-center"
+              onClick={() => setIsOpened(false)}
+            >
+              <Gear height="18" width="18" className="me-2"/>
+              Settings
+            </NavLink>
+          </li>
         </ul>
         <hr/>
-        <div className="d-flex justify-content-between">
-          <label htmlFor="darkModeToggle" className="d-flex gap-2 align-items-center">
-            <Moon/>
-            Dark Mode
-          </label>
-          <Form.Check
-            type="switch"
-            id="darkModeToggle"
-            onChange={(e) => setIsDarkMode(e.currentTarget.checked)}
-            checked={theme === "dark"}
-          >
-          </Form.Check>
-        </div>
-
+        <ul className="list-unstyled text-body-secondary mb-0">
+          <li>Hall of Fame Viewer v1.x.x</li>
+          <li>
+            <a
+              href="https://github.com/cloudgal42/hof-viewer/releases"
+              target="_blank"
+              className="d-flex align-items-center gap-2"
+            >
+              Changelog
+              <BoxArrowUpRight />
+            </a>
+          </li>
+        </ul>
       </Offcanvas>
     </aside>
   )

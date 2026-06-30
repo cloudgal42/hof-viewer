@@ -18,6 +18,7 @@ import {useRandomCityGc} from "./hooks/useRandomCityGc.ts";
 export type ContextType = {
   city?: City | GroupedCities;
   setCity: (newCity: City | GroupedCities) => void;
+  setIsDarkMode: (isDarkMode: boolean) => void;
   startGc: () => void;
   gcCount: number;
 }
@@ -55,7 +56,7 @@ const App = () => {
   }, [isDarkMode]);
 
   const contextParams = {
-    city, setCity, startGc, gcCount
+    city, setCity, startGc, gcCount, setIsDarkMode
   }
 
   return (
@@ -94,7 +95,6 @@ const App = () => {
             <Sidebar
               isOpened={isAsideOpened}
               setIsOpened={setIsAsideOpened}
-              setIsDarkMode={setIsDarkMode}
             />
             <main id="mainContent" className="mt-3 mt-lg-5 mb-3 d-flex flex-grow-1 justify-content-center">
               <Suspense key={location.pathname} fallback={
@@ -112,35 +112,6 @@ const App = () => {
               </Suspense>
             </main>
           </div>
-          <footer className="text-center p-3 bg-body-tertiary">
-            <span className="d-inline-block">&copy; {new Date().getFullYear()} foxxy (cloudgal42)</span>
-            <ul className="ms-2 mb-0 list-unstyled d-inline-flex flex-row gap-2">
-              <li>
-                <a
-                  href="https://github.com/cloudgal42/hof-viewer"
-                  target="_blank"
-                >
-                  Source
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://github.com/cloudgal42/hof-viewer/blob/master/LICENSE"
-                  target="_blank"
-                >
-                  LICENSE
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://mods.paradoxplaza.com/mods/90641/Windows"
-                  target="_blank"
-                >
-                  Hall of Fame
-                </a>
-              </li>
-            </ul>
-          </footer>
         </div>
       </ThemeContext>
     </ErrorBoundary>

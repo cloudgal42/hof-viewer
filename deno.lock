@@ -24,6 +24,7 @@
   "workspace": {
     "packageJson": {
       "dependencies": [
+        "npm:@dnd-kit/react@0.4",
         "npm:@dr.pogodin/react-helmet@^3.0.6",
         "npm:@eslint/js@^9.39.1",
         "npm:@netlify/edge-functions@^3.0.4",
@@ -54,6 +55,7 @@
         "npm:react-lazy-load-image-component@^1.6.3",
         "npm:react-markdown@^10.1.0",
         "npm:react-router@^7.12.0",
+        "npm:react-scrollspy-navigation@^2.0.7",
         "npm:react@^19.2.0",
         "npm:sass@^1.97.2",
         "npm:throttle-debounce@^5.0.2",

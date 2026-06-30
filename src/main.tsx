@@ -9,6 +9,7 @@ const Home = lazy(() => import("./pages/Home.tsx"));
 const CityDetails = lazy(() => import("./pages/CityDetails.tsx"));
 const Creators = lazy(() => import("./pages/Creators.tsx"));
 const RandomCity = lazy(() => import("./pages/RandomCity.tsx"));
+const Settings = lazy(() => import("./pages/Settings.tsx"));
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -19,6 +20,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="city/:city" element={<CityDetails />} />
           <Route path="creators" element={<Creators />} />
           <Route path="random" element={<RandomCity />} />
+          <Route path="settings" element={<Settings />} />
         </Route>
       </Routes>
     </BrowserRouter>
