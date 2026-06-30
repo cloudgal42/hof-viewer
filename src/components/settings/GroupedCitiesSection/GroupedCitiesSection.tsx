@@ -4,9 +4,7 @@ import {
   Button,
   Form,
   Modal,
-  OverlayTrigger,
   Spinner,
-  Tooltip,
 } from "react-bootstrap";
 import { GroupedCityRow } from "./GroupedCityRow.tsx";
 import { AddGroup } from "./AddGroup.tsx";
@@ -31,6 +29,7 @@ import {
 } from "react-bootstrap-icons";
 import type { GroupedCityGenSettings } from "../../../interfaces/GroupedCityGenSettings.ts";
 import { DatalistControl } from "./DatalistControl.tsx";
+import {useGroupedCitiesGenSettings} from "../../../hooks/useGroupedCitiesGenSettings.ts";
 
 export const GroupedCitiesSection = () => {
   const [creator, setCreator] = useState<string>("");
@@ -38,14 +37,7 @@ export const GroupedCitiesSection = () => {
     "ROW_ALREADY_EXISTS" | "NAME_ALREADY_EXISTS" | ""
   >("");
 
-  const [groupedCitiesGenSettings, setGroupedCitiesGenSettings] =
-    useLocalStorage<GroupedCityGenSettings>(
-      "groupedCitiesGenSettings",
-      {
-        useDefault: true,
-        shareSettings: true,
-      },
-    );
+  const [groupedCitiesGenSettings, setGroupedCitiesGenSettings] = useGroupedCitiesGenSettings();
 
   const {
     groupedCitiesRows,

@@ -27,6 +27,8 @@ import {Helmet} from "@dr.pogodin/react-helmet";
 
 import '../css/components/CityGallery.scss';
 import {PlaceholderGallery} from "../components/details/CityGallery/PlaceholderGallery.tsx";
+import {useGroupedCitiesSettings} from "../hooks/useGroupedCitiesSettings.ts";
+import {useGroupedCitiesGenSettings} from "../hooks/useGroupedCitiesGenSettings.ts";
 
 const CityGallery = lazy(() => import("../components/details/CityGallery/CityGallery.tsx"));
 
@@ -47,7 +49,7 @@ const CityDetails = () => {
   //   || window.navigator.userAgent.includes("HeadlessChrome");
 
   const isCitiesGrouped = searchParams.get("groupStatus") === "on";
-  const cityCreator = searchParams.get("creator");
+  const cityCreator = searchParams.get("creator") || "";
   const {
     data: creatorCities,
     error: creatorCitiesError,
@@ -81,8 +83,13 @@ const CityDetails = () => {
 
   const fetchError = error || creatorCitiesError;
 
+  const { groupedCitiesRows } = useGroupedCitiesSettings(cityCreator);
+  const [groupedCitiesGenSettings] = useGroupedCitiesGenSettings();
+
+  const groupedSettings = groupedCitiesGenSettings.useDefault ? undefined : groupedCitiesRows.get(cityCreator);
+
   const cityDetails = data || city ||
-    creatorCities && groupCities(creatorCities).find(entry => entry.cityName.toLowerCase() === cityParam?.toLowerCase());
+    creatorCities && groupCities(creatorCities, groupedSettings).find(entry => entry.cityName.toLowerCase() === cityParam?.toLowerCase());
 
   if (!cityDetails) {
     if (!navigator.onLine) {

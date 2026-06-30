@@ -3,26 +3,38 @@ import type {GroupedCityRowSetting} from "../interfaces/GroupedCityRowSetting.ts
 import {useQuery} from "@tanstack/react-query";
 import {useLocalStorage} from "usehooks-ts";
 import {useRef} from "react";
+import {getUniqueCityNameProperties} from "../utils/UniqueCityNameProperties.ts";
+import type {CityNameProperties} from "../interfaces/CityNameProperties.ts";
 
 function getSettingsFromQuery(data: City[]) {
-  const cityNames = data.map(({ cityName }) => cityName);
-  const uniqueCityNames = [...new Set(cityNames)];
+  const cityNames: CityNameProperties[] = data.map((entry) => ({
+    cityName: entry.cityName,
+    cityNameTranslated: entry.cityNameTranslated,
+    cityNameLatinized: entry.cityNameLatinized,
+  }));
+  const uniqueCityNames = getUniqueCityNameProperties(cityNames);
 
-  const cityNamesNoCase = cityNames.map((cityName) => cityName.toLowerCase());
-  const uniqueCityNamesIgnoreCase = [...new Set(cityNamesNoCase)];
+  const cityNamesNoCase: CityNameProperties[] = cityNames.map((entry) => ({
+    cityName: entry.cityName.toLowerCase(),
+    cityNameTranslated: entry.cityNameTranslated,
+    cityNameLatinized: entry.cityNameLatinized,
+  }));
+  const uniqueCityNamesIgnoreCase = getUniqueCityNameProperties(cityNamesNoCase);
 
   const list: GroupedCityRowSetting[] = uniqueCityNamesIgnoreCase.map(
-    (cityName, i) => {
-      const matchingNames = uniqueCityNames.filter((name) =>
-        name.toLowerCase() === cityName.toLowerCase()
+    (entry, i) => {
+      const matchingNames = uniqueCityNames.filter((subEntry) =>
+        subEntry.cityName.toLowerCase() === entry.cityName.toLowerCase()
       );
       return {
-        groupCandidates: matchingNames.map((name) => ({
-          name: name,
+        groupCandidates: matchingNames.map((candidate) => ({
+          name: candidate.cityName,
           isEditable: false,
           id: crypto.randomUUID(),
         })),
-        groupedCityName: uniqueCityNames[i],
+        groupedCityName: uniqueCityNames[i].cityName,
+        translatedGroupedCityName: uniqueCityNames[i].cityNameTranslated,
+        latinizedGroupedCityName: uniqueCityNames[i].cityNameLatinized,
         isUserCreated: false,
         id: crypto.randomUUID(),
       };
@@ -48,7 +60,7 @@ export const useGroupedCitiesSettings = (
   const defaultSettingsRef = useRef<GroupedCityRowSetting[]>([]);
 
   const queryObjs = useQuery<GroupedCityRowSetting[]>({
-    queryKey: ["cities", creator],
+    queryKey: ["groupedCityRowSetting", creator],
     queryFn: async () => {
       if (!creator) return [];
 

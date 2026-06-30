@@ -1,24 +1,26 @@
-import {Button, Form, OverlayTrigger, Tooltip} from "react-bootstrap";
-import {SortOrderButton} from "../components/home/SortOrderButton/SortOrderButton.tsx";
-import {useMemo, useState} from "react";
-import type {ContextType} from "../App.tsx";
-import {SortDropdown} from "../components/home/SortDropdown/SortDropdown.tsx";
-import {CityCard} from "../components/home/CityCard/CityCard.tsx";
-import {PlaceholderCard} from "../components/home/CityCard/PlaceholderCard.tsx";
-import {NavLink, useOutletContext, useSearchParams} from "react-router";
-import {handleSetSearchParams} from "../utils/SearchParamHandlers.ts";
+import { Button, Form, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { SortOrderButton } from "../components/home/SortOrderButton/SortOrderButton.tsx";
+import { useMemo, useState } from "react";
+import type { ContextType } from "../App.tsx";
+import { SortDropdown } from "../components/home/SortDropdown/SortDropdown.tsx";
+import { CityCard } from "../components/home/CityCard/CityCard.tsx";
+import { PlaceholderCard } from "../components/home/CityCard/PlaceholderCard.tsx";
+import { NavLink, useOutletContext, useSearchParams } from "react-router";
+import { handleSetSearchParams } from "../utils/SearchParamHandlers.ts";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import {groupCities} from "../utils/GroupCities.ts";
-import type {City, GroupedCities} from "../interfaces/City.ts";
-import {ErrorScreen} from "../components/misc/ErrorScreen/ErrorScreen.tsx";
-import {useQueryClient} from "@tanstack/react-query";
-import {useCreatorCities} from "../hooks/useCreatorCities.ts";
-import {DefaultHelmet} from "../components/misc/DefaultHelmet/DefaultHelmet.tsx";
+import { groupCities } from "../utils/GroupCities.ts";
+import type { City, GroupedCities } from "../interfaces/City.ts";
+import { ErrorScreen } from "../components/misc/ErrorScreen/ErrorScreen.tsx";
+import { useQueryClient } from "@tanstack/react-query";
+import { useCreatorCities } from "../hooks/useCreatorCities.ts";
+import { DefaultHelmet } from "../components/misc/DefaultHelmet/DefaultHelmet.tsx";
 
 import Chirper from "../assets/Chirper.svg";
-import {useDebounceCallback} from "usehooks-ts";
+import { useDebounceCallback } from "usehooks-ts";
 import Fuse from "fuse.js";
+import { useGroupedCitiesSettings } from "../hooks/useGroupedCitiesSettings.ts";
+import { useGroupedCitiesGenSettings } from "../hooks/useGroupedCitiesGenSettings.ts";
 
 const DEFAULT_CITIES_PER_PAGE = 18;
 
@@ -39,24 +41,35 @@ const Home = () => {
   const debouncedSetSearch = useDebounceCallback((e) => {
     setSearch(e.target.value);
     setIsDebouncing(false);
-  }, 500)
+  }, 500);
 
   const {
     setCity,
   } = useOutletContext<ContextType>();
 
-  const {error, data, isFetching} = useCreatorCities(creator);
+  const { error, data, isFetching } = useCreatorCities(creator);
+
+  const { groupedCitiesRows } = useGroupedCitiesSettings(creator);
+  const groupedSettings = groupedCitiesRows.get(creator);
+  const [groupedCitiesGenSettings] = useGroupedCitiesGenSettings();
 
   const cities =
-    queryClient.getQueryData<City[]>(["detailedCities", data && data[0]?.creatorId])
-    || queryClient.getQueryData<City[]>(["detailedCities", creator])
-    || data;
+    queryClient.getQueryData<City[]>([
+      "detailedCities",
+      data && data[0]?.creatorId,
+    ]) ||
+    queryClient.getQueryData<City[]>(["detailedCities", creator]) ||
+    data;
   const sortedCities = useMemo(() => {
     if (!creator || isFetching || error || !cities) return [];
 
     // console.log(cities);
 
-    const citiesToSort: City[] | GroupedCities[] = groupStatus === "on" ? groupCities(cities) : cities;
+    const citiesToSort: City[] | GroupedCities[] = groupStatus === "on"
+      ? groupedCitiesGenSettings.useDefault
+        ? groupCities(cities)
+        : groupCities(cities, groupedSettings)
+      : cities;
     const copiedCities = [...citiesToSort];
 
     switch (sortBy) {
@@ -97,17 +110,29 @@ const Home = () => {
     if (sortOrder === "Ascending") copiedCities.reverse();
 
     return copiedCities;
-  }, [cities, creator, error, groupStatus, isFetching, sortBy, sortOrder]);
+  }, [
+    cities,
+    creator,
+    error,
+    groupStatus,
+    isFetching,
+    sortBy,
+    sortOrder,
+    groupedSettings,
+    groupedCitiesGenSettings
+  ]);
 
   const fuse = new Fuse(sortedCities, {
     threshold: 0.2,
     includeScore: false,
     keys: ["cityName", "cityNameTranslated", "cityNameLatinized"],
   });
-  const searchedCities = search ?
-    fuse.search(search).map(entry => entry.item)
+  const searchedCities = search
+    ? fuse.search(search).map((entry) => entry.item)
     : sortedCities;
-  const paginatedCities = searchedCities.toSpliced(page * DEFAULT_CITIES_PER_PAGE);
+  const paginatedCities = searchedCities.toSpliced(
+    page * DEFAULT_CITIES_PER_PAGE,
+  );
 
   // function validateAndSetCreator(creator: string) {
   //   setCities([]);
@@ -119,7 +144,9 @@ const Home = () => {
     const queryString = query?.toString() || "";
     if (queryString === creator) return;
 
-    setSearchParams(handleSetSearchParams(searchParams, "creator", queryString));
+    setSearchParams(
+      handleSetSearchParams(searchParams, "creator", queryString),
+    );
   }
 
   let content;
@@ -127,77 +154,80 @@ const Home = () => {
   if (isFetching || isDebouncing) {
     content = (
       <div className="placeholder-feed d-flex flex-wrap gap-3">
-        <PlaceholderCard/>
-        <PlaceholderCard/>
-        <PlaceholderCard/>
-        <PlaceholderCard/>
-        <PlaceholderCard/>
-        <PlaceholderCard/>
+        <PlaceholderCard />
+        <PlaceholderCard />
+        <PlaceholderCard />
+        <PlaceholderCard />
+        <PlaceholderCard />
+        <PlaceholderCard />
       </div>
-    )
+    );
   } else if (error) {
     content = (
       <ErrorScreen
         errorSummary="Failed to get screenshots for this creator :("
         errorDetails={error.message}
       />
-    )
+    );
   } else if (search && searchedCities.length === 0) {
     content = (
       <ErrorScreen
         errorSummary="No cities found :("
         errorDetails="Double check your search query and try again."
       />
-    )
+    );
   } else if (sortedCities.length === 0 && creator) {
     content = (
       <ErrorScreen
         errorSummary="This creator has not yet posted any screenshots :("
         errorDetails="Maybe try looking for another creator?"
       />
-    )
+    );
   } else if (!navigator.onLine) {
     content = (
       <ErrorScreen
         errorSummary="You are offline :("
         errorDetails="Double check your Internet connection and try again."
       />
-    )
+    );
   } else if (searchedCities.length > 0) {
     content = (
       <InfiniteScroll
-        next={() => setPage(a => a + 1)}
+        next={() => setPage((a) => a + 1)}
         hasMore={searchedCities.length > paginatedCities.length}
         className="d-flex flex-wrap gap-3"
         loader={
           <div className="placeholder-feed d-flex flex-wrap gap-3">
-            <PlaceholderCard/>
-            <PlaceholderCard/>
-            <PlaceholderCard/>
-            <PlaceholderCard/>
-            <PlaceholderCard/>
-            <PlaceholderCard/>
+            <PlaceholderCard />
+            <PlaceholderCard />
+            <PlaceholderCard />
+            <PlaceholderCard />
+            <PlaceholderCard />
+            <PlaceholderCard />
           </div>
         }
         dataLength={paginatedCities.length}
       >
-        {paginatedCities.map(city =>
+        {paginatedCities.map((city) => (
           <CityCard
             key={city.id}
             city={city}
             setCity={setCity}
           />
-        )}
+        ))}
       </InfiniteScroll>
     );
   } else {
     content = (
       <div className="d-flex text-muted flex-column align-items-center text-center">
-        <img src={Chirper} width="162" height="162" alt="Chirper"/>
+        <img src={Chirper} width="162" height="162" alt="Chirper" />
         <p className="mb-1">Search by the creator name/ID to get started.</p>
         <p className="mb-1">
-          Don't know who to search for? Browse screenshots from great HoF creators <NavLink to={`/random`}>
-          here</NavLink>
+          Don't know who to search for? Browse screenshots from great HoF
+          creators{" "}
+          <NavLink to={`/random`}>
+            here
+          </NavLink>
         </p>
       </div>
     );
@@ -205,7 +235,7 @@ const Home = () => {
 
   return (
     <div className="main-wrapper flex-grow-1 ms-sm-5 me-sm-5">
-      <DefaultHelmet/>
+      <DefaultHelmet />
       <h2>Browse</h2>
       <section className="mt-3 mb-3">
         <Form.Label htmlFor="creatorId">Enter the Creator ID:</Form.Label>
@@ -222,17 +252,19 @@ const Home = () => {
             />
             <Button type="submit" variant="primary">Search</Button>
           </div>
-          <Form.Text id="creatorIdHelpBlock">Can either be the username or the public Creator ID.</Form.Text>
+          <Form.Text id="creatorIdHelpBlock">
+            Can either be the username or the public Creator ID.
+          </Form.Text>
         </form>
       </section>
       <section>
-        <div
-          className="d-flex gap-2 gap-sm-0 mb-2 align-items-md-center justify-content-between flex-column flex-md-row">
+        <div className="d-flex gap-2 gap-sm-0 mb-2 align-items-md-center justify-content-between flex-column flex-md-row">
           <h2 className="mb-0">
             Cities
             {(searchedCities && creator.length > 0 && !isFetching) && (
               <span className="ms-2 fs-6 text-muted text-nowrap">
-                {searchedCities.length} {searchedCities.length > 1 ? "results" : "result"}
+                {searchedCities.length}{" "}
+                {searchedCities.length > 1 ? "results" : "result"}
               </span>
             )}
           </h2>
@@ -245,13 +277,19 @@ const Home = () => {
                   setSearchParams(handleSetSearchParams(
                     searchParams,
                     "groupCities",
-                    e.currentTarget.checked ? "on" : "off"
+                    e.currentTarget.checked ? "on" : "off",
                   ));
                 }}
                 defaultChecked={groupStatus === "on"}
               />
-              <OverlayTrigger overlay={<Tooltip>When enabled, group all screenshots with the same city name into one
-                entry.</Tooltip>}>
+              <OverlayTrigger
+                overlay={
+                  <Tooltip>
+                    When enabled, group all screenshots with the same city name
+                    into one entry.
+                  </Tooltip>
+                }
+              >
                 <Form.Label
                   htmlFor="groupCitiesCheck"
                   className="mb-0"
@@ -259,11 +297,17 @@ const Home = () => {
                   Group Cities
                 </Form.Label>
               </OverlayTrigger>
-
             </div>
             <div className="d-flex gap-2 align-items-center">
-              <SortOrderButton sortOrder={sortOrder} searchParams={searchParams} setSearchParams={setSearchParams}/>
-              <SortDropdown searchParams={searchParams} setSearchParams={setSearchParams}/>
+              <SortOrderButton
+                sortOrder={sortOrder}
+                searchParams={searchParams}
+                setSearchParams={setSearchParams}
+              />
+              <SortDropdown
+                searchParams={searchParams}
+                setSearchParams={setSearchParams}
+              />
             </div>
           </div>
         </div>
@@ -283,7 +327,7 @@ const Home = () => {
               setSearchParams(handleSetSearchParams(
                 searchParams,
                 "search",
-                e.target.value
+                e.target.value,
               ));
             }}
           />
@@ -293,6 +337,6 @@ const Home = () => {
         </div>
       </section>
     </div>
-  )
-}
-export default Home
+  );
+};
+export default Home;
