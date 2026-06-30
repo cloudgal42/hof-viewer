@@ -1,10 +1,17 @@
 import {useQuery} from "@tanstack/react-query";
 import type {City, GroupedCities} from "../interfaces/City.ts";
 import {groupCities} from "../utils/GroupCities.ts";
+import {useGroupedCitiesGenSettings} from "./useGroupedCitiesGenSettings.ts";
+import {useGroupedCitiesSettings} from "./useGroupedCitiesSettings.ts";
 
 export const useCreatorTrends = (
-  {creator, cityName} : {creator: string | undefined; cityName?: string}
+  {creator, cityName} : {creator: string; cityName?: string}
 ) => {
+  const { groupedCitiesRows } = useGroupedCitiesSettings(creator);
+  const [groupedCitiesGenSettings] = useGroupedCitiesGenSettings();
+
+  const groupedSettings = groupedCitiesGenSettings.useDefault ? undefined : groupedCitiesRows.get(creator);
+
   return useQuery<City[], Error, GroupedCities[] | undefined>({
     queryKey: ["trendsData", creator],
     queryFn: async () => {
@@ -22,8 +29,8 @@ export const useCreatorTrends = (
     refetchOnWindowFocus: false,
     staleTime: Infinity,
     select: cityName
-      ? (trendsData) => groupCities(trendsData).filter(entry => entry.cityName === cityName)
-      : (trendsData) => groupCities(trendsData),
+      ? (trendsData) => groupCities(trendsData, groupedSettings).filter(entry => entry.cityName === cityName)
+      : (trendsData) => groupCities(trendsData, groupedSettings),
     enabled: false,
     retry: false,
   });

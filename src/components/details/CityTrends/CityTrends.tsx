@@ -16,7 +16,7 @@ import { useCreatorTrends } from "../../../hooks/useCreatorTrends.ts";
 const TrendsChart = lazy(() => import("./TrendsChart.tsx"));
 
 interface CityTrendsProps {
-  city: City | GroupedCities | undefined;
+  city: City | GroupedCities;
   isLoading: boolean;
   fetchError: Error | null;
 }
@@ -48,8 +48,8 @@ export const CityTrends = (
   // 2. If the creator ID is defined
   // 3. If this is a grouped city
   const { error, data, isFetching, refetch } = useCreatorTrends({
-    creator: city?.creatorId,
-    cityName: city?.cityName,
+    creator: city.creator.creatorName,
+    cityName: city.cityName,
   });
   
   let trendsBody;
