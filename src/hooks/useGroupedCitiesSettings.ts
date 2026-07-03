@@ -44,8 +44,10 @@ function getSettingsFromQuery(data: City[]) {
   return list;
 }
 
+// TODO: Make this avoid creation of new settings by default (with option to override)
 export const useGroupedCitiesSettings = (
   creator: string,
+  fetchNewSettings?: boolean
 ) => {
   const [groupedCitiesOverride, setGroupedCitiesOverride] = useLocalStorage<
     [string, GroupedCityRowSetting[]][]
@@ -123,6 +125,7 @@ export const useGroupedCitiesSettings = (
     },
     staleTime: 30 * 60 * 1000,
     refetchOnWindowFocus: false,
+    enabled: typeof fetchNewSettings !== "undefined" ? fetchNewSettings : false,
     retry: false,
   });
 

@@ -54,7 +54,7 @@ export const GroupedCitiesSection = () => {
     handleChangeSettings,
     isGroupCandidateAlreadyExists,
     resetToDefault,
-  } = useGroupedCitiesSettings(creator);
+  } = useGroupedCitiesSettings(creator, true);
 
   const [currDraggedGroupedCandidate, setCurrDraggedGroupedCandidate] =
     useState<GroupCandidate | null>(null);
