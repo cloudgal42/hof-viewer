@@ -11,6 +11,8 @@ import { useCreatorCities } from "../hooks/useCreatorCities.ts";
 import { CreatorInsights } from "../components/creators/CreatorInsights/CreatorInsights.tsx";
 import { groupCities } from "../utils/GroupCities.ts";
 import { PlaceholderInsights } from "../components/creators/CreatorInsights/PlaceholderInsights.tsx";
+import {useGroupedCitiesSettings} from "../hooks/useGroupedCitiesSettings.ts";
+import {useGroupedCitiesGenSettings} from "../hooks/useGroupedCitiesGenSettings.ts";
 
 const Creators = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -28,6 +30,11 @@ const Creators = () => {
   } = useCreatorCities(creator);
 
   const creatorDetails = data;
+
+  const { groupedCitiesRows } = useGroupedCitiesSettings(creator);
+  const [groupedCitiesGenSettings] = useGroupedCitiesGenSettings();
+
+  const groupedSettings = groupedCitiesGenSettings.useDefault ? undefined : groupedCitiesRows.get(creator);
 
   function setCreator(formData: FormData) {
     const query = formData.get("creatorId");
@@ -86,7 +93,7 @@ const Creators = () => {
       />
     );
   } else if (creatorCities && creatorCities.length > 0) {
-    insightsContent = <CreatorInsights cities={groupCities(creatorCities)} />;
+    insightsContent = <CreatorInsights cities={groupCities(creatorCities, groupedSettings)} />;
   }
 
   return (
