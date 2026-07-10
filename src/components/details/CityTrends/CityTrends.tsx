@@ -12,6 +12,7 @@ import type { City, GroupedCities } from "../../../interfaces/City.ts";
 import { ErrorScreen } from "../../misc/ErrorScreen/ErrorScreen.tsx";
 import { ThemeContext } from "../../../context/ThemeContext.ts";
 import { useCreatorTrends } from "../../../hooks/useCreatorTrends.ts";
+import { useIntersectionObserver } from "usehooks-ts";
 
 const TrendsChart = lazy(() => import("./TrendsChart.tsx"));
 
@@ -51,21 +52,36 @@ export const CityTrends = (
     creator: city.creator.creatorName,
     cityName: city.cityName,
   });
-  
+
   let trendsBody;
 
   // This is used for trends graph.
   // Only use data from useCreatorTrends if viewing a grouped city.
-  const cityWithTrends = data && city
-    && Array.isArray(city.imageUrlFHD) ? data[0] : city;
-  
-  const isTrendsStale =
-    (cityWithTrends?.views && cityWithTrends.views.length !== city?.viewsCount)
-    || (cityWithTrends?.favorites && cityWithTrends?.favorites.length !== city?.favoritesCount);
+  const cityWithTrends = data && city &&
+      Array.isArray(city.imageUrlFHD)
+    ? data[0]
+    : city;
 
-  console.debug(`Total view entries: ${cityWithTrends?.views?.length} | Total views: ${city?.viewsCount}`);
-  console.debug(`Total favorites entries: ${cityWithTrends?.favorites?.length} | Total favorites: ${city?.favoritesCount}`);
-  console.debug("Trends data out of date/stale?", isTrendsStale)
+  const isTrendsStale =
+    (cityWithTrends?.views &&
+      cityWithTrends.views.length !== city?.viewsCount) ||
+    (cityWithTrends?.favorites &&
+      cityWithTrends?.favorites.length !== city?.favoritesCount);
+
+  const { isIntersecting, ref } = useIntersectionObserver({
+    threshold: 0.4,
+    freezeOnceVisible: true,
+  });
+
+  console.log("Load trends?", isIntersecting);
+
+  console.debug(
+    `Total view entries: ${cityWithTrends?.views?.length} | Total views: ${city?.viewsCount}`,
+  );
+  console.debug(
+    `Total favorites entries: ${cityWithTrends?.favorites?.length} | Total favorites: ${city?.favoritesCount}`,
+  );
+  console.debug("Trends data out of date/stale?", isTrendsStale);
 
   if (city && Array.isArray(city.imageUrlFHD) && !data) {
     trendsBody = (
@@ -128,7 +144,13 @@ export const CityTrends = (
         Come back on another day to see your city trends!
       </p>
     );
-  } else if (cityWithTrends) {
+  } else if (!isIntersecting) {
+    trendsBody = (
+      <p className="text-center text-muted my-5 py-5">
+        Trends not yet loaded; scroll down to load the chart.
+      </p>
+    )
+  } else if (cityWithTrends && isIntersecting) {
     trendsBody = (
       <Suspense
         fallback={
@@ -150,7 +172,9 @@ export const CityTrends = (
                 className="bg-transparent border-0 p-0"
                 onClick={() => refetch()}
               >
-                <span className="text-decoration-underline">Update trends?</span>
+                <span className="text-decoration-underline">
+                  Update trends?
+                </span>
               </Alert.Link>{" "}
               (will take a while on popular creators!)
             </p>
@@ -166,7 +190,7 @@ export const CityTrends = (
   }
 
   return (
-    <Card>
+    <Card ref={ref}>
       <Card.Body>
         <h3>
           <Card.Title>Trends</Card.Title>
