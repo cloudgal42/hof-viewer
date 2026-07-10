@@ -1,6 +1,7 @@
 .spinner-container {
   display: none;
   opacity: 0;
+  z-index: 1;
 }
 
 .spinner-container-active {
@@ -15,6 +16,6 @@
 }
 
 .trends-chart-container-processing {
-  filter: blur(5px);
+  filter: blur(5px) brightness(0.4);
   transition: filter 0.25s;
 }
