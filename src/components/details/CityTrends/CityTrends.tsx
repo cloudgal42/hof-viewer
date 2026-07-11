@@ -73,16 +73,6 @@ export const CityTrends = (
     freezeOnceVisible: true,
   });
 
-  console.log("Load trends?", isIntersecting);
-
-  console.debug(
-    `Total view entries: ${cityWithTrends?.views?.length} | Total views: ${city?.viewsCount}`,
-  );
-  console.debug(
-    `Total favorites entries: ${cityWithTrends?.favorites?.length} | Total favorites: ${city?.favoritesCount}`,
-  );
-  console.debug("Trends data out of date/stale?", isTrendsStale);
-
   if (city && Array.isArray(city.imageUrlFHD) && !data) {
     trendsBody = (
       <Alert variant="warning" className="my-3">
