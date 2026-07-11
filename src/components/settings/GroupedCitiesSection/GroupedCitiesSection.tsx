@@ -29,7 +29,7 @@ import {
 } from "react-bootstrap-icons";
 import type { GroupedCityGenSettings } from "../../../interfaces/GroupedCityGenSettings.ts";
 import { DatalistControl } from "./DatalistControl.tsx";
-import {useGroupedCitiesGenSettings} from "../../../hooks/useGroupedCitiesGenSettings.ts";
+import { useGroupedCitiesGenSettings } from "../../../hooks/useGroupedCitiesGenSettings.ts";
 
 export const GroupedCitiesSection = () => {
   const [creator, setCreator] = useState<string>("");
@@ -37,7 +37,8 @@ export const GroupedCitiesSection = () => {
     "ROW_ALREADY_EXISTS" | "NAME_ALREADY_EXISTS" | ""
   >("");
 
-  const [groupedCitiesGenSettings, setGroupedCitiesGenSettings] = useGroupedCitiesGenSettings();
+  const [groupedCitiesGenSettings, setGroupedCitiesGenSettings] =
+    useGroupedCitiesGenSettings();
 
   const {
     groupedCitiesRows,
@@ -308,30 +309,39 @@ export const GroupedCitiesSection = () => {
             })}
           checked={groupedCitiesGenSettings.useDefault}
         />
-        <ToggleSetting
-          label="Share grouped cities override"
-          id="shareGroupedSettings"
-          name="shareGroupedSettings"
-          helpBlock="Appends the custom grouped cities settings to the URL when sharing a grouped city. May result in very long URLs."
-          onChange={(e) =>
-            setGroupedCitiesGenSettings({
-              useDefault: groupedCitiesGenSettings.useDefault,
-              shareSettings: e.currentTarget.checked,
-            })}
-          checked={groupedCitiesGenSettings.shareSettings}
-          disabled={groupedCitiesGenSettings.useDefault}
-        />
         <Alert
           variant="warning"
-          show={!groupedCitiesGenSettings.shareSettings &&
-            !groupedCitiesGenSettings.useDefault}
+          show={!groupedCitiesGenSettings.useDefault}
         >
           <ExclamationTriangle className="me-2" />
-          If there are grouped city override(s), other users and embed{" "}
+          If there are grouped city override(s), other users and embeds{" "}
           <strong>will not be able to</strong>{" "}
-          see the same screenshots in a grouped city as you. If that is
-          undesirable, enable <i>Share grouped cities override</i>.
+          see the same screenshots in a grouped city as you.
         </Alert>
+        {/*<ToggleSetting*/}
+        {/*  label="Share grouped cities override"*/}
+        {/*  id="shareGroupedSettings"*/}
+        {/*  name="shareGroupedSettings"*/}
+        {/*  helpBlock="Appends the custom grouped cities settings to the URL when sharing a grouped city. May result in very long URLs."*/}
+        {/*  onChange={(e) =>*/}
+        {/*    setGroupedCitiesGenSettings({*/}
+        {/*      useDefault: groupedCitiesGenSettings.useDefault,*/}
+        {/*      shareSettings: e.currentTarget.checked,*/}
+        {/*    })}*/}
+        {/*  checked={groupedCitiesGenSettings.shareSettings}*/}
+        {/*  disabled={groupedCitiesGenSettings.useDefault}*/}
+        {/*/>*/}
+        {/*<Alert*/}
+        {/*  variant="warning"*/}
+        {/*  show={!groupedCitiesGenSettings.shareSettings &&*/}
+        {/*    !groupedCitiesGenSettings.useDefault}*/}
+        {/*>*/}
+        {/*  <ExclamationTriangle className="me-2" />*/}
+        {/*  If there are grouped city override(s), other users and embed{" "}*/}
+        {/*  <strong>will not be able to</strong>{" "}*/}
+        {/*  see the same screenshots in a grouped city as you. If that is*/}
+        {/*  undesirable, enable <i>Share grouped cities override</i>.*/}
+        {/*</Alert>*/}
       </section>
       <section className="mb-3">
         <fieldset
