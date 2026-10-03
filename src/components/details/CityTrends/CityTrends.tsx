@@ -7,14 +7,51 @@ import {
   ToggleButton,
   ToggleButtonGroup,
 } from "react-bootstrap";
-import { lazy, Suspense, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import type { City, GroupedCities } from "../../../interfaces/City.ts";
 import { ErrorScreen } from "../../misc/ErrorScreen/ErrorScreen.tsx";
 import { ThemeContext } from "../../../context/ThemeContext.ts";
 import { useCreatorTrends } from "../../../hooks/useCreatorTrends.ts";
 import { useIntersectionObserver } from "usehooks-ts";
+import { useCityTrendsWorker } from "../../../hooks/useCityTrendsWorker.ts";
+import { Bar } from "react-chartjs-2";
+import {
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  defaults,
+  Legend,
+  LinearScale,
+  Title,
+  Tooltip,
+} from "chart.js";
 
-const TrendsChart = lazy(() => import("./TrendsChart.tsx"));
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+);
+
+import "../../../css/components/TrendsChart.css";
+
+function getFormattedTrendType(trend: string) {
+  switch (trend) {
+    case "views":
+      return "Views";
+    case "favorites":
+      return "Favorites";
+    case "uniqueViews":
+      return "Unique Views";
+  }
+}
+
+defaults.font.family =
+  'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",' +
+  ' "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", ' +
+  '"Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';
 
 interface CityTrendsProps {
   city: City | GroupedCities;
@@ -44,10 +81,9 @@ export const CityTrends = (
     return 1;
   });
 
-  // Fetches all screenshots of the current creator, with a list of favorites and views entries if:
-  // 1. User clicks on the "load trends" button
-  // 2. If the creator ID is defined
-  // 3. If this is a grouped city
+  // TODO: Consider if this entire component should become reusable
+
+  // TODO: Rename this hook to smth more appropriate
   const { error, data, isFetching, refetch } = useCreatorTrends({
     creator: city.creator.creatorName,
     cityName: city.cityName,
@@ -62,9 +98,8 @@ export const CityTrends = (
     ? data[0]
     : city;
 
-  const isTrendsStale =
-    (cityWithTrends?.views &&
-      cityWithTrends.views.length !== city?.viewsCount) ||
+  const isTrendsStale = (cityWithTrends?.views &&
+    cityWithTrends.views.length !== city?.viewsCount) ||
     (cityWithTrends?.favorites &&
       cityWithTrends?.favorites.length !== city?.favoritesCount);
 
@@ -72,6 +107,109 @@ export const CityTrends = (
     threshold: 0.4,
     freezeOnceVisible: true,
   });
+
+  const { data: viewsData, isProcessing: isViewsProcessing } =
+    useCityTrendsWorker({
+      city: cityWithTrends,
+      groupPeriod,
+      trendType: "views",
+      enabled: isIntersecting,
+    });
+
+  const { data: uniqueViewsData, isProcessing: isUniqueViewsProcessing } =
+    useCityTrendsWorker({
+      city: cityWithTrends,
+      groupPeriod,
+      trendType: "uniqueViews",
+      enabled: isIntersecting,
+    });
+
+  const { data: favoritesData, isProcessing: isFavoritesProcessing } =
+    useCityTrendsWorker({
+      city: cityWithTrends,
+      groupPeriod,
+      trendType: "favorites",
+      enabled: isIntersecting,
+    });
+
+  const isProcessing = (isViewsProcessing && trendType === "views") ||
+    (isUniqueViewsProcessing && trendType === "uniqueViews") ||
+    (isFavoritesProcessing && trendType === "favorites");
+
+  const trendsData = trendType === "favorites"
+    ? favoritesData
+    : trendType === "uniqueViews"
+    ? uniqueViewsData
+    : viewsData;
+
+  const chartName = `${
+    getFormattedTrendType(trendType)
+  } per ${groupPeriod} day(s)`;
+
+  const fontColor = theme === "dark" ? "#fff" : "#222";
+  const gridColor = theme === "dark" ? { color: "#3a3a3a" } : {};
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: "top" as const,
+        labels: {
+          color: fontColor,
+        },
+      },
+      title: {
+        display: true,
+        text: chartName,
+        color: fontColor,
+      },
+      zoom: {
+        zoom: {
+          wheel: {
+            enabled: true,
+            modifierKey: "ctrl" as const,
+          },
+          pinch: { enabled: true },
+          limits: {
+            y: { min: "original", max: "original" },
+          },
+          mode: "x" as const,
+        },
+        pan: {
+          enabled: true,
+          mode: "x" as const,
+        },
+      },
+    },
+    scales: {
+      x: {
+        ticks: { color: fontColor },
+        grid: { ...gridColor },
+      },
+      y: {
+        ticks: { color: fontColor },
+        grid: { ...gridColor },
+      },
+    },
+  };
+
+  const labels = Object.keys(trendsData);
+
+  const trendsDataForChart = {
+    labels,
+    datasets: [
+      {
+        label: chartName,
+        data: trendsData,
+        backgroundColor: (trendType === "favorites")
+          ? "rgba(255, 99, 132, 0.5)"
+          : "rgba(53, 162, 235, 0.5)",
+      },
+    ],
+  };
+
+  const requireLoadingStatus = isLoading || isFetching || isProcessing;
 
   if (city && Array.isArray(city.imageUrlFHD) && !data) {
     trendsBody = (
@@ -110,14 +248,6 @@ export const CityTrends = (
         </Button>
       </Alert>
     );
-  } else if (isLoading || isFetching) {
-    trendsBody = (
-      <div className="d-flex justify-content-center my-5 py-5">
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>
-      </div>
-    );
   } else if (
     fetchError && !fetchError.message.includes("grouped screenshots") ||
     error && city && Array.isArray(city.imageUrlFHD)
@@ -134,24 +264,9 @@ export const CityTrends = (
         Come back on another day to see your city trends!
       </p>
     );
-  } else if (!isIntersecting) {
+  } else {
     trendsBody = (
-      <p className="text-center text-muted my-5 py-5">
-        Trends not yet loaded; scroll down to load the chart.
-      </p>
-    )
-  } else if (cityWithTrends && isIntersecting) {
-    trendsBody = (
-      <Suspense
-        fallback={
-          <div className="d-flex flex-column align-items-center my-5 py-5">
-            <Spinner animation="border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </Spinner>
-            <p className="mt-2 text-center text-muted">Processing...</p>
-          </div>
-        }
-      >
+      <>
         {isTrendsStale && (
           <Alert variant="warning" className="mt-3">
             <p className="mb-0 d-inline">
@@ -170,12 +285,30 @@ export const CityTrends = (
             </p>
           </Alert>
         )}
-        <TrendsChart
-          city={cityWithTrends}
-          trendType={trendType}
-          groupPeriod={groupPeriod}
-        />
-      </Suspense>
+        <div className="position-relative">
+          <div
+            className={`spinner-container ${
+              requireLoadingStatus && "spinner-container-active"
+            } position-absolute top-50 start-50 translate-middle d-flex flex-column align-items-center`}
+          >
+            <Spinner
+              animation="border"
+              aria-describedby="spinnerLabel"
+              role="status"
+            />
+            <p className="mt-2 text-center" id="spinnerLabel">
+              {isProcessing ? "Processing stats..." : "Fetching data..."}
+            </p>
+          </div>
+          <div
+            className={`position-relative trends-chart-container ${
+              requireLoadingStatus && "trends-chart-container-processing"
+            }`}
+          >
+            <Bar data={trendsDataForChart} options={options} />
+          </div>
+        </div>
+      </>
     );
   }
 
