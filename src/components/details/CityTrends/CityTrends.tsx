@@ -11,7 +11,6 @@ import { useContext, useState } from "react";
 import type { City, GroupedCities } from "../../../interfaces/City.ts";
 import { ErrorScreen } from "../../misc/ErrorScreen/ErrorScreen.tsx";
 import { ThemeContext } from "../../../context/ThemeContext.ts";
-import { useCreatorTrends } from "../../../hooks/useCreatorTrends.ts";
 import { useIntersectionObserver } from "usehooks-ts";
 import { useCityTrendsWorker } from "../../../hooks/useCityTrendsWorker.ts";
 import { Bar } from "react-chartjs-2";
@@ -36,6 +35,7 @@ ChartJS.register(
 );
 
 import "../../../css/components/TrendsChart.css";
+import {useCityTrends} from "../../../hooks/useCityTrends.ts";
 
 function getFormattedTrendType(trend: string) {
   switch (trend) {
@@ -82,65 +82,29 @@ export const CityTrends = (
   });
 
   // TODO: Consider if this entire component should become reusable
-
-  // TODO: Rename this hook to smth more appropriate
-  const { error, data, isFetching, refetch } = useCreatorTrends({
-    creator: city.creator.creatorName,
-    cityName: city.cityName,
-  });
-
-  let trendsBody;
-
-  // This is used for trends graph.
-  // Only use data from useCreatorTrends if viewing a grouped city.
-  const cityWithTrends = data && city &&
-      Array.isArray(city.imageUrlFHD)
-    ? data[0]
-    : city;
-
-  const isTrendsStale = (cityWithTrends?.views &&
-    cityWithTrends.views.length !== city?.viewsCount) ||
-    (cityWithTrends?.favorites &&
-      cityWithTrends?.favorites.length !== city?.favoritesCount);
-
   const { isIntersecting, ref } = useIntersectionObserver({
     threshold: 0.4,
     freezeOnceVisible: true,
   });
 
-  const { data: viewsData, isProcessing: isViewsProcessing } =
-    useCityTrendsWorker({
-      city: cityWithTrends,
-      groupPeriod,
-      trendType: "views",
-      enabled: isIntersecting,
-    });
+  // TODO: Rename this hook to smth more appropriate
+  const {
+    error,
+    trendsData,
+    isFetching,
+    isProcessing,
+    isTrendsStale,
+    refetch,
+    requireManualFetch
+  } = useCityTrends({
+    enabled: isIntersecting,
+    groupPeriod,
+    trendType,
+    creator: city.creator.creatorName,
+    city
+  });
 
-  const { data: uniqueViewsData, isProcessing: isUniqueViewsProcessing } =
-    useCityTrendsWorker({
-      city: cityWithTrends,
-      groupPeriod,
-      trendType: "uniqueViews",
-      enabled: isIntersecting,
-    });
-
-  const { data: favoritesData, isProcessing: isFavoritesProcessing } =
-    useCityTrendsWorker({
-      city: cityWithTrends,
-      groupPeriod,
-      trendType: "favorites",
-      enabled: isIntersecting,
-    });
-
-  const isProcessing = (isViewsProcessing && trendType === "views") ||
-    (isUniqueViewsProcessing && trendType === "uniqueViews") ||
-    (isFavoritesProcessing && trendType === "favorites");
-
-  const trendsData = trendType === "favorites"
-    ? favoritesData
-    : trendType === "uniqueViews"
-    ? uniqueViewsData
-    : viewsData;
+  let trendsBody;
 
   const chartName = `${
     getFormattedTrendType(trendType)
@@ -194,7 +158,7 @@ export const CityTrends = (
     },
   };
 
-  const labels = Object.keys(trendsData);
+  const labels = trendsData ? Object.keys(trendsData) : [""];
 
   const trendsDataForChart = {
     labels,
@@ -211,7 +175,7 @@ export const CityTrends = (
 
   const requireLoadingStatus = isLoading || isFetching || isProcessing;
 
-  if (city && Array.isArray(city.imageUrlFHD) && !data) {
+  if (requireManualFetch) {
     trendsBody = (
       <Alert variant="warning" className="my-3">
         <p className="mb-2">
@@ -227,7 +191,7 @@ export const CityTrends = (
         <Button
           variant="outline-warning"
           className={theme === "light" ? "text-reset" : ""}
-          onClick={() => !data && refetch()}
+          onClick={() => !trendsData && refetch()}
           disabled={isFetching}
         >
           {isFetching
@@ -267,7 +231,7 @@ export const CityTrends = (
   } else {
     trendsBody = (
       <>
-        {isTrendsStale && (
+        {isTrendsStale && !requireLoadingStatus && (
           <Alert variant="warning" className="mt-3">
             <p className="mb-0 d-inline">
               <strong>Warning:</strong> Trends data is{" "}

@@ -9,19 +9,20 @@ export const useCityTrendsWorker = (
     trendType,
     enabled
   }: {
-    city: City | GroupedCities;
+    city: City | GroupedCities | null;
     groupPeriod: number;
     trendType: string;
     enabled: boolean;
   },
 ) => {
-  const [groupedCounts, setGroupedCounts] = useState<TrendsData>({});
+  const [groupedCounts, setGroupedCounts] = useState<TrendsData | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const viewsWorkerRef = useRef<Worker>(null);
 
   useEffect(() => {
     if (!enabled) return;
+    if (!city) return;
 
     viewsWorkerRef.current = new Worker(
       new URL("../workers/TrendsWorker.ts", import.meta.url),
