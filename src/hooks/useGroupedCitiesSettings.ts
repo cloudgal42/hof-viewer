@@ -45,7 +45,9 @@ function getSettingsFromQuery(data: City[]) {
   return list;
 }
 
-// TODO: Make this avoid creation of new settings by default (with option to override)
+// FIXME: Make this a globally accessible context instead of just this hook.
+//  Reason: on page change, the ref is reset to nothing. Once user click "reset to default",
+//  settings got reset to the inital ref.current value instead of the one stored previously.
 export const useGroupedCitiesSettings = (
   creator: string,
   fetchNewSettings?: boolean
