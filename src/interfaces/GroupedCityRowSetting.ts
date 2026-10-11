@@ -7,4 +7,5 @@ export interface GroupedCityRowSetting {
   latinizedGroupedCityName?: string;
   isUserCreated: boolean;
   id: string;
+  isModified: boolean;
 }

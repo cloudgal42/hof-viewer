@@ -11,6 +11,7 @@ interface UncombinedGroupedCities extends City {
   parentName: string;
   parentNameTranslated?: string;
   parentNameLatinized?: string;
+  isUsingModifiedSettings: boolean;
 }
 
 // Group all stats of each unique city name into one.
@@ -20,7 +21,7 @@ export function groupCities(
 ) {
   let groupedScreenshots: UncombinedGroupedCities[][] = [];
   const groupedCities: GroupedCities[] = [];
-  const isUsingCustomSettings = typeof customGroupedSettings !== "undefined";
+  const hasSettingsForCityCreator = typeof customGroupedSettings !== "undefined";
 
   // 1. Get all distinct city names. Use Set() to filter down to only unique values
   // Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set/Set
@@ -32,7 +33,7 @@ export function groupCities(
   const uniqueCityNames = getUniqueCityNameProperties(cityNames);
 
   // 2. Combine all unique city entries into 1 array
-  if (isUsingCustomSettings) {
+  if (hasSettingsForCityCreator) {
     groupedScreenshots = customGroupedSettings?.map((setting) => {
       const groupCandidateNames = setting.groupCandidates.map((candidate) =>
         candidate.name
@@ -44,6 +45,7 @@ export function groupCities(
           parentName: setting.groupedCityName,
           parentNameTranslated: setting.translatedGroupedCityName,
           parentNameLatinized: setting.latinizedGroupedCityName,
+          isUsingModifiedSettings: setting.isModified
         }));
     });
   } else {
@@ -55,6 +57,7 @@ export function groupCities(
           parentName: cityNameProperties.cityName,
           parentNameTranslated: cityNameProperties.cityNameTranslated,
           parentNameLatinized: cityNameProperties.cityNameLatinized,
+          isUsingModifiedSettings: false,
         }));
       groupedScreenshots.push(cityScreenshots);
     });
@@ -116,6 +119,7 @@ export function groupCities(
         cities: (!screenshotStat.combinedStats?.cities)
           ? []
           : screenshotStat.combinedStats.cities,
+        isUsingCustomOverrideSettings: screenshot.isUsingModifiedSettings
       };
 
       screenshotStat.combinedStats?.cities.push(screenshot);

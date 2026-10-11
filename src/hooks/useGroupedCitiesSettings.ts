@@ -37,6 +37,7 @@ function getSettingsFromQuery(data: City[]) {
         latinizedGroupedCityName: uniqueCityNames[i].cityNameLatinized,
         isUserCreated: false,
         id: crypto.randomUUID(),
+        isModified: false
       };
     },
   );
@@ -157,6 +158,7 @@ export const useGroupedCitiesSettings = (
           groupedCityName: `GroupedCity${creatorSettings.length + 1}`,
           isUserCreated: true,
           id: crypto.randomUUID(),
+          isModified: true,
         });
       } else if (creatorSettings) {
         creatorSettings.push({
@@ -168,6 +170,7 @@ export const useGroupedCitiesSettings = (
           groupedCityName: `GroupedCity${creatorSettings.length + 1}`,
           isUserCreated: true,
           id: crypto.randomUUID(),
+          isModified: true,
         });
       }
     }

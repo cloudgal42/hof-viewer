@@ -1,7 +1,7 @@
-import {Button, OverlayTrigger, Tooltip} from "react-bootstrap";
+import {Alert, Badge, Button, OverlayTrigger, Tooltip} from "react-bootstrap";
 import {NavLink, useOutletContext, useParams, useSearchParams} from "react-router";
 import type {ContextType} from "../App.tsx";
-import {ChevronDown, Share} from "react-bootstrap-icons";
+import {ChevronDown, InfoCircle, Share} from "react-bootstrap-icons";
 import {lazy, Suspense, useState} from "react";
 import {DEFAULT_IMAGES_PER_PAGE} from "../components/details/CityGallery/CityGallery.tsx";
 
@@ -83,7 +83,7 @@ const CityDetails = () => {
 
   const fetchError = error || creatorCitiesError;
 
-  const { groupedCitiesRows } = useGroupedCitiesSettings(cityCreator);
+  const {groupedCitiesRows} = useGroupedCitiesSettings(cityCreator);
   const [groupedCitiesGenSettings] = useGroupedCitiesGenSettings();
 
   const groupedSettings = groupedCitiesGenSettings.useDefault ? undefined : groupedCitiesRows.get(cityCreator);
@@ -117,7 +117,7 @@ const CityDetails = () => {
       return (
         <div className="main-wrapper flex-grow-1 ms-sm-5 me-sm-5">
           <PlaceholderDetailsHeader/>
-          <PlaceholderDetails isGroupedCities={isCitiesGrouped} />
+          <PlaceholderDetails isGroupedCities={isCitiesGrouped}/>
         </div>
       );
     } else {
@@ -186,13 +186,29 @@ const CityDetails = () => {
                 {cityDetails.cityName}{cityDetails.cityNameTranslated && `(${cityDetails.cityNameTranslated})`}
               </h2>
             </div>
-            <CreatorPreviewTrigger
-              creator={cityDetails.creator}
-              creatorName={cityDetails.creator.creatorName}
-              showLinks={true}
-            >
-              <h3 className="mb-0 text-muted d-inline">by {cityDetails.creator.creatorName}</h3>
-            </CreatorPreviewTrigger>
+            <div className="d-flex align-items-center flex-wrap row-gap-1">
+              <CreatorPreviewTrigger
+                creator={cityDetails.creator}
+                creatorName={cityDetails.creator.creatorName}
+                showLinks={true}
+              >
+                <h3 className="me-2 mb-0 text-muted">by {cityDetails.creator.creatorName}</h3>
+              </CreatorPreviewTrigger>
+              {"isUsingCustomOverrideSettings" in cityDetails
+                && cityDetails.isUsingCustomOverrideSettings &&
+                <OverlayTrigger placement="bottom" overlay={
+                  <Tooltip>
+                    This city uses your custom grouped city override presets.
+                    {" "}When this link is shared, others may not see the same
+                    {" "}screenshots as you.
+                  </Tooltip>
+                }>
+                  <Badge className="mt-1 border border-info bg-info-subtle fw-normal text-info">
+                    <InfoCircle/> Using custom override presets
+                  </Badge>
+                </OverlayTrigger>
+              }
+            </div>
           </div>
           {cityDetails && (
             <OverlayTrigger overlay={
@@ -220,7 +236,7 @@ const CityDetails = () => {
           <Suspense fallback={
             <>
               {("cities" in cityDetails) ? (
-                <PlaceholderGallery />
+                <PlaceholderGallery/>
               ) : (
                 <img
                   src={PlaceholderImg}

@@ -86,6 +86,8 @@ export const GroupedCitiesSection = () => {
     const origin = getOriginFromGroupCandidateId(copy, sourceId?.toString());
     const target = copy.get(creator)?.find((entry) => entry.id === targetRowId);
 
+    console.debug("Origin (dragged item)", origin, "Destination/Target", target)
+
     // Check if the name is moved to another section
     if (origin && target && sourceId && targetRowId) {
       const objToMove = origin.groupCandidates.find((entry) =>
@@ -93,10 +95,15 @@ export const GroupedCitiesSection = () => {
       );
 
       if (objToMove) {
+        console.debug("Action: Move to new city row/city name group")
+
         origin.groupCandidates = origin.groupCandidates.filter((entry) =>
           entry.id !== sourceId
         );
+        origin.isModified = true;
+
         target.groupCandidates = [...target.groupCandidates, objToMove];
+        target.isModified = true;
       }
     } else if (
       origin && targetRowId &&
@@ -114,6 +121,8 @@ export const GroupedCitiesSection = () => {
       }
 
       if (objToMove && !isInvalid) {
+        console.debug("Action: Create new group with the name of the Origin (dragged item)")
+
         origin.groupCandidates = origin.groupCandidates.filter((entry) =>
           entry.id !== sourceId
         );
@@ -127,6 +136,7 @@ export const GroupedCitiesSection = () => {
             groupedCityName: objToMove.name,
             isUserCreated: true,
             id: crypto.randomUUID(),
+            isModified: true,
           });
         } else {
           creatorEntries.push({
@@ -134,6 +144,7 @@ export const GroupedCitiesSection = () => {
             groupedCityName: objToMove.name,
             isUserCreated: true,
             id: crypto.randomUUID(),
+            isModified: true,
           });
         }
       }

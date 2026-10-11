@@ -57,4 +57,5 @@ export interface GroupedCities extends Omit<City, "imageUrlFHD" | "imageUrl4K" |
   imageUrl4K: string[];
   imageUrlThumbnail: string[];
   cities: City[];
+  isUsingCustomOverrideSettings: boolean;
 }
