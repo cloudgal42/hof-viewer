@@ -2,9 +2,10 @@ import type {City} from "../interfaces/City.ts";
 import type {GroupedCityRowSetting} from "../interfaces/GroupedCityRowSetting.ts";
 import {useQuery} from "@tanstack/react-query";
 import {useLocalStorage} from "usehooks-ts";
-import {useRef} from "react";
+import {useContext, useRef} from "react";
 import {getUniqueCityNameProperties} from "../utils/UniqueCityNameProperties.ts";
 import type {CityNameProperties} from "../interfaces/CityNameProperties.ts";
+import {GroupedCitiesOverrideSettingsContext} from "../context/GroupedCitiesOverrideSettingsContext.ts";
 
 function getSettingsFromQuery(data: City[]) {
   const cityNames: CityNameProperties[] = data.map((entry) => ({
@@ -45,24 +46,26 @@ function getSettingsFromQuery(data: City[]) {
   return list;
 }
 
-// FIXME: Make this a globally accessible context instead of just this hook.
-//  Reason: on page change, the ref is reset to nothing. Once user click "reset to default",
-//  settings got reset to the inital ref.current value instead of the one stored previously.
 export const useGroupedCitiesSettings = (
   creator: string,
   fetchNewSettings?: boolean
 ) => {
-  const [groupedCitiesOverride, setGroupedCitiesOverride] = useLocalStorage<
-    [string, GroupedCityRowSetting[]][]
-  >(
-    "groupedCitiesOverride",
-    [],
-  );
+  const context = useContext(GroupedCitiesOverrideSettingsContext);
+  
+  if (!context) {
+    throw new Error("useGroupedCitiesSettings must be used within am GroupedCitiesOverrideSettingsProvider.");
+  }
+  
+  const {
+    groupedCitiesOverrideSettings,
+    defaultSettings,
+    setGroupedCitiesOverrideSettings,
+    setDefaultSettings,
+  } = context;
+  
   const groupedCitiesRows = new Map<string, GroupedCityRowSetting[]>(
-    groupedCitiesOverride,
+    groupedCitiesOverrideSettings,
   );
-
-  const defaultSettingsRef = useRef<GroupedCityRowSetting[]>([]);
 
   const queryObjs = useQuery<GroupedCityRowSetting[]>({
     queryKey: ["groupedCityRowSetting", creator],
@@ -78,14 +81,14 @@ export const useGroupedCitiesSettings = (
         return Promise.reject(new Error(`${data.statusCode}: ${data.message}`));
       }
 
-      const defaultSettings = getSettingsFromQuery(data);
-      console.log(defaultSettings);
-      defaultSettingsRef.current = defaultSettings;
+      const initialSettings = getSettingsFromQuery(data);
+      setDefaultSettings(initialSettings);
 
       const copy = structuredClone(groupedCitiesRows);
       let valToSet: GroupedCityRowSetting[] | null = null;
       // We don't want to reset to default if there is already data in local storage
       if (groupedCitiesRows.has(creator)) {
+        console.debug(`Creator ${creator} alr have a profile, checking for any new names...`)
         // 1. Get the current list of city names
         const existingData = groupedCitiesRows.get(creator);
         const existingCityNames = existingData?.map((cityName) =>
@@ -93,7 +96,7 @@ export const useGroupedCitiesSettings = (
         );
 
         // 2. Filter for new city names
-        const newEntries = defaultSettings.filter((cityName) => {
+        const newEntries = initialSettings.filter((cityName) => {
           if (!existingCityNames) return false;
           return !existingCityNames.includes(cityName.groupedCityName);
         });
@@ -113,7 +116,7 @@ export const useGroupedCitiesSettings = (
           valToSet = [...existingData];
         }
       } else {
-        valToSet = [...defaultSettings];
+        valToSet = [...initialSettings];
       }
 
       if (valToSet) {
@@ -123,8 +126,10 @@ export const useGroupedCitiesSettings = (
         );
         copy.set(creator, valToSet);
       }
-      setGroupedCitiesOverride(Array.from(copy.entries()));
-      return defaultSettings;
+      console.log(copy)
+      
+      setGroupedCitiesOverrideSettings(Array.from(copy.entries()));
+      return initialSettings;
     },
     staleTime: 30 * 60 * 1000,
     refetchOnWindowFocus: false,
@@ -141,7 +146,7 @@ export const useGroupedCitiesSettings = (
   }
 
   function handleChangeSettings(newMap: Map<string, GroupedCityRowSetting[]>) {
-    setGroupedCitiesOverride(Array.from(newMap.entries()));
+    setGroupedCitiesOverrideSettings(Array.from(newMap.entries()));
   }
 
   function addGroupedCityEntry(newPosition: "top" | "bottom") {
@@ -319,7 +324,7 @@ export const useGroupedCitiesSettings = (
   function resetToDefault() {
     const copy = structuredClone(groupedCitiesRows);
 
-    copy.set(creator, defaultSettingsRef.current);
+    copy.set(creator, defaultSettings);
     handleChangeSettings(copy);
   }
 

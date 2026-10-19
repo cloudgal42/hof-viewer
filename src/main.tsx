@@ -4,6 +4,7 @@ import './css/App.scss'
 import './css/index.scss'
 import App from './App.tsx'
 import {BrowserRouter, Route, Routes} from "react-router";
+import {GroupedCitiesOverrideSettingsProvider} from "./providers/GroupedCitiesOverrideSettingsProvider.tsx";
 
 const Home = lazy(() => import("./pages/Home.tsx"));
 const CityDetails = lazy(() => import("./pages/CityDetails.tsx"));
@@ -13,16 +14,18 @@ const Settings = lazy(() => import("./pages/Settings.tsx"));
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />}>
-          <Route index element={<Home />} />
-          <Route path="city/:city" element={<CityDetails />} />
-          <Route path="creators" element={<Creators />} />
-          <Route path="random" element={<RandomCity />} />
-          <Route path="settings" element={<Settings />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <GroupedCitiesOverrideSettingsProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<App />}>
+            <Route index element={<Home />} />
+            <Route path="city/:city" element={<CityDetails />} />
+            <Route path="creators" element={<Creators />} />
+            <Route path="random" element={<RandomCity />} />
+            <Route path="settings" element={<Settings />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </GroupedCitiesOverrideSettingsProvider>
   </StrictMode>,
 )
