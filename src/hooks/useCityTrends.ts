@@ -15,15 +15,12 @@ export const useCityTrends = (
     trendType: string;
   }
 ) => {
-  const {groupedCitiesRows} = useGroupedCitiesSettings(creator);
-  const [groupedCitiesGenSettings] = useGroupedCitiesGenSettings();
-
-  const groupedSettings = groupedCitiesGenSettings.useDefault ? undefined : groupedCitiesRows.get(creator);
+  const {currCreatorSettings} = useGroupedCitiesSettings(creator);
 
   const {data, isFetching, error, refetch} = useCreatorCitiesViewsAndFavorites<GroupedCities | undefined>(
     creator,
     (trendsData) =>
-      groupCities(trendsData, groupedSettings)
+      groupCities(trendsData, currCreatorSettings)
         .find(entry => entry.cityName === city.cityName),
   )
 

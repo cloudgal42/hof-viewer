@@ -31,10 +31,7 @@ const Creators = () => {
 
   const creatorDetails = data;
 
-  const { groupedCitiesRows } = useGroupedCitiesSettings(creator);
-  const [groupedCitiesGenSettings] = useGroupedCitiesGenSettings();
-
-  const groupedSettings = groupedCitiesGenSettings.useDefault ? undefined : groupedCitiesRows.get(creator);
+  const { currCreatorSettings } = useGroupedCitiesSettings(creator);
 
   function setCreator(formData: FormData) {
     const query = formData.get("creatorId");
@@ -93,7 +90,7 @@ const Creators = () => {
       />
     );
   } else if (creatorCities && creatorCities.length > 0) {
-    insightsContent = <CreatorInsights cities={groupCities(creatorCities, groupedSettings)} />;
+    insightsContent = <CreatorInsights cities={groupCities(creatorCities, currCreatorSettings)} />;
   }
 
   return (

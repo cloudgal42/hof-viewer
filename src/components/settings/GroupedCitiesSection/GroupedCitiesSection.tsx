@@ -41,9 +41,10 @@ export const GroupedCitiesSection = () => {
     useGroupedCitiesGenSettings();
 
   const {
-    groupedCitiesRows,
+    currCreatorSettings,
     error,
     isFetching,
+    availableCreatorPresets,
     getOriginFromGroupCandidateId,
     addGroupCandidate,
     changeGroupCandidateName,
@@ -52,7 +53,7 @@ export const GroupedCitiesSection = () => {
     changeGroupedEntryName,
     removeGroupedEntry,
     isRowAlreadyExists,
-    handleChangeSettings,
+    changeCreatorSettings,
     isGroupCandidateAlreadyExists,
     resetToDefault,
   } = useGroupedCitiesSettings(creator, true);
@@ -65,7 +66,7 @@ export const GroupedCitiesSection = () => {
   function handleDragStart(e: DragStartEvent) {
     const sourceId = e.operation.source?.id;
     const origin = sourceId && getOriginFromGroupCandidateId(
-      groupedCitiesRows,
+      currCreatorSettings,
       sourceId?.toString(),
     );
 
@@ -77,14 +78,14 @@ export const GroupedCitiesSection = () => {
   }
 
   function handleDragEnd(e: DragEndEvent) {
-    if (e.canceled || !e.operation.source?.id) return;
+    if (e.canceled || !e.operation.source?.id || !currCreatorSettings) return;
 
     const sourceId = e.operation.source?.id;
     const targetRowId = e.operation.target?.id;
 
-    const copy = structuredClone(groupedCitiesRows);
+    const copy = [...currCreatorSettings];
     const origin = getOriginFromGroupCandidateId(copy, sourceId?.toString());
-    const target = copy.get(creator)?.find((entry) => entry.id === targetRowId);
+    const target = currCreatorSettings.find((entry) => entry.id === targetRowId);
 
     console.debug("Origin (dragged item)", origin, "Destination/Target", target)
 
@@ -127,7 +128,7 @@ export const GroupedCitiesSection = () => {
           entry.id !== sourceId
         );
         // Initiate a new row with that value
-        const creatorEntries = copy.get(creator);
+        const creatorEntries = copy;
         if (!creatorEntries) return;
 
         if (targetRowId === "addGrouptop") {
@@ -150,12 +151,12 @@ export const GroupedCitiesSection = () => {
       }
     }
 
-    handleChangeSettings(copy);
+    changeCreatorSettings(copy);
     setSettingsError("");
     setCurrDraggedGroupedCandidate(null);
   }
-
-  const creatorEntries = groupedCitiesRows && groupedCitiesRows.get(creator);
+  
+  const creatorEntries = currCreatorSettings;
 
   const creatorEntriesWithGroupCandidates = creatorEntries &&
     creatorEntries.filter((entry) => entry.groupCandidates.length > 0);
@@ -369,13 +370,14 @@ export const GroupedCitiesSection = () => {
             </Form.Text>
           </div>
           <div className="w-100 d-flex align-items-center gap-2">
+            {/* TODO: Expose an "option list" from a different hook? */}
             <DatalistControl
               placeholder="Enter or select creator ID..."
               label="Enter or select creator ID..."
               id="creatorInput"
               name="creator"
               defaultValue={creator}
-              optionsList={groupedCitiesRows && [...groupedCitiesRows.keys()]}
+              optionsList={availableCreatorPresets}
               onValueSubmit={setCreator}
               newValueHint="Create override preset for"
               tipHint="A new preset can be created by typing a new creator ID."

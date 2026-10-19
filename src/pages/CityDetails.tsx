@@ -83,13 +83,10 @@ const CityDetails = () => {
 
   const fetchError = error || creatorCitiesError;
 
-  const {groupedCitiesRows} = useGroupedCitiesSettings(cityCreator);
-  const [groupedCitiesGenSettings] = useGroupedCitiesGenSettings();
-
-  const groupedSettings = groupedCitiesGenSettings.useDefault ? undefined : groupedCitiesRows.get(cityCreator);
+  const {currCreatorSettings} = useGroupedCitiesSettings(cityCreator);
 
   const cityDetails = isCitiesGrouped
-    ? creatorCities && groupCities(creatorCities, groupedSettings).find(entry => entry.cityName.toLowerCase() === cityParam?.toLowerCase())
+    ? creatorCities && groupCities(creatorCities, currCreatorSettings).find(entry => entry.cityName.toLowerCase() === cityParam?.toLowerCase())
     : data || city;
 
   if (!cityDetails) {

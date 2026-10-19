@@ -49,15 +49,12 @@ const Home = () => {
 
   const { error, data, isFetching } = useCreatorCities(creator);
 
-  const { groupedCitiesRows } = useGroupedCitiesSettings(creator);
-  const groupedSettings = groupedCitiesRows.get(creator);
-  const [groupedCitiesGenSettings] = useGroupedCitiesGenSettings();
+  const { currCreatorSettings } = useGroupedCitiesSettings(creator);
 
-  const cities =
-    queryClient.getQueryData<City[]>([
-      "detailedCities",
-      data && data[0]?.creatorId,
-    ]) ||
+  const cities = queryClient.getQueryData<City[]>([
+    "detailedCities",
+    data && data[0]?.creatorId,
+  ]) ||
     queryClient.getQueryData<City[]>(["detailedCities", creator]) ||
     data;
   const sortedCities = useMemo(() => {
@@ -66,9 +63,7 @@ const Home = () => {
     // console.log(cities);
 
     const citiesToSort: City[] | GroupedCities[] = groupStatus === "on"
-      ? groupedCitiesGenSettings.useDefault
-        ? groupCities(cities)
-        : groupCities(cities, groupedSettings)
+      ? groupCities(cities, currCreatorSettings)
       : cities;
     const copiedCities = [...citiesToSort];
 
@@ -118,8 +113,7 @@ const Home = () => {
     isFetching,
     sortBy,
     sortOrder,
-    groupedSettings,
-    groupedCitiesGenSettings
+    currCreatorSettings
   ]);
 
   const fuse = new Fuse(sortedCities, {

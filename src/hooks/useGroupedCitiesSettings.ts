@@ -6,6 +6,7 @@ import {useContext, useRef} from "react";
 import {getUniqueCityNameProperties} from "../utils/UniqueCityNameProperties.ts";
 import type {CityNameProperties} from "../interfaces/CityNameProperties.ts";
 import {GroupedCitiesOverrideSettingsContext} from "../context/GroupedCitiesOverrideSettingsContext.ts";
+import {useGroupedCitiesGenSettings} from "./useGroupedCitiesGenSettings.ts";
 
 function getSettingsFromQuery(data: City[]) {
   const cityNames: CityNameProperties[] = data.map((entry) => ({
@@ -55,6 +56,8 @@ export const useGroupedCitiesSettings = (
   if (!context) {
     throw new Error("useGroupedCitiesSettings must be used within am GroupedCitiesOverrideSettingsProvider.");
   }
+  
+  const [groupedCitiesGenSettings] = useGroupedCitiesGenSettings();
   
   const {
     groupedCitiesOverrideSettings,
@@ -144,7 +147,7 @@ export const useGroupedCitiesSettings = (
 
     return creatorEntries.some((entry) => entry.groupedCityName === name);
   }
-
+  
   function handleChangeSettings(newMap: Map<string, GroupedCityRowSetting[]>) {
     setGroupedCitiesOverrideSettings(Array.from(newMap.entries()));
   }
@@ -269,12 +272,12 @@ export const useGroupedCitiesSettings = (
 
     handleChangeSettings(copy);
   }
-
+  
   function getOriginFromGroupCandidateId(
-    copy: Map<string, GroupedCityRowSetting[]>,
+    setting: GroupedCityRowSetting[] | undefined,
     id: string,
   ) {
-    return copy.get(creator)?.find((entry) => {
+    return setting?.find((entry) => {
       return entry.groupCandidates.some((cityName) => cityName.id === id);
     });
   }
@@ -327,6 +330,13 @@ export const useGroupedCitiesSettings = (
     copy.set(creator, defaultSettings);
     handleChangeSettings(copy);
   }
+  
+  function changeCreatorSettings(newSettings: GroupedCityRowSetting[]) {
+    const copy = structuredClone(groupedCitiesRows);
+    
+    copy.set(creator, newSettings);
+    handleChangeSettings(copy);
+  }
 
   return {
     isRowAlreadyExists,
@@ -338,9 +348,12 @@ export const useGroupedCitiesSettings = (
     removeGroupedEntry,
     getOriginFromGroupCandidateId,
     isGroupCandidateAlreadyExists,
-    handleChangeSettings,
+    changeCreatorSettings,
     resetToDefault,
     ...queryObjs,
-    groupedCitiesRows,
+    currCreatorSettings: groupedCitiesGenSettings.useDefault
+      ? undefined
+      : groupedCitiesRows.get(creator),
+    availableCreatorPresets: [...groupedCitiesRows.keys()]
   };
 };
