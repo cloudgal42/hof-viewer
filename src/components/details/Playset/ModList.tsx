@@ -95,26 +95,27 @@ export const ModList = ({ city }: ModListProps) => {
 
     setSelectedCategories(copy);
   }
+  
+  const pkgTypeAsList = Object.entries(packageType)
+    .filter(([_, value]) => value === true)
+    .map(([key, _]) => {
+      if (key === "mod") return "code mod";
+      return key;
+    })
 
   function filterPackageType(list: Mod[]) {
-    const typeList = Object.entries(packageType)
-      .filter(([key, value]) => value === true)
-      .map(([key, value]) => {
-        if (key === "mod") return "code mod";
-        return key;
-      });
-    if (typeList.length === 0) return list;
+    if (pkgTypeAsList.length === 0) return list;
 
     return list.filter((mod) => {
       // Filters out any assets that are labelled as "Code Mods"
       // due to using old way of importing assets/EAI
       // Some assets will still be included due to lack of a "Prefab" tag
       if (
-        typeList.includes("code mod") &&
-        !typeList.includes("prefab") &&
+        pkgTypeAsList.includes("code mod") &&
+        !pkgTypeAsList.includes("prefab") &&
         mod.tags.includes("prefab")
       ) return false;
-      return mod.tags.some((tag) => typeList.includes(tag.toLowerCase()));
+      return mod.tags.some((tag) => pkgTypeAsList.includes(tag.toLowerCase()));
     });
   }
 
@@ -362,26 +363,28 @@ export const ModList = ({ city }: ModListProps) => {
                   </ToggleButton>
                 </div>
                 {/* TODO: Hide this if only code mod is selected */}
-                <div className="d-inline-flex flex-wrap align-items-center gap-1">
-                  <strong className="">Categories:</strong>
-                  {categoriesCount.map((category) => (
-                    <ToggleButton
-                      size="sm"
-                      variant="outline-primary"
-                      type="checkbox"
-                      value={category.value}
-                      name={category.value}
-                      id={category.value}
-                      checked={selectedCategories.includes(category.value)}
-                      onChange={handleSetCategory}
-                    >
-                      {category.categoryName}
-                      <Badge bg="secondary" className="ms-1">
-                        {category.count}
-                      </Badge>
-                    </ToggleButton>
-                  ))}
-                </div>
+                {(pkgTypeAsList.length === 0 || packageType.prefab) && (
+                  <div className="d-inline-flex flex-wrap align-items-center gap-1">
+                    <strong className="">Categories:</strong>
+                    {categoriesCount.map((category) => (
+                      <ToggleButton
+                        size="sm"
+                        variant="outline-primary"
+                        type="checkbox"
+                        value={category.value}
+                        name={category.value}
+                        id={category.value}
+                        checked={selectedCategories.includes(category.value)}
+                        onChange={handleSetCategory}
+                      >
+                        {category.categoryName}
+                        <Badge bg="secondary" className="ms-1">
+                          {category.count}
+                        </Badge>
+                      </ToggleButton>
+                    ))}
+                  </div>
+                )}
                 <div className="mt-1 d-flex flex-wrap justify-content-between align-items-center">
                   <OverlayTrigger
                     overlay={
