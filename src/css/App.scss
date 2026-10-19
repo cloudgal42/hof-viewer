@@ -32,10 +32,17 @@ $utilities: (
   ),
 );
 
+$focus-ring-opacity: 1;
+$focus-ring-width: 0.1rem;
 $primary: #000;
 $carousel-transition-duration: 0.3s;
 
 @import "../../node_modules/bootstrap/scss/bootstrap";
+
+:root {
+  --bs-focus-ring-opacity: 1;
+  --bs-focus-ring-width: 0.1rem;
+}
 
 html, body, #root {
   min-height: 100vh;
@@ -122,7 +129,7 @@ input[type="range"] {
   --bs-body-bg-rgb: 17, 18, 20;
 
   .nav-link:focus-visible {
-    box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 0 var(--bs-focus-ring-width) rgba(255, 255, 255, var(--bs-focus-ring-opacity));
   }
 
   a:not(.btn, .alert-link, .dropdown-item), .btn-link {
@@ -166,18 +173,18 @@ input[type="range"] {
     }
 
     &:focus::-webkit-slider-thumb {
-      box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
+      box-shadow: 0 0 0 var(--bs-focus-ring-width) rgba(255, 255, 255, var(--bs-focus-ring-opacity));
     }
 
     &:focus::-moz-range-thumb {
-      box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
+      box-shadow: 0 0 0 var(--bs-focus-ring-width) rgba(255, 255, 255, var(--bs-focus-ring-opacity));
     }
   }
 
   input:focus,
   select:focus,
   .accordion-button:focus {
-    box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 0 var(--bs-focus-ring-width) rgba(255, 255, 255, var(--bs-focus-ring-opacity));
   }
 
   .accordion-button:not(.collapsed) {
@@ -192,7 +199,7 @@ input[type="range"] {
 
   .form-check-input {
     &:focus {
-      box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.25);
+      box-shadow: 0 0 0 var(--bs-focus-ring-width) rgba(0, 0, 0, var(--bs-focus-ring-opacity));
     }
 
     &:checked {
