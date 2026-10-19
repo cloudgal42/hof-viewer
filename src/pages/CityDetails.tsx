@@ -19,7 +19,6 @@ import {AdaptiveHeader} from "../components/details/AdaptiveHeader/AdaptiveHeade
 import {Details} from "../components/details/Details/Details.tsx";
 import {BackButton} from "../components/misc/BackButton/BackButton.tsx";
 import {CreatorPreviewTrigger} from "../components/misc/CreatorPreview/CreatorPreviewTrigger.tsx";
-import {AdaptiveHeaderProvider} from "../providers/AdaptiveHeaderProvider.tsx";
 import {PlaceholderDetailsHeader} from "../components/details/Details/PlaceholderDetailsHeader.tsx";
 import {shareContent} from "../utils/ShareContent.ts";
 import {useScrollToTop} from "../hooks/useScrollToTop.ts";
@@ -174,7 +173,6 @@ const CityDetails = () => {
           <script>window.prerenderReady = true;</script>
         </Helmet>
       )}
-      <AdaptiveHeaderProvider>
         <AdaptiveHeader className="d-flex justify-content-between align-items-center">
           <div className="header-collapsed-body gap-0 d-flex flex-wrap">
             <div className="me-2 h2-container d-flex align-items-center">
@@ -227,7 +225,6 @@ const CityDetails = () => {
             </OverlayTrigger>
           )}
         </AdaptiveHeader>
-      </AdaptiveHeaderProvider>
       <div className="main-wrapper m-auto">
         <section id="gallery" className="mt-3 position-relative">
           <Suspense fallback={

@@ -1,7 +1,5 @@
 import { AdaptiveHeader } from "../components/details/AdaptiveHeader/AdaptiveHeader.tsx";
-import { AdaptiveHeaderProvider } from "../providers/AdaptiveHeaderProvider.tsx";
 import {Suspense, useCallback, useContext, useEffect, useState} from "react";
-import { AdaptiveHeaderContext } from "../context/AdaptiveHeaderContext.ts";
 import { Button, Dropdown, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { MoreActionsBtn } from "../components/misc/MoreActionsBtn/MoreActionsBtn.tsx";
 import {
@@ -34,8 +32,6 @@ import {useTranslationSettings} from "../hooks/useTranslationSettings.ts";
 import {handleSetSearchParams} from "../utils/SearchParamHandlers.ts";
 
 const RandomCity = () => {
-  const headerCollapsed = useContext(AdaptiveHeaderContext);
-
   const [searchParams, setSearchParams] = useSearchParams();
   const pageAsString = searchParams.get("page");
   const page = pageAsString ? parseInt(pageAsString) : 0;
@@ -149,8 +145,9 @@ const RandomCity = () => {
   return (
     <div className="flex-grow-1">
       <DefaultHelmet />
-      <AdaptiveHeaderProvider>
-        <AdaptiveHeader className="header-collapsed-body w-100 d-flex flex-row align-items-center justify-content-between">
+        <AdaptiveHeader
+          className="header-collapsed-body w-100 d-flex flex-row align-items-center justify-content-between"
+        >
           <Button
             variant="outline"
             onClick={() => setPage(page - 1)}
@@ -241,7 +238,6 @@ const RandomCity = () => {
             </OverlayTrigger>
           </Button>
         </AdaptiveHeader>
-      </AdaptiveHeaderProvider>
       <div className="main-wrapper m-auto">
         <section id="gallery" className="mt-3 position-relative">
           <Suspense
