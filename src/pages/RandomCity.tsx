@@ -146,6 +146,7 @@ const RandomCity = () => {
     <div className="flex-grow-1">
       <DefaultHelmet />
         <AdaptiveHeader
+          minY={30}
           className="header-collapsed-body w-100 d-flex flex-row align-items-center justify-content-between"
         >
           <Button

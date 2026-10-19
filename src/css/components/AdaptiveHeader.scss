@@ -1,5 +1,4 @@
 .adaptive-header {
-  position: sticky;
   .h2-container {
     margin-bottom: 0.5rem;
   }
@@ -23,7 +22,7 @@
   background-color: var(--bs-tertiary-bg);
   transition: background-color 0.25s;
 
-  position: sticky;
+  position: fixed;
   top: 0px;
   z-index: 5;
 
@@ -52,13 +51,12 @@
   h2 {
     font-size: 1.5rem;
   }
-
 }
 
-@media all and (max-width: 992px) {
+@media all and (max-width: 991px) {
   .header-collapsed {
-    top: 57px;
-    margin-top: 15px;
+    top: 55px;
+    margin-top: 5px;
     border-top: 1px solid var(--bs-secondary-bg);
 
     .header-collapsed-body {
@@ -72,5 +70,17 @@
     h3 {
       font-size: 1rem;
     }
+  }
+}
+
+@media all and (max-width: 700px) {
+  .header-collapsed {
+    top: 54px;
+  }
+}
+
+@media all and (max-width: 365px) {
+  .header-collapsed {
+    top: 50px;
   }
 }

@@ -173,7 +173,7 @@ const CityDetails = () => {
           <script>window.prerenderReady = true;</script>
         </Helmet>
       )}
-        <AdaptiveHeader className="d-flex justify-content-between align-items-center">
+        <AdaptiveHeader minY={50} className="d-flex justify-content-between align-items-center">
           <div className="header-collapsed-body gap-0 d-flex flex-wrap">
             <div className="me-2 h2-container d-flex align-items-center">
               <BackButton/>

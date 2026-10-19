@@ -22,6 +22,7 @@
     "chartjs-plugin-zoom": "^2.2.0",
     "fuse.js": "^7.1.0",
     "lightgallery": "^2.9.0",
+    "motion": "^14.4.0",
     "react": "^19.2.0",
     "react-bootstrap": "^2.10.10",
     "react-bootstrap-icons": "^1.11.6",
