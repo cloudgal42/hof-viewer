@@ -323,7 +323,7 @@ export const ModList = ({ city }: ModListProps) => {
                     onChange={handleSetType}
                   >
                     Mods
-                    <Badge bg="secondary" className="ms-1">
+                    <Badge className="bg-secondary-subtle text-secondary-emphasis ms-1">
                       {data?.filter((mod) =>
                         mod.tags.includes("Code Mod") &&
                         !mod.tags.includes("Prefab")
@@ -341,7 +341,7 @@ export const ModList = ({ city }: ModListProps) => {
                     onChange={handleSetType}
                   >
                     Maps
-                    <Badge bg="secondary" className="ms-1">
+                    <Badge className="ms-1 bg-secondary-subtle text-secondary-emphasis">
                       {data?.filter((mod) => mod.tags.includes("Map")).length ?? "-"}
                     </Badge>
                   </ToggleButton>
@@ -356,7 +356,7 @@ export const ModList = ({ city }: ModListProps) => {
                     onChange={handleSetType}
                   >
                     Assets
-                    <Badge bg="secondary" className="ms-1">
+                    <Badge className="ms-1 bg-secondary-subtle text-secondary-emphasis">
                       {data?.filter((mod) => mod.tags.includes("Prefab")).length ?? "-"}
                     </Badge>
                   </ToggleButton>
@@ -377,7 +377,7 @@ export const ModList = ({ city }: ModListProps) => {
                         onChange={handleSetCategory}
                       >
                         {category.categoryName}
-                        <Badge bg="secondary" className="ms-1">
+                        <Badge className="bg-secondary-subtle text-secondary-emphasis ms-1">
                           {category.count}
                         </Badge>
                       </ToggleButton>
