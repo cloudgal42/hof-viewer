@@ -28,7 +28,7 @@
         "npm:@dr.pogodin/react-helmet@^3.0.6",
         "npm:@eslint/js@^9.39.1",
         "npm:@netlify/edge-functions@^3.0.4",
-        "npm:@netlify/vite-plugin@^2.7.20",
+        "npm:@netlify/vite-plugin@^3.0.1",
         "npm:@popperjs/core@^2.11.8",
         "npm:@tanstack/react-query@^5.90.20",
         "npm:@types/node@^24.10.1",
