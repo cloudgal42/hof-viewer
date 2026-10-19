@@ -327,7 +327,7 @@ export const ModList = ({ city }: ModListProps) => {
                       {data?.filter((mod) =>
                         mod.tags.includes("Code Mod") &&
                         !mod.tags.includes("Prefab")
-                      ).length}
+                      ).length ?? "-"}
                     </Badge>
                   </ToggleButton>
                   <ToggleButton
@@ -342,7 +342,7 @@ export const ModList = ({ city }: ModListProps) => {
                   >
                     Maps
                     <Badge bg="secondary" className="ms-1">
-                      {data?.filter((mod) => mod.tags.includes("Map")).length}
+                      {data?.filter((mod) => mod.tags.includes("Map")).length ?? "-"}
                     </Badge>
                   </ToggleButton>
                   <ToggleButton
@@ -357,8 +357,7 @@ export const ModList = ({ city }: ModListProps) => {
                   >
                     Assets
                     <Badge bg="secondary" className="ms-1">
-                      {data?.filter((mod) => mod.tags.includes("Prefab"))
-                        .length}
+                      {data?.filter((mod) => mod.tags.includes("Prefab")).length ?? "-"}
                     </Badge>
                   </ToggleButton>
                 </div>
