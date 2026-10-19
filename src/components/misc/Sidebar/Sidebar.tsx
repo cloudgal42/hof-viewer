@@ -14,7 +14,7 @@ export const Sidebar = ({isOpened, setIsOpened}: SidebarProps) => {
         show={isOpened}
         onHide={() => setIsOpened(false)}
         responsive="lg"
-        className="sidebar d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary"
+        className="sidebar d-flex flex-column flex-shrink-0 p-3 border border-end bg-body"
       >
         <div className="d-flex justify-content-between align-items-center mb-0">
           <a

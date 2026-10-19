@@ -74,7 +74,7 @@ const App = () => {
       <ThemeContext value={isDarkMode ? "dark" : "light"}>
         <h1 className="visually-hidden">Hall of Fame Viewer</h1>
         <Navbar
-          className="bg-body-tertiary d-lg-none"
+          className="bg-body border-1 border-bottom d-lg-none"
           style={{ position: "sticky", top: "0px", zIndex: "4" }}
         >
           <div className="m-auto main-wrapper flex-grow-1 d-flex align-items-center">
