@@ -361,12 +361,12 @@ export const ModList = ({ city }: ModListProps) => {
                     </Badge>
                   </ToggleButton>
                 </div>
-                {/* TODO: Hide this if only code mod is selected */}
                 {(pkgTypeAsList.length === 0 || packageType.prefab) && (
                   <div className="d-inline-flex flex-wrap align-items-center gap-1">
                     <strong className="">Categories:</strong>
                     {categoriesCount.map((category) => (
                       <ToggleButton
+                        key={category.categoryName}
                         size="sm"
                         variant="outline-primary"
                         type="checkbox"
