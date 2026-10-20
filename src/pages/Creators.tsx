@@ -13,6 +13,7 @@ import { groupCities } from "../utils/GroupCities.ts";
 import { PlaceholderInsights } from "../components/creators/CreatorInsights/PlaceholderInsights.tsx";
 import {useGroupedCitiesSettings} from "../hooks/useGroupedCitiesSettings.ts";
 import {useGroupedCitiesGenSettings} from "../hooks/useGroupedCitiesGenSettings.ts";
+import {CreatorTrends} from "../components/creators/CreatorTrends/CreatorTrends.tsx";
 
 const Creators = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -92,6 +93,17 @@ const Creators = () => {
   } else if (creatorCities && creatorCities.length > 0) {
     insightsContent = <CreatorInsights cities={groupCities(creatorCities, currCreatorSettings)} />;
   }
+  
+  let creatorTrendsContent;
+  
+  if (creatorDetails) {
+    creatorTrendsContent =
+      <CreatorTrends
+        creator={creatorDetails}
+        isLoading={isFetching}
+        fetchError={error}
+      />
+  }
 
   return (
     <div className="main-wrapper flex-grow-1 ms-sm-5 me-sm-5">
@@ -124,6 +136,9 @@ const Creators = () => {
         <div id="creator">
           <section id="creatorInfo" className="mb-3">
             {content}
+          </section>
+          <section id="creatorTrends" className="mb-3">
+            {creatorTrendsContent}
           </section>
           <section id="creatorInsights">
             {insightsContent}

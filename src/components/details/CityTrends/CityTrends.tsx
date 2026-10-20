@@ -4,7 +4,7 @@ import {
   Card,
   Spinner,
 } from "react-bootstrap";
-import { useContext} from "react";
+import {useContext, useEffect} from "react";
 import type { City, GroupedCities } from "../../../interfaces/City.ts";
 import { ErrorScreen } from "../../misc/ErrorScreen/ErrorScreen.tsx";
 import { ThemeContext } from "../../../context/ThemeContext.ts";
@@ -36,17 +36,7 @@ import { TrendTypeToggle } from "./TrendTypeToggle.tsx";
 import { GroupBySelect } from "./GroupBySelect.tsx";
 import { useTrendsOptions } from "../../../hooks/useTrendsOptions.ts";
 import { CONFIG } from "../../../config/Config.ts";
-
-function getFormattedTrendType(trend: string) {
-  switch (trend) {
-    case "views":
-      return "Views";
-    case "favorites":
-      return "Favorites";
-    case "uniqueViews":
-      return "Unique Views";
-  }
-}
+import {getFormattedTrendType} from "../../../utils/TrendFormat.ts";
 
 defaults.font.family = CONFIG.chartFontFamily;
 
