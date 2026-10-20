@@ -1,7 +1,7 @@
 import type {City, Favorites, GroupedCities, Views} from "./City.ts";
 
 export interface TrendsData {
-  [key: string]: number;
+  [key: number]: number;
 }
 
 export interface WorkerParams {

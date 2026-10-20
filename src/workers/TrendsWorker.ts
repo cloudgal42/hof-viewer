@@ -9,48 +9,6 @@ self.onmessage = ({ data }: {data: WorkerParams}) => {
   self.postMessage(result);
 }
 
-function isLastDayOfYear(date: Date) {
-  // + 1 on getMonth bc months in JS Date is 0 index based
-  return `${date.getDate()}-${date.getMonth() + 1}` === `31-12`;
-}
-
-function isFirstDayOfYear(date: Date) {
-  return `${date.getDate()}-${date.getMonth() + 1}` === `1-1`;
-}
-
-function formatDatesLabel(start: Date, end: Date, period: number) {
-  let options: Intl.DateTimeFormatOptions = {};
-
-  if (period < 30) {
-    options = {
-      day: "numeric",
-      month: "numeric",
-      year: "numeric",
-    }
-  } else if (period < 365) {
-    options = {
-      month: "numeric",
-      year: "numeric",
-    }
-  } else {
-    options = {
-      year: "numeric",
-    }
-  }
-
-  if (isLastDayOfYear(start) || isFirstDayOfYear(start)
-    || isLastDayOfYear(end) || isFirstDayOfYear(end)) {
-    options = {
-      ...options,
-      year: "numeric",
-    }
-  }
-
-  return period === 1 ?
-    `${start.toLocaleString(navigator.language, options)}`
-    : `${start.toLocaleString(navigator.language, options)} - ${end.toLocaleString("en-US", options)}`
-}
-
 function filterUniqueViews(views: Views[]) {
   const uniqueCreatorIds: (string)[] = [];
   return views.filter(entry => {
@@ -123,7 +81,7 @@ function groupData(
 
     // TODO: Switch to storing raw epoch, since its more robust
     //  + enable better separation of concerns
-    return [formatDatesLabel(range[0], range[1], day), rangeCount];
+    return [range[0].getTime(), rangeCount];
   });
   return Object.fromEntries(groupedData);
 }

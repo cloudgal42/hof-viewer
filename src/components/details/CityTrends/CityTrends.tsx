@@ -36,7 +36,7 @@ import { TrendTypeToggle } from "./TrendTypeToggle.tsx";
 import { GroupBySelect } from "./GroupBySelect.tsx";
 import { useTrendsOptions } from "../../../hooks/useTrendsOptions.ts";
 import { CONFIG } from "../../../config/Config.ts";
-import {getFormattedTrendType} from "../../../utils/TrendFormat.ts";
+import {formatChartEntries, formatChartLabels, getFormattedTrendType} from "../../../utils/TrendFormat.ts";
 
 defaults.font.family = CONFIG.chartFontFamily;
 
@@ -96,14 +96,14 @@ export const CityTrends = (
 
   const options = CONFIG.trendsChartOptions(chartName, fontColor, gridColor);
 
-  const labels = trendsData ? Object.keys(trendsData) : [""];
+  const labels = formatChartLabels(trendsData, groupPeriod);
 
   const trendsDataForChart = {
     labels,
     datasets: [
       {
         label: chartName,
-        data: trendsData,
+        data: formatChartEntries(trendsData, groupPeriod),
         backgroundColor: (trendType === "favorites")
           ? "rgba(255, 99, 132, 0.5)"
           : "rgba(53, 162, 235, 0.5)",

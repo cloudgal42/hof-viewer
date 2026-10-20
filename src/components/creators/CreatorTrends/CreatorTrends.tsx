@@ -8,7 +8,7 @@ import type {CreatorDetails} from "../../../interfaces/Creator.ts";
 import {CONFIG} from "../../../config/Config.ts";
 import {ErrorScreen} from "../../misc/ErrorScreen/ErrorScreen.tsx";
 import {Bar} from "react-chartjs-2";
-import { getFormattedTrendType } from "../../../utils/TrendFormat.ts";
+import {formatChartEntries, formatChartLabels, getFormattedTrendType} from "../../../utils/TrendFormat.ts";
 import {useContext, useEffect} from "react";
 import {ThemeContext} from "../../../context/ThemeContext.ts";
 
@@ -61,14 +61,14 @@ export const CreatorTrends = (
   
   const options = CONFIG.trendsChartOptions(chartName, fontColor, gridColor);
   
-  const labels = trendsData ? Object.keys(trendsData) : [""];
+  const labels = formatChartLabels(trendsData, groupPeriod);
   
   const trendsDataForChart = {
     labels,
     datasets: [
       {
         label: chartName,
-        data: trendsData,
+        data: formatChartEntries(trendsData, groupPeriod),
         backgroundColor: (trendType === "favorites")
           ? "rgba(255, 99, 132, 0.5)"
           : "rgba(53, 162, 235, 0.5)",
