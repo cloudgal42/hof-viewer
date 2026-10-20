@@ -91,6 +91,7 @@ export function groupCities(
         cityMilestone: screenshot.cityMilestone,
         cityPopulation: screenshot.cityPopulation,
         renderSettings: screenshot.renderSettings,
+        renderConditions: {},
         createdAt: screenshotArr[0].createdAt,
         createdAtFormatted: screenshotArr[0].createdAtFormatted,
         createdAtFormattedDistance: screenshotArr[0].createdAtFormattedDistance,
