@@ -9,8 +9,11 @@ import {useContext, useEffect} from "react";
 import type {ContextType} from "../App.tsx";
 
 const Settings = () => {
-  const {setIsDarkMode} = useOutletContext<ContextType>();
-  const theme = useContext(ThemeContext);
+  const context = useContext(ThemeContext);
+  
+  if (!context) {
+    throw new Error("Theme context is null");
+  }
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -35,8 +38,8 @@ const Settings = () => {
             id="darkMode"
             name="darkMode"
             helpBlock="Use dark mode for this website"
-            checked={theme === "dark"}
-            onChange={() => setIsDarkMode(theme !== "dark")}
+            checked={context.theme === "dark"}
+            onChange={() => context.setIsDarkMode(context.theme !== "dark")}
           />
         </section>
         <hr />
@@ -45,38 +48,6 @@ const Settings = () => {
         <TranslationSection />
         <hr />
         <RandomAlgoSection />
-        <hr />
-        <section id="about">
-          <h3 className="fs-4 mb-3">About</h3>
-          Hall of Fame Viewer v1.x.x
-          <ul>
-            <li>© 2026 foxxy (cloudgal42)</li>
-            <li>
-              <a
-                href="https://github.com/cloudgal42/hof-viewer"
-                target="_blank"
-              >
-                Source
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://github.com/cloudgal42/hof-viewer/blob/master/LICENSE"
-                target="_blank"
-              >
-                LICENSE
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://mods.paradoxplaza.com/mods/90641/Windows"
-                target="_blank"
-              >
-                Hall of Fame
-              </a>
-            </li>
-          </ul>
-        </section>
       </div>
     </div>
   );

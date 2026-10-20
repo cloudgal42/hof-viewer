@@ -45,12 +45,6 @@ export const SectionNav = () => {
                   Random Algorithm
                 </a>
               </li>
-              <li>
-                <a className="nav-link link-body-emphasis" href="#about">
-                  <InfoCircle className="me-2" />
-                  About
-                </a>
-              </li>
             </ul>
           </nav>
         {/*</ScrollSpy>*/}

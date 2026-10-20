@@ -10,6 +10,7 @@ import { NavLink } from "react-router";
 import {useContext} from "react";
 import {ThemeContext} from "../../../context/ThemeContext.ts";
 import {ThemeDropdownBtn} from "../ThemeDropdownBtn/ThemeDropdownBtn.tsx";
+import {CONFIG} from "../../../config/Config.ts";
 
 interface SidebarProps {
   isOpened: boolean;
@@ -108,7 +109,7 @@ export const Sidebar = ({ isOpened, setIsOpened }: SidebarProps) => {
         </ul>
         <hr />
         <div className="d-flex align-items-center justify-content-between">
-          <span className="text-body-secondary">v1.x.x</span>
+          <span className="text-body-secondary">{CONFIG.appVersion}</span>
           <ThemeDropdownBtn size="sm" />
         </div>
       </Offcanvas>
