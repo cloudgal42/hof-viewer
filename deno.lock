@@ -46,6 +46,7 @@
         "npm:fuse.js@^7.1.0",
         "npm:globals@^16.5.0",
         "npm:lightgallery@^2.9.0",
+        "npm:motion@^14.4.0",
         "npm:react-bootstrap-icons@^1.11.6",
         "npm:react-bootstrap@^2.10.10",
         "npm:react-chartjs-2@^5.3.1",
