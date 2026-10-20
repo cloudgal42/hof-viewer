@@ -25,6 +25,7 @@ function formatDatesLabel(start: Date, end: Date, period: number) {
     options = {
       day: "numeric",
       month: "numeric",
+      year: "numeric",
     }
   } else if (period < 365) {
     options = {
@@ -120,6 +121,8 @@ function groupData(
       }).length
     }
 
+    // TODO: Switch to storing raw epoch, since its more robust
+    //  + enable better separation of concerns
     return [formatDatesLabel(range[0], range[1], day), rangeCount];
   });
   return Object.fromEntries(groupedData);
