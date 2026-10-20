@@ -1,0 +1,10 @@
+.input-actions {
+  width: 100%;
+}
+
+@media all and (width >= 768px) {
+  .input-actions {
+    width: calc((100% / 2) - 4px);
+  }
+}
+

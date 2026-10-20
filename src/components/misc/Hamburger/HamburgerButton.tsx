@@ -11,7 +11,8 @@ export const HamburgerButton = ({isOpened, setIsOpened}: HamburgerButtonProps) =
     <Button
       onClick={() => setIsOpened(!isOpened)}
       variant="outline"
-      className="d-block d-lg-none"
+      className="d-block d-lg-none position-relative"
+      style={{left: "calc(-0.75rem + 1px)"}}
     >
       <span className="visually-hidden">Open menu</span>
       <List width="24" height="24" />

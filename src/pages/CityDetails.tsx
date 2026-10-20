@@ -1,7 +1,7 @@
-import {Button, OverlayTrigger, Tooltip} from "react-bootstrap";
+import {Alert, Badge, Button, OverlayTrigger, Tooltip} from "react-bootstrap";
 import {NavLink, useOutletContext, useParams, useSearchParams} from "react-router";
 import type {ContextType} from "../App.tsx";
-import {ChevronDown, Share} from "react-bootstrap-icons";
+import {ChevronDown, InfoCircle, Share} from "react-bootstrap-icons";
 import {lazy, Suspense, useState} from "react";
 import {DEFAULT_IMAGES_PER_PAGE} from "../components/details/CityGallery/CityGallery.tsx";
 
@@ -19,7 +19,6 @@ import {AdaptiveHeader} from "../components/details/AdaptiveHeader/AdaptiveHeade
 import {Details} from "../components/details/Details/Details.tsx";
 import {BackButton} from "../components/misc/BackButton/BackButton.tsx";
 import {CreatorPreviewTrigger} from "../components/misc/CreatorPreview/CreatorPreviewTrigger.tsx";
-import {AdaptiveHeaderProvider} from "../providers/AdaptiveHeaderProvider.tsx";
 import {PlaceholderDetailsHeader} from "../components/details/Details/PlaceholderDetailsHeader.tsx";
 import {shareContent} from "../utils/ShareContent.ts";
 import {useScrollToTop} from "../hooks/useScrollToTop.ts";
@@ -27,9 +26,10 @@ import {Helmet} from "@dr.pogodin/react-helmet";
 
 import '../css/components/CityGallery.scss';
 import {PlaceholderGallery} from "../components/details/CityGallery/PlaceholderGallery.tsx";
+import {useGroupedCitiesSettings} from "../hooks/useGroupedCitiesSettings.ts";
+import {useTranslation} from "../hooks/useTranslation.ts";
 
 const CityGallery = lazy(() => import("../components/details/CityGallery/CityGallery.tsx"));
-
 
 const CityDetails = () => {
   const {
@@ -41,13 +41,19 @@ const CityDetails = () => {
 
   const [searchParams] = useSearchParams();
   const cityParam = useParams().city;
-
+  
+  const {
+    titleCityName,
+    subCityName,
+    creatorName,
+  } = useTranslation();
+  
   // Checking for prerender environment is guesswork atp
   // const isInPrerenderEnv = window.navigator.userAgent.includes("Prerender")
   //   || window.navigator.userAgent.includes("HeadlessChrome");
 
   const isCitiesGrouped = searchParams.get("groupStatus") === "on";
-  const cityCreator = searchParams.get("creator");
+  const cityCreator = searchParams.get("creator") || "";
   const {
     data: creatorCities,
     error: creatorCitiesError,
@@ -81,8 +87,11 @@ const CityDetails = () => {
 
   const fetchError = error || creatorCitiesError;
 
-  const cityDetails = data || city ||
-    creatorCities && groupCities(creatorCities).find(entry => entry.cityName.toLowerCase() === cityParam?.toLowerCase());
+  const {currCreatorSettings} = useGroupedCitiesSettings(cityCreator);
+
+  const cityDetails = isCitiesGrouped
+    ? creatorCities && groupCities(creatorCities, currCreatorSettings).find(entry => entry.cityName.toLowerCase() === cityParam?.toLowerCase())
+    : data || city;
 
   if (!cityDetails) {
     if (!navigator.onLine) {
@@ -109,7 +118,7 @@ const CityDetails = () => {
       return (
         <div className="main-wrapper flex-grow-1 ms-sm-5 me-sm-5">
           <PlaceholderDetailsHeader/>
-          <PlaceholderDetails isGroupedCities={isCitiesGrouped} />
+          <PlaceholderDetails isGroupedCities={isCitiesGrouped}/>
         </div>
       );
     } else {
@@ -148,13 +157,16 @@ const CityDetails = () => {
           <meta name="twitter:card" content="summary_large_image"/>
           <meta
             property="twitter:description"
-            content={`by ${cityDetails.creator.creatorName}\n\n👤 ${cityDetails.cityPopulation.toLocaleString()} ♥️ ${cityDetails.favoritesCount.toLocaleString()} 👁️ ${cityDetails.uniqueViewsCount.toLocaleString()}`}
+            content={`${cityDetails.description ?? ""}\n\n👤 ${cityDetails.cityPopulation.toLocaleString()}  ♥️ ${cityDetails.favoritesCount.toLocaleString()}  👁️ ${cityDetails.uniqueViewsCount.toLocaleString()}`}
           />
-          <meta property="og:title" content={`${cityDetails.cityName} on Hall of Fame`}/>
+          <meta
+            property="og:title"
+            content={`${cityDetails.cityName} by ${cityDetails.creator.creatorName}`}
+          />
           <meta property="og:type" content="article"/>
           <meta
             property="og:description"
-            content={`by ${cityDetails.creator.creatorName}\n\n👤 ${cityDetails.cityPopulation.toLocaleString()} ♥️ ${cityDetails.favoritesCount.toLocaleString()} 👁️ ${cityDetails.uniqueViewsCount.toLocaleString()}`}
+            content={`${cityDetails.description ?? ""}\n\n👤 ${cityDetails.cityPopulation.toLocaleString()}  ♥️ ${cityDetails.favoritesCount.toLocaleString()}  👁️ ${cityDetails.uniqueViewsCount.toLocaleString()}`}
           />
           {bestImageUrls.map(url => (
             <>
@@ -169,22 +181,37 @@ const CityDetails = () => {
           <script>window.prerenderReady = true;</script>
         </Helmet>
       )}
-      <AdaptiveHeaderProvider>
-        <AdaptiveHeader className="d-flex justify-content-between align-items-center">
+        <AdaptiveHeader minY={50} className="d-flex justify-content-between align-items-center">
           <div className="header-collapsed-body gap-0 d-flex flex-wrap">
             <div className="me-2 h2-container d-flex align-items-center">
               <BackButton/>
               <h2 className="mb-0">
-                {cityDetails.cityName}{cityDetails.cityNameTranslated && `(${cityDetails.cityNameTranslated})`}
+                {titleCityName(cityDetails)}{subCityName(cityDetails) && `(${subCityName(cityDetails)})`}
               </h2>
             </div>
-            <CreatorPreviewTrigger
-              creator={cityDetails.creator}
-              creatorName={cityDetails.creator.creatorName}
-              showLinks={true}
-            >
-              <h3 className="mb-0 text-muted d-inline">by {cityDetails.creator.creatorName}</h3>
-            </CreatorPreviewTrigger>
+            <div className="d-flex align-items-center flex-wrap row-gap-1">
+              <CreatorPreviewTrigger
+                creator={cityDetails.creator}
+                creatorName={creatorName(cityDetails.creator)}
+                showLinks={true}
+              >
+                <h3 className="me-2 mb-0 text-muted">by {creatorName(cityDetails.creator)}</h3>
+              </CreatorPreviewTrigger>
+              {"isUsingCustomOverrideSettings" in cityDetails
+                && cityDetails.isUsingCustomOverrideSettings &&
+                <OverlayTrigger placement="bottom" overlay={
+                  <Tooltip>
+                    This city uses your custom grouped city override presets.
+                    {" "}When this link is shared, others may not see the same
+                    {" "}screenshots as you.
+                  </Tooltip>
+                }>
+                  <Badge className="mt-1 border border-info bg-info-subtle fw-normal text-info">
+                    <InfoCircle/> Using custom override presets
+                  </Badge>
+                </OverlayTrigger>
+              }
+            </div>
           </div>
           {cityDetails && (
             <OverlayTrigger overlay={
@@ -206,13 +233,12 @@ const CityDetails = () => {
             </OverlayTrigger>
           )}
         </AdaptiveHeader>
-      </AdaptiveHeaderProvider>
       <div className="main-wrapper m-auto">
         <section id="gallery" className="mt-3 position-relative">
           <Suspense fallback={
             <>
               {("cities" in cityDetails) ? (
-                <PlaceholderGallery />
+                <PlaceholderGallery/>
               ) : (
                 <img
                   src={PlaceholderImg}

@@ -2,6 +2,10 @@
   max-width: 90%;
 }
 
+.settings-wrapper {
+  max-width: 100%;
+}
+
 #city-feed {
   container-type: inline-size;
   container-name: city-feed;
@@ -16,6 +20,14 @@
 #trends.load-more-hovered{
   transition: top 0.25s;
   top: 24px;
+}
+
+#translation {
+  scroll-margin-top: 70px;
+}
+
+#groupedCities {
+  scroll-margin-top: 100px;
 }
 
 .sidebar {
@@ -39,7 +51,7 @@
 }
 
 @media all and (min-width: 1401px) {
-  .main-wrapper {
+  .main-wrapper, .settings-wrapper {
     max-width: 65%;
   }
 }
@@ -48,5 +60,8 @@
   .sidebar {
     position: sticky;
     top: 0px;
+  }
+  #translation, #groupedCities {
+    scroll-margin-top: 10px;
   }
 }

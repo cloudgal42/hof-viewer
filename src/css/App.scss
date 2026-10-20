@@ -16,16 +16,48 @@ $utilities: (
       100: 100%,
       auto: auto,
     ),
-  )
+  ),
+  "border-opacity": (
+    property: --bs-border,
+    css-var: true,
+    class: border-opacity,
+    values: (
+      0: 0,
+      10: .1,
+      25: .25,
+      50: .5,
+      75: .75,
+      100: 1
+    )
+  ),
 );
 
+$focus-ring-opacity: 1;
+$focus-ring-width: 0.1rem;
 $primary: #000;
 $carousel-transition-duration: 0.3s;
 
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
+:root {
+  --bs-focus-ring-opacity: 1;
+  --bs-focus-ring-width: 0.1rem;
+}
+
 html, body, #root {
   min-height: 100vh;
+}
+
+@media all and (width < 992px) {
+  html, body, #root {
+    min-height: 100.1vh;
+  }
+}
+
+@media all and (width > 1400px) {
+  .w-xl-70px {
+    right: 100px;
+  }
 }
 
 #mainContentLink {
@@ -66,6 +98,14 @@ html, body, #root {
   color: #fff !important;
 }
 
+.border-primary {
+  border-color: rgba(0, 0, 0, var(--bs-border-opacity)) !important;
+}
+
+.dropdown-item-hover {
+  @extend .dropdown-item, :hover;
+}
+
 input[type="range"] {
   &::-webkit-slider-thumb {
     border: 1.5px solid $gray-500;
@@ -84,10 +124,13 @@ input[type="range"] {
 
 [data-bs-theme="dark"] {
   $primary: #fff;
+  --bs-primary-rgb: 255, 255, 255;
   --bs-primary: #fff;
+  --bs-body-bg: #111214;
+  --bs-body-bg-rgb: 17, 18, 20;
 
   .nav-link:focus-visible {
-    box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 0 var(--bs-focus-ring-width) rgba(255, 255, 255, var(--bs-focus-ring-opacity));
   }
 
   a:not(.btn, .alert-link, .dropdown-item), .btn-link {
@@ -96,6 +139,14 @@ input[type="range"] {
     &:hover {
       color: var(--bs-primary);
     }
+  }
+
+  .border-primary {
+    border-color: rgba(255, 255, 255, var(--bs-border-opacity)) !important;
+  }
+
+  .border-primary-subtle {
+    border-color: rgba(255, 255, 255, 0.5) !important;
   }
 
   .nav-link.link-body-emphasis.active {
@@ -123,18 +174,18 @@ input[type="range"] {
     }
 
     &:focus::-webkit-slider-thumb {
-      box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
+      box-shadow: 0 0 0 var(--bs-focus-ring-width) rgba(255, 255, 255, var(--bs-focus-ring-opacity));
     }
 
     &:focus::-moz-range-thumb {
-      box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
+      box-shadow: 0 0 0 var(--bs-focus-ring-width) rgba(255, 255, 255, var(--bs-focus-ring-opacity));
     }
   }
 
   input:focus,
   select:focus,
   .accordion-button:focus {
-    box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 0 var(--bs-focus-ring-width) rgba(255, 255, 255, var(--bs-focus-ring-opacity));
   }
 
   .accordion-button:not(.collapsed) {
@@ -142,14 +193,14 @@ input[type="range"] {
     color: black;
   }
 
-  .nav-link.active, .dropdown-item:active {
+  .nav-link.active, .dropdown-item:active, .dropdown-item.active {
     background-color: var(--bs-primary);
     color: black;
   }
 
   .form-check-input {
     &:focus {
-      box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.25);
+      box-shadow: 0 0 0 var(--bs-focus-ring-width) rgba(0, 0, 0, var(--bs-focus-ring-opacity));
     }
 
     &:checked {

@@ -11,6 +11,9 @@ import { useCreatorCities } from "../hooks/useCreatorCities.ts";
 import { CreatorInsights } from "../components/creators/CreatorInsights/CreatorInsights.tsx";
 import { groupCities } from "../utils/GroupCities.ts";
 import { PlaceholderInsights } from "../components/creators/CreatorInsights/PlaceholderInsights.tsx";
+import {useGroupedCitiesSettings} from "../hooks/useGroupedCitiesSettings.ts";
+import {useGroupedCitiesGenSettings} from "../hooks/useGroupedCitiesGenSettings.ts";
+import {CreatorTrends} from "../components/creators/CreatorTrends/CreatorTrends.tsx";
 
 const Creators = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -28,6 +31,8 @@ const Creators = () => {
   } = useCreatorCities(creator);
 
   const creatorDetails = data;
+
+  const { currCreatorSettings } = useGroupedCitiesSettings(creator);
 
   function setCreator(formData: FormData) {
     const query = formData.get("creatorId");
@@ -86,7 +91,18 @@ const Creators = () => {
       />
     );
   } else if (creatorCities && creatorCities.length > 0) {
-    insightsContent = <CreatorInsights cities={groupCities(creatorCities)} />;
+    insightsContent = <CreatorInsights cities={groupCities(creatorCities, currCreatorSettings)} />;
+  }
+  
+  let creatorTrendsContent;
+  
+  if (creatorDetails) {
+    creatorTrendsContent =
+      <CreatorTrends
+        creator={creatorDetails}
+        isLoading={isFetching}
+        fetchError={error}
+      />
   }
 
   return (
@@ -120,6 +136,9 @@ const Creators = () => {
         <div id="creator">
           <section id="creatorInfo" className="mb-3">
             {content}
+          </section>
+          <section id="creatorTrends" className="mb-3">
+            {creatorTrendsContent}
           </section>
           <section id="creatorInsights">
             {insightsContent}

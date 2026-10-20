@@ -7,15 +7,21 @@ import { CardImg } from "../../misc/CardImg/CardImg.tsx";
 
 import "react-lazy-load-image-component/src/effects/black-and-white.css";
 import "../../../css/components/CityCard.css";
+import {useTranslation} from "../../../hooks/useTranslation.ts";
 
 interface CityCardProps {
   city: City | GroupedCities;
   setCity: (value: City | GroupedCities) => void;
-  isCitiesGrouped: boolean;
 }
 
-export const CityCard = ({ city, setCity, isCitiesGrouped }: CityCardProps) => {
+export const CityCard = ({ city, setCity }: CityCardProps) => {
+  const {
+    titleCityName,
+    subCityName,
+    creatorName,
+  } = useTranslation();
   let thumbnailImgUrl;
+  const isCitiesGrouped = "cities" in city;
 
   if (Array.isArray(city.imageUrlThumbnail)) {
     thumbnailImgUrl = city.imageUrlThumbnail[city.imageUrlThumbnail.length - 1];
@@ -62,19 +68,19 @@ export const CityCard = ({ city, setCity, isCitiesGrouped }: CityCardProps) => {
         </div>
         <Card.Body>
           <h3>
-            <Card.Title>{city.cityName}</Card.Title>
+            <Card.Title>{titleCityName(city)}</Card.Title>
           </h3>
           <Card.Subtitle className="mb-1">
-            {city.cityNameTranslated}
+            {subCityName(city)}
           </Card.Subtitle>
           <div style={{ fontSize: "0.9rem" }} className="text-muted">
             <CreatorPreviewTrigger
               creator={city.creator}
-              creatorName={city.creator.creatorName}
+              creatorName={creatorName(city.creator)}
               showLinks={false}
             >
               <Card.Text className="d-inline-block mb-1">
-                by {city.creator.creatorName}
+                by {creatorName(city.creator)}
               </Card.Text>
             </CreatorPreviewTrigger>
             <Card.Text className="d-flex mb-1 gap-2">

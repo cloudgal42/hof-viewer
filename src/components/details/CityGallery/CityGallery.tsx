@@ -1,24 +1,26 @@
-import LightGallery from 'lightgallery/react';
-import type {LightGallery as ILightGallery} from 'lightgallery/lightgallery.d.ts';
+import LightGallery from "lightgallery/react";
+import type { LightGallery as ILightGallery } from "lightgallery/lightgallery.d.ts";
 
-import 'lightgallery/css/lightgallery.css';
-import 'lightgallery/css/lg-zoom.css';
-import 'lightgallery/css/lg-thumbnail.css';
-import 'lightgallery/css/lg-fullscreen.css';
-import 'lightgallery/css/lg-autoplay.css';
+import "lightgallery/css/lightgallery.css";
+import "lightgallery/css/lg-zoom.css";
+import "lightgallery/css/lg-thumbnail.css";
+import "lightgallery/css/lg-fullscreen.css";
+import "lightgallery/css/lg-autoplay.css";
 
-import '../../../css/components/CityGallery.scss';
+import "../../../css/components/CityGallery.scss";
 
-import lgThumbnail from 'lightgallery/plugins/thumbnail';
-import lgZoom from 'lightgallery/plugins/zoom';
-import lgFullscreen from 'lightgallery/plugins/fullscreen';
-import lgAutoplay from 'lightgallery/plugins/autoplay';
+import lgThumbnail from "lightgallery/plugins/thumbnail";
+import lgZoom from "lightgallery/plugins/zoom";
+import lgFullscreen from "lightgallery/plugins/fullscreen";
+import lgAutoplay from "lightgallery/plugins/autoplay";
 
-import {useCallback, useRef, useState} from "react";
-import type {InitDetail} from "lightgallery/lg-events";
-import type {City, GroupedCities} from "../../../interfaces/City.ts";
-import {GalleryImg} from "./GalleryImg.tsx";
-import {Eye, Heart} from "react-bootstrap-icons";
+import { useCallback, useRef, useState } from "react";
+import type { InitDetail } from "lightgallery/lg-events";
+import type { City, GroupedCities } from "../../../interfaces/City.ts";
+import { GalleryImg } from "./GalleryImg.tsx";
+import { Eye, Heart } from "react-bootstrap-icons";
+import { isEmptyObject } from "../../../utils/IsEmptyObject.ts";
+import { fromDecimalTime } from "../../../utils/TimeFormat.ts";
 
 interface GalleryProps {
   city: City | GroupedCities;
@@ -28,40 +30,57 @@ interface GalleryProps {
 
 export const DEFAULT_IMAGES_PER_PAGE = 12;
 
-const CityGallery = ({city, page}: GalleryProps) => {
+const CityGallery = ({ city, page }: GalleryProps) => {
   const galleryRef = useRef<ILightGallery>(null);
   const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
 
-  const lightboxItems = ("cities" in city) ?
-    [...city.cities]
+  const lightboxItems = ("cities" in city)
+    ? [...city.cities]
       .sort((a, b) => {
         const cityADate = new Date(a.createdAt).getTime();
         const cityBDate = new Date(b.createdAt).getTime();
         return cityBDate - cityADate;
       })
-      .map(entry => {
+      .map((entry) => {
         return {
           src: entry.imageUrl4K,
           alt: "",
-          thumb: city.imageUrlFHD.length <= 6 ? entry.imageUrlFHD : entry.imageUrlThumbnail,
+          thumb: city.imageUrlFHD.length <= 6
+            ? entry.imageUrlFHD
+            : entry.imageUrlThumbnail,
           cityRef: entry,
-          subHtml: city.imageUrlFHD.length > 1 ? `
+          subHtml: city.imageUrlFHD.length > 1
+            ? `
             <span>
-              Posted on ${new Date(entry.createdAt).toLocaleString()} (${entry.createdAtFormattedDistance}).<br /> 
-              Views: ${entry.viewsCount} (Unique: ${entry.uniqueViewsCount}) | Favorites: ${entry.favoritesCount} |
+              Posted on ${
+              new Date(entry.createdAt).toLocaleString()
+            } (${entry.createdAtFormattedDistance}).<br />
+              ${
+              !isEmptyObject(entry.renderConditions)
+                ? `Conditions: ${
+                  fromDecimalTime(entry.renderConditions["time.hour"])
+                } · ${entry.renderConditions["climate.weather"]} · ${
+                  Math.round(
+                    entry.renderConditions["climate.temperature"],
+                  )
+                }°C<br />`
+                : ""
+            }
+              Views: ${entry.viewsCount} (Unique: ${entry.uniqueViewsCount}) · Favorites: ${entry.favoritesCount} ·
               <a href="/city/${entry.id}?groupStatus=off" target="_blank">
                 Details (opens in new tab)
               </a>
             </span>
-         ` : ""
-        }
+         `
+            : "",
+        };
       })
     : [{
       src: city.imageUrl4K,
       thumb: city.imageUrlFHD,
       alt: "",
       cityRef: city,
-    }]
+    }];
   const currImageUrls = lightboxItems.toSpliced(page * DEFAULT_IMAGES_PER_PAGE);
 
   const onInit = useCallback((detail: InitDetail) => {
@@ -72,7 +91,6 @@ const CityGallery = ({city, page}: GalleryProps) => {
 
   function handleOpenGallery(index: number) {
     if (galleryRef.current) {
-
       if (galleryRef.current.galleryItems.length === 0) {
         galleryRef.current.refresh(lightboxItems);
       }
@@ -89,7 +107,9 @@ const CityGallery = ({city, page}: GalleryProps) => {
   return (
     <>
       <div
-        style={lightboxItems.length <= 6 && !isImageLoaded ? {aspectRatio: "16/9"} : {}}
+        style={lightboxItems.length <= 6 && !isImageLoaded
+          ? { aspectRatio: "16/9" }
+          : {}}
         className={`w-100 d-flex gap-1 flex-row flex-wrap ${galleryClassName}`}
       >
         {currImageUrls.map((entry, i) => (
@@ -100,21 +120,22 @@ const CityGallery = ({city, page}: GalleryProps) => {
             onLoad={() => setIsImageLoaded(true)}
             onClick={() => handleOpenGallery(i)}
             hoverCaptions={("cities" in city && city.imageUrlFHD.length > 1) &&
-              <>
-                <span className="d-flex align-items-center gap-1">
-                  <Heart /> {entry.cityRef.favoritesCount.toLocaleString()}
-                </span>
-                <span className="d-flex align-items-center gap-1">
-                  <Eye /> {entry.cityRef.viewsCount.toLocaleString()}
-                </span>
-              </>
-            }
+              (
+                <>
+                  <span className="d-flex align-items-center gap-1">
+                    <Heart /> {entry.cityRef.favoritesCount.toLocaleString()}
+                  </span>
+                  <span className="d-flex align-items-center gap-1">
+                    <Eye /> {entry.cityRef.viewsCount.toLocaleString()}
+                  </span>
+                </>
+              )}
           />
         ))}
       </div>
       <div className="App">
         <LightGallery
-          mobileSettings={{showCloseIcon: true}}
+          mobileSettings={{ showCloseIcon: true }}
           allowMediaOverlap={true}
           toggleThumb={lightboxItems.length > 1}
           mousewheel={true}
@@ -127,7 +148,7 @@ const CityGallery = ({city, page}: GalleryProps) => {
         />
       </div>
     </>
-  )
-}
+  );
+};
 
 export default CityGallery;

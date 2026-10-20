@@ -97,16 +97,16 @@ export default async function serveSkeletonPage(
           <meta name="twitter:card" content="summary_large_image" />
           <meta
             property="twitter:description"
-            content={`by ${city.creator.creatorName}\n\n👤 ${city.cityPopulation.toLocaleString()} ♥️ ${city.favoritesCount.toLocaleString()} 👁️ ${city.uniqueViewsCount.toLocaleString()}`}
+            content={`${city.description ?? ""}\n\n👤 ${city.cityPopulation.toLocaleString()}  ♥️ ${city.favoritesCount.toLocaleString()}  👁️ ${city.uniqueViewsCount.toLocaleString()}`}
           />
           <meta
             property="og:title"
-            content={`${city.cityName} on Hall of Fame`}
+            content={`${city.cityName} by ${city.creator.creatorName}`}
           />
           <meta property="og:type" content="article" />
           <meta
             property="og:description"
-            content={`by ${city.creator.creatorName}\n\n👤 ${city.cityPopulation.toLocaleString()} ♥️ ${city.favoritesCount.toLocaleString()} 👁️ ${city.uniqueViewsCount.toLocaleString()}`}
+            content={`${city.description ?? ""}\n\n👤 ${city.cityPopulation.toLocaleString()}  ♥️ ${city.favoritesCount.toLocaleString()}  👁️ ${city.uniqueViewsCount.toLocaleString()}`}
           />
 
           {bestImageUrls.map((url) => (

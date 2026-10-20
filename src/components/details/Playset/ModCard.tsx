@@ -6,6 +6,7 @@ import pdxModsIcon from "../../../assets/pdx-mods.webp";
 import skyveIcon from "../../../assets/skyve.webp";
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 import {CardImg} from "../../misc/CardImg/CardImg.tsx";
+import {SkyveCompatibilityBadge} from "./SkyveCompatibilityBadge.tsx";
 
 interface ModListProps {
   mod: Mod;
@@ -26,12 +27,13 @@ export const ModCard = ({mod, isCompactMode}: ModListProps) => {
         />
       }
       <Card.Body className="d-flex flex-column justify-content-between">
-        <div className="mb-2">
+        <div className="mb-3">
           <h4>
             <Card.Title className="mb-0">{mod.name}</Card.Title>
           </h4>
           <Card.Subtitle className="text-muted mb-1">{mod.authorName}</Card.Subtitle>
-          <Card.Text className="text-muted">{mod.subscribersCount.toLocaleString()} subscribers</Card.Text>
+          <Card.Text className="text-muted mb-1">{mod.subscribersCount.toLocaleString()} subscribers</Card.Text>
+          <SkyveCompatibilityBadge compatibilityInfo={mod.skyve} />
         </div>
         <ButtonGroup vertical>
           <Button

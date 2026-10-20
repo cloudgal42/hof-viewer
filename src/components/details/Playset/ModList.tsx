@@ -1,19 +1,28 @@
-import {useState} from "react";
-import {Accordion, Form, InputGroup, OverlayTrigger, Tooltip} from "react-bootstrap";
-import {ModCard} from "./ModCard.tsx";
+import { useState } from "react";
+import {
+  Accordion,
+  Badge,
+  Form,
+  InputGroup,
+  OverlayTrigger,
+  ToggleButton,
+  Tooltip,
+} from "react-bootstrap";
+import { ModCard } from "./ModCard.tsx";
 
-import "../../../css/components/ModList.scss"
+import "../../../css/components/ModList.scss";
 import InfiniteScroll from "react-infinite-scroll-component";
-import {PlaceholderModCard} from "./PlaceholderModCard.tsx";
-import {useDebounceCallback} from "usehooks-ts";
+import { PlaceholderModCard } from "./PlaceholderModCard.tsx";
+import { useDebounceCallback } from "usehooks-ts";
 import * as React from "react";
 import Fuse from "fuse.js";
-import type {City, GroupedCities} from "../../../interfaces/City.ts";
-import type {Mod} from "../../../interfaces/Mod.ts";
-import {ErrorScreen} from "../../misc/ErrorScreen/ErrorScreen.tsx";
-import {useQuery} from "@tanstack/react-query";
+import type { City, GroupedCities } from "../../../interfaces/City.ts";
+import type { Mod } from "../../../interfaces/Mod.ts";
+import { ErrorScreen } from "../../misc/ErrorScreen/ErrorScreen.tsx";
+import { useQuery } from "@tanstack/react-query";
+import { assetCategoryMatches } from "../../../utils/PdxModsCategoryMatch.ts";
 
-interface ModCategories {
+interface ModTypes {
   mod: boolean;
   map: boolean;
   prefab: boolean;
@@ -25,26 +34,29 @@ interface ModListProps {
 
 const DEFAULT_MODS_PER_PAGE = 12;
 
-export const ModList = ({city}: ModListProps) => {
+export const ModList = ({ city }: ModListProps) => {
   const [isDebouncing, setIsDebouncing] = useState<boolean>(false);
-  // const [modList, setModList] = useState<Mod[]>([]);
 
-  const [categories, setCategories] = useState<ModCategories>({
+  const [packageType, setPackageType] = useState<ModTypes>({
     mod: false,
     map: false,
     prefab: false,
   });
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+
   const [search, setSearch] = useState<string>("");
   const [page, setPage] = useState<number>(1);
   const [isCompactMode, setIsCompactMode] = useState<boolean>(false);
 
-  const {isFetching, data, error, refetch} = useQuery<Mod[]>({
-    queryKey: ["playset", {city: city.id}],
+  const { isFetching, data, error, refetch } = useQuery<Mod[]>({
+    queryKey: ["playset", { city: city.id }],
     queryFn: async () => {
       if (city.paradoxModIds.length === 0 || !city.shareParadoxModIds) {
         return [];
       }
-      const res = await fetch(`${import.meta.env.VITE_HOF_SERVER}/screenshots/${city.id}/playset`)
+      const res = await fetch(
+        `${import.meta.env.VITE_HOF_SERVER}/screenshots/${city.id}/playset`,
+      );
       const data = await res.json();
 
       if (!res.ok) {
@@ -56,56 +68,140 @@ export const ModList = ({city}: ModListProps) => {
     refetchOnWindowFocus: false,
     staleTime: Infinity,
     enabled: false,
-  })
+  });
 
   const debouncedSetSearch = useDebounceCallback((e) => {
     setSearch(e.target.value);
     setIsDebouncing(false);
   }, 600);
 
-  function handleSetCategory(e: React.ChangeEvent<HTMLInputElement>) {
-    const {name, checked} = e.currentTarget;
+  function handleSetType(e: React.ChangeEvent<HTMLInputElement>) {
+    const { name, checked } = e.currentTarget;
 
-    setCategories(a => {
-      return {...a, [name]: checked};
-    })
+    setPackageType((a) => {
+      return { ...a, [name]: checked };
+    });
   }
 
-  function filterModList(list: Mod[]) {
-    const categoryList = Object.entries(categories)
-      .filter(([key, value]) => value === true)
-      .map(([key, value]) => {
-        if (key === "mod") return "code mod"
-        return key;
-      });
-    if (categoryList.length === 0) return list;
+  function handleSetCategory(e: React.ChangeEvent<HTMLInputElement>) {
+    const copy = [...selectedCategories];
+    const { name, checked } = e.currentTarget;
 
-    return list.filter(mod => {
+    if (!checked) {
+      copy.splice(selectedCategories.indexOf(name), 1);
+    } else {
+      copy.push(name);
+    }
+
+    setSelectedCategories(copy);
+  }
+  
+  const pkgTypeAsList = Object.entries(packageType)
+    .filter(([_, value]) => value === true)
+    .map(([key, _]) => {
+      if (key === "mod") return "code mod";
+      return key;
+    })
+
+  function filterPackageType(list: Mod[]) {
+    if (pkgTypeAsList.length === 0) return list;
+
+    return list.filter((mod) => {
       // Filters out any assets that are labelled as "Code Mods"
       // due to using old way of importing assets/EAI
       // Some assets will still be included due to lack of a "Prefab" tag
-      if (categoryList.includes("code mod")
-        && !categoryList.includes("prefab")
-        && mod.tags.includes("prefab")) return false
-      return mod.tags.some(tag => categoryList.includes(tag.toLowerCase()));
+      if (
+        pkgTypeAsList.includes("code mod") &&
+        !pkgTypeAsList.includes("prefab") &&
+        mod.tags.includes("prefab")
+      ) return false;
+      return mod.tags.some((tag) => pkgTypeAsList.includes(tag.toLowerCase()));
     });
   }
 
-  const filteredModList = filterModList(data || []);
+  function filterAssetCategories(list: Mod[]) {
+    if (selectedCategories.length === 0) return list;
+
+    return list.filter((item) =>
+      selectedCategories.some((category) =>
+        assetCategoryMatches[category](item.tags)
+      )
+    );
+  }
+
+  const filteredModList = filterAssetCategories(filterPackageType(data || []));
+
   const fuse = new Fuse(filteredModList, {
     threshold: 0.2,
     includeScore: false,
-    keys: ["name", "authorName", "tags"]
-  })
+    keys: ["name", "authorName"],
+  });
 
-  const searchedModList = search ?
-    fuse.search(search) :
-    filteredModList.map(mod => {
-      return {item: {...mod}}
+  const searchedModList = search
+    ? fuse.search(search)
+    : filteredModList.map((mod) => {
+      return { item: { ...mod } };
     });
 
-  const paginatedModList = searchedModList.toSpliced(page * DEFAULT_MODS_PER_PAGE);
-  const isPlaysetFiltered = Object.values(categories).some(value => value === true);
+  const paginatedModList = searchedModList.toSpliced(
+    page * DEFAULT_MODS_PER_PAGE,
+  );
+  const isPlaysetFiltered = Object.values(packageType).some((value) =>
+    value === true
+  );
+
+  const categoriesCount = [
+    {
+      categoryName: "Buildings",
+      value: "buildings",
+      count: data?.filter((mod) => assetCategoryMatches.buildings(mod.tags))
+        .length ?? 0,
+    },
+    {
+      categoryName: "Props",
+      value: "props",
+      count:
+        data?.filter((mod) => assetCategoryMatches.props(mod.tags)).length ?? 0,
+    },
+    {
+      categoryName: "Vehicles",
+      value: "vehicles",
+      count:
+        data?.filter((mod) => assetCategoryMatches.vehicles(mod.tags)).length ??
+          0,
+    },
+    {
+      categoryName: "Roads",
+      value: "roads",
+      count:
+        data?.filter((mod) => assetCategoryMatches.roads(mod.tags)).length ?? 0,
+    },
+    {
+      categoryName: "Vegetation",
+      value: "vegetation",
+      count: data?.filter((mod) => assetCategoryMatches.vegetation(mod.tags))
+        .length ?? 0,
+    },
+    {
+      categoryName: "Surfaces",
+      value: "surfaces",
+      count:
+        data?.filter((mod) => assetCategoryMatches.surfaces(mod.tags)).length ??
+          0,
+    },
+    {
+      categoryName: "Creatures",
+      value: "creatures",
+      count: data?.filter((mod) => assetCategoryMatches.creatures(mod.tags))
+        .length ?? 0,
+    },
+    {
+      categoryName: "Asset Packs",
+      value: "assetPacks",
+      count: data?.filter((mod) => assetCategoryMatches.assetPacks(mod.tags))
+        .length ?? 0,
+    },
+  ].filter((entry) => entry.count !== 0);
 
   let content;
   let accordionBody;
@@ -116,42 +212,44 @@ export const ModList = ({city}: ModListProps) => {
         errorSummary="You are offline :("
         errorDetails="Double check your Internet connection and try again."
       />
-    )
+    );
   } else if (isFetching || isDebouncing || !data) {
     accordionBody = (
       <div className="playset-container d-flex flex-wrap gap-2">
-        <PlaceholderModCard/>
-        <PlaceholderModCard/>
-        <PlaceholderModCard/>
-        <PlaceholderModCard/>
-        <PlaceholderModCard/>
-        <PlaceholderModCard/>
-        <PlaceholderModCard/>
-        <PlaceholderModCard/>
-        <PlaceholderModCard/>
-        <PlaceholderModCard/>
-        <PlaceholderModCard/>
-        <PlaceholderModCard/>
+        <PlaceholderModCard />
+        <PlaceholderModCard />
+        <PlaceholderModCard />
+        <PlaceholderModCard />
+        <PlaceholderModCard />
+        <PlaceholderModCard />
+        <PlaceholderModCard />
+        <PlaceholderModCard />
+        <PlaceholderModCard />
+        <PlaceholderModCard />
+        <PlaceholderModCard />
+        <PlaceholderModCard />
       </div>
-    )
+    );
   } else if (error) {
     accordionBody = (
       <ErrorScreen
         errorSummary={"Failed to get playset data :("}
         errorDetails={error.message}
       />
-    )
-  } else if (searchedModList.length === 0 && (search.length > 0 || isPlaysetFiltered)) {
+    );
+  } else if (
+    searchedModList.length === 0 && (search.length > 0 || isPlaysetFiltered)
+  ) {
     accordionBody = (
       <ErrorScreen
         errorSummary={"No packages found :("}
         errorDetails={"Double check your query or filters and try again."}
       />
-    )
+    );
   } else {
     accordionBody = (
       <InfiniteScroll
-        next={() => setPage(a => a + 1)}
+        next={() => setPage((a) => a + 1)}
         hasMore={searchedModList.length > paginatedModList.length}
         className="playset-container d-flex flex-wrap gap-2"
         dataLength={paginatedModList.length}
@@ -161,24 +259,31 @@ export const ModList = ({city}: ModListProps) => {
           </>
         }
       >
-        {paginatedModList.map(entry =>
+        {paginatedModList.map((entry) => (
           <ModCard
             key={entry.item.id}
             isCompactMode={isCompactMode}
             mod={entry.item}
           />
-        )}
+        ))}
       </InfiniteScroll>
-    )
+    );
   }
 
-  if (new Date(city.createdAt).getTime() < new Date("2025-03-24T00:00:00.000Z").getTime()
-      && city.paradoxModIds.length === 0) {
-    content = <p>This screenshot was posted before playset sharing was possible.</p>
+  if (
+    new Date(city.createdAt).getTime() <
+      new Date("2025-03-24T00:00:00.000Z").getTime() &&
+    city.paradoxModIds.length === 0
+  ) {
+    content = (
+      <p>This screenshot was posted before playset sharing was possible.</p>
+    );
   } else if (city.paradoxModIds.length === 0 && city.shareParadoxModIds) {
-    content = <p>The creator did not use mods for this screenshot.</p>
+    content = <p>The creator did not use mods for this screenshot.</p>;
   } else if (!city.shareParadoxModIds) {
-    content = <p>This creator chose not to share their playset for this screenshot.</p>
+    content = (
+      <p>This creator chose not to share their playset for this screenshot.</p>
+    );
   } else {
     content = (
       <Accordion>
@@ -194,68 +299,122 @@ export const ModList = ({city}: ModListProps) => {
                 <Form.Control
                   type="search"
                   name="modSearch"
-                  aria-label="Search by name, tags or author"
-                  placeholder="Search by name, tags or author..."
+                  aria-label="Search by name or author"
+                  placeholder="Search by name or author..."
                   onChange={(e) => {
                     setIsDebouncing(true);
                     debouncedSetSearch(e);
                   }}
                 />
               </div>
-              <div className="d-flex w-100 flex-column flex-md-row flex-wrap">
-                <OverlayTrigger overlay={
-                  <Tooltip>Hides mod thumbnail for a more compact view.</Tooltip>
-                }>
-                  <div className="pe-md-2">
-                    <Form.Check
-                      type="checkbox"
-                      name="compactMode"
-                      id="compactMode"
-                      label="Hide Thumbnails"
-                      onChange={(e) => setIsCompactMode(e.currentTarget.checked)}
-                    />
-                  </div>
-                </OverlayTrigger>
-                <div className="d-none d-md-block" style={{borderRight: "1px solid gray"}}></div>
-                <div className="ps-md-2 me-2 flex-grow-1 d-flex flex-column flex-md-row gap-1 gap-md-3">
-                  <p className="mb-0">Category: </p>
-                  <Form.Check
+              <div className="d-flex w-100 flex-column gap-1 flex-wrap">
+                <div className="d-inline-flex align-items-center gap-1">
+                  <strong className="">Type:</strong>
+                  <ToggleButton
+                    size="sm"
+                    variant="outline-primary"
                     type="checkbox"
                     name="mod"
                     id="mod"
-                    label="Mods"
-                    checked={categories.mod}
-                    onChange={handleSetCategory}
-                  />
-                  <Form.Check
+                    value="mod"
+                    checked={packageType.mod}
+                    onChange={handleSetType}
+                  >
+                    Mods
+                    <Badge className="bg-secondary-subtle text-secondary-emphasis ms-1">
+                      {data?.filter((mod) =>
+                        mod.tags.includes("Code Mod") &&
+                        !mod.tags.includes("Prefab")
+                      ).length ?? "-"}
+                    </Badge>
+                  </ToggleButton>
+                  <ToggleButton
+                    size="sm"
+                    variant="outline-primary"
                     type="checkbox"
                     name="map"
                     id="map"
-                    label="Maps"
-                    checked={categories.map}
-                    onChange={handleSetCategory}
-                  />
-                  <Form.Check
+                    value="map"
+                    checked={packageType.map}
+                    onChange={handleSetType}
+                  >
+                    Maps
+                    <Badge className="ms-1 bg-secondary-subtle text-secondary-emphasis">
+                      {data?.filter((mod) => mod.tags.includes("Map")).length ?? "-"}
+                    </Badge>
+                  </ToggleButton>
+                  <ToggleButton
+                    size="sm"
+                    variant="outline-primary"
                     type="checkbox"
                     name="prefab"
                     id="prefab"
-                    label="Assets"
-                    checked={categories.prefab}
-                    onChange={handleSetCategory}
-                  />
+                    value="prefab"
+                    checked={packageType.prefab}
+                    onChange={handleSetType}
+                  >
+                    Assets
+                    <Badge className="ms-1 bg-secondary-subtle text-secondary-emphasis">
+                      {data?.filter((mod) => mod.tags.includes("Prefab")).length ?? "-"}
+                    </Badge>
+                  </ToggleButton>
                 </div>
-                {data && (
-                  <div className="ms-xl-auto text-muted">Showing {searchedModList.length} out of {data.length} packages</div>
+                {(pkgTypeAsList.length === 0 || packageType.prefab) && (
+                  <div className="d-inline-flex flex-wrap align-items-center gap-1">
+                    <strong className="">Categories:</strong>
+                    {categoriesCount.map((category) => (
+                      <ToggleButton
+                        key={category.categoryName}
+                        size="sm"
+                        variant="outline-primary"
+                        type="checkbox"
+                        value={category.value}
+                        name={category.value}
+                        id={category.value}
+                        checked={selectedCategories.includes(category.value)}
+                        onChange={handleSetCategory}
+                      >
+                        {category.categoryName}
+                        <Badge className="bg-secondary-subtle text-secondary-emphasis ms-1">
+                          {category.count}
+                        </Badge>
+                      </ToggleButton>
+                    ))}
+                  </div>
                 )}
+                <div className="mt-1 d-flex flex-wrap justify-content-between align-items-center">
+                  <OverlayTrigger
+                    overlay={
+                      <Tooltip>
+                        Hides mod thumbnail for a more compact view.
+                      </Tooltip>
+                    }
+                  >
+                    <div>
+                      <Form.Check
+                        type="checkbox"
+                        name="compactMode"
+                        id="compactMode"
+                        label="Hide Thumbnails"
+                        onChange={(e) =>
+                          setIsCompactMode(e.currentTarget.checked)}
+                      />
+                    </div>
+                  </OverlayTrigger>
+                  {data && (
+                    <div className="ms-xl-auto text-muted">
+                      Showing {searchedModList.length} out of {data.length}{" "}
+                      packages
+                    </div>
+                  )}
+                </div>
               </div>
             </InputGroup>
             {accordionBody}
           </Accordion.Body>
         </Accordion.Item>
       </Accordion>
-    )
+    );
   }
-  return (
-    <>{content}</>
-  )
-}
+  return <>{content}</>;
+};

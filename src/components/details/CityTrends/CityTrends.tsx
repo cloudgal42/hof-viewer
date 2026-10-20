@@ -2,21 +2,46 @@ import {
   Alert,
   Button,
   Card,
-  Form,
   Spinner,
-  ToggleButton,
-  ToggleButtonGroup,
 } from "react-bootstrap";
-import { lazy, Suspense, useContext, useState } from "react";
+import {useContext, useEffect} from "react";
 import type { City, GroupedCities } from "../../../interfaces/City.ts";
 import { ErrorScreen } from "../../misc/ErrorScreen/ErrorScreen.tsx";
 import { ThemeContext } from "../../../context/ThemeContext.ts";
-import { useCreatorTrends } from "../../../hooks/useCreatorTrends.ts";
+import { useIntersectionObserver } from "usehooks-ts";
+import { Bar } from "react-chartjs-2";
+import {
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  defaults,
+  Legend,
+  LinearScale,
+  Title,
+  Tooltip,
+} from "chart.js";
 
-const TrendsChart = lazy(() => import("./TrendsChart.tsx"));
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+);
+
+import "../../../css/components/TrendsChart.css";
+import { useCityTrends } from "../../../hooks/useCityTrends.ts";
+import { TrendTypeToggle } from "./TrendTypeToggle.tsx";
+import { GroupBySelect } from "./GroupBySelect.tsx";
+import { useTrendsOptions } from "../../../hooks/useTrendsOptions.ts";
+import { CONFIG } from "../../../config/Config.ts";
+import {formatChartEntries, formatChartLabels, getFormattedTrendType} from "../../../utils/TrendFormat.ts";
+
+defaults.font.family = CONFIG.chartFontFamily;
 
 interface CityTrendsProps {
-  city: City | GroupedCities | undefined;
+  city: City | GroupedCities;
   isLoading: boolean;
   fetchError: Error | null;
 }
@@ -30,44 +55,65 @@ export const CityTrends = (
     ? new Date(city.createdAt).getTime()
     : new Date().getTime();
   const currEpoch = new Date().getTime();
-  const theme = useContext(ThemeContext);
+  const context = useContext(ThemeContext);
 
-  const [trendType, setTrendType] = useState<string>("views");
-  const [groupPeriod, setGroupPeriod] = useState<number>(() => {
-    if (currEpoch >= createdAtEpoch + (DAYS_IN_MILLISECONDS * 365 * 2)) {
-      return 30;
-    } else if (currEpoch >= createdAtEpoch + (DAYS_IN_MILLISECONDS * 6 * 30)) {
-      return 7;
-    }
+  if (!context) {
+    throw new Error("Theme context is null.");
+  }
 
-    return 1;
+  const { trendType, setTrendType, groupPeriod, setGroupPeriod } =
+    useTrendsOptions(currEpoch, createdAtEpoch);
+
+  const { isIntersecting, ref } = useIntersectionObserver({
+    threshold: 0.4,
+    freezeOnceVisible: true,
   });
 
-  // Fetches all screenshots of the current creator, with a list of favorites and views entries if:
-  // 1. User clicks on the "load trends" button
-  // 2. If the creator ID is defined
-  // 3. If this is a grouped city
-  const { error, data, isFetching, refetch } = useCreatorTrends({
-    creator: city?.creatorId,
-    cityName: city?.cityName,
+  const {
+    error,
+    trendsData,
+    isFetching,
+    isProcessing,
+    isTrendsStale,
+    refetch,
+    requireManualFetch,
+  } = useCityTrends({
+    enabled: isIntersecting,
+    groupPeriod,
+    trendType,
+    creator: city.creator.creatorName,
+    city,
   });
-  
+
   let trendsBody;
 
-  // This is used for trends graph.
-  // Only use data from useCreatorTrends if viewing a grouped city.
-  const cityWithTrends = data && city
-    && Array.isArray(city.imageUrlFHD) ? data[0] : city;
-  
-  const isTrendsStale =
-    (cityWithTrends?.views && cityWithTrends.views.length !== city?.viewsCount)
-    || (cityWithTrends?.favorites && cityWithTrends?.favorites.length !== city?.favoritesCount);
+  const chartName = `${
+    getFormattedTrendType(trendType)
+  } per ${groupPeriod} day(s)`;
 
-  console.debug(`Total view entries: ${cityWithTrends?.views?.length} | Total views: ${city?.viewsCount}`);
-  console.debug(`Total favorites entries: ${cityWithTrends?.favorites?.length} | Total favorites: ${city?.favoritesCount}`);
-  console.debug("Trends data out of date/stale?", isTrendsStale)
+  const fontColor = context.theme === "dark" ? "#fff" : "#222";
+  const gridColor = context.theme === "dark" ? { color: "#3a3a3a" } : {};
 
-  if (city && Array.isArray(city.imageUrlFHD) && !data) {
+  const options = CONFIG.trendsChartOptions(chartName, fontColor, gridColor);
+
+  const labels = formatChartLabels(trendsData, groupPeriod);
+
+  const trendsDataForChart = {
+    labels,
+    datasets: [
+      {
+        label: chartName,
+        data: formatChartEntries(trendsData, groupPeriod),
+        backgroundColor: (trendType === "favorites")
+          ? "rgba(255, 99, 132, 0.5)"
+          : "rgba(53, 162, 235, 0.5)",
+      },
+    ],
+  };
+
+  const requireLoadingStatus = isLoading || isFetching || isProcessing;
+
+  if (requireManualFetch) {
     trendsBody = (
       <Alert variant="warning" className="my-3">
         <p className="mb-2">
@@ -82,8 +128,8 @@ export const CityTrends = (
         </p>
         <Button
           variant="outline-warning"
-          className={theme === "light" ? "text-reset" : ""}
-          onClick={() => !data && refetch()}
+          className={context.theme === "light" ? "text-reset" : ""}
+          onClick={() => !trendsData && refetch()}
           disabled={isFetching}
         >
           {isFetching
@@ -104,14 +150,6 @@ export const CityTrends = (
         </Button>
       </Alert>
     );
-  } else if (isLoading || isFetching) {
-    trendsBody = (
-      <div className="d-flex justify-content-center my-5 py-5">
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>
-      </div>
-    );
   } else if (
     fetchError && !fetchError.message.includes("grouped screenshots") ||
     error && city && Array.isArray(city.imageUrlFHD)
@@ -128,19 +166,10 @@ export const CityTrends = (
         Come back on another day to see your city trends!
       </p>
     );
-  } else if (cityWithTrends) {
+  } else {
     trendsBody = (
-      <Suspense
-        fallback={
-          <div className="d-flex flex-column align-items-center my-5 py-5">
-            <Spinner animation="border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </Spinner>
-            <p className="mt-2 text-center text-muted">Processing...</p>
-          </div>
-        }
-      >
-        {isTrendsStale && (
+      <>
+        {isTrendsStale && !requireLoadingStatus && (
           <Alert variant="warning" className="mt-3">
             <p className="mb-0 d-inline">
               <strong>Warning:</strong> Trends data is{" "}
@@ -148,83 +177,64 @@ export const CityTrends = (
               <Alert.Link
                 as="button"
                 className="bg-transparent border-0 p-0"
-                onClick={() => refetch()}
+                onClick={() =>
+                  refetch()}
               >
-                <span className="text-decoration-underline">Update trends?</span>
+                <span className="text-decoration-underline">
+                  Update trends?
+                </span>
               </Alert.Link>{" "}
               (will take a while on popular creators!)
             </p>
           </Alert>
         )}
-        <TrendsChart
-          city={cityWithTrends}
-          trendType={trendType}
-          groupPeriod={groupPeriod}
-        />
-      </Suspense>
+        <div className="position-relative">
+          <div
+            className={`spinner-container ${
+              requireLoadingStatus && "spinner-container-active"
+            } position-absolute top-50 start-50 translate-middle d-flex flex-column align-items-center`}
+          >
+            <Spinner
+              animation="border"
+              aria-describedby="spinnerLabel"
+              role="status"
+            />
+            <p className="mt-2 text-center" id="spinnerLabel">
+              {isProcessing ? "Processing stats..." : "Fetching data..."}
+            </p>
+          </div>
+          <div
+            className={`position-relative trends-chart-container ${
+              requireLoadingStatus && "trends-chart-container-processing"
+            }`}
+          >
+            <Bar data={trendsDataForChart} options={options} />
+          </div>
+        </div>
+      </>
     );
   }
 
   return (
-    <Card>
+    <Card ref={ref}>
       <Card.Body>
         <h3>
           <Card.Title>Trends</Card.Title>
         </h3>
         <section className="mb-2 d-flex flex-column flex-md-row justify-content-md-between align-items-md-center gap-2">
           <div>
-            <ToggleButtonGroup
-              type="radio"
-              className="w-100"
-              name="trendsType"
-              aria-label="Data type"
-              value={trendType}
-              onChange={(value) => setTrendType(value)}
-            >
-              <ToggleButton
-                value="views"
-                id="views"
-                variant="outline-primary"
-              >
-                Views
-              </ToggleButton>
-              <ToggleButton
-                value="uniqueViews"
-                id="uniqueViews"
-                variant="outline-primary"
-              >
-                Views (Unique)
-              </ToggleButton>
-              <ToggleButton
-                value="favorites"
-                id="favorites"
-                variant="outline-primary"
-              >
-                Favorites
-              </ToggleButton>
-            </ToggleButtonGroup>
+            <TrendTypeToggle
+              trendType={trendType}
+              setTrendType={setTrendType}
+            />
           </div>
           <div className="d-flex align-items-center gap-2 text-nowrap">
-            <label htmlFor="groupPeriod">Group by</label>
-            <div>
-              <Form.Select
-                name="groupPeriod"
-                id="groupPeriod"
-                value={groupPeriod}
-                onChange={(e) =>
-                  setGroupPeriod(parseInt(e.currentTarget.value))}
-              >
-                <option value="1">Days</option>
-                {currEpoch > createdAtEpoch + (DAYS_IN_MILLISECONDS * 7) &&
-                  <option value="7">Weeks</option>}
-                {currEpoch > createdAtEpoch + (DAYS_IN_MILLISECONDS * 30) &&
-                  <option value="30">1 Month</option>}
-                {currEpoch > createdAtEpoch + (DAYS_IN_MILLISECONDS * 30 * 6) &&
-                  <option value="180">6 Months</option>}
-                {currEpoch > createdAtEpoch + (DAYS_IN_MILLISECONDS * 365) &&
-                  <option value="365">1 Year</option>}
-              </Form.Select>
-            </div>
+            <GroupBySelect
+              groupPeriod={groupPeriod}
+              setGroupPeriod={setGroupPeriod}
+              currEpoch={currEpoch}
+              createdAtEpoch={createdAtEpoch}
+            />
           </div>
         </section>
         <section>

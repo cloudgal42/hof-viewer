@@ -19,10 +19,10 @@
 }
 
 .header-collapsed {
-  background-color: var(--bs-tertiary-bg);
-  transition: background-color 0.25s;
+  background-color: var(--bs-body-bg);
+  border-bottom: 1px solid var(--bs-secondary-bg);
 
-  position: sticky;
+  position: fixed;
   top: 0px;
   z-index: 5;
 
@@ -51,13 +51,12 @@
   h2 {
     font-size: 1.5rem;
   }
-
 }
 
-@media all and (max-width: 992px) {
+@media all and (max-width: 991px) {
   .header-collapsed {
     top: 59px;
-    margin-top: 15px;
+    margin-top: 5px;
     border-top: 1px solid var(--bs-secondary-bg);
 
     .header-collapsed-body {
@@ -74,14 +73,26 @@
   }
 }
 
-@media all and (max-width: 477px) {
+@media all and (max-width: 923px) {
   .header-collapsed {
-    top: 58px;
+    top: 56px;
+  }
+}
+
+@media all and (max-width: 810px) {
+  .header-collapsed {
+    top: 55.5px;
+  }
+}
+
+@media all and (max-width: 700px) {
+  .header-collapsed {
+    top: 55px;
   }
 }
 
 @media all and (max-width: 365px) {
   .header-collapsed {
-    top: 57px;
+    top: 50px;
   }
 }

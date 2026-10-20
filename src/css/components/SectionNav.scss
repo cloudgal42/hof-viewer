@@ -1,0 +1,15 @@
+@media all and (min-width: 992px) {
+  .section-nav {
+    section {
+      position: sticky;
+      top: 3rem;
+    }
+    margin-right: 2rem;
+  }
+}
+
+@media all and (min-width: 1401px) {
+  .section-nav {
+    margin-right: 3rem;
+  }
+}

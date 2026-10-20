@@ -1,3 +1,5 @@
+import type {SkyveCompatibility} from "./SkyveCompatibility.ts";
+
 export interface Mod {
   id: string;
   paradoxModId: number;
@@ -8,4 +10,5 @@ export interface Mod {
   tags: string[];
   subscribersCount: number;
   knownLastUpdatedAt: string;
+  skyve: SkyveCompatibility | null;
 }
