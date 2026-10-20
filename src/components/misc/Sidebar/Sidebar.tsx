@@ -1,13 +1,22 @@
-import {BoxArrowUpRight, Dice3, Gear, PersonCircle, Search} from "react-bootstrap-icons";
-import {CloseButton, Offcanvas} from "react-bootstrap";
-import {NavLink} from "react-router";
+import {
+  BoxArrowUpRight, CircleHalf,
+  Dice3,
+  Gear, InfoCircle, Journal, Moon,
+  PersonCircle,
+  Search, Sun,
+} from "react-bootstrap-icons";
+import {CloseButton, DropdownButton, DropdownItem, Offcanvas} from "react-bootstrap";
+import { NavLink } from "react-router";
+import {useContext} from "react";
+import {ThemeContext} from "../../../context/ThemeContext.ts";
+import {ThemeDropdownBtn} from "../ThemeDropdownBtn/ThemeDropdownBtn.tsx";
 
 interface SidebarProps {
   isOpened: boolean;
   setIsOpened: (isOpened: boolean) => void;
 }
 
-export const Sidebar = ({isOpened, setIsOpened}: SidebarProps) => {
+export const Sidebar = ({ isOpened, setIsOpened }: SidebarProps) => {
   return (
     <aside className="d-none d-lg-block flex-shrink-0">
       <Offcanvas
@@ -21,9 +30,9 @@ export const Sidebar = ({isOpened, setIsOpened}: SidebarProps) => {
             href="/"
             className="text-decoration-none"
           >
-          <span className="fs-4">
-            HoF
-          </span>
+            <span className="fs-4">
+              HoF
+            </span>
           </a>
           <CloseButton
             className="d-lg-none"
@@ -38,7 +47,7 @@ export const Sidebar = ({isOpened, setIsOpened}: SidebarProps) => {
               className="nav-link link-body-emphasis d-flex align-items-center"
               onClick={() => setIsOpened(false)}
             >
-              <Search height="18" width="18" className="me-2"/>
+              <Search height="18" width="18" className="me-2" />
               Browse by Creator ID
             </NavLink>
           </li>
@@ -48,46 +57,61 @@ export const Sidebar = ({isOpened, setIsOpened}: SidebarProps) => {
               className="nav-link link-body-emphasis d-flex align-items-center"
               onClick={() => setIsOpened(false)}
             >
-            <Dice3 height="18" width="18" className="me-2" />
-            Random
-          </NavLink></li>
+              <Dice3 height="18" width="18" className="me-2" />
+              Random
+            </NavLink>
+          </li>
           <li className="nav-item">
             <NavLink
               to="/creators"
               className="nav-link link-body-emphasis d-flex align-items-center"
               onClick={() => setIsOpened(false)}
             >
-              <PersonCircle height="18" width="18" className="me-2"/>
+              <PersonCircle height="18" width="18" className="me-2" />
               Creators
             </NavLink>
           </li>
-          <hr/>
+          <hr />
           <li className="nav-item">
             <NavLink
               to="/settings"
               className="nav-link link-body-emphasis d-flex align-items-center"
               onClick={() => setIsOpened(false)}
             >
-              <Gear height="18" width="18" className="me-2"/>
+              <Gear height="18" width="18" className="me-2" />
               Settings
             </NavLink>
           </li>
-        </ul>
-        <hr/>
-        <ul className="list-unstyled text-body-secondary mb-0">
-          <li>Hall of Fame Viewer v1.x.x</li>
-          <li>
+          <hr />
+          <li className="nav-item">
+            <NavLink
+              to="/about"
+              className="nav-link link-body-emphasis d-flex align-items-center"
+            >
+              <InfoCircle className="me-2" />
+              About
+            </NavLink>
+          </li>
+          <li className="nav-item">
             <a
               href="https://github.com/cloudgal42/hof-viewer/releases"
               target="_blank"
-              className="d-flex align-items-center gap-2"
+              className="nav-link link-body-emphasis d-flex align-items-center justify-content-between"
             >
-              Changelog
+              <span className="d-flex align-items-center">
+                <Journal className="me-2" />
+                Changelog
+              </span>
               <BoxArrowUpRight />
             </a>
           </li>
         </ul>
+        <hr />
+        <div className="d-flex align-items-center justify-content-between">
+          <span className="text-body-secondary">v1.x.x</span>
+          <ThemeDropdownBtn size="sm" />
+        </div>
       </Offcanvas>
     </aside>
-  )
-}
+  );
+};

@@ -68,7 +68,11 @@ export const CityTrends = (
     ? new Date(city.createdAt).getTime()
     : new Date().getTime();
   const currEpoch = new Date().getTime();
-  const theme = useContext(ThemeContext);
+  const context = useContext(ThemeContext);
+  
+  if (!context) {
+    throw new Error("Theme context is null.")
+  }
 
   const [trendType, setTrendType] = useState<string>("views");
   const [groupPeriod, setGroupPeriod] = useState<number>(() => {
@@ -110,8 +114,8 @@ export const CityTrends = (
     getFormattedTrendType(trendType)
   } per ${groupPeriod} day(s)`;
 
-  const fontColor = theme === "dark" ? "#fff" : "#222";
-  const gridColor = theme === "dark" ? { color: "#3a3a3a" } : {};
+  const fontColor = context.theme === "dark" ? "#fff" : "#222";
+  const gridColor = context.theme === "dark" ? { color: "#3a3a3a" } : {};
 
   const options = {
     responsive: true,
@@ -190,7 +194,7 @@ export const CityTrends = (
         </p>
         <Button
           variant="outline-warning"
-          className={theme === "light" ? "text-reset" : ""}
+          className={context.theme === "light" ? "text-reset" : ""}
           onClick={() => !trendsData && refetch()}
           disabled={isFetching}
         >

@@ -13,6 +13,7 @@ import { ThemeContext } from "./context/ThemeContext.ts";
 import { CrashFallback } from "./components/misc/CrashFallback/CrashFallback.tsx";
 import { HelmetProvider } from "@dr.pogodin/react-helmet";
 import { useRandomCityGc } from "./hooks/useRandomCityGc.ts";
+import {ThemeDropdownBtn} from "./components/misc/ThemeDropdownBtn/ThemeDropdownBtn.tsx";
 // import {Screenshots} from "./temp/screenshots.ts";
 
 export type ContextType = {
@@ -71,24 +72,30 @@ const App = () => {
       <a id="mainContentLink" href="#mainContent">
         Skip to main content
       </a>
-      <ThemeContext value={isDarkMode ? "dark" : "light"}>
+      <ThemeContext value={{
+        theme: isDarkMode ? "dark" : "light",
+        setIsDarkMode,
+      }}>
         <h1 className="visually-hidden">Hall of Fame Viewer</h1>
         <Navbar
           className="bg-body border-1 border-bottom d-lg-none"
-          style={{ position: "sticky", top: "0px", zIndex: "4" }}
+          style={{ position: "sticky", top: "0px", zIndex: "6" }}
         >
-          <div className="m-auto main-wrapper flex-grow-1 d-flex align-items-center">
-            <HamburgerButton
-              isOpened={isAsideOpened}
-              setIsOpened={setIsAsideOpened}
-            />
-            <Navbar.Brand
-              className="position-relative py-1"
-              style={{ left: "calc(-0.75rem + 1px)" }}
-              href="/"
-            >
-              <span className="mb-0 fs-3 fw-semibold">HoF</span>
-            </Navbar.Brand>
+          <div className="m-auto main-wrapper flex-grow-1 d-flex align-items-center justify-content-between">
+            <div className="d-flex align-items-center">
+              <HamburgerButton
+                isOpened={isAsideOpened}
+                setIsOpened={setIsAsideOpened}
+              />
+              <Navbar.Brand
+                className="position-relative py-1"
+                style={{ left: "calc(-0.75rem + 1px)" }}
+                href="/"
+              >
+                <span className="mb-0 fs-3 fw-semibold">HoF</span>
+              </Navbar.Brand>
+            </div>
+            <ThemeDropdownBtn align={{sm: "end"}} />
           </div>
         </Navbar>
         <ToTopBtn />
