@@ -1,5 +1,5 @@
 import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
-import {Ban, Plus} from "react-bootstrap-icons";
+import { Ban, Plus } from "react-bootstrap-icons";
 import { useContext, useState } from "react";
 import { useDroppable } from "@dnd-kit/react";
 import { GroupedSettingsContext } from "../../../context/GroupedSettingsContext.ts";
@@ -28,10 +28,10 @@ export const AddGroup = ({
       ref={ref}
     >
       <Button
-        className={`w-100 ${
-          isDropTarget && !isInvalid ? "border-primary" : ""
-        }`}
-        variant="outline-primary"
+        className="w-100"
+        variant={isDropTarget
+          ? isInvalid ? "danger" : "primary"
+          : "outline-primary"}
         onClick={() => onAdd(position)}
         disabled={isInvalid && isDropTarget}
       >
@@ -44,17 +44,17 @@ export const AddGroup = ({
           )
           : isDropTarget && isInvalid
           ? (
-              <>
-                <Ban className="me-2" />
-                Creation of duplicated group names are not allowed
-              </>
-            )
+            <>
+              <Ban className="me-2" />
+              Creation of duplicated groups are not allowed
+            </>
+          )
           : (
-              <>
-                <Plus />
-                Add new group entry
-              </>
-            )}
+            <>
+              <Plus />
+              Add new group entry
+            </>
+          )}
       </Button>
     </div>
   );

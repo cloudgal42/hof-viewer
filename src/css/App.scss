@@ -124,6 +124,7 @@ input[type="range"] {
 
 [data-bs-theme="dark"] {
   $primary: #fff;
+  --bs-primary-rgb: 255, 255, 255;
   --bs-primary: #fff;
   --bs-body-bg: #111214;
   --bs-body-bg-rgb: 17, 18, 20;

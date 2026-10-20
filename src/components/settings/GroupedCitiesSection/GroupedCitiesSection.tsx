@@ -30,6 +30,7 @@ import {
 import type { GroupedCityGenSettings } from "../../../interfaces/GroupedCityGenSettings.ts";
 import { DatalistControl } from "./DatalistControl.tsx";
 import { useGroupedCitiesGenSettings } from "../../../hooks/useGroupedCitiesGenSettings.ts";
+import {CandidatelessGroupAccordion} from "./CandidatelessGroupAccordion.tsx";
 
 export const GroupedCitiesSection = () => {
   const [creator, setCreator] = useState<string>("");
@@ -219,23 +220,7 @@ export const GroupedCitiesSection = () => {
               <GroupedCityRow key={groupedCitiesRow.id} {...groupedCitiesRow} />
             ))}
             {creatorEntriesWithoutGroupCandidates.length > 0 && (
-              <Accordion>
-                <Accordion.Item eventKey="0">
-                  <Accordion.Header>
-                    Grouped city names with 0 group candidates
-                    ({creatorEntriesWithoutGroupCandidates.length} result(s))
-                  </Accordion.Header>
-                  <Accordion.Body>
-                    {creatorEntriesWithoutGroupCandidates.map((
-                      groupedCitiesRow,
-                    ) => (
-                      <Fragment key={groupedCitiesRow.id}>
-                        <GroupedCityRow {...groupedCitiesRow} />
-                      </Fragment>
-                    ))}
-                  </Accordion.Body>
-                </Accordion.Item>
-              </Accordion>
+              <CandidatelessGroupAccordion creatorEntriesWithoutGroupCandidates={creatorEntriesWithoutGroupCandidates}/>
             )}
           </div>
           <AddGroup
