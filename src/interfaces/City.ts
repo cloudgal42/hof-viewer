@@ -9,7 +9,7 @@ export interface Views {
   screenshotId: string;
 }
 
-interface Favorites {
+export interface Favorites {
   id: string;
   favoritedAt: string;
   creatorId: string;

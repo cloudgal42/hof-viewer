@@ -1,11 +1,17 @@
-import type {City, GroupedCities} from "./City.ts";
+import type {City, Favorites, GroupedCities, Views} from "./City.ts";
 
 export interface TrendsData {
   [key: string]: number;
 }
 
 export interface WorkerParams {
-  city: City | GroupedCities,
+  inputData: TrendsWorkerInput
   day: number,
   type: string,
+}
+
+export interface TrendsWorkerInput {
+  createdAt: string;
+  views: Views[] | undefined;
+  favorites: Favorites[] | undefined;
 }

@@ -1,11 +1,11 @@
-import type {City, GroupedCities, Views} from "../interfaces/City.ts";
-import type {TrendsData, WorkerParams} from "../interfaces/TrendsData.ts";
+import type {City, Favorites, GroupedCities, Views} from "../interfaces/City.ts";
+import type {TrendsData, TrendsWorkerInput, WorkerParams} from "../interfaces/TrendsData.ts";
 
 const DAYS_IN_MILLISECONDS = 86400000;
 
 self.onmessage = ({ data }: {data: WorkerParams}) => {
-  const {city, day, type} = data;
-  const result = groupData(city, day, type);
+  const {inputData, day, type} = data;
+  const result = groupData(inputData, day, type);
   self.postMessage(result);
 }
 
@@ -77,15 +77,17 @@ function groupDates(start: Date, end: Date, period: number) {
   return groupedDates;
 }
 
-function groupData(city: City | GroupedCities, day: number, type: string): TrendsData | [] {
+function groupData(
+  data: TrendsWorkerInput, day: number, type: string
+): TrendsData | [] {
   // 1. Get the current date and the date posted in ms since the UNIX epoch
   const currDate = new Date();
-  const datePosted = new Date(city.createdAt);
+  const datePosted = new Date(data.createdAt);
   // FIXME: Implement better undefined check
-  if (!city.views && !city.favorites) return [];
+  if (!data.views && !data.favorites) return [];
 
   // 1.5. If type is "uniqueViews", filter views to only unique view entries
-  const uniqueViews = filterUniqueViews(city.views!);
+  const uniqueViews = filterUniqueViews(data.views!);
 
   // 2. Get grouped dates. groupedDates contain arrays of Date object with a length of 2
   // Index 0 is start, Index 1 is end
@@ -102,12 +104,12 @@ function groupData(city: City | GroupedCities, day: number, type: string): Trend
     let rangeCount;
 
     if (type === "views") {
-      rangeCount = city.views!.filter(entry => {
+      rangeCount = data.views!.filter(entry => {
         const viewEpoch = new Date(entry.viewedAt).getTime();
         return viewEpoch >= startRange && viewEpoch < endRange;
       }).length
     } else if (type === "favorites") {
-      rangeCount = city.favorites!.filter(entry => {
+      rangeCount = data.favorites!.filter(entry => {
         const viewEpoch = new Date(entry.favoritedAt).getTime();
         return viewEpoch >= startRange && viewEpoch < endRange;
       }).length

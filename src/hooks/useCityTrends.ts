@@ -2,8 +2,9 @@ import {useGroupedCitiesSettings} from "./useGroupedCitiesSettings.ts";
 import {useGroupedCitiesGenSettings} from "./useGroupedCitiesGenSettings.ts";
 import type {City, GroupedCities} from "../interfaces/City.ts";
 import {groupCities} from "../utils/GroupCities.ts";
-import {useCityTrendsWorker} from "./useCityTrendsWorker.ts";
+import {useTrendsWorker} from "./useTrendsWorker.ts";
 import {useCreatorCitiesViewsAndFavorites} from "./useCreatorCitiesViewsAndFavorites.ts";
+import type {TrendsWorkerInput} from "../interfaces/TrendsData.ts";
 
 export const useCityTrends = (
   {creator, city, groupPeriod, enabled, trendType}:
@@ -33,25 +34,31 @@ export const useCityTrends = (
 
   const runWorker = Boolean(enabled && cityWithTrends.views && cityWithTrends.views.length > 0);
 
+  const workerInput: TrendsWorkerInput | null = cityWithTrends ? {
+    createdAt: cityWithTrends.createdAt,
+    favorites: cityWithTrends.favorites,
+    views: cityWithTrends.views
+  } : null;
+  
   const {data: viewsData, isProcessing: isViewsProcessing} =
-    useCityTrendsWorker({
-      city: cityWithTrends ?? null,
+    useTrendsWorker({
+      data: workerInput,
       groupPeriod,
       trendType: "views",
       enabled: runWorker,
     });
 
   const {data: uniqueViewsData, isProcessing: isUniqueViewsProcessing} =
-    useCityTrendsWorker({
-      city: cityWithTrends ?? null,
+    useTrendsWorker({
+      data: workerInput,
       groupPeriod,
       trendType: "uniqueViews",
       enabled: runWorker,
     });
 
   const {data: favoritesData, isProcessing: isFavoritesProcessing} =
-    useCityTrendsWorker({
-      city: cityWithTrends ?? null,
+    useTrendsWorker({
+      data: workerInput,
       groupPeriod,
       trendType: "favorites",
       enabled: runWorker,

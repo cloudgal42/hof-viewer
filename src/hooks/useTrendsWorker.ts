@@ -1,15 +1,14 @@
 import {useEffect, useRef, useState} from "react";
-import type {TrendsData, WorkerParams} from "../interfaces/TrendsData.ts";
-import type { City, GroupedCities } from "../interfaces/City.ts";
+import type {TrendsData, TrendsWorkerInput, WorkerParams} from "../interfaces/TrendsData.ts";
 
-export const useCityTrendsWorker = (
+export const useTrendsWorker = (
   {
-    city,
+    data,
     groupPeriod,
     trendType,
     enabled
   }: {
-    city: City | GroupedCities | null;
+    data: TrendsWorkerInput | null;
     groupPeriod: number;
     trendType: string;
     enabled: boolean;
@@ -22,7 +21,7 @@ export const useCityTrendsWorker = (
 
   useEffect(() => {
     if (!enabled) return;
-    if (!city) return;
+    if (!data) return;
 
     viewsWorkerRef.current = new Worker(
       new URL("../workers/TrendsWorker.ts", import.meta.url),
@@ -31,7 +30,7 @@ export const useCityTrendsWorker = (
       },
     );
     const params: WorkerParams = {
-      city,
+      inputData: data,
       day: groupPeriod,
       type: trendType,
     };
@@ -50,7 +49,7 @@ export const useCityTrendsWorker = (
       clearTimeout(timerId);
       if (viewsWorkerRef.current) viewsWorkerRef.current.terminate();
     };
-  }, [city, groupPeriod, trendType, enabled]);
+  }, [data, groupPeriod, trendType, enabled]);
 
   return {data: groupedCounts, isProcessing};
 };
