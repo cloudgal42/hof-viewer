@@ -28,8 +28,8 @@ import { DefaultHelmet } from "../components/misc/DefaultHelmet/DefaultHelmet.ts
 import {NavLink, useOutletContext, useSearchParams} from "react-router";
 import type { ContextType } from "../App.tsx";
 import {useRandomAlgoSettings} from "../hooks/useRandomAlgoSettings.ts";
-import {useTranslationSettings} from "../hooks/useTranslationSettings.ts";
 import {handleSetSearchParams} from "../utils/SearchParamHandlers.ts";
+import {useTranslation} from "../hooks/useTranslation.ts";
 
 const RandomCity = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -37,7 +37,7 @@ const RandomCity = () => {
   const page = pageAsString ? parseInt(pageAsString) : 0;
 
   const [randomAlgoSettings] = useRandomAlgoSettings();
-  const [translationSettings] = useTranslationSettings();
+  const {dynamicCityName, creatorName} = useTranslation();
 
   const { startGc, gcCount } = useOutletContext<ContextType>();
   const queryClient = useQueryClient();
@@ -130,18 +130,6 @@ const RandomCity = () => {
     );
   }
 
-  const creatorName = (translationSettings.translateCreatorType === "translate")
-    ? data.creator.creatorNameTranslated || data.creator.creatorName
-    : (translationSettings.translateCreatorType === "transliterate")
-    ? data.creator.creatorNameLatinized || data.creator.creatorName
-    : data.creator.creatorName;
-
-  const cityName = (translationSettings.translateCityType === "translate")
-    ? data.cityNameTranslated || data.cityName
-    : (translationSettings.translateCityType === "transliterate")
-    ? data.cityNameLatinized || data.cityName
-    : data.cityName;
-
   return (
     <div className="flex-grow-1">
       <DefaultHelmet />
@@ -161,14 +149,14 @@ const RandomCity = () => {
           </Button>
           <div className="d-flex gap-2 gap-sm-3 flex-row align-items-center justify-content-between">
             <div className="h2-container mb-0 d-flex flex-wrap flex-column flex-sm-row justify-content-center align-items-center gap-1 gap-sm-0">
-              <h2 className="mb-0 me-2 text-center flex-grow-1">{cityName}</h2>
+              <h2 className="mb-0 me-2 text-center flex-grow-1">{dynamicCityName(data)}</h2>
               <CreatorPreviewTrigger
                 creator={data.creator}
-                creatorName={creatorName}
+                creatorName={creatorName(data.creator)}
                 showLinks={true}
               >
                 <h3 className="text-muted text-center text-sm-start mb-0 d-inline">
-                  by {creatorName}
+                  by {creatorName(data.creator)}
                 </h3>
               </CreatorPreviewTrigger>
             </div>
@@ -197,7 +185,7 @@ const RandomCity = () => {
                     <Dropdown.Item
                       onClick={() =>
                         shareContent({
-                          title: cityName,
+                          title: data.cityName,
                           url:
                             `${window.location.origin}/city/${data.id}?groupStatus=off`,
                         })}

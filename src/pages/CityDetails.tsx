@@ -27,10 +27,9 @@ import {Helmet} from "@dr.pogodin/react-helmet";
 import '../css/components/CityGallery.scss';
 import {PlaceholderGallery} from "../components/details/CityGallery/PlaceholderGallery.tsx";
 import {useGroupedCitiesSettings} from "../hooks/useGroupedCitiesSettings.ts";
-import {useGroupedCitiesGenSettings} from "../hooks/useGroupedCitiesGenSettings.ts";
+import {useTranslation} from "../hooks/useTranslation.ts";
 
 const CityGallery = lazy(() => import("../components/details/CityGallery/CityGallery.tsx"));
-
 
 const CityDetails = () => {
   const {
@@ -42,7 +41,13 @@ const CityDetails = () => {
 
   const [searchParams] = useSearchParams();
   const cityParam = useParams().city;
-
+  
+  const {
+    titleCityName,
+    subCityName,
+    creatorName,
+  } = useTranslation();
+  
   // Checking for prerender environment is guesswork atp
   // const isInPrerenderEnv = window.navigator.userAgent.includes("Prerender")
   //   || window.navigator.userAgent.includes("HeadlessChrome");
@@ -178,16 +183,16 @@ const CityDetails = () => {
             <div className="me-2 h2-container d-flex align-items-center">
               <BackButton/>
               <h2 className="mb-0">
-                {cityDetails.cityName}{cityDetails.cityNameTranslated && `(${cityDetails.cityNameTranslated})`}
+                {titleCityName(cityDetails)}{subCityName(cityDetails) && `(${subCityName(cityDetails)})`}
               </h2>
             </div>
             <div className="d-flex align-items-center flex-wrap row-gap-1">
               <CreatorPreviewTrigger
                 creator={cityDetails.creator}
-                creatorName={cityDetails.creator.creatorName}
+                creatorName={creatorName(cityDetails.creator)}
                 showLinks={true}
               >
-                <h3 className="me-2 mb-0 text-muted">by {cityDetails.creator.creatorName}</h3>
+                <h3 className="me-2 mb-0 text-muted">by {creatorName(cityDetails.creator)}</h3>
               </CreatorPreviewTrigger>
               {"isUsingCustomOverrideSettings" in cityDetails
                 && cityDetails.isUsingCustomOverrideSettings &&

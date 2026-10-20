@@ -3,6 +3,7 @@ import {ArrowUpRight, Cake, Eye, Heart, Images} from "react-bootstrap-icons";
 import {NavLink} from "react-router";
 
 import type {CreatorDetails} from "../../../interfaces/Creator.ts";
+import {useTranslation} from "../../../hooks/useTranslation.ts";
 
 const Socials: {[key: string]: string} = {
   "discord": "Discord",
@@ -17,14 +18,16 @@ interface CreatorCardProps {
 }
 
 export const CreatorCard = ({creator}: CreatorCardProps) => {
+  const {creatorName} = useTranslation();
+  
   return (
     <Card className="w-100">
       <Card.Body className="row">
         <div className="col-12 col-sm-6">
           <h3>
-            <Card.Title>{creator.creatorName}</Card.Title>
+            <Card.Title>{creatorName(creator)}</Card.Title>
           </h3>
-          <Card.Subtitle>{creator.creatorNameLatinized}</Card.Subtitle>
+          <Card.Subtitle className="mb-2">{creator.creatorNameLatinized}</Card.Subtitle>
           <p className="d-flex mb-2 gap-2 align-items-center">
             <Cake />
             <span className="visually-hidden">Created on</span>

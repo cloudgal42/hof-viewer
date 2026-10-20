@@ -1,6 +1,7 @@
 import {useLocalStorage} from "usehooks-ts";
 import type {TranslationSettings} from "../interfaces/TranslationSettings.ts";
 import type {Dispatch, SetStateAction} from "react";
+import {CONFIG} from "../config/Config.ts";
 
 type useTranslationSettingsReturnType = [
   TranslationSettings,
@@ -9,14 +10,8 @@ type useTranslationSettingsReturnType = [
 ];
 
 export const useTranslationSettings = (): useTranslationSettingsReturnType => {
-  const defaultSettings: TranslationSettings = {
-    displayCityNames: "both",
-    translateCityType: "transliterate",
-    translateCreatorType: "transliterate",
-  };
-
   const [translationSettings, setTranslationSettings] = useLocalStorage<TranslationSettings>(
-    "translationSettings", defaultSettings);
+    "translationSettings", CONFIG.defaultTranslationSettings);
 
-  return [translationSettings, setTranslationSettings, defaultSettings];
+  return [translationSettings, setTranslationSettings, CONFIG.defaultTranslationSettings];
 }
