@@ -51,7 +51,6 @@ export const Details = (
     error: Error | null;
   },
 ) => {
-  console.log(cityDetails.renderConditions);
   return (
     <Card>
       <Card.Body>

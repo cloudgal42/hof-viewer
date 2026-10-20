@@ -270,8 +270,6 @@ export const ModList = ({ city }: ModListProps) => {
     );
   }
 
-  console.log("Selected categories", selectedCategories);
-
   if (
     new Date(city.createdAt).getTime() <
       new Date("2025-03-24T00:00:00.000Z").getTime() &&
