@@ -2,17 +2,13 @@ import {
   Alert,
   Button,
   Card,
-  Form,
   Spinner,
-  ToggleButton,
-  ToggleButtonGroup,
 } from "react-bootstrap";
-import { useContext, useState } from "react";
+import { useContext} from "react";
 import type { City, GroupedCities } from "../../../interfaces/City.ts";
 import { ErrorScreen } from "../../misc/ErrorScreen/ErrorScreen.tsx";
 import { ThemeContext } from "../../../context/ThemeContext.ts";
 import { useIntersectionObserver } from "usehooks-ts";
-import { useCityTrendsWorker } from "../../../hooks/useCityTrendsWorker.ts";
 import { Bar } from "react-chartjs-2";
 import {
   BarElement,
@@ -35,7 +31,11 @@ ChartJS.register(
 );
 
 import "../../../css/components/TrendsChart.css";
-import {useCityTrends} from "../../../hooks/useCityTrends.ts";
+import { useCityTrends } from "../../../hooks/useCityTrends.ts";
+import { TrendTypeToggle } from "./TrendTypeToggle.tsx";
+import { GroupBySelect } from "./GroupBySelect.tsx";
+import { useTrendsOptions } from "../../../hooks/useTrendsOptions.ts";
+import { CONFIG } from "../../../config/Config.ts";
 
 function getFormattedTrendType(trend: string) {
   switch (trend) {
@@ -48,10 +48,7 @@ function getFormattedTrendType(trend: string) {
   }
 }
 
-defaults.font.family =
-  'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",' +
-  ' "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", ' +
-  '"Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';
+defaults.font.family = CONFIG.chartFontFamily;
 
 interface CityTrendsProps {
   city: City | GroupedCities;
@@ -69,29 +66,19 @@ export const CityTrends = (
     : new Date().getTime();
   const currEpoch = new Date().getTime();
   const context = useContext(ThemeContext);
-  
+
   if (!context) {
-    throw new Error("Theme context is null.")
+    throw new Error("Theme context is null.");
   }
 
-  const [trendType, setTrendType] = useState<string>("views");
-  const [groupPeriod, setGroupPeriod] = useState<number>(() => {
-    if (currEpoch >= createdAtEpoch + (DAYS_IN_MILLISECONDS * 365 * 2)) {
-      return 30;
-    } else if (currEpoch >= createdAtEpoch + (DAYS_IN_MILLISECONDS * 6 * 30)) {
-      return 7;
-    }
+  const { trendType, setTrendType, groupPeriod, setGroupPeriod } =
+    useTrendsOptions(currEpoch, createdAtEpoch);
 
-    return 1;
-  });
-
-  // TODO: Consider if this entire component should become reusable
   const { isIntersecting, ref } = useIntersectionObserver({
     threshold: 0.4,
     freezeOnceVisible: true,
   });
 
-  // TODO: Rename this hook to smth more appropriate
   const {
     error,
     trendsData,
@@ -99,13 +86,13 @@ export const CityTrends = (
     isProcessing,
     isTrendsStale,
     refetch,
-    requireManualFetch
+    requireManualFetch,
   } = useCityTrends({
     enabled: isIntersecting,
     groupPeriod,
     trendType,
     creator: city.creator.creatorName,
-    city
+    city,
   });
 
   let trendsBody;
@@ -117,50 +104,7 @@ export const CityTrends = (
   const fontColor = context.theme === "dark" ? "#fff" : "#222";
   const gridColor = context.theme === "dark" ? { color: "#3a3a3a" } : {};
 
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        position: "top" as const,
-        labels: {
-          color: fontColor,
-        },
-      },
-      title: {
-        display: true,
-        text: chartName,
-        color: fontColor,
-      },
-      zoom: {
-        zoom: {
-          wheel: {
-            enabled: true,
-            modifierKey: "ctrl" as const,
-          },
-          pinch: { enabled: true },
-          limits: {
-            y: { min: "original", max: "original" },
-          },
-          mode: "x" as const,
-        },
-        pan: {
-          enabled: true,
-          mode: "x" as const,
-        },
-      },
-    },
-    scales: {
-      x: {
-        ticks: { color: fontColor },
-        grid: { ...gridColor },
-      },
-      y: {
-        ticks: { color: fontColor },
-        grid: { ...gridColor },
-      },
-    },
-  };
+  const options = CONFIG.trendsChartOptions(chartName, fontColor, gridColor);
 
   const labels = trendsData ? Object.keys(trendsData) : [""];
 
@@ -243,7 +187,8 @@ export const CityTrends = (
               <Alert.Link
                 as="button"
                 className="bg-transparent border-0 p-0"
-                onClick={() => refetch()}
+                onClick={() =>
+                  refetch()}
               >
                 <span className="text-decoration-underline">
                   Update trends?
@@ -288,58 +233,18 @@ export const CityTrends = (
         </h3>
         <section className="mb-2 d-flex flex-column flex-md-row justify-content-md-between align-items-md-center gap-2">
           <div>
-            <ToggleButtonGroup
-              type="radio"
-              className="w-100"
-              name="trendsType"
-              aria-label="Data type"
-              value={trendType}
-              onChange={(value) => setTrendType(value)}
-            >
-              <ToggleButton
-                value="views"
-                id="views"
-                variant="outline-primary"
-              >
-                Views
-              </ToggleButton>
-              <ToggleButton
-                value="uniqueViews"
-                id="uniqueViews"
-                variant="outline-primary"
-              >
-                Views (Unique)
-              </ToggleButton>
-              <ToggleButton
-                value="favorites"
-                id="favorites"
-                variant="outline-primary"
-              >
-                Favorites
-              </ToggleButton>
-            </ToggleButtonGroup>
+            <TrendTypeToggle
+              trendType={trendType}
+              setTrendType={setTrendType}
+            />
           </div>
           <div className="d-flex align-items-center gap-2 text-nowrap">
-            <label htmlFor="groupPeriod">Group by</label>
-            <div>
-              <Form.Select
-                name="groupPeriod"
-                id="groupPeriod"
-                value={groupPeriod}
-                onChange={(e) =>
-                  setGroupPeriod(parseInt(e.currentTarget.value))}
-              >
-                <option value="1">Days</option>
-                {currEpoch > createdAtEpoch + (DAYS_IN_MILLISECONDS * 7) &&
-                  <option value="7">Weeks</option>}
-                {currEpoch > createdAtEpoch + (DAYS_IN_MILLISECONDS * 30) &&
-                  <option value="30">1 Month</option>}
-                {currEpoch > createdAtEpoch + (DAYS_IN_MILLISECONDS * 30 * 6) &&
-                  <option value="180">6 Months</option>}
-                {currEpoch > createdAtEpoch + (DAYS_IN_MILLISECONDS * 365) &&
-                  <option value="365">1 Year</option>}
-              </Form.Select>
-            </div>
+            <GroupBySelect
+              groupPeriod={groupPeriod}
+              setGroupPeriod={setGroupPeriod}
+              currEpoch={currEpoch}
+              createdAtEpoch={createdAtEpoch}
+            />
           </div>
         </section>
         <section>
