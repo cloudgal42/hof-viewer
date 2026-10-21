@@ -108,7 +108,7 @@ export const Sidebar = ({ isOpened, setIsOpened }: SidebarProps) => {
         <hr />
         <div className="d-flex align-items-center justify-content-between">
           <span className="text-body-secondary">{CONFIG.appVersion}</span>
-          <ThemeDropdownBtn size="sm" />
+          <ThemeDropdownBtn size="sm" drop="up" align={{sm: "start"}} />
         </div>
       </Offcanvas>
     </aside>
