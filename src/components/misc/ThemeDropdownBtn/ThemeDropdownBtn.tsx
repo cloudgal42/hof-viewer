@@ -16,7 +16,7 @@ export const ThemeDropdownBtn = (
   
   return (
     <DropdownButton variant="link" align={align} size={size} title={
-      <Moon />
+      context.theme === "dark" ? <Moon size={16} /> : <Sun size={16} />
     }>
       <DropdownItem
         className="d-flex align-items-center justify-content-between"
