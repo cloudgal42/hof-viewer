@@ -7,8 +7,6 @@ import {
 } from "react-bootstrap-icons";
 import {CloseButton, DropdownButton, DropdownItem, Offcanvas} from "react-bootstrap";
 import { NavLink } from "react-router";
-import {useContext} from "react";
-import {ThemeContext} from "../../../context/ThemeContext.ts";
 import {ThemeDropdownBtn} from "../ThemeDropdownBtn/ThemeDropdownBtn.tsx";
 import {CONFIG} from "../../../config/Config.ts";
 
@@ -19,12 +17,12 @@ interface SidebarProps {
 
 export const Sidebar = ({ isOpened, setIsOpened }: SidebarProps) => {
   return (
-    <aside className="d-none d-lg-block flex-shrink-0">
+    <aside className="d-none d-lg-block flex-shrink-0 z-2">
       <Offcanvas
         show={isOpened}
         onHide={() => setIsOpened(false)}
         responsive="lg"
-        className="sidebar d-flex flex-column flex-shrink-0 p-3 border border-end bg-body"
+        className="sidebar d-flex flex-column flex-shrink-0 p-3 border-end bg-body"
       >
         <div className="d-flex justify-content-between align-items-center mb-0">
           <a
@@ -110,7 +108,7 @@ export const Sidebar = ({ isOpened, setIsOpened }: SidebarProps) => {
         <hr />
         <div className="d-flex align-items-center justify-content-between">
           <span className="text-body-secondary">{CONFIG.appVersion}</span>
-          <ThemeDropdownBtn size="sm" />
+          <ThemeDropdownBtn size="sm" drop="up" align={{sm: "start"}} />
         </div>
       </Offcanvas>
     </aside>

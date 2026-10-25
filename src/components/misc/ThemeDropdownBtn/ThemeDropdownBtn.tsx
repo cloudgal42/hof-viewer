@@ -3,9 +3,10 @@ import {DropdownButton, DropdownItem} from "react-bootstrap";
 import {useContext} from "react";
 import {ThemeContext} from "../../../context/ThemeContext.ts";
 import type {AlignType} from "react-bootstrap/types";
+import type {DropDirection} from "react-bootstrap/DropdownContext";
 
 export const ThemeDropdownBtn = (
-  {size, align} : {size?: "sm" | "lg" | undefined, align?: AlignType}
+  {size, align, drop} : {size?: "sm" | "lg" | undefined, align?: AlignType, drop?: DropDirection}
 ) => {
   // TODO: Put this behind a provider instead.
   const context = useContext(ThemeContext);
@@ -15,8 +16,8 @@ export const ThemeDropdownBtn = (
   }
   
   return (
-    <DropdownButton variant="link" align={align} size={size} title={
-      <Moon />
+    <DropdownButton variant="link" drop={drop} align={align} size={size} title={
+      context.theme === "dark" ? <Moon size={16} /> : <Sun size={16} />
     }>
       <DropdownItem
         className="d-flex align-items-center justify-content-between"
