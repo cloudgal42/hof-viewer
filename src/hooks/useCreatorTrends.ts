@@ -45,7 +45,7 @@ export const useCreatorTrends = (
   
   const runWorker = Boolean(enabled && data && data.views && data.views.length > 0);
   
-  const {data: viewsData, isProcessing: isViewsProcessing} =
+  const {data: viewsData, isProcessing: isViewsProcessing, progress: viewsProgress} =
     useTrendsWorker({
       data: workerInput,
       groupPeriod,
@@ -53,7 +53,7 @@ export const useCreatorTrends = (
       enabled: runWorker,
     });
   
-  const {data: uniqueViewsData, isProcessing: isUniqueViewsProcessing} =
+  const {data: uniqueViewsData, isProcessing: isUniqueViewsProcessing, progress: uniqueViewsProgress} =
     useTrendsWorker({
       data: workerInput,
       groupPeriod,
@@ -61,7 +61,7 @@ export const useCreatorTrends = (
       enabled: runWorker,
     });
   
-  const {data: favoritesData, isProcessing: isFavoritesProcessing} =
+  const {data: favoritesData, isProcessing: isFavoritesProcessing, progress: favoritesProgress} =
     useTrendsWorker({
       data: workerInput,
       groupPeriod,
@@ -79,9 +79,16 @@ export const useCreatorTrends = (
       ? uniqueViewsData
       : viewsData;
   
+  const progress = trendType === "favorites"
+    ? favoritesProgress
+    : trendType === "uniqueViews"
+      ? uniqueViewsProgress
+      : viewsProgress;
+  
   return {
     isProcessing,
     isFetching,
+    progress,
     data,
     trendsData,
     error,

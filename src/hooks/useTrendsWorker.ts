@@ -1,5 +1,5 @@
 import {useEffect, useRef, useState} from "react";
-import type {TrendsData, TrendsWorkerInput, WorkerParams} from "../interfaces/TrendsData.ts";
+import type {TrendsData, TrendsWorkerInput, WorkerMsg, WorkerParams} from "../interfaces/TrendsData.ts";
 
 export const useTrendsWorker = (
   {
@@ -15,6 +15,7 @@ export const useTrendsWorker = (
   },
 ) => {
   const [groupedCounts, setGroupedCounts] = useState<TrendsData | null>(null);
+  const [progress, setProgress] = useState<number>(0);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const viewsWorkerRef = useRef<Worker>(null);
@@ -37,12 +38,19 @@ export const useTrendsWorker = (
 
     viewsWorkerRef.current.postMessage(params);
     // Only show loading state if its taking longer than 67ms
-    const timerId = setTimeout(() => setIsProcessing(true), 67);
+    const timerId = setTimeout(() => {
+      setIsProcessing(true);
+      setProgress(0);
+    }, 67);
 
-    viewsWorkerRef.current.onmessage = (e) => {
-      setGroupedCounts(e.data);
-      clearTimeout(timerId);
-      setIsProcessing(false);
+    viewsWorkerRef.current.onmessage = (e: MessageEvent<WorkerMsg>) => {
+      if (e.data.type === "calculationCompleted") {
+        setGroupedCounts(e.data.payload);
+        clearTimeout(timerId);
+        setIsProcessing(false);
+      } else if (e.data.type === "progress") {
+        setProgress(e.data.payload.progressPercentage);
+      }
     };
 
     return () => {
@@ -51,5 +59,5 @@ export const useTrendsWorker = (
     };
   }, [data, groupPeriod, trendType, enabled]);
 
-  return {data: groupedCounts, isProcessing};
+  return {data: groupedCounts, isProcessing, progress};
 };

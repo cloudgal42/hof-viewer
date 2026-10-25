@@ -1,7 +1,7 @@
 import {
   Alert,
   Button,
-  Card,
+  Card, ProgressBar,
   Spinner,
 } from "react-bootstrap";
 import {useContext, useEffect} from "react";
@@ -73,6 +73,7 @@ export const CityTrends = (
     error,
     trendsData,
     isFetching,
+    progress,
     isProcessing,
     isTrendsStale,
     refetch,
@@ -194,14 +195,31 @@ export const CityTrends = (
               requireLoadingStatus && "spinner-container-active"
             } position-absolute top-50 start-50 translate-middle d-flex flex-column align-items-center`}
           >
-            <Spinner
-              animation="border"
-              aria-describedby="spinnerLabel"
-              role="status"
-            />
-            <p className="mt-2 text-center" id="spinnerLabel">
-              {isProcessing ? "Processing stats..." : "Fetching data..."}
-            </p>
+            {isProcessing
+              ? (
+                <>
+                  <ProgressBar
+                    className="w-100"
+                    id="trendProgress"
+                    now={progress}
+                  />
+                  <label htmlFor="trendProgress" className="mt-2 text-center" id="spinnerLabel">
+                    Processing stats... {Math.round(progress)}%
+                  </label>
+                </>
+              )
+              : (
+                <>
+                  <Spinner
+                    animation="border"
+                    aria-describedby="spinnerLabel"
+                    role="status"
+                  />
+                  <p className="mt-2 text-center" id="spinnerLabel">
+                    Fetching data...
+                  </p>
+                </>
+              )}
           </div>
           <div
             className={`position-relative trends-chart-container ${

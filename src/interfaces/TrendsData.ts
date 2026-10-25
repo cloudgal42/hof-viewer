@@ -15,3 +15,11 @@ export interface TrendsWorkerInput {
   views: Views[] | undefined;
   favorites: Favorites[] | undefined;
 }
+
+export type WorkerMsg = {
+  type: "progress";
+  payload: {progressPercentage: number};
+} | {
+  type: "calculationCompleted";
+  payload: TrendsData;
+}
