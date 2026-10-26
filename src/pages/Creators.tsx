@@ -81,7 +81,7 @@ const Creators = () => {
 
   let insightsContent;
 
-  if (isFetchingCities || !creatorCities && !error) {
+  if (isFetchingCities || (!creatorCities && !error && creator)) {
     insightsContent = <PlaceholderInsights />;
   } else if (cityFetchErr) {
     insightsContent = (
