@@ -95,7 +95,7 @@ const App = () => {
                 <span className="mb-0 fs-3 fw-semibold">HoF</span>
               </Navbar.Brand>
             </div>
-            <ThemeDropdownBtn align={{sm: "start"}} />
+            <ThemeDropdownBtn align="end" />
           </div>
         </Navbar>
         <ToTopBtn />
