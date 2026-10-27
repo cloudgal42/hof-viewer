@@ -1,5 +1,5 @@
 export const CONFIG = {
-  appVersion: "v1.5.1",
+  appVersion: "v1.5.2",
   defaultTranslationSettings: {
     displayCityNames: "both",
     translateCityType: "transliterate",
