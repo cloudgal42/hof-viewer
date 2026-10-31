@@ -23,11 +23,19 @@ export const CardImg = (props: CardImgTopProps) => {
   )
 
   return (
+    // Height, width and style with aspect ratio is added on placeholder
+    // to avoid brief layout shift when image is first mounted
     <LazyLoadImage
       {...props}
       onError={() => setIsError(true)}
       placeholder={
-        <img src={PlaceholderImg} alt=""/>
+        <img
+          src={PlaceholderImg}
+          height={props.height}
+          width={props.width}
+          style={props.style}
+          alt=""
+        />
       }
     />
   )

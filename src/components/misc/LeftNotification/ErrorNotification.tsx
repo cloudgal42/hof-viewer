@@ -17,7 +17,7 @@ export const ErrorNotification = ({
       <Alert
         variant="danger"
         className="position-fixed d-flex align-items-center gap-2"
-        style={{bottom: "5px", left: "10px", width: "fit-content"}}
+        style={{bottom: "5px", left: "10px", width: "fit-content", zIndex: "6"}}
         dismissible
       >
         <ExclamationCircle />
