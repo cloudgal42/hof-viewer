@@ -37,6 +37,7 @@ export const StackedChart = ({stats} : {stats: PercentageStat[]}) => {
   const [clickedBar, setClickedBar] = useState<PercentageStat>();
 
   const [visibility, setVisibility] = useState(true);
+  const [canZoomOut, setCanZoomOut] = useState<boolean>(false);
 
   // options is memonized to prevent zoom level being reset whenever user clicks on the graph
   const options = useMemo(() => ({
@@ -47,15 +48,22 @@ export const StackedChart = ({stats} : {stats: PercentageStat[]}) => {
         zoom: {
           wheel: {enabled: true},
           pinch: {enabled: true},
-          limits: {
-            y: {min: "original", max: "original"},
-          },
           mode: 'x' as const,
+          onZoomComplete: () => {
+            const chart = chartRef.current;
+            if (!chart) return;
+            
+            setCanZoomOut(chart.getZoomLevel() > 1.01);
+          }
         },
         pan: {
           enabled: true,
           mode: 'x' as const,
         },
+        limits: {
+          y: {min: "original", max: "original"},
+          x: {min: 1, max: 100},
+        }
       },
     },
     indexAxis: "y" as const,
@@ -96,12 +104,14 @@ export const StackedChart = ({stats} : {stats: PercentageStat[]}) => {
 
     if (chart) {
       chart.zoom(1 + value, "zoom");
+      setCanZoomOut(chart.getZoomLevel() > 1.01);
     }
   }
 
   return (
     <>
       <section className="w-100 chart-container">
+        {/* @ts-expect-error There appears to be type mismatches Yet Again. */}
         <Bar ref={chartRef} options={options} data={data}/>
       </section>
       <section className="mb-3">
@@ -130,6 +140,7 @@ export const StackedChart = ({stats} : {stats: PercentageStat[]}) => {
             variant="outline-primary"
             onClick={() => handleZoom(-0.25)}
             className="d-flex align-items-center justify-content-center"
+            disabled={!canZoomOut}
           >
             <span className="visually-hidden">Zoom Out</span>
             <ZoomOut />
