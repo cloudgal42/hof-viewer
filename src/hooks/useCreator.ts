@@ -28,5 +28,6 @@ export const useCreator = (creator: string | null) => {
     staleTime: 30 * 60 * 1000,
     refetchOnWindowFocus: false,
     retry: false,
+    enabled: Boolean(creator),
   });
 }

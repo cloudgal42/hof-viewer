@@ -347,10 +347,10 @@ export const GroupedCitiesSection = () => {
         >
           <div className="w-100 mb-2">
             <legend className="fs-6 mb-0 fw-bold">
-              Manual override settings
+              Override presets
             </legend>
             <Form.Text className="d-inline-block mt-0 lh-2">
-              Override the grouped cities behavior. Each creator is associated
+              Override the default grouping behavior. Each creator is associated
               with a different override preset.
             </Form.Text>
           </div>

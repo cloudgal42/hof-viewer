@@ -20,7 +20,6 @@ import Chirper from "../assets/Chirper.svg";
 import { useDebounceCallback } from "usehooks-ts";
 import Fuse from "fuse.js";
 import { useGroupedCitiesSettings } from "../hooks/useGroupedCitiesSettings.ts";
-import { useGroupedCitiesGenSettings } from "../hooks/useGroupedCitiesGenSettings.ts";
 
 const DEFAULT_CITIES_PER_PAGE = 18;
 
