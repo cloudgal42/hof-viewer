@@ -273,7 +273,12 @@ const CityDetails = () => {
           id="details"
           className={`mt-3 position-relative ${(isLoadMoreHovered && !isLastPage) && "load-more-hovered"}`}
         >
-          <Details cityDetails={cityDetails} error={error} isFetching={isFetching}/>
+          <Details
+            cityDetails={cityDetails}
+            error={error}
+            isFetching={isFetching}
+            hideRank={Array.isArray(cityDetails?.imageUrlFHD)}
+          />
         </section>
         <section
           id="trends"

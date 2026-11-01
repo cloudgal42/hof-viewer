@@ -120,7 +120,8 @@ export function groupCities(
         cities: (!screenshotStat.combinedStats?.cities)
           ? []
           : screenshotStat.combinedStats.cities,
-        isUsingCustomOverrideSettings: screenshot.isUsingModifiedSettings
+        isUsingCustomOverrideSettings: screenshot.isUsingModifiedSettings,
+        rank: null,
       };
 
       screenshotStat.combinedStats?.cities.push(screenshot);

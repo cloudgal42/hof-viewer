@@ -1,4 +1,4 @@
-import type { City, GroupedCities } from "../../../interfaces/City.ts";
+import type {City, GroupedCities, ScreenshotRank} from "../../../interfaces/City.ts";
 import { Card, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { PlaceholderFeatModCard } from "../FeatModCard/PlaceholderFeatModCard.tsx";
 import { FeatModCard } from "../FeatModCard/FeatModCard.tsx";
@@ -20,6 +20,8 @@ import { ModList } from "../Playset/ModList.tsx";
 import { RenderSettings } from "../RenderSettings/RenderSettings.tsx";
 import Markdown from "react-markdown";
 import {Conditions} from "../Conditions/Conditions.tsx";
+import {ScreenshotRankBadge} from "../../screenshot/ScreenshotRankBadge/ScreenshotRankBadge.tsx";
+import {getRankColor} from "../../../utils/RankColor.ts";
 
 const cityMilestones = [
   "Tiny Village",
@@ -44,16 +46,44 @@ const cityMilestones = [
   "Megalopolis",
 ];
 
+function rankTopPercent(rank: ScreenshotRank) {
+  if (rank === "diamond") return "Top 3%";
+  if (rank === "platinum") return "Top quarter";
+  if (rank === "gold") return "Top half";
+  if (rank === "silver") return "Top three quarters";
+  if (rank === "bronze") return "Bottom quarter";
+  return "FIXME%";
+}
+
 export const Details = (
-  { cityDetails, isFetching, error }: {
+  { cityDetails, isFetching, error, hideRank }: {
     cityDetails: City | GroupedCities;
     isFetching: boolean;
     error: Error | null;
+    hideRank?: boolean;
   },
 ) => {
   return (
     <Card>
       <Card.Body>
+        {!hideRank && cityDetails.rank && (
+          <section className="mb-3">
+            <h3>
+              <Card.Title>Rank</Card.Title>
+            </h3>
+            <div className="d-flex align-items-center gap-2">
+              <ScreenshotRankBadge rank={cityDetails.rank} size={36} />
+              <div>
+                <p className="fw-bold mb-0" style={{color: getRankColor(cityDetails.rank)}}>
+                  {cityDetails.rank.charAt(0).toUpperCase() + cityDetails.rank.slice(1, cityDetails.rank.length)}
+                </p>
+                <small className="mb-0 text-secondary-emphasis">
+                  {rankTopPercent(cityDetails.rank)} of ranked screenshots.{" "}
+                </small>
+              </div>
+            </div>
+          </section>
+        )}
         {cityDetails.showcasedModId && (
           <section className="mb-3">
             <h3>

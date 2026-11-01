@@ -52,8 +52,11 @@ export interface City {
   showcasedModId?: number;
   favorites?: Favorites[];
   views?: Views[];
+  rank: ScreenshotRank;
   __favorited: boolean;
 }
+
+export type ScreenshotRank = null | "bronze" | "silver" | "gold" | "platinum" | "diamond";
 
 // May not accurately reflect the schema.
 export type RenderConditions = {
@@ -109,10 +112,14 @@ export type RenderConditions = {
 } | Record<string, never>
 
 
-export interface GroupedCities extends Omit<City, "imageUrlFHD" | "imageUrl4K" | "imageUrlThumbnail"> {
+export interface GroupedCities extends Omit<
+  City, "imageUrlFHD" | "imageUrl4K" | "imageUrlThumbnail" | "rank"
+> {
   imageUrlFHD: string[];
   imageUrl4K: string[];
   imageUrlThumbnail: string[];
   cities: City[];
   isUsingCustomOverrideSettings: boolean;
+  // For now rank is unavailable for grouped cities
+  rank: null;
 }

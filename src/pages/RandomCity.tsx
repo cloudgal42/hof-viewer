@@ -252,6 +252,7 @@ const RandomCity = () => {
             cityDetails={data}
             error={error}
             isFetching={isFetching}
+            hideRank
           />
         </section>
       </div>

@@ -1,5 +1,5 @@
 import { Badge, Card, OverlayTrigger, Tooltip } from "react-bootstrap";
-import { Eye, Heart, Images, Person } from "react-bootstrap-icons";
+import {Diamond, Eye, Gem, Heart, Images, Person} from "react-bootstrap-icons";
 import { NavLink } from "react-router";
 import type { City, GroupedCities } from "../../../interfaces/City.ts";
 import { CreatorPreviewTrigger } from "../../misc/CreatorPreview/CreatorPreviewTrigger.tsx";
@@ -8,6 +8,7 @@ import { CardImg } from "../../misc/CardImg/CardImg.tsx";
 import "react-lazy-load-image-component/src/effects/black-and-white.css";
 import "../../../css/components/CityCard.css";
 import {useTranslation} from "../../../hooks/useTranslation.ts";
+import {ScreenshotRankBadge} from "../../screenshot/ScreenshotRankBadge/ScreenshotRankBadge.tsx";
 
 interface CityCardProps {
   city: City | GroupedCities;
@@ -28,6 +29,8 @@ export const CityCard = ({ city, setCity }: CityCardProps) => {
   } else {
     thumbnailImgUrl = city.imageUrlThumbnail;
   }
+  
+  const displaySubCityName = subCityName(city);
 
   return (
     <Card className="city-card">
@@ -67,12 +70,23 @@ export const CityCard = ({ city, setCity }: CityCardProps) => {
           )}
         </div>
         <Card.Body>
-          <h3>
-            <Card.Title>{titleCityName(city)}</Card.Title>
-          </h3>
-          <Card.Subtitle className="mb-1">
-            {subCityName(city)}
-          </Card.Subtitle>
+          <div className="mb-1 gap-1 d-flex align-items-center justify-content-between">
+            <div>
+              <Card.Title as="h3" className="fs-5 mb-0">
+                {titleCityName(city)}
+              </Card.Title>
+              {displaySubCityName && (
+                <Card.Subtitle className="mt-1 mb-0">
+                  {displaySubCityName}
+                </Card.Subtitle>
+              )}
+            </div>
+            {!Array.isArray(city.imageUrlThumbnail) && (
+              <div>
+                <ScreenshotRankBadge rank={city.rank} size={24} />
+              </div>
+            )}
+          </div>
           <div style={{ fontSize: "0.9rem" }} className="text-muted">
             <CreatorPreviewTrigger
               creator={city.creator}
