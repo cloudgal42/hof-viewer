@@ -44,6 +44,14 @@ $carousel-transition-duration: 0.3s;
   --bs-focus-ring-width: 0.1rem;
 }
 
+.placeholder:not(.placeholder-sm) {
+  @extend .rounded-2;
+}
+
+.placeholder-sm {
+  @extend .rounded-1;
+}
+
 html, body, #root {
   min-height: 100vh;
 }
