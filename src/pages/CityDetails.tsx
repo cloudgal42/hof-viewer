@@ -1,6 +1,5 @@
-import {Alert, Badge, Button, OverlayTrigger, Tooltip} from "react-bootstrap";
-import {NavLink, useOutletContext, useParams, useSearchParams} from "react-router";
-import type {ContextType} from "../App.tsx";
+import {Badge, Button, OverlayTrigger, Tooltip} from "react-bootstrap";
+import {NavLink, useLocation, useParams, useSearchParams} from "react-router";
 import {ChevronDown, InfoCircle, Share} from "react-bootstrap-icons";
 import {lazy, Suspense, useState} from "react";
 import {DEFAULT_IMAGES_PER_PAGE} from "../components/details/CityGallery/CityGallery.tsx";
@@ -10,7 +9,7 @@ import {PlaceholderDetails} from "../components/details/Details/PlaceholderDetai
 import {CityTrends} from "../components/details/CityTrends/CityTrends.tsx";
 import {ErrorScreen} from "../components/misc/ErrorScreen/ErrorScreen.tsx";
 import {useQuery} from "@tanstack/react-query";
-import type {City} from "../interfaces/City.ts";
+import type {City, GroupedCities} from "../interfaces/City.ts";
 import {CityInsights} from "../components/details/CityInsights/CityInsights.tsx";
 import {useCreatorCities} from "../hooks/useCreatorCities.ts";
 import {groupCities} from "../utils/GroupCities.ts";
@@ -32,15 +31,14 @@ import {useTranslation} from "../hooks/useTranslation.ts";
 const CityGallery = lazy(() => import("../components/details/CityGallery/CityGallery.tsx"));
 
 const CityDetails = () => {
-  const {
-    city,
-  } = useOutletContext<ContextType>();
-
   const [page, setPage] = useState<number>(1);
   const [isLoadMoreHovered, setIsLoadMoreHovered] = useState<boolean>(false);
 
+  const location = useLocation();
   const [searchParams] = useSearchParams();
   const cityParam = useParams().city;
+  
+  const city = location.state.placeholderData as City | GroupedCities | null;
   
   const {
     titleCityName,

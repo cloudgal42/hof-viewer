@@ -42,10 +42,6 @@ const Home = () => {
     setIsDebouncing(false);
   }, 500);
 
-  const {
-    setCity,
-  } = useOutletContext<ContextType>();
-
   const { error, data, isFetching } = useCreatorCities(creator);
 
   const { currCreatorSettings } = useGroupedCitiesSettings(creator);
@@ -205,7 +201,6 @@ const Home = () => {
           <CityCard
             key={city.id}
             city={city}
-            setCity={setCity}
           />
         ))}
       </InfiniteScroll>

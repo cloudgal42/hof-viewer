@@ -1,5 +1,12 @@
 import { Badge, Card, OverlayTrigger, Tooltip } from "react-bootstrap";
-import {Diamond, Eye, Gem, Heart, Images, Person} from "react-bootstrap-icons";
+import {
+  Diamond,
+  Eye,
+  Gem,
+  Heart,
+  Images,
+  Person,
+} from "react-bootstrap-icons";
 import { NavLink } from "react-router";
 import type { City, GroupedCities } from "../../../interfaces/City.ts";
 import { CreatorPreviewTrigger } from "../../misc/CreatorPreview/CreatorPreviewTrigger.tsx";
@@ -7,15 +14,14 @@ import { CardImg } from "../../misc/CardImg/CardImg.tsx";
 
 import "react-lazy-load-image-component/src/effects/black-and-white.css";
 import "../../../css/components/CityCard.css";
-import {useTranslation} from "../../../hooks/useTranslation.ts";
-import {ScreenshotRankBadge} from "../../screenshot/ScreenshotRankBadge/ScreenshotRankBadge.tsx";
+import { useTranslation } from "../../../hooks/useTranslation.ts";
+import { ScreenshotRankBadge } from "../../screenshot/ScreenshotRankBadge/ScreenshotRankBadge.tsx";
 
 interface CityCardProps {
   city: City | GroupedCities;
-  setCity: (value: City | GroupedCities) => void;
 }
 
-export const CityCard = ({ city, setCity }: CityCardProps) => {
+export const CityCard = ({ city }: CityCardProps) => {
   const {
     titleCityName,
     subCityName,
@@ -29,7 +35,7 @@ export const CityCard = ({ city, setCity }: CityCardProps) => {
   } else {
     thumbnailImgUrl = city.imageUrlThumbnail;
   }
-  
+
   const displaySubCityName = subCityName(city);
 
   return (
@@ -39,7 +45,7 @@ export const CityCard = ({ city, setCity }: CityCardProps) => {
         to={isCitiesGrouped
           ? `/city/${city.cityName}?groupStatus=on&creator=${city.creator.creatorName}`
           : `/city/${city.id}?groupStatus=off`}
-        onClick={() => setCity(city)}
+        state={{placeholderData: city}}
       >
         <div className="position-relative overflow-hidden">
           <CardImg

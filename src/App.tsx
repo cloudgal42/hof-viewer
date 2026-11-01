@@ -6,19 +6,13 @@ import { HamburgerButton } from "./components/misc/Hamburger/HamburgerButton.tsx
 import { Outlet, useLocation } from "react-router";
 import { useLocalStorage } from "usehooks-ts";
 import { ToTopBtn } from "./components/misc/ToTopButton/ToTopBtn.tsx";
-import type { City, GroupedCities } from "./interfaces/City.ts";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ErrorBoundary } from "react-error-boundary";
 import { ThemeContext } from "./context/ThemeContext.ts";
-import { CrashFallback } from "./components/misc/CrashFallback/CrashFallback.tsx";
-import { HelmetProvider } from "@dr.pogodin/react-helmet";
 import { useRandomCityGc } from "./hooks/useRandomCityGc.ts";
 import {ThemeDropdownBtn} from "./components/misc/ThemeDropdownBtn/ThemeDropdownBtn.tsx";
 // import {Screenshots} from "./temp/screenshots.ts";
 
 export type ContextType = {
-  city?: City | GroupedCities;
-  setCity: (newCity: City | GroupedCities) => void;
   setIsDarkMode: (isDarkMode: boolean) => void;
   startGc: () => void;
   gcCount: number;
@@ -37,8 +31,6 @@ if (import.meta.env.DEV) {
 }
 
 const App = () => {
-  const [city, setCity] = useState<City | GroupedCities | undefined>();
-
   const [isAsideOpened, setIsAsideOpened] = useState<boolean>(false);
   const [isDarkMode, setIsDarkMode] = useLocalStorage<boolean>(
     "isDarkMode",
@@ -60,8 +52,6 @@ const App = () => {
   }, [isDarkMode]);
 
   const contextParams = {
-    city,
-    setCity,
     startGc,
     gcCount,
     setIsDarkMode,
