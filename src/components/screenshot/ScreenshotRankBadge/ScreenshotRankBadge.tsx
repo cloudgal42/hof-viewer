@@ -1,26 +1,18 @@
 import type { ScreenshotRank } from "../../../interfaces/City.ts";
 import { Gem, Question, StarFill } from "react-bootstrap-icons";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { getRankColor } from "../../../utils/RankColor.ts";
 
 export const ScreenshotRankBadge = (
   { rank, size }: { rank: ScreenshotRank; size?: number },
 ) => (
-  <OverlayTrigger
-    overlay={
-      <Tooltip>
-        {rank
-          ? "Rank: " + rank.charAt(0).toUpperCase() + rank.slice(1, rank.length)
-          : "No rank"}
-      </Tooltip>
-    }
-  >
+  <>
     {rank === "diamond"
       ? <Gem size={size} color="#87CEEB" />
       : rank === null
       ? <Question
           color="gray"
           className="border border-2 rounded-circle"
+          title="No rank"
           size={size}
         />
       : (
@@ -35,7 +27,8 @@ export const ScreenshotRankBadge = (
             borderColor: getRankColor(rank),
           }}
           color={getRankColor(rank)}
+          title={"Rank: " + rank.charAt(0).toUpperCase() + rank.slice(1, rank.length)}
         />
       )}
-  </OverlayTrigger>
+  </>
 );
