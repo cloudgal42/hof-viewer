@@ -1,27 +1,31 @@
-import {useCreatorTrends} from "../../../hooks/useCreatorTrends.ts";
-import {Alert, Button, Card, Spinner} from "react-bootstrap";
-import {TrendTypeToggle} from "../../details/CityTrends/TrendTypeToggle.tsx";
-import {GroupBySelect} from "../../details/CityTrends/GroupBySelect.tsx";
-import {useIntersectionObserver} from "usehooks-ts";
-import {useTrendsOptions} from "../../../hooks/useTrendsOptions.ts";
-import type {CreatorDetails} from "../../../interfaces/Creator.ts";
-import {CONFIG} from "../../../config/Config.ts";
-import {ErrorScreen} from "../../misc/ErrorScreen/ErrorScreen.tsx";
-import {Bar} from "react-chartjs-2";
-import {formatChartEntries, formatChartLabels, getFormattedTrendType} from "../../../utils/TrendFormat.ts";
-import {useContext, useEffect} from "react";
-import {ThemeContext} from "../../../context/ThemeContext.ts";
+import { useCreatorTrends } from "../../../hooks/useCreatorTrends.ts";
+import {Alert, Button, Card, ProgressBar, Spinner} from "react-bootstrap";
+import { TrendTypeToggle } from "../../details/CityTrends/TrendTypeToggle.tsx";
+import { GroupBySelect } from "../../details/CityTrends/GroupBySelect.tsx";
+import { useIntersectionObserver } from "usehooks-ts";
+import { useTrendsOptions } from "../../../hooks/useTrendsOptions.ts";
+import type { CreatorDetails } from "../../../interfaces/Creator.ts";
+import { CONFIG } from "../../../config/Config.ts";
+import { ErrorScreen } from "../../misc/ErrorScreen/ErrorScreen.tsx";
+import { Bar } from "react-chartjs-2";
+import {
+  formatChartEntries,
+  formatChartLabels,
+  getFormattedTrendType,
+} from "../../../utils/TrendFormat.ts";
+import { useContext, useEffect } from "react";
+import { ThemeContext } from "../../../context/ThemeContext.ts";
 
 import "../../../css/components/TrendsChart.css";
 
 const DAYS_IN_MILLISECONDS = 86400000;
 
 export const CreatorTrends = (
-  {creator, isLoading, fetchError} : {
-    creator: CreatorDetails,
-    isLoading: boolean,
-    fetchError: Error | null
-  }
+  { creator, isLoading, fetchError }: {
+    creator: CreatorDetails;
+    isLoading: boolean;
+    fetchError: Error | null;
+  },
 ) => {
   const createdAtEpoch = creator?.createdAt
     ? new Date(creator.createdAt).getTime()
@@ -31,38 +35,44 @@ export const CreatorTrends = (
     threshold: 0.4,
     freezeOnceVisible: true,
   });
-  
+
   const context = useContext(ThemeContext);
-  
+
   if (!context) {
     throw new Error("Theme context is null.");
   }
-  
+
   const { trendType, setTrendType, groupPeriod, setGroupPeriod } =
     useTrendsOptions(currEpoch, createdAtEpoch);
-  
+
   const {
-    refetch, trendsData, isFetching, isProcessing, error, requireManualFetch
+    refetch,
+    trendsData,
+    isFetching,
+    isProcessing,
+    error,
+    requireManualFetch,
+    progress,
   } = useCreatorTrends({
     creator: creator.creatorName,
     groupPeriod,
     enabled: isIntersecting,
     trendType,
   });
-  
+
   let trendsBody;
-  
+
   const chartName = `${
     getFormattedTrendType(trendType)
   } per ${groupPeriod} day(s)`;
-  
+
   const fontColor = context.theme === "dark" ? "#fff" : "#222";
   const gridColor = context.theme === "dark" ? { color: "#3a3a3a" } : {};
-  
+
   const options = CONFIG.trendsChartOptions(chartName, fontColor, gridColor);
-  
+
   const labels = formatChartLabels(trendsData, groupPeriod);
-  
+
   const trendsDataForChart = {
     labels,
     datasets: [
@@ -75,9 +85,9 @@ export const CreatorTrends = (
       },
     ],
   };
-  
+
   const requireLoadingStatus = isLoading || isFetching || isProcessing;
-  
+
   if (requireManualFetch) {
     trendsBody = (
       <Alert variant="warning" className="my-3">
@@ -156,14 +166,31 @@ export const CreatorTrends = (
               requireLoadingStatus && "spinner-container-active"
             } position-absolute top-50 start-50 translate-middle d-flex flex-column align-items-center`}
           >
-            <Spinner
-              animation="border"
-              aria-describedby="spinnerLabel"
-              role="status"
-            />
-            <p className="mt-2 text-center" id="spinnerLabel">
-              {isProcessing ? "Processing stats..." : "Fetching data..."}
-            </p>
+            {isProcessing
+              ? (
+                <>
+                  <ProgressBar
+                    className="w-100"
+                    id="trendProgress"
+                    now={progress}
+                  />
+                  <label htmlFor="trendProgress" className="mt-2 text-center" id="spinnerLabel">
+                    Processing stats... {Math.round(progress)}%
+                  </label>
+                </>
+              )
+              : (
+                <>
+                  <Spinner
+                    animation="border"
+                    aria-describedby="spinnerLabel"
+                    role="status"
+                  />
+                  <p className="mt-2 text-center" id="spinnerLabel">
+                    Fetching data...
+                  </p>
+                </>
+              )}
           </div>
           <div
             className={`position-relative trends-chart-container ${
@@ -176,7 +203,7 @@ export const CreatorTrends = (
       </>
     );
   }
-  
+
   return (
     <Card ref={ref}>
       <Card.Body>
@@ -204,5 +231,5 @@ export const CreatorTrends = (
         </section>
       </Card.Body>
     </Card>
-  )
-}
+  );
+};

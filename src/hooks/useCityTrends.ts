@@ -40,7 +40,7 @@ export const useCityTrends = (
     views: cityWithTrends.views
   } : null;
   
-  const {data: viewsData, isProcessing: isViewsProcessing} =
+  const {data: viewsData, isProcessing: isViewsProcessing, progress: viewsProgress} =
     useTrendsWorker({
       data: workerInput,
       groupPeriod,
@@ -48,7 +48,7 @@ export const useCityTrends = (
       enabled: runWorker,
     });
 
-  const {data: uniqueViewsData, isProcessing: isUniqueViewsProcessing} =
+  const {data: uniqueViewsData, isProcessing: isUniqueViewsProcessing, progress: uniqueViewsProgress} =
     useTrendsWorker({
       data: workerInput,
       groupPeriod,
@@ -56,7 +56,7 @@ export const useCityTrends = (
       enabled: runWorker,
     });
 
-  const {data: favoritesData, isProcessing: isFavoritesProcessing} =
+  const {data: favoritesData, isProcessing: isFavoritesProcessing, progress: favoritesProgress} =
     useTrendsWorker({
       data: workerInput,
       groupPeriod,
@@ -73,6 +73,12 @@ export const useCityTrends = (
     : trendType === "uniqueViews"
       ? uniqueViewsData
       : viewsData;
+  
+  const progress = trendType === "favorites"
+    ? favoritesProgress
+    : trendType === "uniqueViews"
+      ? uniqueViewsProgress
+      : viewsProgress;
 
   const isTrendsStale = (cityWithTrends?.views &&
       cityWithTrends.views.length !== city?.viewsCount) ||
@@ -85,6 +91,7 @@ export const useCityTrends = (
     trendsData,
     isProcessing,
     isFetching,
+    progress,
     error,
     refetch,
     isTrendsStale,

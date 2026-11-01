@@ -52,6 +52,11 @@ $carousel-transition-duration: 0.3s;
   @extend .rounded-1;
 }
 
+.progress-bar {
+  --bs-progress-bar-bg: var(--bs-primary);
+  transition: none;
+}
+
 html, body, #root {
   min-height: 100vh;
 }
