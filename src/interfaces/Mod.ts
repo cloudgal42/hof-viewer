@@ -10,5 +10,7 @@ export interface Mod {
   tags: string[];
   subscribersCount: number;
   knownLastUpdatedAt: string;
+  size: number;
+  sizeFormatted: string;
   skyve: SkyveCompatibility | null;
 }

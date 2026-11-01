@@ -1,5 +1,5 @@
 import {Button, ButtonGroup, Card} from "react-bootstrap";
-import {BoxArrowUpRight} from "react-bootstrap-icons";
+import {BoxArrowUpRight, FileEarmarkArrowDown, People} from "react-bootstrap-icons";
 import type {Mod} from "../../../interfaces/Mod.ts";
 
 import pdxModsIcon from "../../../assets/pdx-mods.webp";
@@ -12,6 +12,11 @@ interface ModListProps {
   mod: Mod;
   isCompactMode: boolean;
 }
+
+const formatter = new Intl.NumberFormat(undefined, {
+  notation: "compact",
+  maximumFractionDigits: 2,
+})
 
 export const ModCard = ({mod, isCompactMode}: ModListProps) => {
   return (
@@ -31,8 +36,13 @@ export const ModCard = ({mod, isCompactMode}: ModListProps) => {
           <h4>
             <Card.Title className="mb-0">{mod.name}</Card.Title>
           </h4>
-          <Card.Subtitle className="text-muted mb-1">{mod.authorName}</Card.Subtitle>
-          <Card.Text className="text-muted mb-1">{mod.subscribersCount.toLocaleString()} subscribers</Card.Text>
+          <Card.Subtitle className="text-muted mb-1">
+            {mod.authorName}
+          </Card.Subtitle>
+          <Card.Text className="text-muted mb-1">
+            <People title="Subscribers" className="mb-1" /> {formatter.format(mod.subscribersCount)}{" · "}
+            {mod.sizeFormatted}
+          </Card.Text>
           <SkyveCompatibilityBadge compatibilityInfo={mod.skyve} />
         </div>
         <ButtonGroup vertical>
