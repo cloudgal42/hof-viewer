@@ -15,9 +15,10 @@ const Socials: {[key: string]: string} = {
 
 interface CreatorCardProps {
   creator: CreatorDetails;
+  showLink?: boolean;
 }
 
-export const CreatorCard = ({creator}: CreatorCardProps) => {
+export const CreatorCard = ({creator, showLink}: CreatorCardProps) => {
   const {creatorName} = useTranslation();
   
   return (
@@ -63,10 +64,10 @@ export const CreatorCard = ({creator}: CreatorCardProps) => {
               {`${creator.favoritesCount.toLocaleString()} (${Math.round((creator.favoritesCount / creator.viewsCount) * 100)}% of unique views)`}
             </li>
           </ul>
-          <NavLink to={`/?creator=${creator.id}`} >
+          {showLink && <NavLink to={`/?creator=${creator.id}`} >
             To {creator.creatorName}'s cities
             <ArrowUpRight className="ms-2" />
-          </NavLink>
+          </NavLink>}
         </div>
       </Card.Body>
     </Card>

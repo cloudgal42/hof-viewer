@@ -1,7 +1,7 @@
 import {useQuery} from "@tanstack/react-query";
 import type {CreatorDetails} from "../../../interfaces/Creator.ts";
 
-export const useCreator = (creator: string | null) => {
+export const useCreator = (creator: string | null, enabled: boolean = true) => {
   return useQuery<CreatorDetails>({
     queryKey: ["creator", creator],
     queryFn: async () => {
@@ -28,6 +28,6 @@ export const useCreator = (creator: string | null) => {
     staleTime: 30 * 60 * 1000,
     refetchOnWindowFocus: false,
     retry: false,
-    enabled: Boolean(creator),
+    enabled: enabled && Boolean(creator),
   });
 }

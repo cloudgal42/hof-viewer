@@ -1,4 +1,4 @@
-import { Button, Form, OverlayTrigger, Tooltip } from "react-bootstrap";
+import {Button, Collapse, Form, OverlayTrigger, Tooltip} from "react-bootstrap";
 import { SortOrderButton } from "../../components/home/SortOrderButton/SortOrderButton.tsx";
 import { useMemo, useState } from "react";
 import { SortDropdown } from "../../components/home/SortDropdown/SortDropdown.tsx";
@@ -18,6 +18,9 @@ import Chirper from "../../assets/Chirper.svg";
 import { useDebounceCallback } from "usehooks-ts";
 import Fuse from "fuse.js";
 import {useGroupedCities} from "../../hooks/useGroupedCities.ts";
+import {useCreator} from "../../features/creator/hooks/useCreator.ts";
+import {PlaceholderCreatorCard} from "../../features/creator/components/CreatorCard/PlaceholderCreatorCard.tsx";
+import {CreatorCard} from "../../features/creator/components/CreatorCard/CreatorCard.tsx";
 
 const DEFAULT_CITIES_PER_PAGE = 18;
 
@@ -34,6 +37,8 @@ const Home = () => {
 
   const [search, setSearch] = useState<string>(searchQuery);
   const [isDebouncing, setIsDebouncing] = useState<boolean>(false);
+  
+  const [isCreatorInfoOpen, setIsCreatorInfoOpen] = useState(false);
 
   const debouncedSetSearch = useDebounceCallback((e) => {
     setSearch(e.target.value);
@@ -105,18 +110,19 @@ const Home = () => {
     includeScore: false,
     keys: ["cityName", "cityNameTranslated", "cityNameLatinized"],
   });
+  
   const searchedCities = search
     ? fuse.search(search).map((entry) => entry.item)
     : sortedCities;
+  
   const paginatedCities = searchedCities.toSpliced(
     page * DEFAULT_CITIES_PER_PAGE,
   );
-
-  // function validateAndSetCreator(creator: string) {
-  //   setCities([]);
-  //   setSearchParams(handleSetSearchParams(searchParams, "creator", creator));
-  // }
-
+  
+  const {
+    error: creatorError, data: creatorData, isFetching: isFetchingCreator
+  } = useCreator(creator, isCreatorInfoOpen);
+  
   function setCreator(formData: FormData) {
     const query = formData.get("creatorId");
     const queryString = query?.toString() || "";
@@ -127,10 +133,22 @@ const Home = () => {
     );
   }
 
-  let content;
+  let creatorInfo;
+  let cityRow;
+  
+  if (isFetchingCreator || !creatorData) {
+    creatorInfo = <PlaceholderCreatorCard />
+  } else if (creatorError) {
+    creatorInfo = <ErrorScreen
+      errorSummary="Failed to get creator info :("
+      errorDetails={creatorError.message}
+    />
+  } else if (creatorData) {
+    creatorInfo = <CreatorCard creator={creatorData} />
+  }
 
   if (isFetching || isDebouncing) {
-    content = (
+    cityRow = (
       <div className="placeholder-feed d-flex flex-wrap gap-3">
         <PlaceholderCard />
         <PlaceholderCard />
@@ -141,35 +159,35 @@ const Home = () => {
       </div>
     );
   } else if (error) {
-    content = (
+    cityRow = (
       <ErrorScreen
         errorSummary="Failed to get screenshots for this creator :("
         errorDetails={error.message}
       />
     );
   } else if (search && searchedCities.length === 0) {
-    content = (
+    cityRow = (
       <ErrorScreen
         errorSummary="No cities found :("
         errorDetails="Double check your search query and try again."
       />
     );
   } else if (sortedCities.length === 0 && creator) {
-    content = (
+    cityRow = (
       <ErrorScreen
         errorSummary="This creator has not yet posted any screenshots :("
         errorDetails="Maybe try looking for another creator?"
       />
     );
   } else if (!navigator.onLine) {
-    content = (
+    cityRow = (
       <ErrorScreen
         errorSummary="You are offline :("
         errorDetails="Double check your Internet connection and try again."
       />
     );
   } else if (searchedCities.length > 0) {
-    content = (
+    cityRow = (
       <InfiniteScroll
         next={() => setPage((a) => a + 1)}
         hasMore={searchedCities.length > paginatedCities.length}
@@ -195,7 +213,7 @@ const Home = () => {
       </InfiniteScroll>
     );
   } else {
-    content = (
+    cityRow = (
       <div className="d-flex text-muted flex-column align-items-center text-center">
         <img src={Chirper} width="162" height="162" alt="Chirper" />
         <p className="mb-1">Search by the creator name/ID to get started.</p>
@@ -234,9 +252,26 @@ const Home = () => {
           </Form.Text>
         </form>
       </section>
+      {creator && <section className="mb-3">
+        <div className="mb-2">
+          <h3 className="d-inline">Creator Info</h3>
+          <Button
+            variant="link"
+            size="sm"
+            onClick={() => setIsCreatorInfoOpen(!isCreatorInfoOpen)}
+          >
+            [{isCreatorInfoOpen ? "hide" : "show"}]
+          </Button>
+        </div>
+        <Collapse in={isCreatorInfoOpen}>
+          <div>
+            {creatorInfo}
+          </div>
+        </Collapse>
+      </section>}
       <section>
         <div className="d-flex gap-2 gap-sm-0 mb-2 align-items-md-center justify-content-between flex-column flex-md-row">
-          <h2 className="mb-0">
+          <h3 className="mb-0">
             Cities
             {(searchedCities && creator.length > 0 && !isFetching) && (
               <span className="ms-2 fs-6 text-muted text-nowrap">
@@ -244,7 +279,7 @@ const Home = () => {
                 {searchedCities.length > 1 ? "results" : "result"}
               </span>
             )}
-          </h2>
+          </h3>
           <div className="d-flex justify-content-between align-items-center gap-2">
             <div className="d-flex gap-2 align-items-center text-nowrap">
               <Form.Check
@@ -310,7 +345,7 @@ const Home = () => {
           />
         )}
         <div id="city-feed">
-          {content}
+          {cityRow}
         </div>
       </section>
     </div>

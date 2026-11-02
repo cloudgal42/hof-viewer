@@ -46,7 +46,7 @@ const Creators = () => {
   if (isFetching) {
     content = <PlaceholderCreatorCard />;
   } else if (creatorDetails) {
-    content = <CreatorCard creator={creatorDetails} />;
+    content = <CreatorCard creator={creatorDetails} showLink />;
   } else if (!navigator.onLine) {
     content = (
       <ErrorScreen
