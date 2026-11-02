@@ -1,7 +1,7 @@
 import {type ReactElement, useState} from "react";
 import {CreatorPreviewPopoverBody} from "./CreatorPreviewPopoverBody.tsx";
 import {OverlayTrigger, Popover} from "react-bootstrap";
-import type {Creator} from "../../../interfaces/Creator.ts";
+import type {Creator} from "../../../../interfaces/Creator.ts";
 
 export const CreatorPreviewTrigger = (
   {

@@ -18,7 +18,7 @@ import { PlaceholderDetails } from "../../features/city/components/Details/Place
 import PlaceholderImg from "../../assets/placeholder.svg";
 import { Details } from "../../features/city/components/Details/Details.tsx";
 import CityGallery from "../../features/city/components/CityGallery/CityGallery.tsx";
-import { CreatorPreviewTrigger } from "../../components/creators/CreatorPreview/CreatorPreviewTrigger.tsx";
+import { CreatorPreviewTrigger } from "../../features/creator/components/CreatorPreview/CreatorPreviewTrigger.tsx";
 import {
   PlaceholderHeaderWithControls,
 } from "../../components/randomcity/PlaceholderHeaderWithControls/PlaceholderHeaderWithControls.tsx";

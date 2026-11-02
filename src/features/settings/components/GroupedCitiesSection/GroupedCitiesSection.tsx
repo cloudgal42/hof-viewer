@@ -27,7 +27,7 @@ import {
   ExclamationTriangle,
   Flask,
 } from "react-bootstrap-icons";
-import type { GroupedCityGenSettings } from "../../types/GroupedCityGenSettings.ts";
+import type { GroupedCityGenSettings } from "../../../../interfaces/GroupedCityGenSettings.ts";
 import { DatalistControl } from "./DatalistControl.tsx";
 import { useGroupedCitiesGenSettings } from "../../../../hooks/useGroupedCitiesGenSettings.ts";
 import {CandidatelessGroupAccordion} from "./CandidatelessGroupAccordion.tsx";

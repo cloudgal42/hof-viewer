@@ -1,8 +1,8 @@
 import {Popover} from "react-bootstrap";
 import {ArrowUpRight, Eye, Heart, Images} from "react-bootstrap-icons";
 import * as React from "react";
-import {useCreator} from "../../../features/creator/hooks/useCreator.ts";
-import type {Creator} from "../../../interfaces/Creator.ts";
+import {useCreator} from "../../hooks/useCreator.ts";
+import type {Creator} from "../../../../interfaces/Creator.ts";
 
 export const CreatorPreviewPopoverBody = (
   {creator, creatorName, showLinks}: {creator: Creator, creatorName: string, showLinks: boolean}

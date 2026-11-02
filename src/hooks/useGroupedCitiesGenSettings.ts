@@ -1,5 +1,5 @@
 import {useLocalStorage} from "usehooks-ts";
-import type {GroupedCityGenSettings} from "../features/settings/types/GroupedCityGenSettings.ts";
+import type {GroupedCityGenSettings} from "../interfaces/GroupedCityGenSettings.ts";
 
 export const useGroupedCitiesGenSettings = () => {
   return useLocalStorage<GroupedCityGenSettings>(
