@@ -29,7 +29,7 @@ import {
 } from "react-bootstrap-icons";
 import type { GroupedCityGenSettings } from "../../types/GroupedCityGenSettings.ts";
 import { DatalistControl } from "./DatalistControl.tsx";
-import { useGroupedCitiesGenSettings } from "../../hooks/useGroupedCitiesGenSettings.ts";
+import { useGroupedCitiesGenSettings } from "../../../../hooks/useGroupedCitiesGenSettings.ts";
 import {CandidatelessGroupAccordion} from "./CandidatelessGroupAccordion.tsx";
 
 export const GroupedCitiesSection = () => {

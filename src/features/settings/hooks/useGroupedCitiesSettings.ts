@@ -6,7 +6,7 @@ import {useContext, useRef} from "react";
 import {getUniqueCityNameProperties} from "../../../utils/UniqueCityNameProperties.ts";
 import type {CityNameProperties} from "../../../interfaces/CityNameProperties.ts";
 import {GroupedCitiesOverrideSettingsContext} from "../../../context/GroupedCitiesOverrideSettingsContext.ts";
-import {useGroupedCitiesGenSettings} from "./useGroupedCitiesGenSettings.ts";
+import {useGroupedCitiesGenSettings} from "../../../hooks/useGroupedCitiesGenSettings.ts";
 
 function getSettingsFromQuery(data: City[]) {
   const cityNames: CityNameProperties[] = data.map((entry) => ({

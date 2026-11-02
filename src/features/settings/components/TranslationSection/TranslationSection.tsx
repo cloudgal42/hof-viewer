@@ -1,5 +1,5 @@
 import { DropdownSetting } from "../SettingsComponents/DropdownSetting.tsx";
-import type {DisplayModes, TranslateOptions} from "../../types/TranslationSettings.ts";
+import type {DisplayModes, TranslateOptions} from "../../../../interfaces/TranslationSettings.ts";
 import {useTranslationSettings} from "../../hooks/useTranslationSettings.ts";
 
 export const TranslationSection = () => {
