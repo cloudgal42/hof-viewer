@@ -1,19 +1,19 @@
 import { Button, Form } from "react-bootstrap";
-import { CreatorCard } from "../features/creator/components/CreatorCard/CreatorCard.tsx";
-import { PlaceholderCreatorCard } from "../features/creator/components/CreatorCard/PlaceholderCreatorCard.tsx";
+import { CreatorCard } from "../../features/creator/components/CreatorCard/CreatorCard.tsx";
+import { PlaceholderCreatorCard } from "../../features/creator/components/CreatorCard/PlaceholderCreatorCard.tsx";
 import { NavLink, useSearchParams } from "react-router";
-import { handleSetSearchParams } from "../utils/SearchParamHandlers.ts";
-import { ErrorScreen } from "../components/misc/ErrorScreen/ErrorScreen.tsx";
-import { useCreator } from "../features/creator/hooks/useCreator.ts";
-import { DefaultHelmet } from "../components/misc/DefaultHelmet/DefaultHelmet.tsx";
-import Chirper from "../assets/Chirper.svg";
-import { useCreatorCities } from "../features/city/hooks/useCreatorCities.ts";
-import { CreatorInsights } from "../features/statistics/components/CreatorInsights/CreatorInsights.tsx";
-import { groupCities } from "../features/city/helpers/GroupCities.ts";
-import { PlaceholderInsights } from "../features/statistics/components/CreatorInsights/PlaceholderInsights.tsx";
-import {useGroupedCitiesSettings} from "../features/settings/hooks/useGroupedCitiesSettings.ts";
-import {useGroupedCitiesGenSettings} from "../features/settings/hooks/useGroupedCitiesGenSettings.ts";
-import {CreatorTrends} from "../features/statistics/components/CreatorTrends/CreatorTrends.tsx";
+import { handleSetSearchParams } from "../../utils/SearchParamHandlers.ts";
+import { ErrorScreen } from "../../components/misc/ErrorScreen/ErrorScreen.tsx";
+import { useCreator } from "../../features/creator/hooks/useCreator.ts";
+import { DefaultHelmet } from "../../components/misc/DefaultHelmet/DefaultHelmet.tsx";
+import Chirper from "../../assets/Chirper.svg";
+import { useCreatorCities } from "../../features/city/hooks/useCreatorCities.ts";
+import { CreatorInsights } from "../../features/statistics/components/CreatorInsights/CreatorInsights.tsx";
+import { groupCities } from "../../features/city/helpers/GroupCities.ts";
+import { PlaceholderInsights } from "../../features/statistics/components/CreatorInsights/PlaceholderInsights.tsx";
+import {useGroupedCitiesSettings} from "../../features/settings/hooks/useGroupedCitiesSettings.ts";
+import {useGroupedCitiesGenSettings} from "../../features/settings/hooks/useGroupedCitiesGenSettings.ts";
+import {CreatorTrends} from "../../features/statistics/components/CreatorTrends/CreatorTrends.tsx";
 
 const Creators = () => {
   const [searchParams, setSearchParams] = useSearchParams();

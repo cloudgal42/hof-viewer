@@ -1,5 +1,5 @@
 import { BoxArrowUpRight } from "react-bootstrap-icons";
-import {CONFIG} from "../config/Config.ts";
+import {CONFIG} from "../../config/Config.ts";
 
 const About = () => {
   return (

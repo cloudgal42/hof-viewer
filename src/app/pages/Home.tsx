@@ -1,25 +1,25 @@
 import { Button, Form, OverlayTrigger, Tooltip } from "react-bootstrap";
-import { SortOrderButton } from "../components/home/SortOrderButton/SortOrderButton.tsx";
+import { SortOrderButton } from "../../components/home/SortOrderButton/SortOrderButton.tsx";
 import { useMemo, useState } from "react";
 import type { ContextType } from "../App.tsx";
-import { SortDropdown } from "../components/home/SortDropdown/SortDropdown.tsx";
-import { CityCard } from "../features/city/components/CityCard/CityCard.tsx";
-import { PlaceholderCard } from "../features/city/components/CityCard/PlaceholderCard.tsx";
+import { SortDropdown } from "../../components/home/SortDropdown/SortDropdown.tsx";
+import { CityCard } from "../../features/city/components/CityCard/CityCard.tsx";
+import { PlaceholderCard } from "../../features/city/components/CityCard/PlaceholderCard.tsx";
 import { NavLink, useOutletContext, useSearchParams } from "react-router";
-import { handleSetSearchParams } from "../utils/SearchParamHandlers.ts";
+import { handleSetSearchParams } from "../../utils/SearchParamHandlers.ts";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import { groupCities } from "../features/city/helpers/GroupCities.ts";
-import type { City, GroupedCities } from "../interfaces/City.ts";
-import { ErrorScreen } from "../components/misc/ErrorScreen/ErrorScreen.tsx";
+import { groupCities } from "../../features/city/helpers/GroupCities.ts";
+import type { City, GroupedCities } from "../../interfaces/City.ts";
+import { ErrorScreen } from "../../components/misc/ErrorScreen/ErrorScreen.tsx";
 import { useQueryClient } from "@tanstack/react-query";
-import { useCreatorCities } from "../features/city/hooks/useCreatorCities.ts";
-import { DefaultHelmet } from "../components/misc/DefaultHelmet/DefaultHelmet.tsx";
+import { useCreatorCities } from "../../features/city/hooks/useCreatorCities.ts";
+import { DefaultHelmet } from "../../components/misc/DefaultHelmet/DefaultHelmet.tsx";
 
-import Chirper from "../assets/Chirper.svg";
+import Chirper from "../../assets/Chirper.svg";
 import { useDebounceCallback } from "usehooks-ts";
 import Fuse from "fuse.js";
-import { useGroupedCitiesSettings } from "../features/settings/hooks/useGroupedCitiesSettings.ts";
+import { useGroupedCitiesSettings } from "../../features/settings/hooks/useGroupedCitiesSettings.ts";
 
 const DEFAULT_CITIES_PER_PAGE = 18;
 

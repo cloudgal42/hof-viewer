@@ -1,7 +1,7 @@
-import { AdaptiveHeader } from "../components/details/AdaptiveHeader/AdaptiveHeader.tsx";
+import { AdaptiveHeader } from "../../components/details/AdaptiveHeader/AdaptiveHeader.tsx";
 import {Suspense, useCallback, useContext, useEffect, useState} from "react";
 import { Button, Dropdown, OverlayTrigger, Tooltip } from "react-bootstrap";
-import { MoreActionsBtn } from "../components/misc/MoreActionsBtn/MoreActionsBtn.tsx";
+import { MoreActionsBtn } from "../../components/misc/MoreActionsBtn/MoreActionsBtn.tsx";
 import {
   ArrowUpRight,
   Building,
@@ -11,25 +11,25 @@ import {
   Person,
   Share,
 } from "react-bootstrap-icons";
-import type { City } from "../interfaces/City.ts";
+import type { City } from "../../interfaces/City.ts";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ErrorScreen } from "../components/misc/ErrorScreen/ErrorScreen.tsx";
-import { PlaceholderDetails } from "../features/city/components/Details/PlaceholderDetails.tsx";
-import PlaceholderImg from "../assets/placeholder.svg";
-import { Details } from "../features/city/components/Details/Details.tsx";
-import CityGallery from "../features/city/components/CityGallery/CityGallery.tsx";
-import { CreatorPreviewTrigger } from "../features/creator/components/CreatorPreview/CreatorPreviewTrigger.tsx";
+import { ErrorScreen } from "../../components/misc/ErrorScreen/ErrorScreen.tsx";
+import { PlaceholderDetails } from "../../features/city/components/Details/PlaceholderDetails.tsx";
+import PlaceholderImg from "../../assets/placeholder.svg";
+import { Details } from "../../features/city/components/Details/Details.tsx";
+import CityGallery from "../../features/city/components/CityGallery/CityGallery.tsx";
+import { CreatorPreviewTrigger } from "../../features/creator/components/CreatorPreview/CreatorPreviewTrigger.tsx";
 import {
   PlaceholderHeaderWithControls,
-} from "../components/randomcity/PlaceholderHeaderWithControls/PlaceholderHeaderWithControls.tsx";
-import { shareContent } from "../features/city/helpers/ShareContent.ts";
-import { useScrollToTop } from "../hooks/useScrollToTop.ts";
-import { DefaultHelmet } from "../components/misc/DefaultHelmet/DefaultHelmet.tsx";
+} from "../../components/randomcity/PlaceholderHeaderWithControls/PlaceholderHeaderWithControls.tsx";
+import { shareContent } from "../../features/city/helpers/ShareContent.ts";
+import { useScrollToTop } from "../../hooks/useScrollToTop.ts";
+import { DefaultHelmet } from "../../components/misc/DefaultHelmet/DefaultHelmet.tsx";
 import {NavLink, useOutletContext, useSearchParams} from "react-router";
 import type { ContextType } from "../App.tsx";
-import {useRandomAlgoSettings} from "../features/settings/hooks/useRandomAlgoSettings.ts";
-import {handleSetSearchParams} from "../utils/SearchParamHandlers.ts";
-import {useTranslation} from "../features/settings/hooks/useTranslation.ts";
+import {useRandomAlgoSettings} from "../../features/settings/hooks/useRandomAlgoSettings.ts";
+import {handleSetSearchParams} from "../../utils/SearchParamHandlers.ts";
+import {useTranslation} from "../../features/settings/hooks/useTranslation.ts";
 
 const RandomCity = () => {
   const [searchParams, setSearchParams] = useSearchParams();

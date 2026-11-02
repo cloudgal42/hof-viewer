@@ -1,15 +1,15 @@
-import "./css/App.scss";
+import "../css/App.scss";
 import { Container, Navbar, Spinner } from "react-bootstrap";
 import { Suspense, useEffect, useState } from "react";
-import { Sidebar } from "./components/misc/Sidebar/Sidebar.tsx";
-import { HamburgerButton } from "./components/misc/Hamburger/HamburgerButton.tsx";
+import { Sidebar } from "../components/misc/Sidebar/Sidebar.tsx";
+import { HamburgerButton } from "../components/misc/Hamburger/HamburgerButton.tsx";
 import { Outlet, useLocation } from "react-router";
 import { useLocalStorage } from "usehooks-ts";
-import { ToTopBtn } from "./components/misc/ToTopButton/ToTopBtn.tsx";
+import { ToTopBtn } from "../components/misc/ToTopButton/ToTopBtn.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ThemeContext } from "./context/ThemeContext.ts";
-import { useRandomCityGc } from "./hooks/useRandomCityGc.ts";
-import {ThemeDropdownBtn} from "./components/misc/ThemeDropdownBtn/ThemeDropdownBtn.tsx";
+import { ThemeContext } from "../context/ThemeContext.ts";
+import { useRandomCityGc } from "../hooks/useRandomCityGc.ts";
+import {ThemeDropdownBtn} from "../components/misc/ThemeDropdownBtn/ThemeDropdownBtn.tsx";
 // import {Screenshots} from "./temp/screenshots.ts";
 
 export type ContextType = {
