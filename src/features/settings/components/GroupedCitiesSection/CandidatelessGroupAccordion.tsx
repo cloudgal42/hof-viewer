@@ -21,12 +21,15 @@ export const CandidatelessGroupAccordion = (
   
   const timeoutRef = useRef<number | null>(null);
   
+  // We have to use useEffect here since the open state is not directly correlated to isHeaderDropTarget
+  //  and that this value may be debounced.
   useEffect(() => {
     if (isHeaderDropTarget) {
       timeoutRef.current = setTimeout(() => {
         setOpen(isHeaderDropTarget);
       }, 500);
     } else if (!isHeaderDropTarget && !isBodyDropTarget) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setOpen(false);
     }
     
