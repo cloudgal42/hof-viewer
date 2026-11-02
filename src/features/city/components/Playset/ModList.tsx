@@ -20,7 +20,7 @@ import type { City, GroupedCities } from "../../../../interfaces/City.ts";
 import type { Mod } from "../../../../interfaces/Mod.ts";
 import { ErrorScreen } from "../../../../components/misc/ErrorScreen/ErrorScreen.tsx";
 import { useQuery } from "@tanstack/react-query";
-import { assetCategoryMatches } from "../../../../utils/PdxModsCategoryMatch.ts";
+import { assetCategoryMatches } from "../../helpers/PdxModsCategoryMatch.ts";
 
 interface ModTypes {
   mod: boolean;
