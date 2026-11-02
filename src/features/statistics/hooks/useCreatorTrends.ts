@@ -1,9 +1,8 @@
 import {useCreatorCitiesViewsAndFavorites} from "./useCreatorCitiesViewsAndFavorites.ts";
 import type {GroupedCities} from "../../../interfaces/City.ts";
-import type {GroupedCityRowSetting} from "../../../interfaces/GroupedCityRowSetting.ts";
-import {groupCities} from "../../../utils/GroupCities.ts";
 import type {TrendsWorkerInput} from "../types/TrendsData.ts";
 import {useTrendsWorker} from "./useTrendsWorker.ts";
+import {combineAllCities} from "../../../utils/CombineAllCities.ts";
 
 export const useCreatorTrends = (
   {creator, groupPeriod, enabled, trendType} : {
@@ -21,21 +20,7 @@ export const useCreatorTrends = (
     error,
     refetch,
   } = useCreatorCitiesViewsAndFavorites<GroupedCities | undefined>(
-    creator, (trendsData) => {
-      const customSetting: GroupedCityRowSetting = {
-        groupCandidates: [...new Set(trendsData.map(city => city.cityName))].map(entry => ({
-          name: entry,
-          isEditable: false,
-          id: entry
-        })),
-        groupedCityName: "All",
-        id: "All",
-        isModified: false,
-        isUserCreated: false
-      }
-      
-      return groupCities(trendsData, [customSetting])[0];
-    }
+    creator, (trendsData) => combineAllCities(trendsData)
   );
   
   const workerInput: TrendsWorkerInput | null = data ? {

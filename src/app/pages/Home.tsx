@@ -1,15 +1,13 @@
 import { Button, Form, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { SortOrderButton } from "../../components/home/SortOrderButton/SortOrderButton.tsx";
 import { useMemo, useState } from "react";
-import type { ContextType } from "../App.tsx";
 import { SortDropdown } from "../../components/home/SortDropdown/SortDropdown.tsx";
 import { CityCard } from "../../features/city/components/CityCard/CityCard.tsx";
 import { PlaceholderCard } from "../../features/city/components/CityCard/PlaceholderCard.tsx";
-import { NavLink, useOutletContext, useSearchParams } from "react-router";
+import { NavLink, useSearchParams } from "react-router";
 import { handleSetSearchParams } from "../../utils/SearchParamHandlers.ts";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import { groupCities } from "../../utils/GroupCities.ts";
 import type { City, GroupedCities } from "../../interfaces/City.ts";
 import { ErrorScreen } from "../../components/misc/ErrorScreen/ErrorScreen.tsx";
 import { useQueryClient } from "@tanstack/react-query";
@@ -19,7 +17,7 @@ import { DefaultHelmet } from "../../components/misc/DefaultHelmet/DefaultHelmet
 import Chirper from "../../assets/Chirper.svg";
 import { useDebounceCallback } from "usehooks-ts";
 import Fuse from "fuse.js";
-import { useGroupedCitiesSettings } from "../../features/settings/hooks/useGroupedCitiesSettings.ts";
+import {useGroupedCities} from "../../hooks/useGroupedCities.ts";
 
 const DEFAULT_CITIES_PER_PAGE = 18;
 
@@ -43,8 +41,8 @@ const Home = () => {
   }, 500);
 
   const { error, data, isFetching } = useCreatorCities(creator);
-
-  const { currCreatorSettings } = useGroupedCitiesSettings(creator);
+  
+  const {groupCities} = useGroupedCities(creator);
 
   const cities = queryClient.getQueryData<City[]>([
     "detailedCities",
@@ -58,7 +56,7 @@ const Home = () => {
     // console.log(cities);
 
     const citiesToSort: City[] | GroupedCities[] = groupStatus === "on"
-      ? groupCities(cities, currCreatorSettings)
+      ? groupCities(cities)
       : cities;
     const copiedCities = [...citiesToSort];
 
@@ -100,16 +98,7 @@ const Home = () => {
     if (sortOrder === "Ascending") copiedCities.reverse();
 
     return copiedCities;
-  }, [
-    cities,
-    creator,
-    error,
-    groupStatus,
-    isFetching,
-    sortBy,
-    sortOrder,
-    currCreatorSettings
-  ]);
+  }, [cities, creator, error, groupCities, groupStatus, isFetching, sortBy, sortOrder]);
 
   const fuse = new Fuse(sortedCities, {
     threshold: 0.2,

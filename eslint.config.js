@@ -54,6 +54,11 @@ export default defineConfig([
               from: "./src/features",
               except: ["./settings"],
               message: "Cross-feature imports are not allowed."
+            },
+            {
+              target: ["./src/app", "./src/features"],
+              from: "./src/utils/GroupCities.ts",
+              message: "Avoid calling the raw groupCities util directly. Use the function provided by useGroupedCities instead."
             }
           ]
         }

@@ -12,7 +12,6 @@ import {useQuery} from "@tanstack/react-query";
 import type {City, GroupedCities} from "../../interfaces/City.ts";
 import {CityInsights} from "../../features/statistics/components/CityInsights/CityInsights.tsx";
 import {useCreatorCities} from "../../features/city/hooks/useCreatorCities.ts";
-import {groupCities} from "../../utils/GroupCities.ts";
 
 import {AdaptiveHeader} from "../../components/details/AdaptiveHeader/AdaptiveHeader.tsx";
 import {Details} from "../../features/city/components/Details/Details.tsx";
@@ -25,8 +24,8 @@ import {Helmet} from "@dr.pogodin/react-helmet";
 
 import '../../css/components/CityGallery.scss';
 import {PlaceholderGallery} from "../../features/city/components/CityGallery/PlaceholderGallery.tsx";
-import {useGroupedCitiesSettings} from "../../features/settings/hooks/useGroupedCitiesSettings.ts";
 import {useTranslation} from "../../features/settings/hooks/useTranslation.ts";
+import {useGroupedCities} from "../../hooks/useGroupedCities.ts";
 
 const CityGallery = lazy(() => import("../../features/city/components/CityGallery/CityGallery.tsx"));
 
@@ -82,13 +81,13 @@ const CityDetails = () => {
       placeholderCity?.showcasedModId && !isCitiesGrouped || !isCitiesGrouped),
     retry: false,
   });
+  
+  const {groupCities} = useGroupedCities(cityCreator);
 
   const fetchError = error || creatorCitiesError;
 
-  const {currCreatorSettings} = useGroupedCitiesSettings(cityCreator);
-
   const cityDetails = isCitiesGrouped
-    ? creatorCities && groupCities(creatorCities, currCreatorSettings).find(entry => entry.cityName.toLowerCase() === cityParam?.toLowerCase())
+    ? creatorCities && groupCities(creatorCities).find(entry => entry.cityName.toLowerCase() === cityParam?.toLowerCase())
     : data || placeholderCity;
 
   if (!cityDetails) {

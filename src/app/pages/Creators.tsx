@@ -9,11 +9,9 @@ import { DefaultHelmet } from "../../components/misc/DefaultHelmet/DefaultHelmet
 import Chirper from "../../assets/Chirper.svg";
 import { useCreatorCities } from "../../features/city/hooks/useCreatorCities.ts";
 import { CreatorInsights } from "../../features/statistics/components/CreatorInsights/CreatorInsights.tsx";
-import { groupCities } from "../../utils/GroupCities.ts";
 import { PlaceholderInsights } from "../../features/statistics/components/CreatorInsights/PlaceholderInsights.tsx";
-import {useGroupedCitiesSettings} from "../../features/settings/hooks/useGroupedCitiesSettings.ts";
-import {useGroupedCitiesGenSettings} from "../../features/settings/hooks/useGroupedCitiesGenSettings.ts";
 import {CreatorTrends} from "../../features/statistics/components/CreatorTrends/CreatorTrends.tsx";
+import {useGroupedCities} from "../../hooks/useGroupedCities.ts";
 
 const Creators = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -22,6 +20,8 @@ const Creators = () => {
   // const [creatorDetails, setCreatorDetails] = useState<CreatorDetails | null>();
   // const [isCreatorLoading, setIsCreatorLoading] = useState<boolean>(false);
   const creator = searchParams.get("creator") || "";
+  
+  const {groupCities} = useGroupedCities(creator);
 
   const { error, data, isFetching } = useCreator(creator);
   const {
@@ -31,8 +31,6 @@ const Creators = () => {
   } = useCreatorCities(creator);
 
   const creatorDetails = data;
-
-  const { currCreatorSettings } = useGroupedCitiesSettings(creator);
 
   function setCreator(formData: FormData) {
     const query = formData.get("creatorId");
@@ -91,7 +89,7 @@ const Creators = () => {
       />
     );
   } else if (creatorCities && creatorCities.length > 0) {
-    insightsContent = <CreatorInsights cities={groupCities(creatorCities, currCreatorSettings)} />;
+    insightsContent = <CreatorInsights cities={groupCities(creatorCities)} />;
   }
   
   let creatorTrendsContent;
