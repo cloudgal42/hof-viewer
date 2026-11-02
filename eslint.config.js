@@ -59,7 +59,17 @@ export default defineConfig([
               target: ["./src/app", "./src/features"],
               from: "./src/utils/GroupCities.ts",
               message: "Avoid calling the raw groupCities util directly. Use the function provided by useGroupedCities instead."
-            }
+            },
+            {
+              target: [
+                './src/components',
+                './src/hooks',
+                './src/types',
+                './src/utils',
+              ],
+              from: ['./src/features', './src/app'],
+              message: "Shared modules may not import feature modules"
+            },
           ]
         }
       ]
