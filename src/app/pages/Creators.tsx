@@ -9,7 +9,7 @@ import { DefaultHelmet } from "../../components/misc/DefaultHelmet/DefaultHelmet
 import Chirper from "../../assets/Chirper.svg";
 import { useCreatorCities } from "../../features/city/hooks/useCreatorCities.ts";
 import { CreatorInsights } from "../../features/statistics/components/CreatorInsights/CreatorInsights.tsx";
-import { groupCities } from "../../features/city/helpers/GroupCities.ts";
+import { groupCities } from "../../utils/GroupCities.ts";
 import { PlaceholderInsights } from "../../features/statistics/components/CreatorInsights/PlaceholderInsights.tsx";
 import {useGroupedCitiesSettings} from "../../features/settings/hooks/useGroupedCitiesSettings.ts";
 import {useGroupedCitiesGenSettings} from "../../features/settings/hooks/useGroupedCitiesGenSettings.ts";

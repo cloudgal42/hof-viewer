@@ -9,7 +9,7 @@ import { NavLink, useOutletContext, useSearchParams } from "react-router";
 import { handleSetSearchParams } from "../../utils/SearchParamHandlers.ts";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import { groupCities } from "../../features/city/helpers/GroupCities.ts";
+import { groupCities } from "../../utils/GroupCities.ts";
 import type { City, GroupedCities } from "../../interfaces/City.ts";
 import { ErrorScreen } from "../../components/misc/ErrorScreen/ErrorScreen.tsx";
 import { useQueryClient } from "@tanstack/react-query";

@@ -1,10 +1,9 @@
 import {useCreatorCitiesViewsAndFavorites} from "./useCreatorCitiesViewsAndFavorites.ts";
 import type {GroupedCities} from "../../../interfaces/City.ts";
 import type {GroupedCityRowSetting} from "../../../interfaces/GroupedCityRowSetting.ts";
-import {groupCities} from "../../city/helpers/GroupCities.ts";
+import {groupCities} from "../../../utils/GroupCities.ts";
 import type {TrendsWorkerInput} from "../types/TrendsData.ts";
 import {useTrendsWorker} from "./useTrendsWorker.ts";
-import {useEffect} from "react";
 
 export const useCreatorTrends = (
   {creator, groupPeriod, enabled, trendType} : {

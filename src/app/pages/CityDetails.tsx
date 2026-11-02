@@ -12,7 +12,7 @@ import {useQuery} from "@tanstack/react-query";
 import type {City, GroupedCities} from "../../interfaces/City.ts";
 import {CityInsights} from "../../features/statistics/components/CityInsights/CityInsights.tsx";
 import {useCreatorCities} from "../../features/city/hooks/useCreatorCities.ts";
-import {groupCities} from "../../features/city/helpers/GroupCities.ts";
+import {groupCities} from "../../utils/GroupCities.ts";
 
 import {AdaptiveHeader} from "../../components/details/AdaptiveHeader/AdaptiveHeader.tsx";
 import {Details} from "../../features/city/components/Details/Details.tsx";

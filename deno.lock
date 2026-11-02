@@ -40,6 +40,8 @@
         "npm:bootstrap@^5.3.8",
         "npm:chart.js@^4.5.1",
         "npm:chartjs-plugin-zoom@^2.2.0",
+        "npm:eslint-import-resolver-typescript@^4.4.5",
+        "npm:eslint-plugin-import@^2.32.0",
         "npm:eslint-plugin-react-hooks@^7.0.1",
         "npm:eslint-plugin-react-refresh@~0.4.24",
         "npm:eslint@^9.39.1",
