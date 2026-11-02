@@ -6,11 +6,11 @@ import {DEFAULT_IMAGES_PER_PAGE} from "../features/city/components/CityGallery/C
 
 import PlaceholderImg from "../assets/placeholder.svg"
 import {PlaceholderDetails} from "../features/city/components/Details/PlaceholderDetails.tsx";
-import {CityTrends} from "../components/details/CityTrends/CityTrends.tsx";
+import {CityTrends} from "../features/statistics/components/CityTrends/CityTrends.tsx";
 import {ErrorScreen} from "../components/misc/ErrorScreen/ErrorScreen.tsx";
 import {useQuery} from "@tanstack/react-query";
 import type {City, GroupedCities} from "../interfaces/City.ts";
-import {CityInsights} from "../components/details/CityInsights/CityInsights.tsx";
+import {CityInsights} from "../features/statistics/components/CityInsights/CityInsights.tsx";
 import {useCreatorCities} from "../features/city/hooks/useCreatorCities.ts";
 import {groupCities} from "../features/city/helpers/GroupCities.ts";
 

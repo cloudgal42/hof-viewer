@@ -5,9 +5,9 @@ import {
   Spinner,
 } from "react-bootstrap";
 import {useContext, useEffect} from "react";
-import type { City, GroupedCities } from "../../../interfaces/City.ts";
-import { ErrorScreen } from "../../misc/ErrorScreen/ErrorScreen.tsx";
-import { ThemeContext } from "../../../context/ThemeContext.ts";
+import type { City, GroupedCities } from "../../../../interfaces/City.ts";
+import { ErrorScreen } from "../../../../components/misc/ErrorScreen/ErrorScreen.tsx";
+import { ThemeContext } from "../../../../context/ThemeContext.ts";
 import { useIntersectionObserver } from "usehooks-ts";
 import { Bar } from "react-chartjs-2";
 import {
@@ -30,13 +30,13 @@ ChartJS.register(
   Legend,
 );
 
-import "../../../css/components/TrendsChart.css";
-import { useCityTrends } from "../../../hooks/useCityTrends.ts";
+import "../../../../css/components/TrendsChart.css";
+import { useCityTrends } from "../../hooks/useCityTrends.ts";
 import { TrendTypeToggle } from "./TrendTypeToggle.tsx";
 import { GroupBySelect } from "./GroupBySelect.tsx";
-import { useTrendsOptions } from "../../../hooks/useTrendsOptions.ts";
-import { CONFIG } from "../../../config/Config.ts";
-import {formatChartEntries, formatChartLabels, getFormattedTrendType} from "../../../utils/TrendFormat.ts";
+import { useTrendsOptions } from "../../hooks/useTrendsOptions.ts";
+import { CONFIG } from "../../../../config/Config.ts";
+import {formatChartEntries, formatChartLabels, getFormattedTrendType} from "../../helpers/TrendFormat.ts";
 
 defaults.font.family = CONFIG.chartFontFamily;
 

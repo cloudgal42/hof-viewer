@@ -1,22 +1,22 @@
-import { useCreatorTrends } from "../../../hooks/useCreatorTrends.ts";
+import { useCreatorTrends } from "../../hooks/useCreatorTrends.ts";
 import {Alert, Button, Card, ProgressBar, Spinner} from "react-bootstrap";
-import { TrendTypeToggle } from "../../details/CityTrends/TrendTypeToggle.tsx";
-import { GroupBySelect } from "../../details/CityTrends/GroupBySelect.tsx";
+import { TrendTypeToggle } from "../CityTrends/TrendTypeToggle.tsx";
+import { GroupBySelect } from "../CityTrends/GroupBySelect.tsx";
 import { useIntersectionObserver } from "usehooks-ts";
-import { useTrendsOptions } from "../../../hooks/useTrendsOptions.ts";
-import type { CreatorDetails } from "../../../interfaces/Creator.ts";
-import { CONFIG } from "../../../config/Config.ts";
-import { ErrorScreen } from "../../misc/ErrorScreen/ErrorScreen.tsx";
+import { useTrendsOptions } from "../../hooks/useTrendsOptions.ts";
+import type { CreatorDetails } from "../../../../interfaces/Creator.ts";
+import { CONFIG } from "../../../../config/Config.ts";
+import { ErrorScreen } from "../../../../components/misc/ErrorScreen/ErrorScreen.tsx";
 import { Bar } from "react-chartjs-2";
 import {
   formatChartEntries,
   formatChartLabels,
   getFormattedTrendType,
-} from "../../../utils/TrendFormat.ts";
+} from "../../helpers/TrendFormat.ts";
 import { useContext, useEffect } from "react";
-import { ThemeContext } from "../../../context/ThemeContext.ts";
+import { ThemeContext } from "../../../../context/ThemeContext.ts";
 
-import "../../../css/components/TrendsChart.css";
+import "../../../../css/components/TrendsChart.css";
 
 const DAYS_IN_MILLISECONDS = 86400000;
 

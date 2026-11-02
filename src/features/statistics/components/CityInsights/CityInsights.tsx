@@ -1,7 +1,7 @@
 import { Card } from "react-bootstrap";
-import type { City, GroupedCities } from "../../../interfaces/City.ts";
+import type { City, GroupedCities } from "../../../../interfaces/City.ts";
 import { StackedChart } from "./StackedChart.tsx";
-import {getRandomColor} from "../../../utils/RandomColor.ts";
+import {getRandomColor} from "../../../../utils/RandomColor.ts";
 
 interface CityInsightsProps {
   city: GroupedCities;

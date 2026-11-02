@@ -1,8 +1,8 @@
 import {useCreatorCitiesViewsAndFavorites} from "./useCreatorCitiesViewsAndFavorites.ts";
-import type {GroupedCities} from "../interfaces/City.ts";
-import type {GroupedCityRowSetting} from "../interfaces/GroupedCityRowSetting.ts";
-import {groupCities} from "../features/city/helpers/GroupCities.ts";
-import type {TrendsWorkerInput} from "../interfaces/TrendsData.ts";
+import type {GroupedCities} from "../../../interfaces/City.ts";
+import type {GroupedCityRowSetting} from "../../../interfaces/GroupedCityRowSetting.ts";
+import {groupCities} from "../../city/helpers/GroupCities.ts";
+import type {TrendsWorkerInput} from "../../../interfaces/TrendsData.ts";
 import {useTrendsWorker} from "./useTrendsWorker.ts";
 import {useEffect} from "react";
 

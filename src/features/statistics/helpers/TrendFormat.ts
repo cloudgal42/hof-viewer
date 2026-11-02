@@ -1,4 +1,4 @@
-import type {TrendsData} from "../interfaces/TrendsData.ts";
+import type {TrendsData} from "../../../interfaces/TrendsData.ts";
 
 export function getFormattedTrendType(trend: string) {
   switch (trend) {

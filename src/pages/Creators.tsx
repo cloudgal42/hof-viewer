@@ -8,12 +8,12 @@ import { useCreator } from "../features/creator/hooks/useCreator.ts";
 import { DefaultHelmet } from "../components/misc/DefaultHelmet/DefaultHelmet.tsx";
 import Chirper from "../assets/Chirper.svg";
 import { useCreatorCities } from "../features/city/hooks/useCreatorCities.ts";
-import { CreatorInsights } from "../components/creators/CreatorInsights/CreatorInsights.tsx";
+import { CreatorInsights } from "../features/statistics/components/CreatorInsights/CreatorInsights.tsx";
 import { groupCities } from "../features/city/helpers/GroupCities.ts";
-import { PlaceholderInsights } from "../components/creators/CreatorInsights/PlaceholderInsights.tsx";
+import { PlaceholderInsights } from "../features/statistics/components/CreatorInsights/PlaceholderInsights.tsx";
 import {useGroupedCitiesSettings} from "../hooks/useGroupedCitiesSettings.ts";
 import {useGroupedCitiesGenSettings} from "../hooks/useGroupedCitiesGenSettings.ts";
-import {CreatorTrends} from "../components/creators/CreatorTrends/CreatorTrends.tsx";
+import {CreatorTrends} from "../features/statistics/components/CreatorTrends/CreatorTrends.tsx";
 
 const Creators = () => {
   const [searchParams, setSearchParams] = useSearchParams();

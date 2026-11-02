@@ -3,12 +3,12 @@ import type {
   Favorites,
   GroupedCities,
   Views,
-} from "../interfaces/City.ts";
+} from "../../../interfaces/City.ts";
 import type {
   TrendsData,
   TrendsWorkerInput, WorkerMsg,
   WorkerParams,
-} from "../interfaces/TrendsData.ts";
+} from "../../../interfaces/TrendsData.ts";
 
 const DAYS_IN_MILLISECONDS = 86400000;
 

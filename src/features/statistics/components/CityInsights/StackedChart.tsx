@@ -8,15 +8,15 @@ import {
   Legend, type ChartEvent, defaults,
 } from 'chart.js';
 import {Bar} from 'react-chartjs-2';
-import type {GroupedCities} from "../../../interfaces/City.ts";
+import type {GroupedCities} from "../../../../interfaces/City.ts";
 import {useMemo, useRef, useState} from "react";
 import {ClickedCityCard} from "./ClickedCityCard.tsx";
 import zoomPlugin from 'chartjs-plugin-zoom';
 import {Button} from "react-bootstrap";
 
-import "../../../css/components/StackedChart.scss";
+import "../../../../css/components/StackedChart.scss";
 import {ZoomIn, ZoomOut} from "react-bootstrap-icons";
-import type {PercentageStat} from "../../../interfaces/PercentageStat.ts";
+import type {PercentageStat} from "../../../../interfaces/PercentageStat.ts";
 
 ChartJS.register(
   CategoryScale,
