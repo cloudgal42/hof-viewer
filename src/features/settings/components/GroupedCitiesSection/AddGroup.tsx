@@ -1,6 +1,6 @@
-import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { Ban, Plus } from "react-bootstrap-icons";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { useDroppable } from "@dnd-kit/react";
 import { GroupedSettingsContext } from "../../../../context/GroupedSettingsContext.ts";
 import type { GroupCandidate } from "../../types/GroupCandidate.ts";

@@ -1,7 +1,6 @@
-import {Button, Card, Placeholder} from "react-bootstrap";
+import { Card, Placeholder} from "react-bootstrap";
 
 import PlaceholderImg from "../../../../assets/placeholder.svg";
-import {ZoomIn, ZoomOut} from "react-bootstrap-icons";
 
 export const PlaceholderInsights = () => {
   return (

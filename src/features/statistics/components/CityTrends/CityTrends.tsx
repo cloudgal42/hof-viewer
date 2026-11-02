@@ -4,7 +4,7 @@ import {
   Card, ProgressBar,
   Spinner,
 } from "react-bootstrap";
-import {useContext, useEffect} from "react";
+import {useContext} from "react";
 import type { City, GroupedCities } from "../../../../interfaces/City.ts";
 import { ErrorScreen } from "../../../../components/misc/ErrorScreen/ErrorScreen.tsx";
 import { ThemeContext } from "../../../../context/ThemeContext.ts";

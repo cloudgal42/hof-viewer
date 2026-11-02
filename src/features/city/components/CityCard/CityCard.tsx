@@ -1,8 +1,6 @@
 import { Badge, Card, OverlayTrigger, Tooltip } from "react-bootstrap";
 import {
-  Diamond,
   Eye,
-  Gem,
   Heart,
   Images,
   Person,

@@ -1,5 +1,4 @@
 import {
-  Accordion,
   Alert,
   Button,
   Form,
@@ -8,14 +7,13 @@ import {
 } from "react-bootstrap";
 import { GroupedCityRow } from "./GroupedCityRow.tsx";
 import { AddGroup } from "./AddGroup.tsx";
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import {
   DragDropProvider,
   type DragEndEvent,
   type DragStartEvent,
 } from "@dnd-kit/react";
 import { ErrorScreen } from "../../../../components/misc/ErrorScreen/ErrorScreen.tsx";
-import { useLocalStorage } from "usehooks-ts";
 import { GroupedSettingsContext } from "../../../../context/GroupedSettingsContext.ts";
 import { useGroupedCitiesSettings } from "../../hooks/useGroupedCitiesSettings.ts";
 
@@ -27,7 +25,6 @@ import {
   ExclamationTriangle,
   Flask,
 } from "react-bootstrap-icons";
-import type { GroupedCityGenSettings } from "../../../../interfaces/GroupedCityGenSettings.ts";
 import { DatalistControl } from "./DatalistControl.tsx";
 import { useGroupedCitiesGenSettings } from "../../../../hooks/useGroupedCitiesGenSettings.ts";
 import {CandidatelessGroupAccordion} from "./CandidatelessGroupAccordion.tsx";

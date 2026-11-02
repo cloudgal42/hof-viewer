@@ -1,8 +1,7 @@
 import type {City} from "../../../interfaces/City.ts";
 import type {GroupedCityRowSetting} from "../../../interfaces/GroupedCityRowSetting.ts";
 import {useQuery} from "@tanstack/react-query";
-import {useLocalStorage} from "usehooks-ts";
-import {useContext, useRef} from "react";
+import {useContext} from "react";
 import {getUniqueCityNameProperties} from "../../../utils/UniqueCityNameProperties.ts";
 import type {CityNameProperties} from "../../../interfaces/CityNameProperties.ts";
 import {GroupedCitiesOverrideSettingsContext} from "../../../context/GroupedCitiesOverrideSettingsContext.ts";

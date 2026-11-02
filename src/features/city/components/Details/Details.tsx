@@ -4,16 +4,9 @@ import { PlaceholderFeatModCard } from "../FeatModCard/PlaceholderFeatModCard.ts
 import { FeatModCard } from "../FeatModCard/FeatModCard.tsx";
 import {
   BoxArrowUpRight,
-  CloudHail,
-  CloudRain,
-  Clouds,
   Eye,
   Heart,
-  Moon,
   Person,
-  Snow,
-  Sun,
-  Thunderbolt,
   Trophy,
 } from "react-bootstrap-icons";
 import { ModList } from "../Playset/ModList.tsx";

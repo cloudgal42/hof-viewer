@@ -1,12 +1,9 @@
 import type { SkyveCompatibility } from "../../types/SkyveCompatibility.ts";
 import { Badge, OverlayTrigger, Tooltip } from "react-bootstrap";
-import skyveIcon from "../../../../assets/skyve.webp";
 import {
-  Check,
   CheckCircle,
   ExclamationTriangle,
   Heartbreak,
-  Question,
   QuestionCircle,
   XCircle,
 } from "react-bootstrap-icons";

@@ -1,7 +1,4 @@
 import type {
-  City,
-  Favorites,
-  GroupedCities,
   Views,
 } from "../../../interfaces/City.ts";
 import type {

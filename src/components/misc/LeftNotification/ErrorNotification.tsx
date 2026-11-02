@@ -1,6 +1,6 @@
 import type {ReactNode} from "react";
 import {createPortal} from "react-dom";
-import {Alert, Button} from "react-bootstrap";
+import {Alert} from "react-bootstrap";
 import {ExclamationCircle} from "react-bootstrap-icons";
 
 export const ErrorNotification = ({

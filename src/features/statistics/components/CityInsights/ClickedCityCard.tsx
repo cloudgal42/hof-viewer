@@ -2,7 +2,6 @@ import {Card, CloseButton} from "react-bootstrap";
 
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 import {ArrowUpRight, Eye, Heart, Person, SquareFill} from "react-bootstrap-icons";
-import {useState} from "react";
 import type {PercentageStat} from "../../types/PercentageStat.ts";
 import {CardImg} from "../../../../components/misc/CardImg/CardImg.tsx";
 

@@ -1,11 +1,11 @@
 import {
-  BoxArrowUpRight, CircleHalf,
+  BoxArrowUpRight,
   Dice3,
-  Gear, InfoCircle, Journal, Moon,
+  Gear, InfoCircle, Journal,
   PersonCircle,
-  Search, Sun,
+  Search,
 } from "react-bootstrap-icons";
-import {CloseButton, DropdownButton, DropdownItem, Offcanvas} from "react-bootstrap";
+import {CloseButton, Offcanvas} from "react-bootstrap";
 import { NavLink } from "react-router";
 import {ThemeDropdownBtn} from "../ThemeDropdownBtn/ThemeDropdownBtn.tsx";
 import {CONFIG} from "../../../config/Config.ts";

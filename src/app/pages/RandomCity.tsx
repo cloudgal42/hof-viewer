@@ -1,5 +1,5 @@
 import { AdaptiveHeader } from "../../components/details/AdaptiveHeader/AdaptiveHeader.tsx";
-import {Suspense, useCallback, useContext, useEffect, useState} from "react";
+import {Suspense, useCallback, useEffect} from "react";
 import { Button, Dropdown, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { MoreActionsBtn } from "../../components/misc/MoreActionsBtn/MoreActionsBtn.tsx";
 import {

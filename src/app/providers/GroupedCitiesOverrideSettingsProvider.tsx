@@ -1,6 +1,6 @@
 import {useLocalStorage} from "usehooks-ts";
 import type {GroupedCityRowSetting} from "../../interfaces/GroupedCityRowSetting.ts";
-import {type ReactNode, useRef, useState} from "react";
+import {type ReactNode, useState} from "react";
 import {GroupedCitiesOverrideSettingsContext} from "../../context/GroupedCitiesOverrideSettingsContext.ts";
 
 export const GroupedCitiesOverrideSettingsProvider = (

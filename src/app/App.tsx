@@ -1,5 +1,5 @@
 import "../css/App.scss";
-import { Container, Navbar, Spinner } from "react-bootstrap";
+import { Navbar, Spinner } from "react-bootstrap";
 import { Suspense, useEffect, useState } from "react";
 import { Sidebar } from "../components/misc/Sidebar/Sidebar.tsx";
 import { HamburgerButton } from "../components/misc/Hamburger/HamburgerButton.tsx";
