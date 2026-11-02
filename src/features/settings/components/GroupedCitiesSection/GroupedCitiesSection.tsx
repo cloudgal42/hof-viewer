@@ -14,22 +14,22 @@ import {
   type DragEndEvent,
   type DragStartEvent,
 } from "@dnd-kit/react";
-import { ErrorScreen } from "../../misc/ErrorScreen/ErrorScreen.tsx";
+import { ErrorScreen } from "../../../../components/misc/ErrorScreen/ErrorScreen.tsx";
 import { useLocalStorage } from "usehooks-ts";
-import { GroupedSettingsContext } from "../../../context/GroupedSettingsContext.ts";
-import { useGroupedCitiesSettings } from "../../../hooks/useGroupedCitiesSettings.ts";
+import { GroupedSettingsContext } from "../../../../context/GroupedSettingsContext.ts";
+import { useGroupedCitiesSettings } from "../../hooks/useGroupedCitiesSettings.ts";
 
-import type { GroupCandidate } from "../../../interfaces/GroupCandidate.ts";
-import { ErrorNotification } from "../../misc/LeftNotification/ErrorNotification.tsx";
+import type { GroupCandidate } from "../../../../interfaces/GroupCandidate.ts";
+import { ErrorNotification } from "../../../../components/misc/LeftNotification/ErrorNotification.tsx";
 import { ToggleSetting } from "../SettingsComponents/ToggleSetting.tsx";
 import {
   ArrowClockwise,
   ExclamationTriangle,
   Flask,
 } from "react-bootstrap-icons";
-import type { GroupedCityGenSettings } from "../../../interfaces/GroupedCityGenSettings.ts";
+import type { GroupedCityGenSettings } from "../../../../interfaces/GroupedCityGenSettings.ts";
 import { DatalistControl } from "./DatalistControl.tsx";
-import { useGroupedCitiesGenSettings } from "../../../hooks/useGroupedCitiesGenSettings.ts";
+import { useGroupedCitiesGenSettings } from "../../hooks/useGroupedCitiesGenSettings.ts";
 import {CandidatelessGroupAccordion} from "./CandidatelessGroupAccordion.tsx";
 
 export const GroupedCitiesSection = () => {

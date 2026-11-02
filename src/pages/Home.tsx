@@ -19,7 +19,7 @@ import { DefaultHelmet } from "../components/misc/DefaultHelmet/DefaultHelmet.ts
 import Chirper from "../assets/Chirper.svg";
 import { useDebounceCallback } from "usehooks-ts";
 import Fuse from "fuse.js";
-import { useGroupedCitiesSettings } from "../hooks/useGroupedCitiesSettings.ts";
+import { useGroupedCitiesSettings } from "../features/settings/hooks/useGroupedCitiesSettings.ts";
 
 const DEFAULT_CITIES_PER_PAGE = 18;
 

@@ -11,8 +11,8 @@ import { useCreatorCities } from "../features/city/hooks/useCreatorCities.ts";
 import { CreatorInsights } from "../features/statistics/components/CreatorInsights/CreatorInsights.tsx";
 import { groupCities } from "../features/city/helpers/GroupCities.ts";
 import { PlaceholderInsights } from "../features/statistics/components/CreatorInsights/PlaceholderInsights.tsx";
-import {useGroupedCitiesSettings} from "../hooks/useGroupedCitiesSettings.ts";
-import {useGroupedCitiesGenSettings} from "../hooks/useGroupedCitiesGenSettings.ts";
+import {useGroupedCitiesSettings} from "../features/settings/hooks/useGroupedCitiesSettings.ts";
+import {useGroupedCitiesGenSettings} from "../features/settings/hooks/useGroupedCitiesGenSettings.ts";
 import {CreatorTrends} from "../features/statistics/components/CreatorTrends/CreatorTrends.tsx";
 
 const Creators = () => {

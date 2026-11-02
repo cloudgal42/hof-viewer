@@ -1,5 +1,5 @@
-import {useGroupedCitiesSettings} from "../../../hooks/useGroupedCitiesSettings.ts";
-import {useGroupedCitiesGenSettings} from "../../../hooks/useGroupedCitiesGenSettings.ts";
+import {useGroupedCitiesSettings} from "../../settings/hooks/useGroupedCitiesSettings.ts";
+import {useGroupedCitiesGenSettings} from "../../settings/hooks/useGroupedCitiesGenSettings.ts";
 import type {City, GroupedCities} from "../../../interfaces/City.ts";
 import {groupCities} from "../../city/helpers/GroupCities.ts";
 import {useTrendsWorker} from "./useTrendsWorker.ts";

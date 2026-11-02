@@ -25,8 +25,8 @@ import {Helmet} from "@dr.pogodin/react-helmet";
 
 import '../css/components/CityGallery.scss';
 import {PlaceholderGallery} from "../features/city/components/CityGallery/PlaceholderGallery.tsx";
-import {useGroupedCitiesSettings} from "../hooks/useGroupedCitiesSettings.ts";
-import {useTranslation} from "../hooks/useTranslation.ts";
+import {useGroupedCitiesSettings} from "../features/settings/hooks/useGroupedCitiesSettings.ts";
+import {useTranslation} from "../features/settings/hooks/useTranslation.ts";
 
 const CityGallery = lazy(() => import("../features/city/components/CityGallery/CityGallery.tsx"));
 

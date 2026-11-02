@@ -1,6 +1,6 @@
-import "../../../css/components/SectionNav.scss";
+import "../../../../css/components/SectionNav.scss";
 import ScrollSpy from "react-scrollspy-navigation";
-import {BackButton} from "../../misc/BackButton/BackButton.tsx";
+import {BackButton} from "../../../../components/misc/BackButton/BackButton.tsx";
 import {Brush, Buildings, Dice3, InfoCircle, Translate} from "react-bootstrap-icons";
 
 export const SectionNav = () => {

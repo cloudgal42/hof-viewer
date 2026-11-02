@@ -2,8 +2,8 @@ import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Ban, Plus } from "react-bootstrap-icons";
 import { useContext, useState } from "react";
 import { useDroppable } from "@dnd-kit/react";
-import { GroupedSettingsContext } from "../../../context/GroupedSettingsContext.ts";
-import type { GroupCandidate } from "../../../interfaces/GroupCandidate.ts";
+import { GroupedSettingsContext } from "../../../../context/GroupedSettingsContext.ts";
+import type { GroupCandidate } from "../../../../interfaces/GroupCandidate.ts";
 
 export const AddGroup = ({
   onAdd,

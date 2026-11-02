@@ -1,9 +1,9 @@
 import { Plus, Trash } from "react-bootstrap-icons";
 import { Button, Card, Form } from "react-bootstrap";
-import type { GroupCandidate } from "../../../interfaces/GroupCandidate.ts";
+import type { GroupCandidate } from "../../../../interfaces/GroupCandidate.ts";
 import { DraggableEntry } from "./DraggableEntry.tsx";
 import { useDroppable } from "@dnd-kit/react";
-import { GroupedSettingsContext } from "../../../context/GroupedSettingsContext.ts";
+import { GroupedSettingsContext } from "../../../../context/GroupedSettingsContext.ts";
 import { type CSSProperties, useContext } from "react";
 
 export const GroupedCityRow = ({

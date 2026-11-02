@@ -1,5 +1,5 @@
 import {RangeSetting} from "../SettingsComponents/RangeSetting.tsx";
-import {useRandomAlgoSettings} from "../../../hooks/useRandomAlgoSettings.ts";
+import {useRandomAlgoSettings} from "../../hooks/useRandomAlgoSettings.ts";
 
 export const RandomAlgoSection = () => {
   const [randomAlgoSettings, setRandomAlgoSettings, defaultSettings] = useRandomAlgoSettings();

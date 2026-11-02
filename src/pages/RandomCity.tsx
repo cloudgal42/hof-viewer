@@ -27,9 +27,9 @@ import { useScrollToTop } from "../hooks/useScrollToTop.ts";
 import { DefaultHelmet } from "../components/misc/DefaultHelmet/DefaultHelmet.tsx";
 import {NavLink, useOutletContext, useSearchParams} from "react-router";
 import type { ContextType } from "../App.tsx";
-import {useRandomAlgoSettings} from "../hooks/useRandomAlgoSettings.ts";
+import {useRandomAlgoSettings} from "../features/settings/hooks/useRandomAlgoSettings.ts";
 import {handleSetSearchParams} from "../utils/SearchParamHandlers.ts";
-import {useTranslation} from "../hooks/useTranslation.ts";
+import {useTranslation} from "../features/settings/hooks/useTranslation.ts";
 
 const RandomCity = () => {
   const [searchParams, setSearchParams] = useSearchParams();

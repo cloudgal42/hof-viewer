@@ -1,7 +1,7 @@
 import {Accordion} from "react-bootstrap";
 import {Fragment, useEffect, useRef, useState} from "react";
 import {GroupedCityRow} from "./GroupedCityRow.tsx";
-import type {GroupedCityRowSetting} from "../../../interfaces/GroupedCityRowSetting.ts";
+import type {GroupedCityRowSetting} from "../../../../interfaces/GroupedCityRowSetting.ts";
 import {useDroppable} from "@dnd-kit/react";
 
 export const CandidatelessGroupAccordion = (

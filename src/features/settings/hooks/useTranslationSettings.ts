@@ -1,7 +1,7 @@
 import {useLocalStorage} from "usehooks-ts";
-import type {TranslationSettings} from "../interfaces/TranslationSettings.ts";
+import type {TranslationSettings} from "../../../interfaces/TranslationSettings.ts";
 import type {Dispatch, SetStateAction} from "react";
-import {CONFIG} from "../config/Config.ts";
+import {CONFIG} from "../../../config/Config.ts";
 
 type useTranslationSettingsReturnType = [
   TranslationSettings,

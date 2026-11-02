@@ -1,8 +1,8 @@
-import { ToggleSetting } from "../components/settings/SettingsComponents/ToggleSetting.tsx";
-import { SectionNav } from "../components/settings/SectionNav/SectionNav.tsx";
-import {TranslationSection} from "../components/settings/TranslationSection/TranslationSection.tsx";
-import {RandomAlgoSection} from "../components/settings/RandomAlgoSection/RandomAlgoSection.tsx";
-import {GroupedCitiesSection} from "../components/settings/GroupedCitiesSection/GroupedCitiesSection.tsx";
+import { ToggleSetting } from "../features/settings/components/SettingsComponents/ToggleSetting.tsx";
+import { SectionNav } from "../features/settings/components/SectionNav/SectionNav.tsx";
+import {TranslationSection} from "../features/settings/components/TranslationSection/TranslationSection.tsx";
+import {RandomAlgoSection} from "../features/settings/components/RandomAlgoSection/RandomAlgoSection.tsx";
+import {GroupedCitiesSection} from "../features/settings/components/GroupedCitiesSection/GroupedCitiesSection.tsx";
 import {useOutletContext} from "react-router";
 import {ThemeContext} from "../context/ThemeContext.ts";
 import {useContext, useEffect} from "react";
