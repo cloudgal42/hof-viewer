@@ -204,7 +204,7 @@ const CityDetails = () => {
                     {" "}screenshots as you.
                   </Tooltip>
                 }>
-                  <Badge className="mt-1 border border-info bg-info-subtle fw-normal text-info">
+                  <Badge className="mt-1 border border-info bg-info-subtle fw-normal text-info-emphasis">
                     <InfoCircle/> Using custom override presets
                   </Badge>
                 </OverlayTrigger>
