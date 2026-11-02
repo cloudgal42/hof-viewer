@@ -7,7 +7,7 @@ import "lightgallery/css/lg-thumbnail.css";
 import "lightgallery/css/lg-fullscreen.css";
 import "lightgallery/css/lg-autoplay.css";
 
-import "../../../css/components/CityGallery.scss";
+import "../../../../css/components/CityGallery.scss";
 
 import lgThumbnail from "lightgallery/plugins/thumbnail";
 import lgZoom from "lightgallery/plugins/zoom";
@@ -16,11 +16,11 @@ import lgAutoplay from "lightgallery/plugins/autoplay";
 
 import { useCallback, useRef, useState } from "react";
 import type { InitDetail } from "lightgallery/lg-events";
-import type { City, GroupedCities } from "../../../interfaces/City.ts";
+import type { City, GroupedCities } from "../../../../interfaces/City.ts";
 import { GalleryImg } from "./GalleryImg.tsx";
 import { Eye, Heart } from "react-bootstrap-icons";
-import { isEmptyObject } from "../../../utils/IsEmptyObject.ts";
-import { fromDecimalTime } from "../../../utils/TimeFormat.ts";
+import { isEmptyObject } from "../../../../utils/IsEmptyObject.ts";
+import { fromDecimalTime } from "../../helpers/TimeFormat.ts";
 
 interface GalleryProps {
   city: City | GroupedCities;

@@ -1,6 +1,6 @@
 import type { ScreenshotRank } from "../../../interfaces/City.ts";
 import { Gem, Question, StarFill } from "react-bootstrap-icons";
-import { getRankColor } from "../../../utils/RankColor.ts";
+import { getRankColor } from "../../../features/city/helpers/RankColor.ts";
 
 export const ScreenshotRankBadge = (
   { rank, size }: { rank: ScreenshotRank; size?: number },

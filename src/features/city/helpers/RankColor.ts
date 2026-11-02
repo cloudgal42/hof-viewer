@@ -1,4 +1,4 @@
-import type {ScreenshotRank} from "../interfaces/City.ts";
+import type {ScreenshotRank} from "../../../interfaces/City.ts";
 
 export function getRankColor(rank: ScreenshotRank) {
   if (rank === "diamond") return "#87CEEB";

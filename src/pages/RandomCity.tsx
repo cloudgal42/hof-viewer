@@ -14,15 +14,15 @@ import {
 import type { City } from "../interfaces/City.ts";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ErrorScreen } from "../components/misc/ErrorScreen/ErrorScreen.tsx";
-import { PlaceholderDetails } from "../components/details/Details/PlaceholderDetails.tsx";
+import { PlaceholderDetails } from "../features/city/components/Details/PlaceholderDetails.tsx";
 import PlaceholderImg from "../assets/placeholder.svg";
-import { Details } from "../components/details/Details/Details.tsx";
-import CityGallery from "../components/details/CityGallery/CityGallery.tsx";
+import { Details } from "../features/city/components/Details/Details.tsx";
+import CityGallery from "../features/city/components/CityGallery/CityGallery.tsx";
 import { CreatorPreviewTrigger } from "../components/misc/CreatorPreview/CreatorPreviewTrigger.tsx";
 import {
   PlaceholderHeaderWithControls,
 } from "../components/randomcity/PlaceholderHeaderWithControls/PlaceholderHeaderWithControls.tsx";
-import { shareContent } from "../utils/ShareContent.ts";
+import { shareContent } from "../features/city/helpers/ShareContent.ts";
 import { useScrollToTop } from "../hooks/useScrollToTop.ts";
 import { DefaultHelmet } from "../components/misc/DefaultHelmet/DefaultHelmet.tsx";
 import {NavLink, useOutletContext, useSearchParams} from "react-router";

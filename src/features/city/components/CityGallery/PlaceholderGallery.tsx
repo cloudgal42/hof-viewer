@@ -1,5 +1,5 @@
 import {DEFAULT_IMAGES_PER_PAGE} from "./CityGallery.tsx";
-import PlaceholderImg from "../../../assets/placeholder.svg";
+import PlaceholderImg from "../../../../assets/placeholder.svg";
 
 export const PlaceholderGallery = () => (
   <div className="w-100 d-flex gap-1 flex-row flex-wrap img-gallery-container-4-grid">

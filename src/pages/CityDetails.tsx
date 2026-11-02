@@ -2,33 +2,33 @@ import {Badge, Button, OverlayTrigger, Tooltip} from "react-bootstrap";
 import {NavLink, useLocation, useParams, useSearchParams} from "react-router";
 import {ChevronDown, InfoCircle, Share} from "react-bootstrap-icons";
 import {lazy, Suspense, useState} from "react";
-import {DEFAULT_IMAGES_PER_PAGE} from "../components/details/CityGallery/CityGallery.tsx";
+import {DEFAULT_IMAGES_PER_PAGE} from "../features/city/components/CityGallery/CityGallery.tsx";
 
 import PlaceholderImg from "../assets/placeholder.svg"
-import {PlaceholderDetails} from "../components/details/Details/PlaceholderDetails.tsx";
+import {PlaceholderDetails} from "../features/city/components/Details/PlaceholderDetails.tsx";
 import {CityTrends} from "../components/details/CityTrends/CityTrends.tsx";
 import {ErrorScreen} from "../components/misc/ErrorScreen/ErrorScreen.tsx";
 import {useQuery} from "@tanstack/react-query";
 import type {City, GroupedCities} from "../interfaces/City.ts";
 import {CityInsights} from "../components/details/CityInsights/CityInsights.tsx";
-import {useCreatorCities} from "../hooks/useCreatorCities.ts";
-import {groupCities} from "../utils/GroupCities.ts";
+import {useCreatorCities} from "../features/city/hooks/useCreatorCities.ts";
+import {groupCities} from "../features/city/helpers/GroupCities.ts";
 
 import {AdaptiveHeader} from "../components/details/AdaptiveHeader/AdaptiveHeader.tsx";
-import {Details} from "../components/details/Details/Details.tsx";
+import {Details} from "../features/city/components/Details/Details.tsx";
 import {BackButton} from "../components/misc/BackButton/BackButton.tsx";
 import {CreatorPreviewTrigger} from "../components/misc/CreatorPreview/CreatorPreviewTrigger.tsx";
-import {PlaceholderDetailsHeader} from "../components/details/Details/PlaceholderDetailsHeader.tsx";
-import {shareContent} from "../utils/ShareContent.ts";
+import {PlaceholderDetailsHeader} from "../features/city/components/Details/PlaceholderDetailsHeader.tsx";
+import {shareContent} from "../features/city/helpers/ShareContent.ts";
 import {useScrollToTop} from "../hooks/useScrollToTop.ts";
 import {Helmet} from "@dr.pogodin/react-helmet";
 
 import '../css/components/CityGallery.scss';
-import {PlaceholderGallery} from "../components/details/CityGallery/PlaceholderGallery.tsx";
+import {PlaceholderGallery} from "../features/city/components/CityGallery/PlaceholderGallery.tsx";
 import {useGroupedCitiesSettings} from "../hooks/useGroupedCitiesSettings.ts";
 import {useTranslation} from "../hooks/useTranslation.ts";
 
-const CityGallery = lazy(() => import("../components/details/CityGallery/CityGallery.tsx"));
+const CityGallery = lazy(() => import("../features/city/components/CityGallery/CityGallery.tsx"));
 
 const CityDetails = () => {
   const [page, setPage] = useState<number>(1);

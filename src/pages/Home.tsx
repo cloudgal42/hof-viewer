@@ -3,17 +3,17 @@ import { SortOrderButton } from "../components/home/SortOrderButton/SortOrderBut
 import { useMemo, useState } from "react";
 import type { ContextType } from "../App.tsx";
 import { SortDropdown } from "../components/home/SortDropdown/SortDropdown.tsx";
-import { CityCard } from "../components/home/CityCard/CityCard.tsx";
-import { PlaceholderCard } from "../components/home/CityCard/PlaceholderCard.tsx";
+import { CityCard } from "../features/city/components/CityCard/CityCard.tsx";
+import { PlaceholderCard } from "../features/city/components/CityCard/PlaceholderCard.tsx";
 import { NavLink, useOutletContext, useSearchParams } from "react-router";
 import { handleSetSearchParams } from "../utils/SearchParamHandlers.ts";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import { groupCities } from "../utils/GroupCities.ts";
+import { groupCities } from "../features/city/helpers/GroupCities.ts";
 import type { City, GroupedCities } from "../interfaces/City.ts";
 import { ErrorScreen } from "../components/misc/ErrorScreen/ErrorScreen.tsx";
 import { useQueryClient } from "@tanstack/react-query";
-import { useCreatorCities } from "../hooks/useCreatorCities.ts";
+import { useCreatorCities } from "../features/city/hooks/useCreatorCities.ts";
 import { DefaultHelmet } from "../components/misc/DefaultHelmet/DefaultHelmet.tsx";
 
 import Chirper from "../assets/Chirper.svg";

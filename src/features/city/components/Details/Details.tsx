@@ -1,7 +1,7 @@
-import type {City, GroupedCities, ScreenshotRank} from "../../../interfaces/City.ts";
+import type {City, GroupedCities, ScreenshotRank} from "../../../../interfaces/City.ts";
 import { Card, OverlayTrigger, Tooltip } from "react-bootstrap";
-import { PlaceholderFeatModCard } from "../FeatModCard/PlaceholderFeatModCard.tsx";
-import { FeatModCard } from "../FeatModCard/FeatModCard.tsx";
+import { PlaceholderFeatModCard } from "../../../../components/details/FeatModCard/PlaceholderFeatModCard.tsx";
+import { FeatModCard } from "../../../../components/details/FeatModCard/FeatModCard.tsx";
 import {
   BoxArrowUpRight,
   CloudHail,
@@ -16,12 +16,12 @@ import {
   Thunderbolt,
   Trophy,
 } from "react-bootstrap-icons";
-import { ModList } from "../Playset/ModList.tsx";
+import { ModList } from "../../../../components/details/Playset/ModList.tsx";
 import { RenderSettings } from "../RenderSettings/RenderSettings.tsx";
 import Markdown from "react-markdown";
 import {Conditions} from "../Conditions/Conditions.tsx";
-import {ScreenshotRankBadge} from "../../screenshot/ScreenshotRankBadge/ScreenshotRankBadge.tsx";
-import {getRankColor} from "../../../utils/RankColor.ts";
+import {ScreenshotRankBadge} from "../../../../components/screenshot/ScreenshotRankBadge/ScreenshotRankBadge.tsx";
+import {getRankColor} from "../../helpers/RankColor.ts";
 
 const cityMilestones = [
   "Tiny Village",

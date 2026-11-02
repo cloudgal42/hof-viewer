@@ -1,7 +1,7 @@
 import {useGroupedCitiesSettings} from "./useGroupedCitiesSettings.ts";
 import {useGroupedCitiesGenSettings} from "./useGroupedCitiesGenSettings.ts";
 import type {City, GroupedCities} from "../interfaces/City.ts";
-import {groupCities} from "../utils/GroupCities.ts";
+import {groupCities} from "../features/city/helpers/GroupCities.ts";
 import {useTrendsWorker} from "./useTrendsWorker.ts";
 import {useCreatorCitiesViewsAndFavorites} from "./useCreatorCitiesViewsAndFavorites.ts";
 import type {TrendsWorkerInput} from "../interfaces/TrendsData.ts";
@@ -16,6 +16,8 @@ export const useCityTrends = (
     trendType: string;
   }
 ) => {
+  // TODO: Place the 2 below code on the component which uses this hook itself.
+  //  This hook will then just take a City and do things from there
   const {currCreatorSettings} = useGroupedCitiesSettings(creator);
 
   const {data, isFetching, error, refetch} = useCreatorCitiesViewsAndFavorites<GroupedCities | undefined>(

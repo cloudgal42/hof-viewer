@@ -1,5 +1,5 @@
 import {useQuery} from "@tanstack/react-query";
-import type {City} from "../interfaces/City.ts";
+import type {City} from "../../../interfaces/City.ts";
 
 export const useCreatorCities = (creator: string | null) => {
   return useQuery<City[]>({
