@@ -9,7 +9,7 @@ import {
 } from "react-bootstrap-icons";
 import { NavLink } from "react-router";
 import type { City, GroupedCities } from "../../../../interfaces/City.ts";
-import { CreatorPreviewTrigger } from "../../../../components/misc/CreatorPreview/CreatorPreviewTrigger.tsx";
+import { CreatorPreviewTrigger } from "../../../creator/components/CreatorPreview/CreatorPreviewTrigger.tsx";
 import { CardImg } from "../../../../components/misc/CardImg/CardImg.tsx";
 
 import "react-lazy-load-image-component/src/effects/black-and-white.css";
@@ -94,6 +94,7 @@ export const CityCard = ({ city }: CityCardProps) => {
             )}
           </div>
           <div style={{ fontSize: "0.9rem" }} className="text-muted">
+            {/* TODO: Either provide this as some form of prop, or just remove this feature entirely */}
             <CreatorPreviewTrigger
               creator={city.creator}
               creatorName={creatorName(city.creator)}

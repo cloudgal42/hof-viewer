@@ -2,8 +2,8 @@ import {Card} from "react-bootstrap";
 import {ArrowUpRight, Cake, Eye, Heart, Images} from "react-bootstrap-icons";
 import {NavLink} from "react-router";
 
-import type {CreatorDetails} from "../../../interfaces/Creator.ts";
-import {useTranslation} from "../../../hooks/useTranslation.ts";
+import type {CreatorDetails} from "../../../../interfaces/Creator.ts";
+import {useTranslation} from "../../../../hooks/useTranslation.ts";
 
 const Socials: {[key: string]: string} = {
   "discord": "Discord",

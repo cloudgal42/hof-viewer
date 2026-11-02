@@ -17,7 +17,7 @@ import {groupCities} from "../features/city/helpers/GroupCities.ts";
 import {AdaptiveHeader} from "../components/details/AdaptiveHeader/AdaptiveHeader.tsx";
 import {Details} from "../features/city/components/Details/Details.tsx";
 import {BackButton} from "../components/misc/BackButton/BackButton.tsx";
-import {CreatorPreviewTrigger} from "../components/misc/CreatorPreview/CreatorPreviewTrigger.tsx";
+import {CreatorPreviewTrigger} from "../features/creator/components/CreatorPreview/CreatorPreviewTrigger.tsx";
 import {PlaceholderDetailsHeader} from "../features/city/components/Details/PlaceholderDetailsHeader.tsx";
 import {shareContent} from "../features/city/helpers/ShareContent.ts";
 import {useScrollToTop} from "../hooks/useScrollToTop.ts";

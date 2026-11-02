@@ -1,5 +1,5 @@
 import {useQuery} from "@tanstack/react-query";
-import type {CreatorDetails} from "../interfaces/Creator.ts";
+import type {CreatorDetails} from "../../../interfaces/Creator.ts";
 
 export const useCreator = (creator: string | null) => {
   return useQuery<CreatorDetails>({
