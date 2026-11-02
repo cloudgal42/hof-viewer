@@ -15,7 +15,7 @@ import { CardImg } from "../../../../components/misc/CardImg/CardImg.tsx";
 import "react-lazy-load-image-component/src/effects/black-and-white.css";
 import "../../../../css/components/CityCard.css";
 import { useTranslation } from "../../../../hooks/useTranslation.ts";
-import { ScreenshotRankBadge } from "../../../../components/screenshot/ScreenshotRankBadge/ScreenshotRankBadge.tsx";
+import { ScreenshotRankBadge } from "../ScreenshotRankBadge/ScreenshotRankBadge.tsx";
 
 interface CityCardProps {
   city: City | GroupedCities;

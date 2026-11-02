@@ -1,6 +1,6 @@
-import type { SkyveCompatibility } from "../../../interfaces/SkyveCompatibility.ts";
+import type { SkyveCompatibility } from "../../../../interfaces/SkyveCompatibility.ts";
 import { Badge, OverlayTrigger, Tooltip } from "react-bootstrap";
-import skyveIcon from "../../../assets/skyve.webp";
+import skyveIcon from "../../../../assets/skyve.webp";
 import {
   Check,
   CheckCircle,
