@@ -38,7 +38,7 @@ const CityDetails = () => {
   const [searchParams] = useSearchParams();
   const cityParam = useParams().city;
   
-  const city = location.state.placeholderData as City | GroupedCities | null;
+  const placeholderCity = location.state?.placeholderData as City | GroupedCities | undefined;
   
   const {
     titleCityName,
@@ -78,8 +78,8 @@ const CityDetails = () => {
     },
     refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 10, // 10 minutes
-    enabled: Boolean(!city?.favorites && !city?.views && !isCitiesGrouped ||
-      city?.showcasedModId && !isCitiesGrouped || !isCitiesGrouped),
+    enabled: Boolean(!placeholderCity?.favorites && !placeholderCity?.views && !isCitiesGrouped ||
+      placeholderCity?.showcasedModId && !isCitiesGrouped || !isCitiesGrouped),
     retry: false,
   });
 
@@ -89,7 +89,7 @@ const CityDetails = () => {
 
   const cityDetails = isCitiesGrouped
     ? creatorCities && groupCities(creatorCities, currCreatorSettings).find(entry => entry.cityName.toLowerCase() === cityParam?.toLowerCase())
-    : data || city;
+    : data || placeholderCity;
 
   if (!cityDetails) {
     if (!navigator.onLine) {
