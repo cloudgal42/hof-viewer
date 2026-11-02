@@ -3,7 +3,7 @@ import {BoxArrowUpRight} from "react-bootstrap-icons";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import PlaceholderImg from "../../../../assets/placeholder.svg";
 
-import type {Mod} from "../../../../interfaces/Mod.ts";
+import type {Mod} from "../../types/Mod.ts";
 import {ErrorScreen} from "../../../../components/misc/ErrorScreen/ErrorScreen.tsx";
 
 import pdxModsIcon from "../../../../assets/pdx-mods.webp";

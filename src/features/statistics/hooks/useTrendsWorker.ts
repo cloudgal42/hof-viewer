@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useRef, useState} from "react";
-import type {TrendsData, TrendsWorkerInput, WorkerMsg, WorkerParams} from "../../../interfaces/TrendsData.ts";
+import type {TrendsData, TrendsWorkerInput, WorkerMsg, WorkerParams} from "../types/TrendsData.ts";
 import {useTimeout} from "usehooks-ts";
 
 export const useTrendsWorker = (

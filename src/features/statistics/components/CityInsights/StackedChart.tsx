@@ -16,7 +16,7 @@ import {Button} from "react-bootstrap";
 
 import "../../../../css/components/StackedChart.scss";
 import {ZoomIn, ZoomOut} from "react-bootstrap-icons";
-import type {PercentageStat} from "../../../../interfaces/PercentageStat.ts";
+import type {PercentageStat} from "../../types/PercentageStat.ts";
 
 ChartJS.register(
   CategoryScale,

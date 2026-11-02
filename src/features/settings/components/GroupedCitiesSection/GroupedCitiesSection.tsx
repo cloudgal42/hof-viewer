@@ -19,7 +19,7 @@ import { useLocalStorage } from "usehooks-ts";
 import { GroupedSettingsContext } from "../../../../context/GroupedSettingsContext.ts";
 import { useGroupedCitiesSettings } from "../../hooks/useGroupedCitiesSettings.ts";
 
-import type { GroupCandidate } from "../../../../interfaces/GroupCandidate.ts";
+import type { GroupCandidate } from "../../types/GroupCandidate.ts";
 import { ErrorNotification } from "../../../../components/misc/LeftNotification/ErrorNotification.tsx";
 import { ToggleSetting } from "../SettingsComponents/ToggleSetting.tsx";
 import {
@@ -27,7 +27,7 @@ import {
   ExclamationTriangle,
   Flask,
 } from "react-bootstrap-icons";
-import type { GroupedCityGenSettings } from "../../../../interfaces/GroupedCityGenSettings.ts";
+import type { GroupedCityGenSettings } from "../../types/GroupedCityGenSettings.ts";
 import { DatalistControl } from "./DatalistControl.tsx";
 import { useGroupedCitiesGenSettings } from "../../hooks/useGroupedCitiesGenSettings.ts";
 import {CandidatelessGroupAccordion} from "./CandidatelessGroupAccordion.tsx";

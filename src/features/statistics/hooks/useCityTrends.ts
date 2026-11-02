@@ -4,7 +4,7 @@ import type {City, GroupedCities} from "../../../interfaces/City.ts";
 import {groupCities} from "../../city/helpers/GroupCities.ts";
 import {useTrendsWorker} from "./useTrendsWorker.ts";
 import {useCreatorCitiesViewsAndFavorites} from "./useCreatorCitiesViewsAndFavorites.ts";
-import type {TrendsWorkerInput} from "../../../interfaces/TrendsData.ts";
+import type {TrendsWorkerInput} from "../types/TrendsData.ts";
 
 export const useCityTrends = (
   {creator, city, groupPeriod, enabled, trendType}:

@@ -1,6 +1,6 @@
 import {Button, ButtonGroup, Card} from "react-bootstrap";
 import {BoxArrowUpRight, FileEarmarkArrowDown, People} from "react-bootstrap-icons";
-import type {Mod} from "../../../../interfaces/Mod.ts";
+import type {Mod} from "../../types/Mod.ts";
 
 import pdxModsIcon from "../../../../assets/pdx-mods.webp";
 import skyveIcon from "../../../../assets/skyve.webp";

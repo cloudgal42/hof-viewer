@@ -1,6 +1,6 @@
 import { GripVertical, Trash } from "react-bootstrap-icons";
 import { Button, Form, InputGroup } from "react-bootstrap";
-import type { GroupCandidate } from "../../../../interfaces/GroupCandidate.ts";
+import type { GroupCandidate } from "../../types/GroupCandidate.ts";
 import { useDraggable } from "@dnd-kit/react";
 import { useContext, useRef, useState } from "react";
 import { GroupedSettingsContext } from "../../../../context/GroupedSettingsContext.ts";

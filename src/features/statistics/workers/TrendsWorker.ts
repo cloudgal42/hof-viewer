@@ -8,7 +8,7 @@ import type {
   TrendsData,
   TrendsWorkerInput, WorkerMsg,
   WorkerParams,
-} from "../../../interfaces/TrendsData.ts";
+} from "../types/TrendsData.ts";
 
 const DAYS_IN_MILLISECONDS = 86400000;
 

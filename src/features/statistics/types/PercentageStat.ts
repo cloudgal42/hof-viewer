@@ -1,4 +1,4 @@
-import type {City} from "./City.ts";
+import type {City} from "../../../interfaces/City.ts";
 
 export interface PercentageStat {
   id: string;

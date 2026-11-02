@@ -1,4 +1,4 @@
-import type {GroupCandidate} from "./GroupCandidate.ts";
+import type {GroupCandidate} from "../features/settings/types/GroupCandidate.ts";
 
 export interface GroupedCityRowSetting {
   groupCandidates: GroupCandidate[];

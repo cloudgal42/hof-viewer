@@ -1,6 +1,6 @@
 import type { Creator } from "../../../interfaces/Creator.ts";
 import { useLocalStorage } from "usehooks-ts";
-import type { TranslationSettings } from "../../../interfaces/TranslationSettings.ts";
+import type { TranslationSettings } from "../types/TranslationSettings.ts";
 import { CONFIG } from "../../../config/Config.ts";
 import type { City, GroupedCities } from "../../../interfaces/City.ts";
 

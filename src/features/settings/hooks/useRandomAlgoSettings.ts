@@ -1,5 +1,5 @@
 import {useLocalStorage} from "usehooks-ts";
-import type {RandomAlgoSettings} from "../../../interfaces/RandomAlgoSettings.ts";
+import type {RandomAlgoSettings} from "../types/RandomAlgoSettings.ts";
 import type {Dispatch, SetStateAction} from "react";
 
 type useRandomAlgoSettingsReturnType = [

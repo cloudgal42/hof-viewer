@@ -1,5 +1,5 @@
 import type {Creator} from "./Creator.ts";
-import type {Mod} from "./Mod.ts";
+import type {Mod} from "../features/city/types/Mod.ts";
 
 export interface Views {
   id: string;
