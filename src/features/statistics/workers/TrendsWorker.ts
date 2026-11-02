@@ -79,8 +79,6 @@ function groupData(
     : data.views?.length ?? 0;
   
   const progressInterval = Math.ceil(0.05 * groupedDates.length);
-  
-  console.debug("Progress interval: ", progressInterval);
 
   // 3. Loop through groupedDates. Within this array, loop through the views/favorites entries
   const groupedData = groupedDates.map((range, i) => {
