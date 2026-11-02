@@ -9,12 +9,12 @@ import {
 } from "react-bootstrap-icons";
 import { NavLink } from "react-router";
 import type { City, GroupedCities } from "../../../../interfaces/City.ts";
-import { CreatorPreviewTrigger } from "../../../creator/components/CreatorPreview/CreatorPreviewTrigger.tsx";
+import { CreatorPreviewTrigger } from "../../../../components/creators/CreatorPreview/CreatorPreviewTrigger.tsx";
 import { CardImg } from "../../../../components/misc/CardImg/CardImg.tsx";
 
 import "react-lazy-load-image-component/src/effects/black-and-white.css";
 import "../../../../css/components/CityCard.css";
-import { useTranslation } from "../../../settings/hooks/useTranslation.ts";
+import { useTranslation } from "../../../../hooks/useTranslation.ts";
 import { ScreenshotRankBadge } from "../ScreenshotRankBadge/ScreenshotRankBadge.tsx";
 
 interface CityCardProps {
