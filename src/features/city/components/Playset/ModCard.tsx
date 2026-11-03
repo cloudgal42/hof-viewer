@@ -6,7 +6,7 @@ import pdxModsIcon from "../../../../assets/pdx-mods.webp";
 import skyveIcon from "../../../../assets/skyve.webp";
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 import {CardImg} from "../../../../components/misc/CardImg/CardImg.tsx";
-import {SkyveCompatibilityBadge} from "./SkyveCompatibilityBadge.tsx";
+import {SkyveCompatibility} from "./SkyveCompatibility.tsx";
 
 interface ModListProps {
   mod: Mod;
@@ -43,7 +43,7 @@ export const ModCard = ({mod, isCompactMode}: ModListProps) => {
             <People title="Subscribers" className="mb-1" /> {formatter.format(mod.subscribersCount)}{" · "}
             {mod.sizeFormatted}
           </Card.Text>
-          <SkyveCompatibilityBadge compatibilityInfo={mod.skyve} />
+          <SkyveCompatibility mod={mod} />
         </div>
         <ButtonGroup vertical>
           <Button

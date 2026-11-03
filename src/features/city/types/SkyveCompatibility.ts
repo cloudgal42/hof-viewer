@@ -2,7 +2,7 @@ export interface SkyveCompatibility {
   stability: string;
   // TODO: Check if this returns undefined or null
   note?: string;
-  reviewedAt: Date | null;
+  reviewedAt: string | null;
   reviewedAtFormattedDistance: string | null;
   reviewedGameVersion: string | null;
 }

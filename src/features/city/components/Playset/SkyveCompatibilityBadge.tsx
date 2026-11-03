@@ -1,5 +1,6 @@
-import type { SkyveCompatibility } from "../../types/SkyveCompatibility.ts";
-import { Badge, OverlayTrigger, Tooltip } from "react-bootstrap";
+import {
+  Badge,
+} from "react-bootstrap";
 import {
   CheckCircle,
   ExclamationTriangle,
@@ -7,31 +8,28 @@ import {
   QuestionCircle,
   XCircle,
 } from "react-bootstrap-icons";
+import type {SkyveCompatibility} from "../../types/SkyveCompatibility.ts";
 
 export const SkyveCompatibilityBadge = (
   { compatibilityInfo }: { compatibilityInfo: SkyveCompatibility | null },
 ) => {
-  if (!compatibilityInfo || compatibilityInfo.stability === "notEnoughInformation") {
+  if (
+    !compatibilityInfo || compatibilityInfo.stability === "notEnoughInformation"
+  ) {
     return (
-      <OverlayTrigger
-        overlay={
-          <Tooltip>
-            There is not enough compatibility data for this package.
-          </Tooltip>
-        }
-      >
-        <Badge className="bg-secondary-subtle fw-semibold border border-1 border-secondary text-secondary-emphasis">
-          <QuestionCircle className="me-1" />
-          {compatibilityInfo?.stability === "notEnoughInformation" ? "Not enough information" : "No data"}
-        </Badge>
-      </OverlayTrigger>
+      <Badge className="bg-secondary-subtle fw-semibold border border-1 border-secondary text-secondary-emphasis">
+        <QuestionCircle className="me-1" />
+        {compatibilityInfo?.stability === "notEnoughInformation"
+          ? "Not enough information"
+          : "No data"}
+      </Badge>
     );
   }
 
   let badgeAndTextColor;
   let icon;
   let formattedStability;
-  
+
   if (
     compatibilityInfo.stability === "cautionWhenUsing" ||
     compatibilityInfo.stability === "hasIssues"
@@ -42,9 +40,9 @@ export const SkyveCompatibilityBadge = (
     compatibilityInfo.stability === "broken"
   ) {
     icon = <XCircle />;
-  } else if (compatibilityInfo.stability === "obsolete")
+  } else if (compatibilityInfo.stability === "obsolete") {
     icon = <Heartbreak />;
-  else {
+  } else {
     icon = <CheckCircle />;
   }
 
@@ -62,7 +60,7 @@ export const SkyveCompatibilityBadge = (
   } else {
     badgeAndTextColor = "bg-success-subtle border-success text-success";
   }
-  
+
   if (compatibilityInfo.stability === "cautionWhenUsing") {
     formattedStability = "Attention Needed";
   } else if (compatibilityInfo.stability === "brokenFromPatch") {
@@ -71,31 +69,13 @@ export const SkyveCompatibilityBadge = (
     formattedStability = "Has Issues";
   } else {
     formattedStability = compatibilityInfo.stability.charAt(0).toUpperCase() +
-    compatibilityInfo.stability.slice(1)
+      compatibilityInfo.stability.slice(1);
   }
 
   return (
-    <OverlayTrigger
-      overlay={
-        <Tooltip>
-          <ul className="list-unstyled mb-0">
-            <li>
-              <strong>Compatibility notes:</strong>{" "}
-              {compatibilityInfo.note ?? "None"}
-            </li>
-            <li>
-              <strong>Reviewed at:</strong> {compatibilityInfo.reviewedAt
-                ? new Date(compatibilityInfo.reviewedAt).toLocaleDateString()
-                : "Unknown"}
-            </li>
-          </ul>
-        </Tooltip>
-      }
-    >
-      <Badge className={`fw-semibold border border-1 ${badgeAndTextColor}`}>
-        {icon}
-        <span className="ms-1">{formattedStability}</span>
-      </Badge>
-    </OverlayTrigger>
+    <Badge className={`fw-semibold border border-1 ${badgeAndTextColor}`}>
+      {icon}
+      <span className="ms-1">{formattedStability}</span>
+    </Badge>
   );
 };
