@@ -12,6 +12,7 @@ export default defineConfig([
   globalIgnores(['dist']),
   {
     files: ['**/*.{ts,tsx}'],
+    ignores: [".netlify/**/*"],
     plugins: {
       import: importPlugin,
       "unused-imports": unusedImports
