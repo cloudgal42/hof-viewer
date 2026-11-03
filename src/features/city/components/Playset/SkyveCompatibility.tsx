@@ -32,7 +32,6 @@ export const SkyveCompatibility = (
       overlay={
         <Popover
           style={{ maxWidth: "300px" }}
-          onClick={handleShowClick}
           onMouseEnter={() => handleShowHover(true)}
           onMouseLeave={() => handleShowHover(false)}
         >
