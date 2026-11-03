@@ -1,12 +1,17 @@
-import { useEffect, useRef, useState} from "react";
-import type {TrendsData, TrendsWorkerInput, WorkerMsg, WorkerParams} from "../types/TrendsData.ts";
+import { useEffect, useRef, useState } from "react";
+import type {
+  TrendsData,
+  TrendsWorkerInput,
+  WorkerMsg,
+  WorkerParams,
+} from "../types/TrendsData.ts";
 
 export const useTrendsWorker = (
   {
     data,
     groupPeriod,
     trendType,
-    enabled
+    enabled,
   }: {
     data: TrendsWorkerInput | null;
     groupPeriod: number;
@@ -15,11 +20,13 @@ export const useTrendsWorker = (
   },
 ) => {
   const [groupedCounts, setGroupedCounts] = useState<TrendsData | null>(null);
+
+  const [error, setError] = useState<Error | null>(null);
   const [progress, setProgress] = useState<number>(0);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const viewsWorkerRef = useRef<Worker>(null);
-
+  
   useEffect(() => {
     if (!enabled) return;
     if (!data) return;
@@ -35,7 +42,7 @@ export const useTrendsWorker = (
       day: groupPeriod,
       type: trendType,
     };
-    
+
     // We have to reset progress to 0 immediately when progress is run
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setProgress(0);
@@ -47,6 +54,8 @@ export const useTrendsWorker = (
     }, 67);
 
     viewsWorkerRef.current.onmessage = (e: MessageEvent<WorkerMsg>) => {
+      setError(null);
+      
       if (e.data.type === "calculationCompleted") {
         setGroupedCounts(e.data.payload);
         clearTimeout(timerId);
@@ -56,11 +65,16 @@ export const useTrendsWorker = (
       }
     };
 
+    viewsWorkerRef.current.onerror = (e: ErrorEvent) => {
+      console.error(e);
+      setError(new Error(e.message ?? "Something went wrong while processing trends."));
+    };
+
     return () => {
       clearTimeout(timerId);
       if (viewsWorkerRef.current) viewsWorkerRef.current.terminate();
     };
   }, [data, groupPeriod, trendType, enabled]);
 
-  return {data: groupedCounts, isProcessing, progress};
+  return { data: groupedCounts, isProcessing, progress, error };
 };

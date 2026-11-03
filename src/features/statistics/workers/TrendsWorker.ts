@@ -13,7 +13,6 @@ function send(params: WorkerMsg) {
   self.postMessage(params);
 }
 
-// TODO: Require new params for this
 self.onmessage = ({ data }: { data: WorkerParams }) => {
   const { inputData, day, type } = data;
   const result = groupData(inputData, day, type);

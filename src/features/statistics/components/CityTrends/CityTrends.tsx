@@ -71,6 +71,7 @@ export const CityTrends = (
 
   const {
     error,
+    workerError,
     trendsData,
     isFetching,
     progress,
@@ -161,6 +162,13 @@ export const CityTrends = (
         errorDetails={fetchError?.message || error?.message}
       />
     );
+  } else if (workerError) {
+    trendsBody = (
+      <ErrorScreen
+        errorSummary="Failed to load trends of this city :("
+        errorDetails={workerError.message}
+      />
+    )
   } else if (currEpoch - createdAtEpoch < DAYS_IN_MILLISECONDS) {
     trendsBody = (
       <p className="text-center text-muted my-5 py-5">

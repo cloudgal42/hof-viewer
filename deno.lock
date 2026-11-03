@@ -44,6 +44,7 @@
         "npm:eslint-plugin-import@^2.32.0",
         "npm:eslint-plugin-react-hooks@^7.0.1",
         "npm:eslint-plugin-react-refresh@~0.4.24",
+        "npm:eslint-plugin-unused-imports@^4.4.1",
         "npm:eslint@^9.39.1",
         "npm:fuse.js@^7.1.0",
         "npm:globals@^16.5.0",
