@@ -11,7 +11,7 @@ import {
 export const SkyveCompatibilityBadge = (
   { compatibilityInfo }: { compatibilityInfo: SkyveCompatibility | null },
 ) => {
-  if (!compatibilityInfo) {
+  if (!compatibilityInfo || compatibilityInfo.stability === "notEnoughInformation") {
     return (
       <OverlayTrigger
         overlay={
@@ -22,7 +22,7 @@ export const SkyveCompatibilityBadge = (
       >
         <Badge className="bg-secondary-subtle fw-semibold border border-1 border-secondary text-secondary-emphasis">
           <QuestionCircle className="me-1" />
-          No data
+          {compatibilityInfo?.stability === "notEnoughInformation" ? "Not enough information" : "No data"}
         </Badge>
       </OverlayTrigger>
     );
