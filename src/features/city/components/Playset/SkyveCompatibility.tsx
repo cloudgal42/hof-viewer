@@ -52,7 +52,7 @@ export const SkyveCompatibility = (
                 />
               </div>
               <div>
-                <h4 className="h6 mb-1">{mod.name}</h4>
+                <h4 className="h6 mb-0">{mod.name}</h4>
                 <p className="mb-1 text-secondary-emphasis">
                   by {mod.authorName}
                 </p>
