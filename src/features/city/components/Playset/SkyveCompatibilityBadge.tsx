@@ -50,15 +50,15 @@ export const SkyveCompatibilityBadge = (
     compatibilityInfo.stability === "cautionWhenUsing" ||
     compatibilityInfo.stability === "hasIssues"
   ) {
-    badgeAndTextColor = "bg-warning-subtle border-warning text-warning";
+    badgeAndTextColor = "bg-warning-subtle border-warning text-warning-emphasis";
   } else if (
     compatibilityInfo.stability === "brokenFromPatch" ||
     compatibilityInfo.stability === "broken" ||
     compatibilityInfo.stability === "obsolete"
   ) {
-    badgeAndTextColor = "bg-danger-subtle border-danger text-danger";
+    badgeAndTextColor = "bg-danger-subtle border-danger text-danger-emphasis";
   } else {
-    badgeAndTextColor = "bg-success-subtle border-success text-success";
+    badgeAndTextColor = "bg-success-subtle border-success text-success-emphasis";
   }
 
   if (compatibilityInfo.stability === "cautionWhenUsing") {
