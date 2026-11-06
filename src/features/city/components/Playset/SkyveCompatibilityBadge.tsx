@@ -1,6 +1,4 @@
-import {
-  Badge,
-} from "react-bootstrap";
+import { Badge } from "react-bootstrap";
 import {
   CheckCircle,
   ExclamationTriangle,
@@ -8,7 +6,7 @@ import {
   QuestionCircle,
   XCircle,
 } from "react-bootstrap-icons";
-import type {SkyveCompatibility} from "../../types/SkyveCompatibility.ts";
+import type { SkyveCompatibility } from "../../types/SkyveCompatibility.ts";
 
 export const SkyveCompatibilityBadge = (
   { compatibilityInfo }: { compatibilityInfo: SkyveCompatibility | null },
@@ -40,7 +38,10 @@ export const SkyveCompatibilityBadge = (
     compatibilityInfo.stability === "broken"
   ) {
     icon = <XCircle />;
-  } else if (compatibilityInfo.stability === "obsolete") {
+  } else if (
+    compatibilityInfo.stability === "obsolete" ||
+    compatibilityInfo.stability === "hasIssuesNoFutureUpdates"
+  ) {
     icon = <Heartbreak />;
   } else {
     icon = <CheckCircle />;
@@ -50,15 +51,18 @@ export const SkyveCompatibilityBadge = (
     compatibilityInfo.stability === "cautionWhenUsing" ||
     compatibilityInfo.stability === "hasIssues"
   ) {
-    badgeAndTextColor = "bg-warning-subtle border-warning text-warning-emphasis";
+    badgeAndTextColor =
+      "bg-warning-subtle border-warning text-warning-emphasis";
   } else if (
     compatibilityInfo.stability === "brokenFromPatch" ||
     compatibilityInfo.stability === "broken" ||
-    compatibilityInfo.stability === "obsolete"
+    compatibilityInfo.stability === "obsolete" ||
+    compatibilityInfo.stability === "hasIssuesNoFutureUpdates"
   ) {
     badgeAndTextColor = "bg-danger-subtle border-danger text-danger-emphasis";
   } else {
-    badgeAndTextColor = "bg-success-subtle border-success text-success-emphasis";
+    badgeAndTextColor =
+      "bg-success-subtle border-success text-success-emphasis";
   }
 
   if (compatibilityInfo.stability === "cautionWhenUsing") {
@@ -67,6 +71,8 @@ export const SkyveCompatibilityBadge = (
     formattedStability = "Broken from Patch";
   } else if (compatibilityInfo.stability === "hasIssues") {
     formattedStability = "Has Issues";
+  } else if (compatibilityInfo.stability === "hasIssuesNoFutureUpdates") {
+    formattedStability = "Has Issues, no updates";
   } else {
     formattedStability = compatibilityInfo.stability.charAt(0).toUpperCase() +
       compatibilityInfo.stability.slice(1);
