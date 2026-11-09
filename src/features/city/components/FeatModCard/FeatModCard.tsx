@@ -2,7 +2,7 @@ import {Button, ButtonGroup, Card} from "react-bootstrap";
 import {BoxArrowUpRight} from "react-bootstrap-icons";
 
 import type {Mod} from "../../types/Mod.ts";
-import {ErrorScreen} from "../../../../components/misc/ErrorScreen/ErrorScreen.tsx";
+import {ErrorScreen} from "../../../../components/errorscreen/ErrorScreen/ErrorScreen.tsx";
 
 import pdxModsIcon from "../../../../assets/pdx-mods.webp";
 import skyveIcon from "../../../../assets/skyve.webp";

@@ -1,7 +1,7 @@
-import { AdaptiveHeader } from "../../../components/details/AdaptiveHeader/AdaptiveHeader.tsx";
+import { AdaptiveHeader } from "../../../components/navigation/AdaptiveHeader/AdaptiveHeader.tsx";
 import {Suspense, useCallback, useEffect} from "react";
 import { Button, Dropdown, OverlayTrigger, Tooltip } from "react-bootstrap";
-import { MoreActionsBtn } from "../../../components/misc/MoreActionsBtn/MoreActionsBtn.tsx";
+import { MoreActionsBtn } from "../../../components/buttons/MoreActionsBtn/MoreActionsBtn.tsx";
 import {
   ArrowUpRight,
   Building,
@@ -13,7 +13,7 @@ import {
 } from "react-bootstrap-icons";
 import type { City } from "../../../interfaces/City.ts";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ErrorScreen } from "../../../components/misc/ErrorScreen/ErrorScreen.tsx";
+import { ErrorScreen } from "../../../components/errorscreen/ErrorScreen/ErrorScreen.tsx";
 import { PlaceholderDetails } from "../../../features/city/components/Details/PlaceholderDetails.tsx";
 import PlaceholderImg from "../../../assets/placeholder.svg";
 import { Details } from "../../../features/city/components/Details/Details.tsx";
@@ -21,7 +21,7 @@ import CityGallery from "../../../features/city/components/CityGallery/CityGalle
 import { CreatorPreviewTrigger } from "../../../features/creator/components/CreatorPreview/CreatorPreviewTrigger.tsx";
 import {
   PlaceholderHeaderWithControls,
-} from "../../../components/randomcity/PlaceholderHeaderWithControls/PlaceholderHeaderWithControls.tsx";
+} from "./components/PlaceholderHeaderWithControls/PlaceholderHeaderWithControls.tsx";
 import { shareContent } from "../../../features/city/helpers/ShareContent.ts";
 import { useScrollToTop } from "../../../hooks/useScrollToTop.ts";
 import { DefaultHelmet } from "../../../components/misc/DefaultHelmet/DefaultHelmet.tsx";

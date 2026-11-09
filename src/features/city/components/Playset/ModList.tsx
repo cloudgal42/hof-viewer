@@ -18,7 +18,7 @@ import * as React from "react";
 import Fuse from "fuse.js";
 import type { City, GroupedCities } from "../../../../interfaces/City.ts";
 import type { Mod } from "../../types/Mod.ts";
-import { ErrorScreen } from "../../../../components/misc/ErrorScreen/ErrorScreen.tsx";
+import { ErrorScreen } from "../../../../components/errorscreen/ErrorScreen/ErrorScreen.tsx";
 import { useQuery } from "@tanstack/react-query";
 import { assetCategoryMatches } from "../../helpers/PdxModsCategoryMatch.ts";
 

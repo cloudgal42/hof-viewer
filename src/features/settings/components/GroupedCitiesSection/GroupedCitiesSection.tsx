@@ -13,7 +13,7 @@ import {
   type DragEndEvent,
   type DragStartEvent,
 } from "@dnd-kit/react";
-import { ErrorScreen } from "../../../../components/misc/ErrorScreen/ErrorScreen.tsx";
+import { ErrorScreen } from "../../../../components/errorscreen/ErrorScreen/ErrorScreen.tsx";
 import { GroupedSettingsContext } from "../../../../context/GroupedSettingsContext.ts";
 import { useGroupedCitiesSettings } from "../../hooks/useGroupedCitiesSettings.ts";
 

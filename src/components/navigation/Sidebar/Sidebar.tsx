@@ -7,7 +7,7 @@ import {
 } from "react-bootstrap-icons";
 import {CloseButton, Offcanvas} from "react-bootstrap";
 import { NavLink } from "react-router";
-import {ThemeDropdownBtn} from "../ThemeDropdownBtn/ThemeDropdownBtn.tsx";
+import {ThemeDropdownBtn} from "../../buttons/ThemeDropdownBtn/ThemeDropdownBtn.tsx";
 import {CONFIG} from "../../../config/Config.ts";
 
 import "./Sidebar.css";
@@ -28,7 +28,7 @@ export const Sidebar = ({ isOpened, setIsOpened }: SidebarProps) => {
       >
         <div className="d-flex justify-content-between align-items-center mb-0">
           <a
-            href="/"
+            href="/public"
             className="text-decoration-none"
           >
             <span className="fs-4">

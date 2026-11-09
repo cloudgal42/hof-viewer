@@ -7,15 +7,15 @@ import {DEFAULT_IMAGES_PER_PAGE} from "../../../features/city/components/CityGal
 import PlaceholderImg from "../../../assets/placeholder.svg"
 import {PlaceholderDetails} from "../../../features/city/components/Details/PlaceholderDetails.tsx";
 import {CityTrends} from "../../../features/statistics/components/CityTrends/CityTrends.tsx";
-import {ErrorScreen} from "../../../components/misc/ErrorScreen/ErrorScreen.tsx";
+import {ErrorScreen} from "../../../components/errorscreen/ErrorScreen/ErrorScreen.tsx";
 import {useQuery} from "@tanstack/react-query";
 import type {City, GroupedCities} from "../../../interfaces/City.ts";
 import {CityInsights} from "../../../features/statistics/components/CityInsights/CityInsights.tsx";
 import {useCreatorCities} from "../../../features/city/hooks/useCreatorCities.ts";
 
-import {AdaptiveHeader} from "../../../components/details/AdaptiveHeader/AdaptiveHeader.tsx";
+import {AdaptiveHeader} from "../../../components/navigation/AdaptiveHeader/AdaptiveHeader.tsx";
 import {Details} from "../../../features/city/components/Details/Details.tsx";
-import {BackButton} from "../../../components/misc/BackButton/BackButton.tsx";
+import {BackButton} from "../../../components/buttons/BackButton/BackButton.tsx";
 import {CreatorPreviewTrigger} from "../../../features/creator/components/CreatorPreview/CreatorPreviewTrigger.tsx";
 import {PlaceholderDetailsHeader} from "../../../features/city/components/Details/PlaceholderDetailsHeader.tsx";
 import {shareContent} from "../../../features/city/helpers/ShareContent.ts";

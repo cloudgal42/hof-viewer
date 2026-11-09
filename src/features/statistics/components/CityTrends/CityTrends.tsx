@@ -6,7 +6,7 @@ import {
 } from "react-bootstrap";
 import {useContext} from "react";
 import type { City, GroupedCities } from "../../../../interfaces/City.ts";
-import { ErrorScreen } from "../../../../components/misc/ErrorScreen/ErrorScreen.tsx";
+import { ErrorScreen } from "../../../../components/errorscreen/ErrorScreen/ErrorScreen.tsx";
 import { ThemeContext } from "../../../../context/ThemeContext.ts";
 import { useIntersectionObserver } from "usehooks-ts";
 import { Bar } from "react-chartjs-2";

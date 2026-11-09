@@ -1,7 +1,7 @@
 import {Button, Collapse, Form, OverlayTrigger, Tooltip} from "react-bootstrap";
-import { SortOrderButton } from "../../../components/home/SortOrderButton/SortOrderButton.tsx";
+import { SortOrderButton } from "./components/SortOrderButton/SortOrderButton.tsx";
 import { useMemo, useState } from "react";
-import { SortDropdown } from "../../../components/home/SortDropdown/SortDropdown.tsx";
+import { SortDropdown } from "./components/SortDropdown/SortDropdown.tsx";
 import { CityCard } from "../../../features/city/components/CityCard/CityCard.tsx";
 import { PlaceholderCard } from "../../../features/city/components/CityCard/PlaceholderCard.tsx";
 import { NavLink, useSearchParams } from "react-router";
@@ -9,7 +9,7 @@ import { handleSetSearchParams } from "../../../utils/SearchParamHandlers.ts";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 import type { City, GroupedCities } from "../../../interfaces/City.ts";
-import { ErrorScreen } from "../../../components/misc/ErrorScreen/ErrorScreen.tsx";
+import { ErrorScreen } from "../../../components/errorscreen/ErrorScreen/ErrorScreen.tsx";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCreatorCities } from "../../../features/city/hooks/useCreatorCities.ts";
 import { DefaultHelmet } from "../../../components/misc/DefaultHelmet/DefaultHelmet.tsx";

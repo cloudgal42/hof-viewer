@@ -6,7 +6,7 @@ import App from "./App.tsx";
 import { BrowserRouter, Route, Routes } from "react-router";
 import { GroupedCitiesOverrideSettingsProvider } from "./providers/GroupedCitiesOverrideSettingsProvider.tsx";
 import { HelmetProvider } from "@dr.pogodin/react-helmet";
-import { CrashFallback } from "../components/misc/CrashFallback/CrashFallback.tsx";
+import { CrashFallback } from "../components/errorscreen/CrashFallback/CrashFallback.tsx";
 import { ErrorBoundary } from "react-error-boundary";
 
 const Home = lazy(() => import("./pages/Home/Home.tsx"));
