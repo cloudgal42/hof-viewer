@@ -19,8 +19,8 @@ import type { InitDetail } from "lightgallery/lg-events";
 import type { City, GroupedCities } from "../../../../types/City.ts";
 import { GalleryImg } from "./GalleryImg.tsx";
 import { Eye, Heart } from "react-bootstrap-icons";
-import { isEmptyObject } from "../../../../utils/IsEmptyObject.ts";
-import { fromDecimalTime } from "../../helpers/TimeFormat.ts";
+import { isEmptyObject } from "../../../../utils/isEmptyObject.ts";
+import { fromDecimalTime } from "../../helpers/timeFormat.ts";
 
 interface GalleryProps {
   city: City | GroupedCities;

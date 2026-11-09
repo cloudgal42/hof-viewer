@@ -36,7 +36,7 @@ import { TrendTypeToggle } from "./TrendTypeToggle.tsx";
 import { GroupBySelect } from "./GroupBySelect.tsx";
 import { useTrendsOptions } from "../../hooks/useTrendsOptions.ts";
 import { CONFIG } from "../../../../config/Config.ts";
-import {formatChartEntries, formatChartLabels, getFormattedTrendType} from "../../helpers/TrendFormat.ts";
+import {formatChartEntries, formatChartLabels, getFormattedTrendType} from "../../helpers/trendFormat.ts";
 
 defaults.font.family = CONFIG.chartFontFamily;
 

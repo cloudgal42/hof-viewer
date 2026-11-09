@@ -3,7 +3,7 @@ import React from "https://esm.sh/react";
 import { renderToReadableStream } from "https://esm.sh/react-dom/server";
 import { HofErrorRes } from "../../src/types/HofErrorRes.ts";
 import { City } from "../../src/types/City.ts";
-import { groupCities } from "../../src/utils/GroupCities.ts";
+import { groupCities } from "../../src/utils/groupCities.ts";
 import { FetchError } from "../../src/types/FetchError.ts";
 
 const EMBED_CRAWLER_LIST = [

@@ -1,7 +1,7 @@
 import {CloudHail, CloudRain, Clouds, Moon, Snow, Sun, Thunderbolt} from "react-bootstrap-icons";
 import type {RenderConditions} from "../../../../types/City.ts";
-import {fromDecimalTime} from "../../helpers/TimeFormat.ts";
-import {isEmptyObject} from "../../../../utils/IsEmptyObject.ts";
+import {fromDecimalTime} from "../../helpers/timeFormat.ts";
+import {isEmptyObject} from "../../../../utils/isEmptyObject.ts";
 
 export const Conditions = (
   {renderConditions}: { renderConditions: RenderConditions }

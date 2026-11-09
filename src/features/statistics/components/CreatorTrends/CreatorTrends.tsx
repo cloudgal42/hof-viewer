@@ -12,7 +12,7 @@ import {
   formatChartEntries,
   formatChartLabels,
   getFormattedTrendType,
-} from "../../helpers/TrendFormat.ts";
+} from "../../helpers/trendFormat.ts";
 import { useContext } from "react";
 import { ThemeContext } from "../../../../context/ThemeContext.ts";
 

@@ -5,7 +5,7 @@ import { SortDropdown } from "./components/SortDropdown/SortDropdown.tsx";
 import { CityCard } from "../../../features/city/components/CityCard/CityCard.tsx";
 import { PlaceholderCard } from "../../../features/city/components/CityCard/PlaceholderCard.tsx";
 import { NavLink, useSearchParams } from "react-router";
-import { handleSetSearchParams } from "../../../utils/SearchParamHandlers.ts";
+import { handleSetSearchParams } from "../../../utils/searchParamHandlers.ts";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 import type { City, GroupedCities } from "../../../types/City.ts";

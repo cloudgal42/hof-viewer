@@ -2,7 +2,7 @@ import {useContext} from "react";
 import {GroupedCitiesOverrideSettingsContext} from "../context/GroupedCitiesOverrideSettingsContext.ts";
 import {useGroupedCitiesGenSettings} from "./useGroupedCitiesGenSettings.ts";
 import type {City} from "../types/City.ts";
-import {groupCities} from "../utils/GroupCities.ts";
+import {groupCities} from "../utils/groupCities.ts";
 
 export const useGroupedCities = (
   creator: string,

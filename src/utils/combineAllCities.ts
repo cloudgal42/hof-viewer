@@ -1,5 +1,5 @@
 import type {City} from "../types/City.ts";
-import {groupCities} from "./GroupCities.ts";
+import {groupCities} from "./groupCities.ts";
 
 export function combineAllCities(citiesToCombine: City[]) {
   return groupCities(citiesToCombine, [{

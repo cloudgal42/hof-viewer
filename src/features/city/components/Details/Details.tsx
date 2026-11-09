@@ -14,7 +14,7 @@ import { RenderSettings } from "../RenderSettings/RenderSettings.tsx";
 import Markdown from "react-markdown";
 import {Conditions} from "../Conditions/Conditions.tsx";
 import {ScreenshotRankBadge} from "../ScreenshotRankBadge/ScreenshotRankBadge.tsx";
-import {getRankColor} from "../../helpers/RankColor.ts";
+import {getRankColor} from "../../helpers/rankColor.ts";
 
 const cityMilestones = [
   "Tiny Village",

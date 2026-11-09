@@ -1,7 +1,7 @@
 import { Card } from "react-bootstrap";
 import { StackedChart } from "../CityInsights/StackedChart.tsx";
 import type { GroupedCities } from "../../../../types/City.ts";
-import { getRandomColor } from "../../../../utils/RandomColor.ts";
+import { getRandomColor } from "../../../../utils/randomColor.ts";
 
 export const CreatorInsights = ({ cities }: { cities: GroupedCities[] }) => {
   const totalFavorites = cities.reduce((accumulator, currVal) => {

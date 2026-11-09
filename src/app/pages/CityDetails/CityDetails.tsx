@@ -18,7 +18,7 @@ import {Details} from "../../../features/city/components/Details/Details.tsx";
 import {BackButton} from "../../../components/buttons/BackButton/BackButton.tsx";
 import {CreatorPreviewTrigger} from "../../../features/creator/components/CreatorPreview/CreatorPreviewTrigger.tsx";
 import {PlaceholderDetailsHeader} from "../../../features/city/components/Details/PlaceholderDetailsHeader.tsx";
-import {shareContent} from "../../../features/city/helpers/ShareContent.ts";
+import {shareContent} from "../../../features/city/helpers/shareContent.ts";
 import {useScrollToTop} from "../../../hooks/useScrollToTop.ts";
 import {Helmet} from "@dr.pogodin/react-helmet";
 

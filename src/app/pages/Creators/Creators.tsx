@@ -2,7 +2,7 @@ import { Button, Form } from "react-bootstrap";
 import { CreatorCard } from "../../../features/creator/components/CreatorCard/CreatorCard.tsx";
 import { PlaceholderCreatorCard } from "../../../features/creator/components/CreatorCard/PlaceholderCreatorCard.tsx";
 import { NavLink, useSearchParams } from "react-router";
-import { handleSetSearchParams } from "../../../utils/SearchParamHandlers.ts";
+import { handleSetSearchParams } from "../../../utils/searchParamHandlers.ts";
 import { ErrorScreen } from "../../../components/errorscreen/ErrorScreen/ErrorScreen.tsx";
 import { useCreator } from "../../../features/creator/hooks/useCreator.ts";
 import { DefaultHelmet } from "../../../components/misc/DefaultHelmet/DefaultHelmet.tsx";

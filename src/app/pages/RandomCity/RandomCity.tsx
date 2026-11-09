@@ -22,13 +22,13 @@ import { CreatorPreviewTrigger } from "../../../features/creator/components/Crea
 import {
   PlaceholderHeaderWithControls,
 } from "./components/PlaceholderHeaderWithControls/PlaceholderHeaderWithControls.tsx";
-import { shareContent } from "../../../features/city/helpers/ShareContent.ts";
+import { shareContent } from "../../../features/city/helpers/shareContent.ts";
 import { useScrollToTop } from "../../../hooks/useScrollToTop.ts";
 import { DefaultHelmet } from "../../../components/misc/DefaultHelmet/DefaultHelmet.tsx";
 import {NavLink, useOutletContext, useSearchParams} from "react-router";
 import type { ContextType } from "../../App.tsx";
 import {useRandomAlgoSettings} from "../../../features/settings/hooks/useRandomAlgoSettings.ts";
-import {handleSetSearchParams} from "../../../utils/SearchParamHandlers.ts";
+import {handleSetSearchParams} from "../../../utils/searchParamHandlers.ts";
 import {useTranslation} from "../../../hooks/useTranslation.ts";
 
 const RandomCity = () => {
