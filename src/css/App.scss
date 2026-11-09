@@ -177,12 +177,12 @@ input[type="range"] {
 
   input[type="range"] {
     &::-webkit-slider-thumb {
-      border: 1.5px solid #fff;
+      border: 1.5px solid $gray-900;
       background-color: #fff;
     }
 
     &::-moz-range-thumb {
-      border: 1.5px solid #fff;
+      border: 1.5px solid $gray-900;
       background-color: #fff;
     }
 
