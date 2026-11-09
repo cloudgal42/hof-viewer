@@ -1,4 +1,4 @@
-import type {City} from "../../../interfaces/City.ts";
+import type {City} from "../../../types/City.ts";
 import {useQuery} from "@tanstack/react-query";
 
 export const useCreatorCitiesViewsAndFavorites = <T>(

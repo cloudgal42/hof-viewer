@@ -1,5 +1,5 @@
 import {useCreatorCitiesViewsAndFavorites} from "./useCreatorCitiesViewsAndFavorites.ts";
-import type {GroupedCities} from "../../../interfaces/City.ts";
+import type {GroupedCities} from "../../../types/City.ts";
 import type {TrendsWorkerInput} from "../types/TrendsData.ts";
 import {useTrendsWorker} from "./useTrendsWorker.ts";
 import {combineAllCities} from "../../../utils/CombineAllCities.ts";

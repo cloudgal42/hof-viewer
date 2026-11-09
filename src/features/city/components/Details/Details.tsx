@@ -1,4 +1,4 @@
-import type {City, GroupedCities, ScreenshotRank} from "../../../../interfaces/City.ts";
+import type {City, GroupedCities, ScreenshotRank} from "../../../../types/City.ts";
 import { Card, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { PlaceholderFeatModCard } from "../FeatModCard/PlaceholderFeatModCard.tsx";
 import { FeatModCard } from "../FeatModCard/FeatModCard.tsx";

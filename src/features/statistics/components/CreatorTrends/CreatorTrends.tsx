@@ -4,7 +4,7 @@ import { TrendTypeToggle } from "../CityTrends/TrendTypeToggle.tsx";
 import { GroupBySelect } from "../CityTrends/GroupBySelect.tsx";
 import { useIntersectionObserver } from "usehooks-ts";
 import { useTrendsOptions } from "../../hooks/useTrendsOptions.ts";
-import type { CreatorDetails } from "../../../../interfaces/Creator.ts";
+import type { CreatorDetails } from "../../../../types/Creator.ts";
 import { CONFIG } from "../../../../config/Config.ts";
 import { ErrorScreen } from "../../../../components/errorscreen/ErrorScreen/ErrorScreen.tsx";
 import { Bar } from "react-chartjs-2";

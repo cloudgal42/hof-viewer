@@ -1,6 +1,6 @@
-import type { City, GroupedCities } from "../interfaces/City.ts";
-import type { GroupedCityRowSetting } from "../interfaces/GroupedCityRowSetting.ts";
-import type {CityNameProperties} from "../interfaces/CityNameProperties.ts";
+import type { City, GroupedCities } from "../types/City.ts";
+import type { GroupedCityRowSetting } from "../types/GroupedCityRowSetting.ts";
+import type {CityNameProperties} from "../types/CityNameProperties.ts";
 import {getUniqueCityNameProperties} from "./UniqueCityNameProperties.ts";
 
 interface TotalScreenshotStats {

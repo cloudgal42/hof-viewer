@@ -1,5 +1,5 @@
 import {useLocalStorage} from "usehooks-ts";
-import type {TranslationSettings} from "../../../interfaces/TranslationSettings.ts";
+import type {TranslationSettings} from "../../../types/TranslationSettings.ts";
 import type {Dispatch, SetStateAction} from "react";
 import {CONFIG} from "../../../config/Config.ts";
 

@@ -1,10 +1,10 @@
 import type { Config, Context } from "@netlify/edge-functions";
 import React from "https://esm.sh/react";
 import { renderToReadableStream } from "https://esm.sh/react-dom/server";
-import { HofErrorRes } from "../../src/interfaces/HofErrorRes.ts";
-import { City } from "../../src/interfaces/City.ts";
+import { HofErrorRes } from "../../src/types/HofErrorRes.ts";
+import { City } from "../../src/types/City.ts";
 import { groupCities } from "../../src/utils/GroupCities.ts";
-import { FetchError } from "../../src/interfaces/FetchError.ts";
+import { FetchError } from "../../src/types/FetchError.ts";
 
 const EMBED_CRAWLER_LIST = [
   "Discordbot/",

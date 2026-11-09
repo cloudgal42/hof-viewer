@@ -1,4 +1,4 @@
-import type { ScreenshotRank } from "../../../../interfaces/City.ts";
+import type { ScreenshotRank } from "../../../../types/City.ts";
 import { Gem, Question, StarFill } from "react-bootstrap-icons";
 import { getRankColor } from "../../helpers/RankColor.ts";
 

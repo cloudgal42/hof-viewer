@@ -11,7 +11,7 @@ import {
   Person,
   Share,
 } from "react-bootstrap-icons";
-import type { City } from "../../../interfaces/City.ts";
+import type { City } from "../../../types/City.ts";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ErrorScreen } from "../../../components/errorscreen/ErrorScreen/ErrorScreen.tsx";
 import { PlaceholderDetails } from "../../../features/city/components/Details/PlaceholderDetails.tsx";

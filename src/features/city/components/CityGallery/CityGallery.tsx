@@ -16,7 +16,7 @@ import lgAutoplay from "lightgallery/plugins/autoplay";
 
 import { useCallback, useRef, useState } from "react";
 import type { InitDetail } from "lightgallery/lg-events";
-import type { City, GroupedCities } from "../../../../interfaces/City.ts";
+import type { City, GroupedCities } from "../../../../types/City.ts";
 import { GalleryImg } from "./GalleryImg.tsx";
 import { Eye, Heart } from "react-bootstrap-icons";
 import { isEmptyObject } from "../../../../utils/IsEmptyObject.ts";

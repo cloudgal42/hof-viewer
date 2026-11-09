@@ -1,6 +1,6 @@
 import type {
   Views,
-} from "../../../interfaces/City.ts";
+} from "../../../types/City.ts";
 import type {
   TrendsData,
   TrendsWorkerInput, WorkerMsg,

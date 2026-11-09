@@ -8,7 +8,7 @@ import { NavLink, useSearchParams } from "react-router";
 import { handleSetSearchParams } from "../../../utils/SearchParamHandlers.ts";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import type { City, GroupedCities } from "../../../interfaces/City.ts";
+import type { City, GroupedCities } from "../../../types/City.ts";
 import { ErrorScreen } from "../../../components/errorscreen/ErrorScreen/ErrorScreen.tsx";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCreatorCities } from "../../../features/city/hooks/useCreatorCities.ts";

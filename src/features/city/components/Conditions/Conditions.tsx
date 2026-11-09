@@ -1,5 +1,5 @@
 import {CloudHail, CloudRain, Clouds, Moon, Snow, Sun, Thunderbolt} from "react-bootstrap-icons";
-import type {RenderConditions} from "../../../../interfaces/City.ts";
+import type {RenderConditions} from "../../../../types/City.ts";
 import {fromDecimalTime} from "../../helpers/TimeFormat.ts";
 import {isEmptyObject} from "../../../../utils/IsEmptyObject.ts";
 

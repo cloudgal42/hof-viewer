@@ -1,8 +1,8 @@
-import type { Creator } from "../interfaces/Creator.ts";
+import type { Creator } from "../types/Creator.ts";
 import { useLocalStorage } from "usehooks-ts";
-import type { TranslationSettings } from "../interfaces/TranslationSettings.ts";
+import type { TranslationSettings } from "../types/TranslationSettings.ts";
 import { CONFIG } from "../config/Config.ts";
-import type { City, GroupedCities } from "../interfaces/City.ts";
+import type { City, GroupedCities } from "../types/City.ts";
 
 // TODO: Consider making translationSettings a context instead
 export const useTranslation = () => {

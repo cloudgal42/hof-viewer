@@ -9,7 +9,7 @@ import {PlaceholderDetails} from "../../../features/city/components/Details/Plac
 import {CityTrends} from "../../../features/statistics/components/CityTrends/CityTrends.tsx";
 import {ErrorScreen} from "../../../components/errorscreen/ErrorScreen/ErrorScreen.tsx";
 import {useQuery} from "@tanstack/react-query";
-import type {City, GroupedCities} from "../../../interfaces/City.ts";
+import type {City, GroupedCities} from "../../../types/City.ts";
 import {CityInsights} from "../../../features/statistics/components/CityInsights/CityInsights.tsx";
 import {useCreatorCities} from "../../../features/city/hooks/useCreatorCities.ts";
 

@@ -1,5 +1,5 @@
 import { Card } from "react-bootstrap";
-import type { GroupedCities } from "../../../../interfaces/City.ts";
+import type { GroupedCities } from "../../../../types/City.ts";
 import { StackedChart } from "./StackedChart.tsx";
 import {getRandomColor} from "../../../../utils/RandomColor.ts";
 

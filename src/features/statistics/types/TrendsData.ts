@@ -1,4 +1,4 @@
-import type { Favorites, Views} from "../../../interfaces/City.ts";
+import type { Favorites, Views} from "../../../types/City.ts";
 
 export interface TrendsData {
   [key: number]: number;

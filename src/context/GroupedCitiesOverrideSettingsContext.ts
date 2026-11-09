@@ -1,5 +1,5 @@
 import { createContext, type Dispatch, type SetStateAction } from "react";
-import type { GroupedCityRowSetting } from "../interfaces/GroupedCityRowSetting.ts";
+import type { GroupedCityRowSetting } from "../types/GroupedCityRowSetting.ts";
 
 export interface GroupedCitiesOverrideSettingsContextType {
   groupedCitiesOverrideSettings: [string, GroupedCityRowSetting[]][];

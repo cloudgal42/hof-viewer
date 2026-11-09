@@ -6,7 +6,7 @@ import {
   Person,
 } from "react-bootstrap-icons";
 import { NavLink } from "react-router";
-import type { City, GroupedCities } from "../../../../interfaces/City.ts";
+import type { City, GroupedCities } from "../../../../types/City.ts";
 import { CardImg } from "../../../../components/misc/CardImg/CardImg.tsx";
 
 import "react-lazy-load-image-component/src/effects/black-and-white.css";

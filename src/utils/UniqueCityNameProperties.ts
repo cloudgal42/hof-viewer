@@ -1,4 +1,4 @@
-import type {CityNameProperties} from "../interfaces/CityNameProperties.ts";
+import type {CityNameProperties} from "../types/CityNameProperties.ts";
 
 export function getUniqueCityNameProperties(
   cityNamesProperties: CityNameProperties[]
