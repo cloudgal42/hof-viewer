@@ -5,7 +5,7 @@ import { useDraggable } from "@dnd-kit/react";
 import { useContext, useRef, useState } from "react";
 import { GroupedSettingsContext } from "../../../../context/GroupedSettingsContext.ts";
 
-import "../../../../css/components/DraggableEntry.css";
+import "./DraggableEntry.css";
 
 export const DraggableEntry = ({
   groupCandidate,

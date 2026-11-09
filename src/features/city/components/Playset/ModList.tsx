@@ -10,7 +10,7 @@ import {
 } from "react-bootstrap";
 import { ModCard } from "./ModCard.tsx";
 
-import "../../../../css/components/ModList.scss";
+import "./ModList.scss";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { PlaceholderModCard } from "./PlaceholderModCard.tsx";
 import { useDebounceCallback } from "usehooks-ts";

@@ -13,7 +13,7 @@ import {ClickedCityCard} from "./ClickedCityCard.tsx";
 import zoomPlugin from 'chartjs-plugin-zoom';
 import {Button} from "react-bootstrap";
 
-import "../../../../css/components/StackedChart.scss";
+import "../../css/StackedChart.scss";
 import {ZoomIn, ZoomOut} from "react-bootstrap-icons";
 import type {PercentageStat} from "../../types/PercentageStat.ts";
 

@@ -16,7 +16,7 @@ import {
 import { useContext } from "react";
 import { ThemeContext } from "../../../../context/ThemeContext.ts";
 
-import "../../../../css/components/TrendsChart.css";
+import "../../css/TrendsChart.css";
 
 const DAYS_IN_MILLISECONDS = 86400000;
 

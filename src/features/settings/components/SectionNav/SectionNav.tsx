@@ -1,4 +1,4 @@
-import "../../../../css/components/SectionNav.scss";
+import "./SectionNav.scss";
 import {BackButton} from "../../../../components/misc/BackButton/BackButton.tsx";
 import {Brush, Buildings, Dice3, Translate} from "react-bootstrap-icons";
 

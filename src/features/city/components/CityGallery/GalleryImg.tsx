@@ -2,7 +2,7 @@ import {LazyLoadImage} from "react-lazy-load-image-component";
 import PlaceholderImg from "../../../../assets/placeholder.svg";
 import {type MouseEventHandler, type ReactNode, useState} from "react";
 
-import "../../../../css/components/GalleryImg.css";
+import "./GalleryImg.css";
 
 interface GalleryItemProps {
   url: string;

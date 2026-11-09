@@ -10,7 +10,7 @@ import type { City, GroupedCities } from "../../../../interfaces/City.ts";
 import { CardImg } from "../../../../components/misc/CardImg/CardImg.tsx";
 
 import "react-lazy-load-image-component/src/effects/black-and-white.css";
-import "../../../../css/components/CityCard.css";
+import "./CityCard.css";
 import { useTranslation } from "../../../../hooks/useTranslation.ts";
 import { ScreenshotRankBadge } from "../ScreenshotRankBadge/ScreenshotRankBadge.tsx";
 

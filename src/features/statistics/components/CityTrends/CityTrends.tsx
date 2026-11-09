@@ -30,7 +30,7 @@ ChartJS.register(
   Legend,
 );
 
-import "../../../../css/components/TrendsChart.css";
+import "../../css/TrendsChart.css";
 import { useCityTrends } from "../../hooks/useCityTrends.ts";
 import { TrendTypeToggle } from "./TrendTypeToggle.tsx";
 import { GroupBySelect } from "./GroupBySelect.tsx";

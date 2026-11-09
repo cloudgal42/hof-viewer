@@ -22,7 +22,7 @@ import {shareContent} from "../../features/city/helpers/ShareContent.ts";
 import {useScrollToTop} from "../../hooks/useScrollToTop.ts";
 import {Helmet} from "@dr.pogodin/react-helmet";
 
-import '../../css/components/CityGallery.scss';
+import '../../features/city/components/CityGallery/CityGallery.scss';
 import {PlaceholderGallery} from "../../features/city/components/CityGallery/PlaceholderGallery.tsx";
 import {useTranslation} from "../../hooks/useTranslation.ts";
 import {useGroupedCities} from "../../hooks/useGroupedCities.ts";

@@ -1,7 +1,7 @@
 import {type ReactNode, useRef, useState} from "react";
 import { motion } from "motion/react";
 
-import "../../../css/components/AdaptiveHeader.scss";
+import "./AdaptiveHeader.scss";
 import {useEventListener, useResizeObserver} from "usehooks-ts";
 
 export const AdaptiveHeader = (
