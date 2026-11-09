@@ -1,7 +1,7 @@
 import {Button, ButtonGroup, Card} from "react-bootstrap";
 import {BoxArrowUpRight} from "react-bootstrap-icons";
 
-import type {Mod} from "../../types/Mod.ts";
+import type {Mod} from "../../../../types/Mod.ts";
 import {ErrorScreen} from "../../../../components/errorscreen/ErrorScreen/ErrorScreen.tsx";
 
 import pdxModsIcon from "../../../../assets/pdx-mods.webp";

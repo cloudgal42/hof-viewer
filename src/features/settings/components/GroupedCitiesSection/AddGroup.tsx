@@ -3,7 +3,7 @@ import { Ban, Plus } from "react-bootstrap-icons";
 import { useContext } from "react";
 import { useDroppable } from "@dnd-kit/react";
 import { GroupedSettingsContext } from "../../../../context/GroupedSettingsContext.ts";
-import type { GroupCandidate } from "../../types/GroupCandidate.ts";
+import type { GroupCandidate } from "../../../../types/GroupCandidate.ts";
 
 export const AddGroup = ({
   onAdd,

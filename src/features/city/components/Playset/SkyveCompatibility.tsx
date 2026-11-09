@@ -1,7 +1,7 @@
 import { OverlayTrigger, Popover, PopoverBody } from "react-bootstrap";
 import { CardImg } from "../../../../components/misc/CardImg/CardImg.tsx";
 import { SkyveCompatibilityBadge } from "./SkyveCompatibilityBadge.tsx";
-import type { Mod } from "../../types/Mod.ts";
+import type { Mod } from "../../../../types/Mod.ts";
 import { useState } from "react";
 
 export const SkyveCompatibility = (

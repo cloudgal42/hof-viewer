@@ -17,7 +17,7 @@ import { ErrorScreen } from "../../../../components/errorscreen/ErrorScreen/Erro
 import { GroupedSettingsContext } from "../../../../context/GroupedSettingsContext.ts";
 import { useGroupedCitiesSettings } from "../../hooks/useGroupedCitiesSettings.ts";
 
-import type { GroupCandidate } from "../../types/GroupCandidate.ts";
+import type { GroupCandidate } from "../../../../types/GroupCandidate.ts";
 import { ErrorNotification } from "../../../../components/misc/LeftNotification/ErrorNotification.tsx";
 import { ToggleSetting } from "../SettingsComponents/ToggleSetting.tsx";
 import {

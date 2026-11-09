@@ -6,7 +6,7 @@ import {
   QuestionCircle,
   XCircle,
 } from "react-bootstrap-icons";
-import type { SkyveCompatibility } from "../../types/SkyveCompatibility.ts";
+import type { SkyveCompatibility } from "../../../../types/SkyveCompatibility.ts";
 
 export const SkyveCompatibilityBadge = (
   { compatibilityInfo }: { compatibilityInfo: SkyveCompatibility | null },

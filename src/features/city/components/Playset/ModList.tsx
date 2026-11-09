@@ -17,7 +17,7 @@ import { useDebounceCallback } from "usehooks-ts";
 import * as React from "react";
 import Fuse from "fuse.js";
 import type { City, GroupedCities } from "../../../../types/City.ts";
-import type { Mod } from "../../types/Mod.ts";
+import type { Mod } from "../../../../types/Mod.ts";
 import { ErrorScreen } from "../../../../components/errorscreen/ErrorScreen/ErrorScreen.tsx";
 import { useQuery } from "@tanstack/react-query";
 import { assetCategoryMatches } from "../../helpers/PdxModsCategoryMatch.ts";
