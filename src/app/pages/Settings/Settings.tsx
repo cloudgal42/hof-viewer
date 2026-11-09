@@ -1,10 +1,12 @@
-import { ToggleSetting } from "../../features/settings/components/SettingsComponents/ToggleSetting.tsx";
-import { SectionNav } from "../../features/settings/components/SectionNav/SectionNav.tsx";
-import {TranslationSection} from "../../features/settings/components/TranslationSection/TranslationSection.tsx";
-import {RandomAlgoSection} from "../../features/settings/components/RandomAlgoSection/RandomAlgoSection.tsx";
-import {GroupedCitiesSection} from "../../features/settings/components/GroupedCitiesSection/GroupedCitiesSection.tsx";
-import {ThemeContext} from "../../context/ThemeContext.ts";
+import { ToggleSetting } from "../../../features/settings/components/SettingsComponents/ToggleSetting.tsx";
+import { SectionNav } from "../../../features/settings/components/SectionNav/SectionNav.tsx";
+import {TranslationSection} from "../../../features/settings/components/TranslationSection/TranslationSection.tsx";
+import {RandomAlgoSection} from "../../../features/settings/components/RandomAlgoSection/RandomAlgoSection.tsx";
+import {GroupedCitiesSection} from "../../../features/settings/components/GroupedCitiesSection/GroupedCitiesSection.tsx";
+import {ThemeContext} from "../../../context/ThemeContext.ts";
 import {useContext, useEffect} from "react";
+
+import "./Settings.css";
 
 const Settings = () => {
   const context = useContext(ThemeContext);

@@ -10,6 +10,8 @@ import { NavLink } from "react-router";
 import {ThemeDropdownBtn} from "../ThemeDropdownBtn/ThemeDropdownBtn.tsx";
 import {CONFIG} from "../../../config/Config.ts";
 
+import "./Sidebar.css";
+
 interface SidebarProps {
   isOpened: boolean;
   setIsOpened: (isOpened: boolean) => void;

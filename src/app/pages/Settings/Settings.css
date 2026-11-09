@@ -1,0 +1,23 @@
+.settings-wrapper {
+  max-width: 100%;
+}
+
+#translation {
+  scroll-margin-top: 70px;
+}
+
+#groupedCities {
+  scroll-margin-top: 100px;
+}
+
+@media all and (min-width: 1401px) {
+  .settings-wrapper {
+    max-width: 65%;
+  }
+}
+
+@media all and (min-width: 992px) {
+  #translation, #groupedCities {
+    scroll-margin-top: 10px;
+  }
+}

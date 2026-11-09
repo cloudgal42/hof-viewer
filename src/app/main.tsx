@@ -9,12 +9,12 @@ import { HelmetProvider } from "@dr.pogodin/react-helmet";
 import { CrashFallback } from "../components/misc/CrashFallback/CrashFallback.tsx";
 import { ErrorBoundary } from "react-error-boundary";
 
-const Home = lazy(() => import("./pages/Home.tsx"));
-const CityDetails = lazy(() => import("./pages/CityDetails.tsx"));
-const Creators = lazy(() => import("./pages/Creators.tsx"));
-const RandomCity = lazy(() => import("./pages/RandomCity.tsx"));
-const Settings = lazy(() => import("./pages/Settings.tsx"));
-const About = lazy(() => import("./pages/About.tsx"));
+const Home = lazy(() => import("./pages/Home/Home.tsx"));
+const CityDetails = lazy(() => import("./pages/CityDetails/CityDetails.tsx"));
+const Creators = lazy(() => import("./pages/Creators/Creators.tsx"));
+const RandomCity = lazy(() => import("./pages/RandomCity/RandomCity.tsx"));
+const Settings = lazy(() => import("./pages/Settings/Settings.tsx"));
+const About = lazy(() => import("./pages/About/About.tsx"));
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
