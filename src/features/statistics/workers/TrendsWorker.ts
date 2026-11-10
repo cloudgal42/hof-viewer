@@ -23,10 +23,10 @@ self.onmessage = ({ data }: { data: WorkerParams }) => {
 };
 
 function filterUniqueViews(views: Views[]) {
-  const uniqueCreatorIds: (string)[] = [];
+  const uniqueIdPair: (string)[] = [];
   return views.filter((entry) => {
-    const isUnique = !(uniqueCreatorIds.includes(entry.creatorId));
-    uniqueCreatorIds.push(entry.creatorId);
+    const isUnique = !(uniqueIdPair.includes(entry.creatorId + entry.screenshotId));
+    uniqueIdPair.push(entry.creatorId + entry.screenshotId);
     return isUnique;
   });
 }
