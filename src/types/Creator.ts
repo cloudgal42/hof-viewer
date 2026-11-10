@@ -8,9 +8,9 @@ export interface Creator {
   id: string;
   creatorName: string;
   creatorNameSlug: string;
-  creatorNameLocale?: string;
-  creatorNameLatinized?: string;
-  creatorNameTranslated?: string;
+  creatorNameLocale?: string | null;
+  creatorNameLatinized?: string | null;
+  creatorNameTranslated?: string | null;
   createdAt: string;
   socials: SocialPlatform[];
 }

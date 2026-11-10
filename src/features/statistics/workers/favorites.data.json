@@ -1,0 +1,306 @@
+[
+  {
+    "id": "68b35632fa2cb2de36339340",
+    "favoritedAt": "2025-08-30T19:51:14.280Z",
+    "creatorId": "66f1adb080615a08772d189a",
+    "creator": {
+      "id": "66f1adb080615a08772d189a",
+      "creatorName": "gagaxm",
+      "creatorNameSlug": "gagaxm",
+      "creatorNameLocale": null,
+      "creatorNameLatinized": null,
+      "creatorNameTranslated": null,
+      "createdAt": "2024-09-23T18:04:32.925Z",
+      "viewerUrl": "https://halloffame.cs2.mtq.io/api/v1/creators/66f1adb080615a08772d189a/viewer",
+      "viewerClicksCount": 0,
+      "socials": []
+    },
+    "screenshotId": "68b24b830a009a536f80f90e"
+  },
+  {
+    "id": "68b709a7e73b8032e7ec2698",
+    "favoritedAt": "2025-09-02T15:13:43.400Z",
+    "creatorId": "68b4659fe73b8032e7ec133e",
+    "creator": {
+      "id": "68b4659fe73b8032e7ec133e",
+      "creatorName": "Leon",
+      "creatorNameSlug": "leon",
+      "creatorNameLocale": null,
+      "creatorNameLatinized": null,
+      "creatorNameTranslated": null,
+      "createdAt": "2025-08-31T15:09:19.365Z",
+      "viewerUrl": "https://halloffame.cs2.mtq.io/api/v1/creators/68b4659fe73b8032e7ec133e/viewer",
+      "viewerClicksCount": 0,
+      "socials": []
+    },
+    "screenshotId": "68b24b830a009a536f80f90e"
+  },
+  {
+    "id": "69768defdfece0f06ca14472",
+    "favoritedAt": "2026-01-25T21:41:03.511Z",
+    "creatorId": "66effb3180615a08772d10b4",
+    "creator": {
+      "id": "66effb3180615a08772d10b4",
+      "creatorName": "toverux",
+      "creatorNameSlug": "toverux",
+      "creatorNameLocale": null,
+      "creatorNameLatinized": null,
+      "creatorNameTranslated": null,
+      "createdAt": "2024-09-22T11:10:41.461Z",
+      "viewerUrl": "https://halloffame.cs2.mtq.io/api/v1/creators/66effb3180615a08772d10b4/viewer",
+      "viewerClicksCount": 0,
+      "socials": [
+        {
+          "platform": "discord",
+          "link": "https://halloffame.cs2.mtq.io/api/v1/creators/66effb3180615a08772d10b4/social/discord",
+          "clicks": 11
+        },
+        {
+          "platform": "github",
+          "link": "https://halloffame.cs2.mtq.io/api/v1/creators/66effb3180615a08772d10b4/social/github",
+          "clicks": 0
+        },
+        {
+          "platform": "kofi",
+          "link": "https://halloffame.cs2.mtq.io/api/v1/creators/66effb3180615a08772d10b4/social/kofi",
+          "clicks": 0
+        },
+        {
+          "platform": "paradoxmods",
+          "link": "https://halloffame.cs2.mtq.io/api/v1/creators/66effb3180615a08772d10b4/social/paradoxmods",
+          "clicks": 38
+        },
+        {
+          "platform": "paypal",
+          "link": "https://halloffame.cs2.mtq.io/api/v1/creators/66effb3180615a08772d10b4/social/paypal",
+          "clicks": 0
+        }
+      ]
+    },
+    "screenshotId": "68b24b830a009a536f80f90e"
+  },
+  {
+    "id": "68be8bfdf7e389fa12e2b124",
+    "favoritedAt": "2025-09-08T07:55:41.770Z",
+    "creatorId": "66f1eaafd3ece00d437cf44c",
+    "creator": {
+      "id": "66f1eaafd3ece00d437cf44c",
+      "creatorName": "boliqua2",
+      "creatorNameSlug": "boliqua2",
+      "creatorNameLocale": null,
+      "creatorNameLatinized": null,
+      "creatorNameTranslated": null,
+      "createdAt": "2024-09-23T22:24:47.431Z",
+      "viewerUrl": "https://halloffame.cs2.mtq.io/api/v1/creators/66f1eaafd3ece00d437cf44c/viewer",
+      "viewerClicksCount": 1,
+      "socials": []
+    },
+    "screenshotId": "68b24bca0a009a536f80f90f"
+  },
+  {
+    "id": "68b9f041e73b8032e7ec3aea",
+    "favoritedAt": "2025-09-04T20:02:09.673Z",
+    "creatorId": "66effb3180615a08772d10b4",
+    "creator": {
+      "id": "66effb3180615a08772d10b4",
+      "creatorName": "toverux",
+      "creatorNameSlug": "toverux",
+      "creatorNameLocale": null,
+      "creatorNameLatinized": null,
+      "creatorNameTranslated": null,
+      "createdAt": "2024-09-22T11:10:41.461Z",
+      "viewerUrl": "https://halloffame.cs2.mtq.io/api/v1/creators/66effb3180615a08772d10b4/viewer",
+      "viewerClicksCount": 0,
+      "socials": [
+        {
+          "platform": "discord",
+          "link": "https://halloffame.cs2.mtq.io/api/v1/creators/66effb3180615a08772d10b4/social/discord",
+          "clicks": 11
+        },
+        {
+          "platform": "github",
+          "link": "https://halloffame.cs2.mtq.io/api/v1/creators/66effb3180615a08772d10b4/social/github",
+          "clicks": 0
+        },
+        {
+          "platform": "kofi",
+          "link": "https://halloffame.cs2.mtq.io/api/v1/creators/66effb3180615a08772d10b4/social/kofi",
+          "clicks": 0
+        },
+        {
+          "platform": "paradoxmods",
+          "link": "https://halloffame.cs2.mtq.io/api/v1/creators/66effb3180615a08772d10b4/social/paradoxmods",
+          "clicks": 38
+        },
+        {
+          "platform": "paypal",
+          "link": "https://halloffame.cs2.mtq.io/api/v1/creators/66effb3180615a08772d10b4/social/paypal",
+          "clicks": 0
+        }
+      ]
+    },
+    "screenshotId": "68b24c410a009a536f80f910"
+  },
+  {
+    "id": "68ba8785e73b8032e7ec3ece",
+    "favoritedAt": "2025-09-05T06:47:33.371Z",
+    "creatorId": "66f1eaafd3ece00d437cf44c",
+    "creator": {
+      "id": "66f1eaafd3ece00d437cf44c",
+      "creatorName": "boliqua2",
+      "creatorNameSlug": "boliqua2",
+      "creatorNameLocale": null,
+      "creatorNameLatinized": null,
+      "creatorNameTranslated": null,
+      "createdAt": "2024-09-23T22:24:47.431Z",
+      "viewerUrl": "https://halloffame.cs2.mtq.io/api/v1/creators/66f1eaafd3ece00d437cf44c/viewer",
+      "viewerClicksCount": 1,
+      "socials": []
+    },
+    "screenshotId": "68b24c410a009a536f80f910"
+  },
+  {
+    "id": "68d92741b271afb0cee46090",
+    "favoritedAt": "2025-09-28T12:17:05.669Z",
+    "creatorId": "68d9270eb271afb0cee46086",
+    "creator": {
+      "id": "68d9270eb271afb0cee46086",
+      "creatorName": "SGTLuPolt",
+      "creatorNameSlug": "sgtlupolt",
+      "creatorNameLocale": null,
+      "creatorNameLatinized": null,
+      "creatorNameTranslated": null,
+      "createdAt": "2025-09-28T12:16:14.632Z",
+      "viewerUrl": "https://halloffame.cs2.mtq.io/api/v1/creators/68d9270eb271afb0cee46086/viewer",
+      "viewerClicksCount": 0,
+      "socials": []
+    },
+    "screenshotId": "68b24c410a009a536f80f910"
+  },
+  {
+    "id": "68f229d60dfdf9a8801ea82c",
+    "favoritedAt": "2025-10-17T11:34:46.407Z",
+    "creatorId": "671cd83fb47913d2ea0d534b",
+    "creator": {
+      "id": "671cd83fb47913d2ea0d534b",
+      "creatorName": "Finn",
+      "creatorNameSlug": "finn",
+      "creatorNameLocale": null,
+      "creatorNameLatinized": null,
+      "creatorNameTranslated": null,
+      "createdAt": "2024-10-26T11:53:35.608Z",
+      "viewerUrl": "https://halloffame.cs2.mtq.io/api/v1/creators/671cd83fb47913d2ea0d534b/viewer",
+      "viewerClicksCount": 0,
+      "socials": []
+    },
+    "screenshotId": "68b24c410a009a536f80f910"
+  },
+  {
+    "id": "6a0622c4a3c47f1621469706",
+    "favoritedAt": "2026-05-14T19:30:12.485Z",
+    "creatorId": "69e488f856ee4baeb52349c9",
+    "creator": {
+      "id": "69e488f856ee4baeb52349c9",
+      "creatorName": "brunohermes",
+      "creatorNameSlug": "brunohermes",
+      "creatorNameLocale": null,
+      "creatorNameLatinized": null,
+      "creatorNameTranslated": null,
+      "createdAt": "2026-04-19T07:49:12.353Z",
+      "viewerUrl": "https://halloffame.cs2.mtq.io/api/v1/creators/69e488f856ee4baeb52349c9/viewer",
+      "viewerClicksCount": 1,
+      "socials": []
+    },
+    "screenshotId": "68b24c410a009a536f80f910"
+  },
+  {
+    "id": "6ab6f82111c26a18f3fc1226",
+    "favoritedAt": "2026-09-25T22:39:29.187Z",
+    "creatorId": "69f3e55709341620c2ee4a6f",
+    "creator": {
+      "id": "69f3e55709341620c2ee4a6f",
+      "creatorName": "shaned727",
+      "creatorNameSlug": "shaned727",
+      "creatorNameLocale": null,
+      "creatorNameLatinized": null,
+      "creatorNameTranslated": null,
+      "createdAt": "2026-04-30T23:27:19.634Z",
+      "viewerUrl": "https://halloffame.cs2.mtq.io/api/v1/creators/69f3e55709341620c2ee4a6f/viewer",
+      "viewerClicksCount": 15,
+      "socials": []
+    },
+    "screenshotId": "68b24c410a009a536f80f910"
+  },
+  {
+    "id": "6abc751d11c26a18f3fc45b2",
+    "favoritedAt": "2026-09-30T02:34:05.095Z",
+    "creatorId": "69db175c56ee4baeb522f536",
+    "creator": {
+      "id": "69db175c56ee4baeb522f536",
+      "creatorName": "sbdragoo",
+      "creatorNameSlug": "sbdragoo",
+      "creatorNameLocale": null,
+      "creatorNameLatinized": null,
+      "creatorNameTranslated": null,
+      "createdAt": "2026-04-12T03:54:04.072Z",
+      "viewerUrl": "https://halloffame.cs2.mtq.io/api/v1/creators/69db175c56ee4baeb522f536/viewer",
+      "viewerClicksCount": 0,
+      "socials": []
+    },
+    "screenshotId": "68b24c410a009a536f80f910"
+  },
+  {
+    "id": "69e3f1bc56ee4baeb523469f",
+    "favoritedAt": "2026-04-18T21:03:56.878Z",
+    "creatorId": "69749603dfece0f06ca12a8c",
+    "creator": {
+      "id": "69749603dfece0f06ca12a8c",
+      "creatorName": "little woodpecker",
+      "creatorNameSlug": "little-woodpecker",
+      "creatorNameLocale": null,
+      "creatorNameLatinized": null,
+      "creatorNameTranslated": null,
+      "createdAt": "2026-01-24T09:50:59.603Z",
+      "viewerUrl": "https://halloffame.cs2.mtq.io/api/v1/creators/69749603dfece0f06ca12a8c/viewer",
+      "viewerClicksCount": 0,
+      "socials": []
+    },
+    "screenshotId": "69e2814356ee4baeb52335e1"
+  },
+  {
+    "id": "69e55a6209341620c2edb177",
+    "favoritedAt": "2026-04-19T22:42:42.354Z",
+    "creatorId": "69db175c56ee4baeb522f536",
+    "creator": {
+      "id": "69db175c56ee4baeb522f536",
+      "creatorName": "sbdragoo",
+      "creatorNameSlug": "sbdragoo",
+      "creatorNameLocale": null,
+      "creatorNameLatinized": null,
+      "creatorNameTranslated": null,
+      "createdAt": "2026-04-12T03:54:04.072Z",
+      "viewerUrl": "https://halloffame.cs2.mtq.io/api/v1/creators/69db175c56ee4baeb522f536/viewer",
+      "viewerClicksCount": 0,
+      "socials": []
+    },
+    "screenshotId": "69e2814356ee4baeb52335e1"
+  },
+  {
+    "id": "69e9c90e09341620c2edd866",
+    "favoritedAt": "2026-04-23T07:23:58.884Z",
+    "creatorId": "68dec760b271afb0cee490da",
+    "creator": {
+      "id": "68dec760b271afb0cee490da",
+      "creatorName": "Tutko#9339",
+      "creatorNameSlug": "tutko#9339",
+      "creatorNameLocale": null,
+      "creatorNameLatinized": null,
+      "creatorNameTranslated": null,
+      "createdAt": "2025-10-02T18:41:36.423Z",
+      "viewerUrl": "https://halloffame.cs2.mtq.io/api/v1/creators/68dec760b271afb0cee490da/viewer",
+      "viewerClicksCount": 0,
+      "socials": []
+    },
+    "screenshotId": "69e2814356ee4baeb52335e1"
+  }
+]
