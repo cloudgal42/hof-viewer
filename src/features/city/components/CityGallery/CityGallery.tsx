@@ -139,6 +139,7 @@ const CityGallery = ({ city, page }: GalleryProps) => {
       </div>
       <div className="App">
         <LightGallery
+          key={city.id}
           mobileSettings={{ showCloseIcon: true }}
           allowMediaOverlap={true}
           toggleThumb={lightboxItems.length > 1}
