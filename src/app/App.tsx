@@ -1,4 +1,3 @@
-import "../css/App.scss";
 import { Navbar, Spinner } from "react-bootstrap";
 import { Suspense, useEffect, useState } from "react";
 import { Sidebar } from "../components/navigation/Sidebar/Sidebar.tsx";
@@ -103,7 +102,7 @@ const App = () => {
                 key={location.pathname}
                 fallback={
                   <div className="d-flex align-items-center justify-content-center h-100">
-                    <Spinner animation="border" role="status">
+                    <Spinner animation="grow" role="status">
                       <span className="visually-hidden">Loading...</span>
                     </Spinner>
                   </div>

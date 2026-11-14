@@ -13,11 +13,18 @@
       data-rh="true"
       content="View your and other creator's screenshots posted in Hall of Fame (Cities Skylines 2 Mod)."
     />
+    <link rel="stylesheet" href="src/css/App.scss" />
     <title data-rh="true">Hall of Fame Viewer</title>
     <script>window.prerenderReady = false;</script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="w-100 vh-100 d-flex flex-column gap-1 align-items-center justify-content-center">
+        <div class="spinner-grow" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </div>
     <script type="module" src="/src/app/main.tsx"></script>
     <script>
       const isDarkModePreferred = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -25,6 +32,8 @@
         console.log("Detected user preferring dark mode, so lets not blind them");
         document.querySelector("html").setAttribute("data-bs-theme", "dark");
         localStorage.setItem("isDarkMode", "true");
+      } else if (localStorage.getItem("isDarkMode") === "true") {
+        document.querySelector("html").setAttribute("data-bs-theme", "dark");
       }
     </script>
   </body>
