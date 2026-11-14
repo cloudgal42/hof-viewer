@@ -64,7 +64,7 @@ export const GalleryImg = (
     >
       {nextUrl && (
         <LazyLoadImage
-          wrapperClassName="w-100 position-absolute"
+          wrapperClassName="w-100 position-absolute z-2"
           effect="opacity"
           className="w-100"
           onError={() => setIsError(true)}
@@ -75,7 +75,6 @@ export const GalleryImg = (
             setShowTransition(false);
           }}
           wrapperProps={{
-            style: {zIndex: 99},
             onTransitionEnd: () => {
               setCurrUrl(url);
               setNextUrl(null);
