@@ -123,7 +123,7 @@ const RandomCity = () => {
     
     debounceTimerRef.current = setTimeout(() => {
       setControlsDebounced(false);
-    }, 250);
+    }, 300);
   }
 
   if (!navigator.onLine) {
