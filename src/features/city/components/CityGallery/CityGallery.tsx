@@ -14,7 +14,7 @@ import lgZoom from "lightgallery/plugins/zoom";
 import lgFullscreen from "lightgallery/plugins/fullscreen";
 import lgAutoplay from "lightgallery/plugins/autoplay";
 
-import { useCallback, useRef, useState } from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import type { InitDetail } from "lightgallery/lg-events";
 import type { City, GroupedCities } from "../../../../types/City.ts";
 import { GalleryImg } from "./GalleryImg.tsx";
@@ -88,6 +88,10 @@ const CityGallery = ({ city, page }: GalleryProps) => {
       galleryRef.current = detail.instance;
     }
   }, []);
+  
+  useEffect(() => {
+    console.debug("Gallery mounted")
+  }, [])
 
   function handleOpenGallery(index: number) {
     if (galleryRef.current) {

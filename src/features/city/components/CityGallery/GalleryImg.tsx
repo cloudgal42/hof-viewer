@@ -1,8 +1,9 @@
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import PlaceholderImg from "../../../../assets/placeholder.svg";
-import {type MouseEventHandler, type ReactNode, useState} from "react";
+import {type MouseEventHandler, type ReactNode, useEffect, useRef, useState} from "react";
 
 import "./GalleryImg.css";
+import "react-lazy-load-image-component/src/effects/opacity.css";
 
 interface GalleryItemProps {
   url: string;
@@ -15,14 +16,45 @@ interface GalleryItemProps {
 export const GalleryImg = (
   {url, hoverCaptions, height, onLoad, onClick}: GalleryItemProps
 ) => {
+  const [currUrl, setCurrUrl] = useState<string>(url);
+  const [nextUrl, setNextUrl] = useState<string | null>(null);
+  
   const [isError, setIsError] = useState<boolean>(false);
-
+  const [showTransition, setShowTransition] = useState<boolean>(false);
+  
+  const timerRef = useRef<number | null>(null);
+  
+  useEffect(() => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    if (url !== currUrl) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setNextUrl(url);
+      // This timeout exists since we want to only dim the stale image if
+      //  the new image takes a while to load. Otherwise, there would be the
+      //  "flicker" problem that the older implementation always have had.
+      timerRef.current = setTimeout(() => {
+        if (!nextUrl) {
+          console.log("Image transition is running")
+          setShowTransition(true);
+        }
+      }, 67);
+    }
+    
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    }
+  }, [url, currUrl]);
+  
   if (isError) return (
-    <div className="text-muted w-100 d-flex align-items-center justify-content-center">
+    <button
+      style={{height: height, aspectRatio: "16/9"}}
+      className="city-gallery-item p-0 border-0 bg-body text-muted w-100 d-flex align-items-center justify-content-center"
+      disabled
+    >
       Oops... failed to load image :(
-    </div>
-  )
-
+    </button>
+  );
+  
   return (
     <button
       className="city-gallery-item p-0 border-0 w-100 position-relative"
@@ -30,11 +62,32 @@ export const GalleryImg = (
       onClick={onClick}
       aria-label="Open image on lightbox"
     >
+      {nextUrl && (
+        <LazyLoadImage
+          wrapperClassName="w-100 position-absolute"
+          effect="opacity"
+          className="w-100"
+          onError={() => setIsError(true)}
+          height={height}
+          src={nextUrl}
+          onLoad={() => {
+            if (timerRef.current) clearTimeout(timerRef.current);
+            setShowTransition(false);
+          }}
+          wrapperProps={{
+            style: {zIndex: 99},
+            onTransitionEnd: () => {
+              setCurrUrl(url);
+              setNextUrl(null);
+            }
+          }}
+        />
+      )}
       <LazyLoadImage
-        wrapperClassName="w-100"
+        wrapperClassName={`curr-img w-100 ${showTransition ? "opacity-50" : ""}`}
         className="w-100"
-        src={url}
-        effect="black-and-white"
+        src={currUrl}
+        effect="opacity"
         alt=""
         height={height}
         onLoad={onLoad}
@@ -50,7 +103,8 @@ export const GalleryImg = (
         }
       />
       {hoverCaptions && (
-        <div className="captions text-truncate text-white p-1 position-absolute w-100 bg-opacity-50 d-flex justify-content-center bg-black gap-2">
+        <div
+          className="captions text-truncate text-white p-1 position-absolute w-100 bg-opacity-50 d-flex justify-content-center bg-black gap-2">
           {hoverCaptions}
         </div>
       )}

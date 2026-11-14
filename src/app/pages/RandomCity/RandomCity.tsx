@@ -230,7 +230,6 @@ const RandomCity = () => {
       <div className="main-wrapper m-auto">
         <section id="gallery" className="mt-3 position-relative">
           <Suspense
-            key={page}
             fallback={
               <img
                 src={PlaceholderImg}
