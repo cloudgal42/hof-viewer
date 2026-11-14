@@ -1,5 +1,5 @@
 import { AdaptiveHeader } from "../../../components/navigation/AdaptiveHeader/AdaptiveHeader.tsx";
-import {Suspense, useCallback, useEffect} from "react";
+import {Suspense, useCallback, useEffect, useRef, useState} from "react";
 import { Button, Dropdown, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { MoreActionsBtn } from "../../../components/buttons/MoreActionsBtn/MoreActionsBtn.tsx";
 import {
@@ -30,6 +30,7 @@ import type { ContextType } from "../../App.tsx";
 import {useRandomAlgoSettings} from "../../../features/settings/hooks/useRandomAlgoSettings.ts";
 import {handleSetSearchParams} from "../../../utils/searchParamHandlers.ts";
 import {useTranslation} from "../../../hooks/useTranslation.ts";
+import {useUnmount} from "usehooks-ts";
 
 const RandomCity = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -42,6 +43,10 @@ const RandomCity = () => {
   const { startGc, gcCount } = useOutletContext<ContextType>();
   const queryClient = useQueryClient();
 
+  const [controlsDebounced, setControlsDebounced] = useState(false);
+  
+  const debounceTimerRef = useRef<number | null>(null);
+  
   const setPage = useCallback((newPage: number) => {
     setSearchParams(handleSetSearchParams(searchParams, "page", newPage.toString()));
   }, [searchParams, setSearchParams]);
@@ -52,6 +57,10 @@ const RandomCity = () => {
   useEffect(() => {
     startGc();
   }, [startGc, page]);
+  
+  useUnmount(() => {
+    if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
+  });
 
   useEffect(() => {
     // Since page is not a derived value from gcCount, this is fine?
@@ -106,6 +115,16 @@ const RandomCity = () => {
   }
 
   useScrollToTop();
+  
+  function handleSetPage(page: number) {
+    if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
+    setPage(page);
+    setControlsDebounced(true);
+    
+    debounceTimerRef.current = setTimeout(() => {
+      setControlsDebounced(false);
+    }, 250);
+  }
 
   if (!navigator.onLine) {
     return (
@@ -138,9 +157,9 @@ const RandomCity = () => {
           className="header-collapsed-body w-100 d-flex flex-row align-items-center justify-content-between"
         >
           <Button
-            variant="outline"
-            onClick={() => setPage(page - 1)}
-            disabled={page === 0}
+            variant="link"
+            onClick={() => handleSetPage(page - 1)}
+            disabled={page === 0 || controlsDebounced}
           >
             <span className="visually-hidden">To previous city</span>
             <OverlayTrigger overlay={<Tooltip>To previous city</Tooltip>}>
@@ -218,8 +237,9 @@ const RandomCity = () => {
             </div>
           </div>
           <Button
-            variant="outline"
-            onClick={() => setPage(page + 1)}
+            variant="link"
+            onClick={() => handleSetPage(page + 1)}
+            disabled={controlsDebounced}
           >
             <span className="visually-hidden">To next city</span>
             <OverlayTrigger overlay={<Tooltip>To next city</Tooltip>}>
