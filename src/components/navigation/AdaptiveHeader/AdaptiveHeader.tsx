@@ -28,7 +28,7 @@ export const AdaptiveHeader = (
       <div
         className="adaptive-header"
         ref={ogHeaderRef}
-        aria-hidden={headerCollapsed}
+        inert={headerCollapsed}
       >
         <div className={`main-wrapper m-auto ${className}`}>
           {children}
