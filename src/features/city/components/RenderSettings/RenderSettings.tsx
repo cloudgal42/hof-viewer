@@ -13,7 +13,8 @@ interface RenderSettingsProps {
 function format(val: string) {
   return val
     .split(/(?=[A-Z])/)
-    .map((word) => {
+    .map((word, i) => {
+      if (word.includes("m_")) return "";
       const upperCasedWord = word.charAt(0).toUpperCase() + word.slice(1, word.length);
       return upperCasedWord.includes("/")
         ? `${upperCasedWord.split("/")[0]} (${upperCasedWord.split("/")[1].toUpperCase()})`
@@ -71,6 +72,7 @@ export const RenderSettings = ({city}: RenderSettingsProps) => {
                   <li
                     key={key}
                     className={`border-top border-secondary-subtle ${i % 2 ? "bg-body-tertiary" : ""} p-2 d-flex align-items-center justify-content-between`}
+                    style={{breakBefore: "avoid"}}
                   >
                     <span className="small">{format(key.split(".")[key.split(".").length - 1])}</span>
                     <span className="small fw-semibold">{value.toLocaleString()}</span>
