@@ -36,6 +36,7 @@
         "npm:@types/react-lazy-load-image-component@^1.6.5",
         "npm:@types/react@^19.2.5",
         "npm:@vitejs/plugin-react@^5.1.1",
+        "npm:@vitest/web-worker@^5.1.0",
         "npm:babel-plugin-react-compiler@1",
         "npm:bootstrap@^5.3.8",
         "npm:chart.js@^4.5.1",
@@ -66,7 +67,8 @@
         "npm:typescript-eslint@^8.46.4",
         "npm:typescript@~5.9.3",
         "npm:usehooks-ts@^3.1.1",
-        "npm:vite@^7.2.4"
+        "npm:vite@^7.2.4",
+        "npm:vitest@^5.1.0"
       ]
     }
   }
