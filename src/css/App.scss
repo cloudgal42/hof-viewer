@@ -34,7 +34,8 @@ $utilities: (
 
 $focus-ring-opacity: 1;
 $focus-ring-width: 0.1rem;
-$primary: #000;
+$primary: #363636;
+$light: #e7e7e7;
 $carousel-transition-duration: 0.3s;
 
 @import "../../node_modules/bootstrap/scss/bootstrap";
@@ -122,12 +123,12 @@ html, body, #root {
 input[type="range"] {
   &::-webkit-slider-thumb {
     border: 1.5px solid $gray-500;
-    background-color: #fff;
+    background-color: #f8f9fa;
   }
 
   &::-moz-range-thumb {
     border: 1.5px solid $gray-500;
-    background-color: #fff;
+    background-color: #f8f9fa;
   }
 }
 
@@ -136,14 +137,14 @@ input[type="range"] {
 }
 
 [data-bs-theme="dark"] {
-  $primary: #fff;
-  --bs-primary-rgb: 255, 255, 255;
-  --bs-primary: #fff;
+  $primary: #e7e7e7;
+  --bs-primary-rgb: 231, 231, 231;
+  --bs-primary: #e7e7e7;
   --bs-body-bg: #111214;
   --bs-body-bg-rgb: 17, 18, 20;
 
   .nav-link:focus-visible {
-    box-shadow: 0 0 0 var(--bs-focus-ring-width) rgba(255, 255, 255, var(--bs-focus-ring-opacity));
+    box-shadow: 0 0 0 var(--bs-focus-ring-width) rgba(var(--bs-primary-rgb), var(--bs-focus-ring-opacity));
   }
 
   a:not(.btn, .alert-link, .dropdown-item), .btn-link {
@@ -155,11 +156,11 @@ input[type="range"] {
   }
 
   .border-primary {
-    border-color: rgba(255, 255, 255, var(--bs-border-opacity)) !important;
+    border-color: rgba(var(--bs-primary-rgb), var(--bs-border-opacity)) !important;
   }
 
   .border-primary-subtle {
-    border-color: rgba(255, 255, 255, 0.5) !important;
+    border-color: rgba(var(--bs-primary-rgb), 0.5) !important;
   }
 
   .nav-link.link-body-emphasis.active {
@@ -178,27 +179,25 @@ input[type="range"] {
   input[type="range"] {
     &::-webkit-slider-thumb {
       border: 1.5px solid $gray-900;
-      background-color: #fff;
     }
 
     &::-moz-range-thumb {
       border: 1.5px solid $gray-900;
-      background-color: #fff;
     }
 
     &:focus::-webkit-slider-thumb {
-      box-shadow: 0 0 0 var(--bs-focus-ring-width) rgba(255, 255, 255, var(--bs-focus-ring-opacity));
+      box-shadow: 0 0 0 var(--bs-focus-ring-width) rgba(var(--bs-primary-rgb), var(--bs-focus-ring-opacity));
     }
 
     &:focus::-moz-range-thumb {
-      box-shadow: 0 0 0 var(--bs-focus-ring-width) rgba(255, 255, 255, var(--bs-focus-ring-opacity));
+      box-shadow: 0 0 0 var(--bs-focus-ring-width) rgba(var(--bs-primary-rgb), var(--bs-focus-ring-opacity));
     }
   }
 
   input:focus,
   select:focus,
   .accordion-button:focus {
-    box-shadow: 0 0 0 var(--bs-focus-ring-width) rgba(255, 255, 255, var(--bs-focus-ring-opacity));
+    box-shadow: 0 0 0 var(--bs-focus-ring-width) rgba(var(--bs-primary-rgb), var(--bs-focus-ring-opacity));
   }
 
   .accordion-button:not(.collapsed) {
