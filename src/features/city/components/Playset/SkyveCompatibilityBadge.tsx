@@ -81,7 +81,10 @@ export const SkyveCompatibilityBadge = (
   return (
     <Badge className={`fw-semibold border border-1 ${badgeAndTextColor}`}>
       {icon}
-      <span className="ms-1">{formattedStability}</span>
+      <span className="ms-1">
+        {formattedStability}
+        {compatibilityInfo.stability === "stable" && compatibilityInfo.note ? "*" : ""}
+      </span>
     </Badge>
   );
 };
