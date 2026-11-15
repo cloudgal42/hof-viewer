@@ -12,7 +12,6 @@ import {
 import { ModList } from "../Playset/ModList.tsx";
 import { RenderSettings } from "../RenderSettings/RenderSettings.tsx";
 import Markdown from "react-markdown";
-import {Conditions} from "../Conditions/Conditions.tsx";
 import {ScreenshotRankBadge} from "../ScreenshotRankBadge/ScreenshotRankBadge.tsx";
 import {getRankColor} from "../../helpers/rankColor.ts";
 
@@ -178,13 +177,7 @@ export const Details = (
           <>
             <section className="mb-3">
               <h3>
-                <Card.Title>Conditions</Card.Title>
-              </h3>
-              <Conditions renderConditions={cityDetails.renderConditions} />
-            </section>
-            <section>
-              <h3>
-                <Card.Title>Render Settings</Card.Title>
+                <Card.Title>Render Conditions</Card.Title>
               </h3>
               <RenderSettings city={cityDetails} />
             </section>

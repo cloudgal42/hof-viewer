@@ -6,10 +6,10 @@ import {isEmptyObject} from "../../../../utils/isEmptyObject.ts";
 export const Conditions = (
   {renderConditions}: { renderConditions: RenderConditions }
 ) => {
-  if (isEmptyObject(renderConditions)) return <p>No condition settings found.</p>;
+  if (isEmptyObject(renderConditions)) return <p>No conditions found.</p>;
   
   return (
-    <div className="d-flex align-items-center gap-2">
+    <div className="mt-3 d-flex align-items-center gap-2">
       {renderConditions["climate.weather"] === "Clear"
         ? renderConditions["light.dayPhase"] ===
         "Night"

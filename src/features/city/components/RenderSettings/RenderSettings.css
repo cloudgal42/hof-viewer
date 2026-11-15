@@ -1,0 +1,9 @@
+.render-settings-dual-col {
+  column-count: 2;
+}
+
+@media all and (width < 768px) {
+  .render-settings-dual-col {
+    column-count: 1;
+  }
+}
