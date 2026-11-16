@@ -8,6 +8,7 @@ import { GroupedCitiesOverrideSettingsProvider } from "./providers/GroupedCities
 import { HelmetProvider } from "@dr.pogodin/react-helmet";
 import { CrashFallback } from "../components/errorscreen/CrashFallback/CrashFallback.tsx";
 import { ErrorBoundary } from "react-error-boundary";
+import {ThemeContextProvider} from "./providers/ThemeContextProvider.tsx";
 
 const Home = lazy(() => import("./pages/Home/Home.tsx"));
 const CityDetails = lazy(() => import("./pages/CityDetails/CityDetails.tsx"));
@@ -26,18 +27,20 @@ createRoot(document.getElementById("root")!).render(
     >
       <HelmetProvider>
         <GroupedCitiesOverrideSettingsProvider>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<App />}>
-                <Route index element={<Home />} />
-                <Route path="city/:city" element={<CityDetails />} />
-                <Route path="creators" element={<Creators />} />
-                <Route path="random" element={<RandomCity />} />
-                <Route path="settings" element={<Settings />} />
-                <Route path="about" element={<About />} />
-              </Route>
-            </Routes>
-          </BrowserRouter>
+          <ThemeContextProvider>
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<App />}>
+                  <Route index element={<Home />} />
+                  <Route path="city/:city" element={<CityDetails />} />
+                  <Route path="creators" element={<Creators />} />
+                  <Route path="random" element={<RandomCity />} />
+                  <Route path="settings" element={<Settings />} />
+                  <Route path="about" element={<About />} />
+                </Route>
+              </Routes>
+            </BrowserRouter>
+          </ThemeContextProvider>
         </GroupedCitiesOverrideSettingsProvider>
       </HelmetProvider>
     </ErrorBoundary>

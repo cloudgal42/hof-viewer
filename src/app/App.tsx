@@ -1,18 +1,15 @@
 import { Navbar, Spinner } from "react-bootstrap";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useState } from "react";
 import { Sidebar } from "../components/navigation/Sidebar/Sidebar.tsx";
 import { HamburgerButton } from "../components/buttons/Hamburger/HamburgerButton.tsx";
 import { Outlet, useLocation } from "react-router";
-import { useLocalStorage } from "usehooks-ts";
 import { ToTopBtn } from "../components/buttons/ToTopButton/ToTopBtn.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ThemeContext } from "../context/ThemeContext.ts";
 import { useRandomCityGc } from "../hooks/useRandomCityGc.ts";
 import {ThemeDropdownBtn} from "../components/buttons/ThemeDropdownBtn/ThemeDropdownBtn.tsx";
 // import {Screenshots} from "./temp/screenshots.ts";
 
 export type ContextType = {
-  setIsDarkMode: (isDarkMode: boolean) => void;
   startGc: () => void;
   gcCount: number;
   randomCityPage: number;
@@ -33,10 +30,6 @@ if (import.meta.env.DEV) {
 
 const App = () => {
   const [isAsideOpened, setIsAsideOpened] = useState<boolean>(false);
-  const [isDarkMode, setIsDarkMode] = useLocalStorage<boolean>(
-    "isDarkMode",
-    false,
-  );
   const [gcCount, setGcCount] = useState<number>(0);
   
   const [randomCityPage, setRandomCityPage] = useState<number>(0);
@@ -47,17 +40,9 @@ const App = () => {
     setGcCount((c) => c + 1);
   });
 
-  // We manipulate the DOM here bc Bootstrap CSS scopes
-  // the theme to the <html> document element
-  useEffect(() => {
-    const theme = isDarkMode ? "dark" : "light";
-    document.documentElement.setAttribute("data-bs-theme", theme);
-  }, [isDarkMode]);
-
   const contextParams = {
     startGc,
     gcCount,
-    setIsDarkMode,
     randomCityPage,
     setRandomCityPage,
   };
@@ -67,10 +52,6 @@ const App = () => {
       <a id="mainContentLink" href="#mainContent">
         Skip to main content
       </a>
-      <ThemeContext value={{
-        theme: isDarkMode ? "dark" : "light",
-        setIsDarkMode,
-      }}>
         <h1 className="visually-hidden">Hall of Fame Viewer</h1>
         <Navbar
           className="bg-body border-1 border-bottom d-lg-none"
@@ -121,7 +102,6 @@ const App = () => {
             </main>
           </div>
         </div>
-      </ThemeContext>
     </>
   );
 };

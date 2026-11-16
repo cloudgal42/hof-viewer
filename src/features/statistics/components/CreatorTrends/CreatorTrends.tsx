@@ -13,10 +13,9 @@ import {
   formatChartLabels,
   getFormattedTrendType,
 } from "../../helpers/trendFormat.ts";
-import { useContext } from "react";
-import { ThemeContext } from "../../../../context/ThemeContext.ts";
 
 import "../../css/TrendsChart.css";
+import {useTheme} from "../../../../hooks/useTheme.ts";
 
 const DAYS_IN_MILLISECONDS = 86400000;
 
@@ -36,7 +35,7 @@ export const CreatorTrends = (
     freezeOnceVisible: true,
   });
 
-  const context = useContext(ThemeContext);
+  const context = useTheme();
 
   if (!context) {
     throw new Error("Theme context is null.");

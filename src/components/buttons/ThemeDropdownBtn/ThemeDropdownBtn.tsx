@@ -1,19 +1,14 @@
 import {Check, Moon, Sun} from "react-bootstrap-icons";
 import {DropdownButton, DropdownItem} from "react-bootstrap";
-import {useContext} from "react";
-import {ThemeContext} from "../../../context/ThemeContext.ts";
 import type {AlignType} from "react-bootstrap/types";
 import type {DropDirection} from "react-bootstrap/DropdownContext";
+import {useTheme} from "../../../hooks/useTheme.ts";
 
 export const ThemeDropdownBtn = (
   {size, align, drop} : {size?: "sm" | "lg" | undefined, align?: AlignType, drop?: DropDirection}
 ) => {
   // TODO: Put this behind a provider instead.
-  const context = useContext(ThemeContext);
-  
-  if (!context) {
-    return null;
-  }
+  const context = useTheme();
   
   return (
     <DropdownButton variant="link" drop={drop} align={align} size={size} title={

@@ -4,10 +4,8 @@ import {
   Card, ProgressBar,
   Spinner,
 } from "react-bootstrap";
-import {useContext} from "react";
 import type { City, GroupedCities } from "../../../../types/City.ts";
 import { ErrorScreen } from "../../../../components/errorscreen/ErrorScreen/ErrorScreen.tsx";
-import { ThemeContext } from "../../../../context/ThemeContext.ts";
 import { useIntersectionObserver } from "usehooks-ts";
 import { Bar } from "react-chartjs-2";
 import {
@@ -37,6 +35,7 @@ import { GroupBySelect } from "./GroupBySelect.tsx";
 import { useTrendsOptions } from "../../hooks/useTrendsOptions.ts";
 import { CONFIG } from "../../../../config/Config.ts";
 import {formatChartEntries, formatChartLabels, getFormattedTrendType} from "../../helpers/trendFormat.ts";
+import {useTheme} from "../../../../hooks/useTheme.ts";
 
 defaults.font.family = CONFIG.chartFontFamily;
 
@@ -55,7 +54,7 @@ export const CityTrends = (
     ? new Date(city.createdAt).getTime()
     : new Date().getTime();
   const currEpoch = new Date().getTime();
-  const context = useContext(ThemeContext);
+  const context = useTheme();
 
   if (!context) {
     throw new Error("Theme context is null.");

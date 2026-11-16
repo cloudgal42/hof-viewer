@@ -3,17 +3,13 @@ import { SectionNav } from "../../../features/settings/components/SectionNav/Sec
 import {TranslationSection} from "../../../features/settings/components/TranslationSection/TranslationSection.tsx";
 import {RandomAlgoSection} from "../../../features/settings/components/RandomAlgoSection/RandomAlgoSection.tsx";
 import {GroupedCitiesSection} from "../../../features/settings/components/GroupedCitiesSection/GroupedCitiesSection.tsx";
-import {ThemeContext} from "../../../context/ThemeContext.ts";
-import {useContext, useEffect} from "react";
+import {useEffect} from "react";
 
 import "./Settings.css";
+import {useTheme} from "../../../hooks/useTheme.ts";
 
 const Settings = () => {
-  const context = useContext(ThemeContext);
-  
-  if (!context) {
-    throw new Error("Theme context is null");
-  }
+  const context = useTheme();
 
   useEffect(() => {
     const hash = window.location.hash;
