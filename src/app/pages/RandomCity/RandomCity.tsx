@@ -1,5 +1,5 @@
 import { AdaptiveHeader } from "../../../components/navigation/AdaptiveHeader/AdaptiveHeader.tsx";
-import {Suspense, useCallback, useEffect, useRef, useState} from "react";
+import {Suspense, useEffect, useRef, useState} from "react";
 import { Button, Dropdown, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { MoreActionsBtn } from "../../../components/buttons/MoreActionsBtn/MoreActionsBtn.tsx";
 import {
@@ -25,38 +25,29 @@ import {
 import { shareContent } from "../../../features/city/helpers/shareContent.ts";
 import { useScrollToTop } from "../../../hooks/useScrollToTop.ts";
 import { DefaultHelmet } from "../../../components/misc/DefaultHelmet/DefaultHelmet.tsx";
-import {NavLink, useOutletContext, useSearchParams} from "react-router";
+import {NavLink, useOutletContext} from "react-router";
 import type { ContextType } from "../../App.tsx";
 import {useRandomAlgoSettings} from "../../../features/settings/hooks/useRandomAlgoSettings.ts";
-import {handleSetSearchParams} from "../../../utils/searchParamHandlers.ts";
 import {useTranslation} from "../../../hooks/useTranslation.ts";
 import {useUnmount} from "usehooks-ts";
 
 const RandomCity = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const pageAsString = searchParams.get("page");
-  const page = pageAsString ? parseInt(pageAsString) : 0;
-
   const [randomAlgoSettings] = useRandomAlgoSettings();
   const {dynamicCityName, creatorName} = useTranslation();
 
-  const { startGc, gcCount } = useOutletContext<ContextType>();
+  const { startGc, gcCount, randomCityPage, setRandomCityPage } = useOutletContext<ContextType>();
   const queryClient = useQueryClient();
 
   const [controlsDebounced, setControlsDebounced] = useState(false);
   
   const debounceTimerRef = useRef<number | null>(null);
-  
-  const setPage = useCallback((newPage: number) => {
-    setSearchParams(handleSetSearchParams(searchParams, "page", newPage.toString()));
-  }, [searchParams, setSearchParams]);
 
   // Restart garbage collector countdown when
   // - User enters this page
   // - User loads the new page
   useEffect(() => {
     startGc();
-  }, [startGc, page]);
+  }, [startGc, randomCityPage]);
   
   useUnmount(() => {
     if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
@@ -64,11 +55,11 @@ const RandomCity = () => {
 
   useEffect(() => {
     // Since page is not a derived value from gcCount, this is fine?
-    if (gcCount > 0) setPage(0);
-  }, [gcCount, setPage]);
+    if (gcCount > 0) setRandomCityPage(0);
+  }, [gcCount, setRandomCityPage]);
 
   const { data, isFetching, error } = useQuery<City>({
-    queryKey: ["randomCity", page],
+    queryKey: ["randomCity", randomCityPage],
     queryFn: fetchRandomCity,
     staleTime: Infinity,
     retry: false,
@@ -78,7 +69,7 @@ const RandomCity = () => {
 
   // Optimistically fetch the next random city data as well as images for a snappier UX
   queryClient.fetchQuery<City>({
-    queryKey: ["randomCity", page + 1],
+    queryKey: ["randomCity", randomCityPage + 1],
     queryFn: fetchRandomCity,
     staleTime: Infinity,
     retry: false,
@@ -116,9 +107,9 @@ const RandomCity = () => {
 
   useScrollToTop();
   
-  function handleSetPage(page: number) {
+  function handlesetRandomCityPage(page: number) {
     if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
-    setPage(page);
+    setRandomCityPage(page);
     setControlsDebounced(true);
     
     debounceTimerRef.current = setTimeout(() => {
@@ -158,8 +149,8 @@ const RandomCity = () => {
         >
           <Button
             variant="link"
-            onClick={() => handleSetPage(page - 1)}
-            disabled={page === 0 || controlsDebounced}
+            onClick={() => handlesetRandomCityPage(randomCityPage - 1)}
+            disabled={randomCityPage === 0 || controlsDebounced}
           >
             <span className="visually-hidden">To previous city</span>
             <OverlayTrigger overlay={<Tooltip>To previous city</Tooltip>}>
@@ -238,7 +229,7 @@ const RandomCity = () => {
           </div>
           <Button
             variant="link"
-            onClick={() => handleSetPage(page + 1)}
+            onClick={() => handlesetRandomCityPage(randomCityPage + 1)}
             disabled={controlsDebounced}
           >
             <span className="visually-hidden">To next city</span>

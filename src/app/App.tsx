@@ -15,6 +15,8 @@ export type ContextType = {
   setIsDarkMode: (isDarkMode: boolean) => void;
   startGc: () => void;
   gcCount: number;
+  randomCityPage: number;
+  setRandomCityPage: (page: number) => void;
 };
 
 const queryClient = new QueryClient();
@@ -36,6 +38,8 @@ const App = () => {
     false,
   );
   const [gcCount, setGcCount] = useState<number>(0);
+  
+  const [randomCityPage, setRandomCityPage] = useState<number>(0);
 
   const location = useLocation();
   // FIXME: Remove this once we switched to using useInfiniteQuery from TSQ, since this is just Bad.
@@ -54,6 +58,8 @@ const App = () => {
     startGc,
     gcCount,
     setIsDarkMode,
+    randomCityPage,
+    setRandomCityPage,
   };
 
   return (
