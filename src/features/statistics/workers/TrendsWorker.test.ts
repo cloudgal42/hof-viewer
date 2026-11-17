@@ -21,31 +21,31 @@ describe("Trends worker - Cumulative count must be equal in length to the expect
   
   async function testVariousGroupPeriods(params: WorkerParams, worker: Worker, expectedLength: number) {
     // Group by a day
-    params.day = 1;
+    params.period = "day";
     const result1 = await getActualOutputCount(params, worker);
     expect(result1, `Group by 1 day`)
       .toBe(expectedLength);
     
     // Group by one week
-    params.day = 7;
+    params.period = "week";
     const result2 = await getActualOutputCount(params, worker);
     expect(result2, `Group by 1 week`)
       .toBe(expectedLength);
     
     // Group by one month
-    params.day = 30;
+    params.period = "month";
     const result3 = await getActualOutputCount(params, worker);
     expect(result3, `Group by 1 month:`)
       .toBe(expectedLength);
     
     // Group by 6 months
-    params.day = 180;
+    params.period = "halfyear";
     const result4 = await getActualOutputCount(params, worker);
     expect(result4, `Group by 6 months:`)
       .toBe(expectedLength);
     
     // Group by 1 year
-    params.day = 365;
+    params.period = "year";
     const result5 = await getActualOutputCount(params, worker);
     expect(result5, `Group by 1 year:`)
       .toBe(expectedLength);
@@ -60,7 +60,7 @@ describe("Trends worker - Cumulative count must be equal in length to the expect
         views: sampleViews,
         favorites: sampleFavorites
       },
-      day: 0,
+      period: "day" as const,
       type: "views",
     };
     
@@ -77,7 +77,7 @@ describe("Trends worker - Cumulative count must be equal in length to the expect
         views: sampleViews,
         favorites: sampleFavorites
       },
-      day: 0,
+      period: "day" as const,
       type: "uniqueViews",
     };
     
@@ -95,8 +95,8 @@ describe("Trends worker - Cumulative count must be equal in length to the expect
         views: sampleViews,
         favorites: sampleFavorites
       },
-      day: 0,
-      type: "favorites",
+			period: "day" as const,
+			type: "favorites",
     };
     
     const expectedLength = sampleFavorites.length;

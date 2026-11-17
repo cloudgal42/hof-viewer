@@ -1,7 +1,9 @@
 import type {
   Views,
 } from "../../../types/City.ts";
+import { formatDatesLabel } from "../helpers/trendFormat.ts";
 import type {
+    GroupPeriod,
   TrendsData,
   TrendsWorkerInput, WorkerMsg,
   WorkerParams,
@@ -13,9 +15,10 @@ function send(params: WorkerMsg) {
   self.postMessage(params);
 }
 
+// TODO: Use constant group periods instead
 self.onmessage = ({ data }: { data: WorkerParams }) => {
-  const { inputData, day, type } = data;
-  const result = groupData(inputData, day, type);
+  const { inputData, period, type } = data;
+  const result = groupData(inputData, period, type);
   send({
     type: "calculationCompleted",
     payload: result
@@ -31,43 +34,96 @@ function filterUniqueViews(views: Views[]) {
   });
 }
 
-function groupDates(start: Date, end: Date, period: number) {
+function addMonths(date: Date, months: number) {
+  const result = new Date(date);
+  const targetMonth = result.getMonth() + months;
+
+  result.setMonth(targetMonth);
+
+  // If the month overflowed, we went too far — clamp to last day
+  // of the intended month
+  if (result.getMonth() !== ((targetMonth % 12) + 12) % 12) {
+    result.setDate(0); // setDate(0) = last day of previous month
+  }
+
+  return result;
+}
+
+function addYears(date: Date, years: number) {
+	const result = new Date(date);
+	const expectedMonth = result.getMonth();
+	
+	result.setFullYear(result.getFullYear() + years);
+
+	if (result.getMonth() !== expectedMonth) {
+		result.setDate(0);
+	}
+	
+	return result;
+}
+
+function groupDates(start: Date, end: Date, period: GroupPeriod) {
   const startEpoch = start.getTime();
   const endEpoch = end.getTime();
 
   let currEpoch = startEpoch;
   const groupedDates = [];
 
-  while (currEpoch < endEpoch) {
-    const startRange = new Date(currEpoch);
-    currEpoch += period * DAYS_IN_MILLISECONDS;
-    const endRange = (currEpoch > endEpoch)
-      ? new Date(endEpoch)
-      : new Date(currEpoch);
+	if (period === "day" || period === "week") {
+		const interval = period === "day" ? 1 : 7;
 
-    groupedDates.push([startRange, endRange]);
-  }
+		while (currEpoch < endEpoch) {
+			const startRange = new Date(currEpoch);
+			currEpoch += interval * DAYS_IN_MILLISECONDS;
+			const endRange = (currEpoch > endEpoch)
+				? new Date(endEpoch)
+				: new Date(currEpoch);
+
+			groupedDates.push([startRange, endRange]);
+		}
+
+	} else if (period === "month" || period === "halfyear") {
+		while (currEpoch < endEpoch) {
+			const startRange = new Date(currEpoch);
+			currEpoch = addMonths(startRange, period === "halfyear" ? 6 : 1).getTime();
+			const endRange = (currEpoch > endEpoch)
+				? new Date(endEpoch)
+				: new Date(currEpoch);
+
+			groupedDates.push([startRange, endRange]);
+		}
+	} else if (period === "year") {
+		while (currEpoch < endEpoch) {
+			const startRange = new Date(currEpoch);
+			currEpoch = addYears(startRange, 1).getTime(); 
+			const endRange = (currEpoch > endEpoch)
+				? new Date(endEpoch)
+				: new Date(currEpoch);
+
+			groupedDates.push([startRange, endRange]);
+		}
+	} 
 
   return groupedDates;
 }
 
 function groupData(
   data: TrendsWorkerInput,
-  day: number,
+  period: GroupPeriod,
   type: string,
-): TrendsData | [] {
+): TrendsData {
   // 1. Get the current date and the date posted in ms since the UNIX epoch
   const currDate = new Date();
   const datePosted = new Date(data.createdAt);
   // FIXME: Implement better undefined check
-  if (!data.views && !data.favorites) return [];
+  if (!data.views && !data.favorites) return {};
 
   // 1.5. If type is "uniqueViews", filter views to only unique view entries
   const uniqueViews = filterUniqueViews(data.views!);
 
   // 2. Get grouped dates. groupedDates contain arrays of Date object with a length of 2
   // Index 0 is start, Index 1 is end
-  const groupedDates = groupDates(datePosted, currDate, day);
+  const groupedDates = groupDates(datePosted, currDate, period);
 
   let processedCounts = 0;
   
@@ -114,9 +170,8 @@ function groupData(
       });
     }
 
-    // TODO: Switch to storing raw epoch, since its more robust
-    //  + enable better separation of concerns
-    return [range[0].getTime(), rangeCount];
+    // TODO: Reintroduce the formatting thing 
+    return [formatDatesLabel(new Date(startRange), period), rangeCount];
   });
   return Object.fromEntries(groupedData);
 }

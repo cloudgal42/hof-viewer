@@ -1,4 +1,5 @@
 import {useState} from "react";
+import type { GroupPeriod } from "../types/TrendsData";
 
 const DAYS_IN_MILLISECONDS = 86400000;
 
@@ -6,14 +7,14 @@ export const useTrendsOptions = (
   currEpoch: number, createdAtEpoch: number
 ) => {
   const [trendType, setTrendType] = useState<string>("views");
-  const [groupPeriod, setGroupPeriod] = useState<number>(() => {
+  const [groupPeriod, setGroupPeriod] = useState<GroupPeriod>(() => {
     if (currEpoch >= createdAtEpoch + (DAYS_IN_MILLISECONDS * 365 * 2)) {
-      return 30;
+      return "month";
     } else if (currEpoch >= createdAtEpoch + (DAYS_IN_MILLISECONDS * 6 * 30)) {
-      return 7;
+      return "week";
     }
     
-    return 1;
+    return "day";
   });
   
   return {trendType, setTrendType, groupPeriod, setGroupPeriod};

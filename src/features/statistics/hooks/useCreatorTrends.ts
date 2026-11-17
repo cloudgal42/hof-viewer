@@ -1,13 +1,13 @@
 import {useCreatorCitiesViewsAndFavorites} from "./useCreatorCitiesViewsAndFavorites.ts";
 import type {GroupedCities} from "../../../types/City.ts";
-import type {TrendsWorkerInput} from "../types/TrendsData.ts";
+import type {GroupPeriod, TrendsWorkerInput} from "../types/TrendsData.ts";
 import {useTrendsWorker} from "./useTrendsWorker.ts";
 import {combineAllCities} from "../../../utils/combineAllCities.ts";
 
 export const useCreatorTrends = (
   {creator, groupPeriod, enabled, trendType} : {
     creator: string,
-    groupPeriod: number;
+    groupPeriod: GroupPeriod;
     enabled: boolean;
     trendType: string;
   }

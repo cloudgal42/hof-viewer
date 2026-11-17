@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type {
+  GroupPeriod,
   TrendsData,
   TrendsWorkerInput,
   WorkerMsg,
@@ -14,7 +15,7 @@ export const useTrendsWorker = (
     enabled,
   }: {
     data: TrendsWorkerInput | null;
-    groupPeriod: number;
+    groupPeriod: GroupPeriod;
     trendType: string;
     enabled: boolean;
   },
@@ -39,7 +40,7 @@ export const useTrendsWorker = (
     );
     const params: WorkerParams = {
       inputData: data,
-      day: groupPeriod,
+      period: groupPeriod,
       type: trendType,
     };
 

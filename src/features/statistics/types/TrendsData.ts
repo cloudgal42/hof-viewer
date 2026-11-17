@@ -1,12 +1,14 @@
 import type { Favorites, Views} from "../../../types/City.ts";
 
 export interface TrendsData {
-  [key: number]: number;
+  [key: string]: number;
 }
 
+export type GroupPeriod = "day" | "week" | "month" | "halfyear" | "year";
+
 export interface WorkerParams {
-  inputData: TrendsWorkerInput
-  day: number,
+  inputData: TrendsWorkerInput,
+	period: "day" | "week" | "month" | "halfyear" | "year",
   type: string,
 }
 

@@ -1,11 +1,12 @@
 import {Form} from "react-bootstrap";
+import type { GroupPeriod } from "../../types/TrendsData";
 
 const DAYS_IN_MILLISECONDS = 86400000;
 
 export const GroupBySelect = (
   {groupPeriod, currEpoch, createdAtEpoch, setGroupPeriod} : {
-    groupPeriod: number;
-    setGroupPeriod: (newGroupPeriod: number) => void;
+    groupPeriod: GroupPeriod;
+    setGroupPeriod: (newGroupPeriod: GroupPeriod) => void;
     currEpoch: number;
     createdAtEpoch: number;
   }
@@ -18,17 +19,17 @@ export const GroupBySelect = (
         id="groupPeriod"
         value={groupPeriod}
         onChange={(e) =>
-          setGroupPeriod(parseInt(e.currentTarget.value))}
+          setGroupPeriod(e.currentTarget.value as GroupPeriod)}
       >
-        <option value="1">Days</option>
+        <option value="day">Days</option>
         {currEpoch > createdAtEpoch + (DAYS_IN_MILLISECONDS * 7) &&
-          <option value="7">Weeks</option>}
+          <option value="week">Weeks</option>}
         {currEpoch > createdAtEpoch + (DAYS_IN_MILLISECONDS * 30) &&
-          <option value="30">1 Month</option>}
+          <option value="month">1 Month</option>}
         {currEpoch > createdAtEpoch + (DAYS_IN_MILLISECONDS * 30 * 6) &&
-          <option value="180">6 Months</option>}
+          <option value="halfyear">6 Months</option>}
         {currEpoch > createdAtEpoch + (DAYS_IN_MILLISECONDS * 365) &&
-          <option value="365">1 Year</option>}
+          <option value="year">1 Year</option>}
       </Form.Select>
     </div>
   </>
