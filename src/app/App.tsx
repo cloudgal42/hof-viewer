@@ -7,6 +7,7 @@ import { ToTopBtn } from "../components/buttons/ToTopButton/ToTopBtn.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useRandomCityGc } from "../hooks/useRandomCityGc.ts";
 import {ThemeDropdownBtn} from "../components/buttons/ThemeDropdownBtn/ThemeDropdownBtn.tsx";
+import { AppNavbar } from "../components/navigation/Navbar/Navbar.tsx";
 // import {Screenshots} from "./temp/screenshots.ts";
 
 export type ContextType = {
@@ -53,28 +54,8 @@ const App = () => {
         Skip to main content
       </a>
         <h1 className="visually-hidden">Hall of Fame Viewer</h1>
-        <Navbar
-          className="bg-body border-1 border-bottom d-lg-none"
-          style={{ position: "sticky", top: "0px", zIndex: "6" }}
-        >
-          <div className="m-auto main-wrapper flex-grow-1 d-flex align-items-center justify-content-between">
-            <div className="d-flex align-items-center">
-              <HamburgerButton
-                isOpened={isAsideOpened}
-                setIsOpened={setIsAsideOpened}
-              />
-              <Navbar.Brand
-                className="position-relative py-1"
-                style={{ left: "calc(-0.75rem + 1px)" }}
-                href="/"
-              >
-                <span className="mb-0 fs-3 fw-semibold">HoF</span>
-              </Navbar.Brand>
-            </div>
-            <ThemeDropdownBtn align="end" />
-          </div>
-        </Navbar>
-        <ToTopBtn />
+				<AppNavbar isAsideOpened={isAsideOpened} setIsAsideOpened={setIsAsideOpened} />
+				<ToTopBtn />
         <div className="d-flex flex-grow-1 flex-column flex-nowrap">
           <div className="d-flex flex-row flex-grow-1">
             <Sidebar
