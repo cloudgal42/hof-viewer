@@ -31,7 +31,7 @@ export const Sidebar = ({ isOpened, setIsOpened }: SidebarProps) => {
             href="/public"
             className="text-decoration-none"
           >
-            <span className="fs-4">
+            <span className="fs-4 fw-semibold">
               HoF
             </span>
           </a>
@@ -88,6 +88,7 @@ export const Sidebar = ({ isOpened, setIsOpened }: SidebarProps) => {
             <NavLink
               to="/about"
               className="nav-link link-body-emphasis d-flex align-items-center"
+              onClick={() => setIsOpened(false)}
             >
               <InfoCircle className="me-2" />
               About
