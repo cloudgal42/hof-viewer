@@ -1,12 +1,10 @@
-import { Navbar, Spinner } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 import { Suspense, useState } from "react";
 import { Sidebar } from "../components/navigation/Sidebar/Sidebar.tsx";
-import { HamburgerButton } from "../components/buttons/Hamburger/HamburgerButton.tsx";
 import { Outlet, useLocation } from "react-router";
 import { ToTopBtn } from "../components/buttons/ToTopButton/ToTopBtn.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useRandomCityGc } from "../hooks/useRandomCityGc.ts";
-import {ThemeDropdownBtn} from "../components/buttons/ThemeDropdownBtn/ThemeDropdownBtn.tsx";
 import { AppNavbar } from "../components/navigation/Navbar/Navbar.tsx";
 // import {Screenshots} from "./temp/screenshots.ts";
 
