@@ -90,7 +90,7 @@ export const CityTrends = (
 
   const chartName = `${
     getFormattedTrendType(trendType)
-  } per ${groupPeriod} day(s)`;
+  } per ${groupPeriod === "halfyear" ? "6 months" : groupPeriod}`;
 
   const fontColor = context.theme === "dark" ? "#fff" : "#222";
   const gridColor = context.theme === "dark" ? { color: "#3a3a3a" } : {};
