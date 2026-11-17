@@ -1,5 +1,5 @@
 import type { Config, Context } from "@netlify/edge-functions";
-import React from "https://esm.sh/react";
+import * as React from "https://esm.sh/react";
 import { renderToReadableStream } from "https://esm.sh/react-dom/server";
 import { HofErrorRes } from "../../src/types/HofErrorRes.ts";
 import { City } from "../../src/types/City.ts";

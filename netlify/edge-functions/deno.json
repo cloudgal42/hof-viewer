@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "strict": true
+  },
+  "imports": {
+    "@netlify/edge-functions": "https://netlify.com"
+  },
+  "lock": "./deno.lock"
+}
