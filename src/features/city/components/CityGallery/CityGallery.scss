@@ -94,7 +94,7 @@
 .img-gallery-container span img:hover,
 .img-gallery-container-4-grid span img:focus,
 .img-gallery-container-2-grid span img:focus,
-.img-gallery-container span img:focus, {
+.img-gallery-container span img:focus {
   transition: opacity 0.3s, filter 0.25s !important;
   filter: brightness(0.85);
 }
