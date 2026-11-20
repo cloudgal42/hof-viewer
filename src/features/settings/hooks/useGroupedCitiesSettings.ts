@@ -135,7 +135,7 @@ export const useGroupedCitiesSettings = (
     },
     staleTime: 30 * 60 * 1000,
     refetchOnWindowFocus: false,
-    enabled: typeof fetchNewSettings !== "undefined" ? fetchNewSettings : false,
+    enabled: creator && typeof fetchNewSettings !== "undefined" ? fetchNewSettings : false,
     retry: false,
   });
 
