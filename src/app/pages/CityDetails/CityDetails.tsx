@@ -1,5 +1,5 @@
 import {Badge, Button, OverlayTrigger, Tooltip} from "react-bootstrap";
-import {NavLink, useLocation, useParams, useSearchParams} from "react-router";
+import {NavLink, useParams, useSearchParams} from "react-router";
 import {ChevronDown, InfoCircle, Share} from "react-bootstrap-icons";
 import {lazy, Suspense, useState} from "react";
 import {DEFAULT_IMAGES_PER_PAGE} from "../../../features/city/components/CityGallery/CityGallery.tsx";
@@ -8,10 +8,8 @@ import PlaceholderImg from "../../../assets/placeholder.svg"
 import {PlaceholderDetails} from "../../../features/city/components/Details/PlaceholderDetails.tsx";
 import {CityTrends} from "../../../features/statistics/components/CityTrends/CityTrends.tsx";
 import {ErrorScreen} from "../../../components/errorscreen/ErrorScreen/ErrorScreen.tsx";
-import {useQuery} from "@tanstack/react-query";
-import type {City, GroupedCities} from "../../../types/City.ts";
+
 import {CityInsights} from "../../../features/statistics/components/CityInsights/CityInsights.tsx";
-import {useCreatorCities} from "../../../features/city/hooks/useCreatorCities.ts";
 
 import {AdaptiveHeader} from "../../../components/navigation/AdaptiveHeader/AdaptiveHeader.tsx";
 import {Details} from "../../../features/city/components/Details/Details.tsx";
@@ -24,10 +22,10 @@ import {Helmet} from "@dr.pogodin/react-helmet";
 
 import {PlaceholderGallery} from "../../../features/city/components/CityGallery/PlaceholderGallery.tsx";
 import {useTranslation} from "../../../hooks/useTranslation.ts";
-import {useGroupedCities} from "../../../hooks/useGroupedCities.ts";
 
 import '../../../features/city/components/CityGallery/CityGallery.scss';
 import "./CityDetails.css";
+import { useCityDetails } from "../../../features/city/hooks/useCityDetails.ts";
 
 const CityGallery = lazy(() => import("../../../features/city/components/CityGallery/CityGallery.tsx"));
 
@@ -35,11 +33,8 @@ const CityDetails = () => {
   const [page, setPage] = useState<number>(1);
   const [isLoadMoreHovered, setIsLoadMoreHovered] = useState<boolean>(false);
 
-  const location = useLocation();
   const [searchParams] = useSearchParams();
   const cityParam = useParams().city;
-  
-  const placeholderCity = location.state?.placeholderData as City | GroupedCities | undefined;
   
   const {
     titleCityName,
@@ -53,45 +48,16 @@ const CityDetails = () => {
 
   const isCitiesGrouped = searchParams.get("groupStatus") === "on";
   const cityCreator = searchParams.get("creator") || "";
-  const {
-    data: creatorCities,
-    error: creatorCitiesError,
-    isFetching: isCreatorCitiesFetching
-  } = useCreatorCities(cityCreator);
-
+  
   // Scrolls to top whenever the city details page is loaded
   useScrollToTop();
 
-  const {error, data, isFetching} = useQuery<City>({
-    queryKey: ["city", {id: cityParam}],
-    queryFn: async () => {
-      // const link = isInPrerenderEnv ?
-      //   `${import.meta.env.VITE_HOF_SERVER}/screenshots/${cityParam}`
-      //   : `${import.meta.env.VITE_HOF_SERVER}/screenshots/${cityParam}?favorites=true&views=true`
-      const res = await fetch(`${import.meta.env.VITE_HOF_SERVER}/screenshots/${cityParam}?favorites=true&views=true`);
-      const data = await res.json();
-
-      if (!res.ok) {
-        return Promise.reject(new Error(`${data.statusCode}: ${data.message}`));
-      }
-
-      return data;
-    },
-    refetchOnWindowFocus: false,
-    staleTime: 1000 * 60 * 10, // 10 minutes
-    enabled: Boolean(!placeholderCity?.favorites && !placeholderCity?.views && !isCitiesGrouped ||
-      placeholderCity?.showcasedModId && !isCitiesGrouped || !isCitiesGrouped),
-    retry: false,
-  });
+  const {fetchError, cityDetails, isFetching} = useCityDetails({
+		isCitiesGrouped,
+		cityCreator,
+		cityParam,
+	})  
   
-  const {groupCities} = useGroupedCities(cityCreator);
-
-  const fetchError = error || creatorCitiesError;
-
-  const cityDetails = isCitiesGrouped
-    ? creatorCities && groupCities(creatorCities).find(entry => entry.cityName.toLowerCase() === cityParam?.toLowerCase())
-    : data || placeholderCity;
-
   if (!cityDetails) {
     if (!navigator.onLine) {
       return (
@@ -113,7 +79,7 @@ const CityDetails = () => {
           }
         />
       )
-    } else if (isFetching || isCreatorCitiesFetching) {
+    } else if (isFetching) {
       return (
         <div className="main-wrapper flex-grow-1 ms-sm-5 me-sm-5">
           <PlaceholderDetailsHeader/>
@@ -274,7 +240,7 @@ const CityDetails = () => {
         >
           <Details
             cityDetails={cityDetails}
-            error={error}
+            error={fetchError}
             isFetching={isFetching}
             hideRank={Array.isArray(cityDetails?.imageUrlFHD)}
           />
@@ -283,7 +249,7 @@ const CityDetails = () => {
           id="trends"
           className={`mt-3 position-relative ${(isLoadMoreHovered && !isLastPage) && "load-more-hovered"}`}
         >
-          <CityTrends city={cityDetails} isLoading={isFetching} fetchError={error}/>
+          <CityTrends city={cityDetails} isLoading={isFetching} fetchError={fetchError}/>
         </section>
         {/* City insights only available for grouped screenshots */}
         {("cities" in cityDetails) && (
