@@ -75,7 +75,7 @@ export const CreatorTrends = (
     datasets: [
       {
         label: chartName,
-        data: trendsData ? Object.entries(trendsData) : [],
+        data: trendsData ? Object.values(trendsData) : [],
         backgroundColor: (trendType === "favorites")
           ? "rgba(255, 99, 132, 0.5)"
           : "rgba(53, 162, 235, 0.5)",
