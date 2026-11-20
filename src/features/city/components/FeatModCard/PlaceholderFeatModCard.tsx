@@ -22,7 +22,6 @@ export const PlaceholderFeatModCard = () => {
             <Placeholder xs={2} />
           </Placeholder>
         </Card.Subtitle>
-        {/* TODO: add date range after version number */}
         <Placeholder animation="glow">
           <Placeholder className="me-2" xs={1} />
           <Placeholder className="me-2" xs={1} />

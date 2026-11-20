@@ -46,7 +46,6 @@ export const FeatModCard = ({fetchError, showcasedMod}: ModCardProps) => {
             </Card.Title>
           </h4>
           <Card.Subtitle className="text-muted mb-1">by {showcasedMod?.authorName}</Card.Subtitle>
-          {/* TODO: add date range after version number */}
           <ul className="list-unstyled text-muted mb-1 d-inline-flex flex-wrap w-100">
             {showcasedMod?.tags && showcasedMod.tags.map((tag, i) =>
               <li key={i} className="me-2" style={{fontSize: "14px"}}>{tag}</li>

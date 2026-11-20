@@ -7,7 +7,6 @@ import {useTheme} from "../../../hooks/useTheme.ts";
 export const ThemeDropdownBtn = (
   {size, align, drop} : {size?: "sm" | "lg" | undefined, align?: AlignType, drop?: DropDirection}
 ) => {
-  // TODO: Put this behind a provider instead.
   const context = useTheme();
   
   return (

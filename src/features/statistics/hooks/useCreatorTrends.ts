@@ -12,8 +12,6 @@ export const useCreatorTrends = (
     trendType: string;
   }
 ) => {
-  // TODO: Place the below on the component which uses this hook itself.
-  //  This hook will then just take a City and do things from there
   const {
     data,
     isFetching,

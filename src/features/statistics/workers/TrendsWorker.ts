@@ -15,7 +15,6 @@ function send(params: WorkerMsg) {
   self.postMessage(params);
 }
 
-// TODO: Use constant group periods instead
 self.onmessage = ({ data }: { data: WorkerParams }) => {
   const { inputData, period, type } = data;
   const result = groupData(inputData, period, type);
@@ -170,7 +169,6 @@ function groupData(
       });
     }
 
-    // TODO: Reintroduce the formatting thing 
     return [formatDatesLabel(new Date(startRange), period), rangeCount];
   });
   return Object.fromEntries(groupedData);

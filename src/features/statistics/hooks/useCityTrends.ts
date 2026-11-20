@@ -13,8 +13,6 @@ export const useCityTrends = (
     trendType: string;
   },
 ) => {
-  // TODO: Place the 2 below code on the component which uses this hook itself.
-  //  This hook will then just take a City and do things from there
   const { groupCities } = useGroupedCities(creator);
 
   const { data, isFetching, error, refetch } =
