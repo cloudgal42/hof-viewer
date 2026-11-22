@@ -2,8 +2,8 @@ import {Button, ButtonGroup, Card} from "react-bootstrap";
 import {BoxArrowUpRight, People} from "react-bootstrap-icons";
 import type {Mod} from "../../../../types/Mod.ts";
 
-import pdxModsIcon from "../../../../assets/pdx-mods.webp";
-import skyveIcon from "../../../../assets/skyve.webp";
+import pdxModsIcon from "../../assets/pdx-mods.webp";
+import skyveIcon from "../../assets/skyve.webp";
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 import {CardImg} from "../../../../components/misc/CardImg/CardImg.tsx";
 import {SkyveCompatibility} from "./SkyveCompatibility.tsx";

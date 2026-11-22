@@ -4,8 +4,8 @@ import {BoxArrowUpRight} from "react-bootstrap-icons";
 import type {Mod} from "../../../../types/Mod.ts";
 import {ErrorScreen} from "../../../../components/errorscreen/ErrorScreen/ErrorScreen.tsx";
 
-import pdxModsIcon from "../../../../assets/pdx-mods.webp";
-import skyveIcon from "../../../../assets/skyve.webp";
+import pdxModsIcon from "../../assets/pdx-mods.webp";
+import skyveIcon from "../../assets/skyve.webp";
 import {CardImg} from "../../../../components/misc/CardImg/CardImg.tsx";
 
 interface ModCardProps {
