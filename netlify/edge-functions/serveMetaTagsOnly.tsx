@@ -110,7 +110,7 @@ export default async function serveSkeletonPage(
                     {
                       "type": 10,
                       "content":
-                        `**👤 ${city.cityPopulation.toLocaleString()} ❤️ ${city.favoritesCount.toLocaleString()} 👁️ ${city.uniqueViewsCount.toLocaleString()}**`,
+                        `**👤 ${city.cityPopulation.toLocaleString()}  ❤️ ${city.favoritesCount.toLocaleString()}  👁️ ${city.uniqueViewsCount.toLocaleString()}**`,
                     },
                     {
                       "type": 12,
@@ -120,7 +120,7 @@ export default async function serveSkeletonPage(
                     },
                     {
                       "type": 10,
-                      "content": `Hall of Fame Viewer | <t:${
+                      "content": `-# Hall of Fame Viewer • <t:${
                         Math.round(new Date().getTime() / 1000)
                       }>`,
                     },
