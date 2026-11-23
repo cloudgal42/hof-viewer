@@ -308,7 +308,7 @@ export const ModList = ({ city }: ModListProps) => {
                 />
               </div>
               <div className="d-flex w-100 flex-column gap-1 flex-wrap">
-                <div className="d-inline-flex align-items-center gap-1">
+                <div className="d-inline-flex flex-wrap align-items-center gap-1">
                   <strong className="">Type:</strong>
                   <ToggleButton
                     size="sm"
