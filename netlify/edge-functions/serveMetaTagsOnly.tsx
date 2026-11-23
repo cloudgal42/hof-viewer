@@ -104,13 +104,11 @@ export default async function serveSkeletonPage(
                   "components": [
                     {
                       "type": 10,
-                      "content":
-                        `### **[${city.cityName} by ${city.creator.creatorName}](${req.url})**${city.description ? `\n${city.description}` : ""}`,
-                    },
-                    {
-                      "type": 10,
-                      "content":
-                        `**👤 ${city.cityPopulation.toLocaleString()}  ❤️ ${city.favoritesCount.toLocaleString()}  👁️ ${city.uniqueViewsCount.toLocaleString()}**`,
+                      "content": `
+												### **[${city.cityName} by ${city.creator.creatorName}](${req.url})**
+												${city.description ? `\n${city.description}` : ""}
+												\n**👤 ${city.cityPopulation.toLocaleString()}  ❤️ ${city.favoritesCount.toLocaleString()}  👁️ ${city.uniqueViewsCount.toLocaleString()}**
+											`,
                     },
                     {
                       "type": 12,
@@ -122,7 +120,7 @@ export default async function serveSkeletonPage(
                       "type": 10,
                       "content": `-# Hall of Fame Viewer • <t:${
                         Math.round(new Date().getTime() / 1000)
-                      }>`,
+                      }:s>`,
                     },
                   ],
                 },
