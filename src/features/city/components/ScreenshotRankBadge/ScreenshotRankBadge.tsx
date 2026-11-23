@@ -7,7 +7,7 @@ export const ScreenshotRankBadge = (
 ) => (
   <>
     {rank === "diamond"
-      ? <Gem size={size} color="#87CEEB" />
+      ? <Gem size={size} color={getRankColor(rank)} />
       : rank === null
       ? <Question
           color="gray"
