@@ -76,9 +76,11 @@ export const GalleryImg = (
           }}
           wrapperProps={{
             onTransitionEnd: () => {
-              setCurrUrl(url);
-              setNextUrl(null);
-            }
+							if (!showTransition) {
+								setCurrUrl(url);
+								setNextUrl(null);
+							}
+						}
           }}
         />
       )}
