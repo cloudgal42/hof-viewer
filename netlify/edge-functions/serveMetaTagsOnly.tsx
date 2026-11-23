@@ -99,32 +99,33 @@ export default async function serveSkeletonPage(
             type="application/json"
             dangerouslySetInnerHTML={{
               "__html": JSON.stringify({
-                "components": [
-                  {
-                    "type": 17,
-                    "components": [
-                      {
-                        "type": 10,
-                        "content":
-                          `# **[${city.cityName} by ${city.creator.creatorName}](${req.url})**\n${city.description}`,
-                      },
-											{
-												"type": 10,
-												"content": `### 👤 ${city.cityPopulation} ❤️ ${city.favoritesCount} 👁️ ${city.uniqueViewsCount}`
-											},
-                      {
-                        "type": 12,
-                        "items": bestImageUrls.map((url) => ({
-                          "media": { "url": url },
-                        })),
-                      },
-											{
-												"type": 10,
-												"content": `Hall of Fame Viewer | <:t${new Date().getTime() / 1000}>`
-											}
-                    ],
-                  },
-                ],
+                "component": {
+                  "type": 17,
+                  "components": [
+                    {
+                      "type": 10,
+                      "content":
+                        `# **[${city.cityName} by ${city.creator.creatorName}](${req.url})**\n${city.description}`,
+                    },
+                    {
+                      "type": 10,
+                      "content":
+                        `### 👤 ${city.cityPopulation} ❤️ ${city.favoritesCount} 👁️ ${city.uniqueViewsCount}`,
+                    },
+                    {
+                      "type": 12,
+                      "items": bestImageUrls.map((url) => ({
+                        "media": { "url": url },
+                      })),
+                    },
+                    {
+                      "type": 10,
+                      "content": `Hall of Fame Viewer | <:t${
+                        new Date().getTime() / 1000
+                      }>`,
+                    },
+                  ],
+                },
               }),
             }}
           >
