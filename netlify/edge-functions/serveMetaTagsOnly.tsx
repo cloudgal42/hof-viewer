@@ -105,12 +105,12 @@ export default async function serveSkeletonPage(
                     {
                       "type": 10,
                       "content":
-                        `## **[${city.cityName} by ${city.creator.creatorName}](${req.url})**${city.description ? `\n${city.description}` : ""}`,
+                        `### **[${city.cityName} by ${city.creator.creatorName}](${req.url})**${city.description ? `\n${city.description}` : ""}`,
                     },
                     {
                       "type": 10,
                       "content":
-                        `### 👤 ${city.cityPopulation.toLocaleString()} ❤️ ${city.favoritesCount.toLocaleString()} 👁️ ${city.uniqueViewsCount.toLocaleString()}`,
+                        `**👤 ${city.cityPopulation.toLocaleString()} ❤️ ${city.favoritesCount.toLocaleString()} 👁️ ${city.uniqueViewsCount.toLocaleString()}**`,
                     },
                     {
                       "type": 12,
