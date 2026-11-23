@@ -94,10 +94,47 @@ export default async function serveSkeletonPage(
       head = (
         <>
           <title>{`${city.cityName} - Hall of Fame Viewer`}</title>
+          <script
+            id="discord:component-embed"
+            type="application/json"
+            dangerouslySetInnerHTML={{
+              "__html": JSON.stringify({
+                "components": [
+                  {
+                    "type": 17,
+                    "components": [
+                      {
+                        "type": 10,
+                        "content":
+                          `# **[${city.cityName} by ${city.creator.creatorName}](${req.url})**\n${city.description}`,
+                      },
+											{
+												"type": 10,
+												"content": `### 👤 ${city.cityPopulation} ❤️ ${city.favoritesCount} 👁️ ${city.uniqueViewsCount}`
+											},
+                      {
+                        "type": 12,
+                        "items": bestImageUrls.map((url) => ({
+                          "media": { "url": url },
+                        })),
+                      },
+											{
+												"type": 10,
+												"content": `Hall of Fame Viewer | <:t${new Date().getTime() / 1000}>`
+											}
+                    ],
+                  },
+                ],
+              }),
+            }}
+          >
+          </script>
           <meta name="twitter:card" content="summary_large_image" />
           <meta
             property="twitter:description"
-            content={`${city.description ?? ""}\n\n👤 ${city.cityPopulation.toLocaleString()}  ♥️ ${city.favoritesCount.toLocaleString()}  👁️ ${city.uniqueViewsCount.toLocaleString()}`}
+            content={`${
+              city.description ?? ""
+            }\n\n👤 ${city.cityPopulation.toLocaleString()}  ♥️ ${city.favoritesCount.toLocaleString()}  👁️ ${city.uniqueViewsCount.toLocaleString()}`}
           />
           <meta
             property="og:title"
@@ -106,7 +143,9 @@ export default async function serveSkeletonPage(
           <meta property="og:type" content="article" />
           <meta
             property="og:description"
-            content={`${city.description ?? ""}\n\n👤 ${city.cityPopulation.toLocaleString()}  ♥️ ${city.favoritesCount.toLocaleString()}  👁️ ${city.uniqueViewsCount.toLocaleString()}`}
+            content={`${
+              city.description ?? ""
+            }\n\n👤 ${city.cityPopulation.toLocaleString()}  ♥️ ${city.favoritesCount.toLocaleString()}  👁️ ${city.uniqueViewsCount.toLocaleString()}`}
           />
 
           {bestImageUrls.map((url) => (
